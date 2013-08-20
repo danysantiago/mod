@@ -1,0 +1,17 @@
+{
+    "development": {
+            "appName": "MOD",
+            "dbAddress": "postgres://postgres:password@localhost:5432/mydb",
+            "localAddress": "localhost",
+            "appPort": 8080,
+            "appProtocol": "http"
+    },
+
+    "production": {
+            "appName": "MOD",
+            "dbAddress": "postgres://postgres:password@localhost:5432/mydb",
+            "localAddress": "localhost",
+            "appPort": 8080,
+            "appProtocol": "http"
+    }
+}
