@@ -7,6 +7,12 @@ app.configure(function() {
 	app.set("name", config.appName);
 });
 
+/* Request Logger */
+app.use(function (req, res, next) {
+    console.log("%s %s", req.method, req.url);
+    next();
+});
+
 app.use(express.static(__dirname + "/public"));
 
 dbClient = mysql.createConnection(config.dbAddress);
