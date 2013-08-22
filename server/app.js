@@ -7,6 +7,8 @@ app.configure(function() {
 	app.set("name", config.appName);
 });
 
+app.use(express.static(__dirname + "/public"));
+
 dbClient = mysql.createConnection(config.dbAddress);
 dbClient.connect(function (err) {
     if(err) {
