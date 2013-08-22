@@ -1,7 +1,7 @@
 {
     "development": {
             "appName": "MOD",
-            "dbAddress": "postgres://postgres:password@localhost:5432/mydb",
+            "dbAddress": "mysql://root:aguacate@localhost/db",
             "localAddress": "localhost",
             "appPort": 8080,
             "appProtocol": "http"
@@ -9,7 +9,7 @@
 
     "production": {
             "appName": "MOD",
-            "dbAddress": "postgres://postgres:password@localhost:5432/mydb",
+            "dbAddress": "mysql://root:aguacate@localhost/db",
             "localAddress": "localhost",
             "appPort": 8080,
             "appProtocol": "http"
