@@ -15,6 +15,10 @@ app.use(function (req, res, next) {
 
 app.use(express.static(__dirname + "/public"));
 
+app.get("/example", function (req, res) {
+    res.send({"message": "Hi from the EC2"});
+})
+
 dbClient = mysql.createConnection(config.dbAddress);
 dbClient.connect(function (err) {
     if(err) {
