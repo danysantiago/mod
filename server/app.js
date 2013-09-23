@@ -3,6 +3,10 @@ var config = require("./lib/config.js"),
 	app = express(),
 	mysql = require("mysql");
 
+// Routes middlewares
+var products = require("./lib/routes/products.js");
+var users = require("./lib/routes/users.js");
+
 app.configure(function() {
 	app.set("name", config.appName);
 });
@@ -13,19 +17,25 @@ app.use(function (req, res, next) {
     next();
 });
 
+// Static content
 app.use(express.static(__dirname + "/public"));
 
 app.get("/example", function (req, res) {
     res.send({"message": "Hi from the EC2"});
 })
 
+// Routes use
+app.use(products);
+app.use(users);
+
+//DB Connection & port app listening
 dbClient = mysql.createConnection(config.dbAddress);
 dbClient.connect(function (err) {
     if(err) {
         return console.error("Could not connect to mysql", err);
     }
 
-    console.log("Database connection sucessful");
+    console.log("Database connection successful");
 
     app.listen(config.appPort);
     console.log("App started, listening at port %s", config.appPort);
