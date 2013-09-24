@@ -6,6 +6,9 @@ var config = require("./lib/config.js"),
 // Routes middlewares
 var products = require("./lib/routes/products.js");
 var users = require("./lib/routes/users.js");
+var categories = require("./lib/routes/categories.js");
+var creditcards = require("./lib/routes/creditcards.js");
+var addresses = require("./lib/routes/addresses.js");
 
 app.configure(function() {
 	app.set("name", config.appName);
@@ -27,6 +30,9 @@ app.get("/example", function (req, res) {
 // Routes use
 app.use(products);
 app.use(users);
+app.use(categories);
+app.use(creditcards);
+app.use(addresses);
 
 //DB Connection & port app listening
 dbClient = mysql.createConnection(config.dbAddress);
