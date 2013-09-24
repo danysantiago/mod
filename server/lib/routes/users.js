@@ -19,5 +19,13 @@ routes.get("/users/:pid", function (req, res) {
   res.send(fakeUser);
 });
 
+routes.post("/users", function (req, res) {
+  res.send(201);
+});
+
+routes.put("/users/:pid", function (req, res) {
+  res.send(200);
+});
+
 
 module.exports = routes;
