@@ -39,6 +39,7 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 	private HttpUriRequest request;
 	
 	private boolean success;
+	private HttpResponse response;
 	
 	public HttpRequest(Bundle params, HttpCallback callback) {
 		this.params = params;
@@ -46,9 +47,6 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 		
 		try {
 			processParams(params);
-		} catch (InvalidParameterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,9 +63,6 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 		
 		try {
 			processParams(params);
-		} catch (InvalidParameterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,13 +74,13 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 	
 	private void processParams(Bundle params) throws InvalidParameterException, UnsupportedEncodingException, MalformedURLException {
 		if(!params.containsKey("url")) {
-			throw new InvalidParameterException("Missing url parameter");
+			throw new IllegalArgumentException("Missing url parameter");
 		}
 		
 		URL url = new URL(params.getString("url"));
 		
 		if(!params.containsKey("method")) {
-			throw new InvalidParameterException("Missing method parameter");
+			throw new IllegalArgumentException("Missing method parameter");
 		} else {
 			String method = params.getString("method");
 			
@@ -104,14 +99,20 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 			} else if (method.equalsIgnoreCase("DELETE")) {
 				request = new HttpDelete(url.toString());
 			} else {
-				throw new InvalidParameterException("Invalid http method parameter");
+				throw new IllegalArgumentException("Invalid http method parameter");
 			}
 		}
 	}
 	
 	@Override
 	protected void onPreExecute() {
+	  // Set 10 sec timeout, unless otherwise specified
 		int timeout = 10000;
+		
+		if(params.containsKey("timeout")) {
+		  timeout = params.getInt("timeout");
+		}
+		
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeout);
 		HttpConnectionParams.setSoTimeout(httpParameters, timeout);
@@ -125,11 +126,11 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 		
 		try {
 		
-			HttpResponse response = client.execute(request);
+			response = client.execute(request);
 			
 			int statusCode = response.getStatusLine().getStatusCode();
 			
-			if(statusCode == HttpStatus.SC_OK){
+			if(statusCode >= HttpStatus.SC_OK && statusCode <= HttpStatus.SC_PARTIAL_CONTENT){
 				String fullRes = EntityUtils.toString(response.getEntity());
 				
 				result = new JSONObject(fullRes);
@@ -168,14 +169,14 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 		if(success) {
 			callback.onSucess(result);
 		} else {
-			callback.onFailed();
+			callback.onFailed(response);
 		}
 	}
 	
 	public static abstract class HttpCallback {
 		public abstract void onSucess(JSONObject json);
 		//public abstract void onProgress();
-		public abstract void onFailed();
+		public abstract void onFailed(HttpResponse response);
 	}
 
 }

@@ -67,7 +67,7 @@ public class ExampleFragment extends Fragment {
 			}
 			
 			@Override
-			public void onFailed() {
+			public void onFailed(HttpResponse response) {
 				Toast.makeText(getActivity(), "Something bad happened,  http-wise.", Toast.LENGTH_SHORT).show();
 			}
 		});
