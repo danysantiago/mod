@@ -25,7 +25,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.get("/example", function (req, res) {
     res.send({"message": "Hi from the EC2"});
-})
+});
 
 // Routes use
 app.use(products);
