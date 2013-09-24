@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MOD Store</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="action_search">Search</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_myaccount">My Account</string>
-    <string name="action_addproduct">Sell Product</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="app_name">Mod Store</string>
+    <string name="btn_search_desc">Search</string>
+    <string name="btn_cart_desc">Cart</string>
+    <string name="drawer_open_desc">Main menu opened</string>
+    <string name="drawer_close_desc">Main menu closed</string>
+    <string name="btn_category_str">Categories</string>
+    <string name="searchbar_title">Search Producst</string>
 
 </resources>
