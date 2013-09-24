@@ -4,9 +4,9 @@ var config = require("../config.js"),
 
 var routes = express();
 
-routes.get("/cc/:pid", function (req, res) {
+routes.get("/cc/:ccid", function (req, res) {
   var fakeCC = {
-    "id": req.params.pid,
+    "ccid": req.params.ccid,
     "number": "1234-5678-0101-1010",
     "scode": "555",
     "name": "Juan Del Pueblo",

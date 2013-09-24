@@ -4,9 +4,9 @@ var config = require("../config.js"),
 
 var routes = express();
 
-routes.get("/addresses/:pid", function (req, res) {
+routes.get("/addresses/:aid", function (req, res) {
   var fakeAddr = {
-    "id": req.params.pid,
+    "aid": req.params.aid,
     "line1": "Urb. Villas Jose",
     "line2": "Calle Mango C-20",
     "city": "Mayaguez",
