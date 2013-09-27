@@ -1,4 +1,4 @@
-package edu.uprm.mod.store;
+package icom5016.modstore.resources;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
