@@ -8,5 +8,9 @@
     <string name="drawer_close_desc">Main menu closed</string>
     <string name="btn_category_str">Categories</string>
     <string name="searchbar_title">Search Producst</string>
+    <string name="add_creditcard">Add Credit Card</string>
+    <string name="cc_name">Full name:</string>
+    <string name="cc_number">Number:</string>
+    <string name="cc_expire">Expire:</string>
 
 </resources>
