@@ -32,4 +32,6 @@ public class MainCategoryFragment extends Fragment {
 		return view;
 	}
 	
+	
+	
 }

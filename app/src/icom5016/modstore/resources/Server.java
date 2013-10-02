@@ -1,4 +1,5 @@
-package edu.uprm.mod.store;
+package icom5016.modstore.resources;
+
 
 public class Server {
 	
