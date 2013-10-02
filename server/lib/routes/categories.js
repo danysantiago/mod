@@ -7,6 +7,11 @@ var routes = express();
 routes.get("/categories/:name", function (req, res) {
   var fakeList = {
     "category": req.params.name,
+    "sub-categories": [
+        "Television",
+        "Computers",
+        "Cameras"
+    ],
     "products": [
       {
         "cid": 123,

@@ -1,9 +1,9 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
-import icom5016.modstore.resources.HttpRequest;
-import icom5016.modstore.resources.HttpRequest.HttpCallback;
-import icom5016.modstore.resources.Server;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.Server;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
