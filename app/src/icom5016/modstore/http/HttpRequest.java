@@ -1,4 +1,4 @@
-package icom5016.modstore.resources;
+package icom5016.modstore.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -124,6 +124,9 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 		JSONObject result;
 		
 		try {
+		  
+	    Log.d("http", "Performing request: " + params.getString("method") +
+	        " " + params.getString("url"));
 		
 			HttpResponse response = client.execute(request);
 			
