@@ -2,15 +2,12 @@ package icom5016.modstore.resources;
 
 public class DataFetchFactory {
 
-	//Fetch Drawer Options
-	public static String[] fetchDrawerOptions(){
-		return new String[]{ "Home", "My Orders", "Settings", "About" };
-	}
-	
+	//TODO: Change to Dynamic Loading
 	public static String[] fetchMainCategories(){
 		return new String[]{"Books", "Electronics", "Computers", "Clothing", "Shoes", "Sports" };
 	}
 
+	//TODO: Load 
 	public static String[] fetchSubCategories(String categoryTitle) {
 		//Super static
 		return new String[]{"Yay","this","is","static","don't","forget"};

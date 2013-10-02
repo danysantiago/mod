@@ -1,5 +1,7 @@
 package icom5016.modstore.activities;
 
+import icom5016.modstore.fragments.LogInRegisterFragment;
+import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import android.app.ActionBar;
 import android.os.Bundle;
@@ -28,17 +30,26 @@ public class LogInRegisterActivity extends MainInterfaceActivity {
 		
 		//Get Bundle
 		Bundle bundle = this.getIntent().getExtras();
-		boolean isLoginFlag = bundle.getBoolean(ConstantClass.LOGINREGISTER_FLAG);
 		
-		if(isLoginFlag){ //Load View for LogIn
-		}
-		else{ //Load View for Register
-		}
+		boolean isLoginFlag;
+		//Avoid NullPointerException
+		if(bundle == null)
+			isLoginFlag = true;
+		else
+			isLoginFlag = bundle.getBoolean(ConstantClass.LOGINREGISTER_FLAG);
 		
 		
+		//Must Load Super Fragment With View Pager
+		Bundle fragmentBundle = new Bundle();
+		fragmentBundle.putBoolean(ConstantClass.LOGINREGISTER_FLAG, isLoginFlag);
+		LogInRegisterFragment logInRegisterFragment = new LogInRegisterFragment();
+		logInRegisterFragment.setArguments(fragmentBundle);
+		AndroidResourceFactory.setNewFragment(this, logInRegisterFragment, this.getContentFragmentId());
+
 	}
-/*Navigate Up the Stack*/
 	
+	
+					/*Navigate Up the Stack*/
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){

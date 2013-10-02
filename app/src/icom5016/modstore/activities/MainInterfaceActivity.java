@@ -210,7 +210,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		}
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGEMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY);
     			this.startActivity(homeIntent);
     		}
     		break;
@@ -264,7 +264,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		}
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGEMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY);
     			this.startActivity(homeIntent);
     		}
     		break;
@@ -278,7 +278,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		}
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGEMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS);
     			this.startActivity(homeIntent);
     		}
     		
@@ -292,7 +292,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		}
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGEMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS);
     			this.startActivity(homeIntent);
     		}
     		break;

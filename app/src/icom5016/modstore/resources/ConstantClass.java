@@ -28,7 +28,7 @@ public class ConstantClass {
 	public final static String LOGINREGISTER_FLAG = "loginOrRegister";
 	
 	//MainActivity FRAGEMENT Key-Value
-	public final static String MAINACTIVITY_FRAGEMENT_KEY = "mainActivityKey";
+	public final static String MAINACTIVITY_FRAGMENT_KEY = "mainActivityKey";
 	public final static int MAINACTIVITY_FRAGMENT_CATEGORY = 0;
 	public final static int MAINACTIVITY_FRAGMENT_MY_ITEMS = 1;
 	public final static int MAINACTIVITY_FRAGMENT_SELL_ITEMS = 2;

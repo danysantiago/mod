@@ -7,15 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class AboutFragment extends Fragment {
-	public AboutFragment(){
+public class LogInRegisterFragment extends Fragment {
+	public LogInRegisterFragment(){
 	};
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.fragment_about, container,false);
+		View view = inflater.inflate(R.layout.fragment_login_register, container,false);
 		return view;
 	}
 
+	
 }
