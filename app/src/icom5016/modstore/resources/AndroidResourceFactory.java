@@ -6,7 +6,7 @@ import android.app.FragmentManager;
 
 public class AndroidResourceFactory {
 
-	
+	//Fragment Manager
 	public static void setNewFragment(Activity activeActivity, Fragment fragment, int id){
 		FragmentManager fragmentManager = activeActivity.getFragmentManager();
         fragmentManager.beginTransaction().replace(id, fragment).commit();
