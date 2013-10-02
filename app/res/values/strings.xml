@@ -12,5 +12,8 @@
     <string name="cc_name">Full name:</string>
     <string name="cc_number">Number:</string>
     <string name="cc_expire">Expire:</string>
+    <string name="addr_address">Address:</string>
+    <string name="addr_zipcode">Zipcode:</string>
+    <string name="addr_city">City:</string>
 
 </resources>
