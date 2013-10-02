@@ -11,4 +11,5 @@ public class AndroidResourceFactory {
 		FragmentManager fragmentManager = activeActivity.getFragmentManager();
         fragmentManager.beginTransaction().replace(id, fragment).commit();
 	}
+
 }
