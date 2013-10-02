@@ -1,6 +1,7 @@
-package icom5016.modstore.resources;
+package icom5016.modstore.uielements;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.resources.CreditCard;
 
 import java.util.ArrayList;
 

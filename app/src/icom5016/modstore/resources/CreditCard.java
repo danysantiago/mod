@@ -3,9 +3,9 @@ package icom5016.modstore.resources;
 public class CreditCard {	
 	
 	int type; /* 0 = VISA, 1 = MASTERCARD */
-	String number;
-	String name;
-	String expire;
+	public String number;
+	public String name;
+	public String expire;
 	
 	public CreditCard() {
 		super();
