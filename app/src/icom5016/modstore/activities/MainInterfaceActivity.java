@@ -168,7 +168,7 @@ public abstract class MainInterfaceActivity extends Activity {
         }
     }
     private void selectItem(int position) {
-    	if(this.activeUser == null)
+    	if(this.activeUser == null && false)
     	{
     		this.guestDrawerListener(position);
     	}

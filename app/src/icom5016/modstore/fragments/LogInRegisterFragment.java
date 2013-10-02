@@ -11,6 +11,7 @@ public class LogInRegisterFragment extends Fragment {
 	public LogInRegisterFragment(){
 	};
 	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState){
@@ -18,5 +19,13 @@ public class LogInRegisterFragment extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState){
+		super.onActivityCreated(savedInstanceState);
+		
+		
+		
+	}
+	
 	
 }
