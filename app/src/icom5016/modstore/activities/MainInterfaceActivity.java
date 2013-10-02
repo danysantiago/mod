@@ -1,21 +1,29 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.MainCategoryFragment;
+import icom5016.modstore.fragments.MyItemsFragment;
+import icom5016.modstore.fragments.SellItemFragment;
 import icom5016.modstore.resources.AndroidResourceFactory;
-import icom5016.modstore.resources.ConstanceClass;
+import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
+import icom5016.modstore.resources.User;
+import icom5016.modstore.uielements.DrawerAdapter;
+
+import java.util.Stack;
+
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
@@ -27,18 +35,20 @@ public abstract class MainInterfaceActivity extends Activity {
 	
 					/* Instance variables */
 	
-	//Drawer Variables
-	//Variables for Drawer
-	protected DrawerLayout mainDrawerLayout; //Contains main layout variable
-		//Protected for editability in other classes
-	private ListView mainDrawerList; //ListView use forDrawer
-	//Note Toggler Must be Implement Directly on the Activity
-	private String[] drawerOptionsList; //List of Drawer Options
 	
-	//Cart Boolean Variable
+	//Drawer Variables
+	protected DrawerLayout mainDrawerLayout; //Contains main layout variable
+	protected ListView mainDrawerList; //ListView use forDrawer
+	
+	//User variable
+	protected User activeUser = null;
+		//If Null User Does Not Exist
+	
+	//Cart Toggle Variable
 	protected boolean isCartActive = false;
 	
-	
+	//Fragment Stack
+	protected Stack<Fragment> fragmentStack;
 	
 	
 	@Override
@@ -46,27 +56,45 @@ public abstract class MainInterfaceActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		//Load ActionBar
+		//Verify Log-In
+		SharedPreferences preferences = //If Open First Time: Creates File; O.W. Reads it
+				this.getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+		boolean isUserLogIn = preferences.getBoolean(ConstantClass.USER_IS_LOGIN, false);
+		
+			//If Log-In Create 
+		if(isUserLogIn){
+			//pre: must be log-in thus data will be loaded into preferences
+			String userName = preferences.getString(ConstantClass.USER_USERNAME_KEY, ""); 
+			String firstName = preferences.getString(ConstantClass.USER_FIRSTNAME_KEY, "");
+			String middleName = preferences.getString(ConstantClass.USER_MIDDLENAME_KEY, "");
+			String lastName = preferences.getString(ConstantClass.USER_LASTNAME_KEY, "");
+			String email = preferences.getString(ConstantClass.USER_EMAIL_KEY, "");
+			boolean isAdmin = preferences.getBoolean(ConstantClass.USER_IS_ADMIN_KEY, false);	
+			this.activeUser = new User(userName, firstName, middleName, lastName, email, isAdmin);	
+		}
+		
+		
+			//Load ActionBar Variable
 		final ActionBar ActionBarVar = this.getActionBar();
 		
-		//Set Action Bar title
+			//Set Action Bar title
 		ActionBarVar.setTitle(R.string.app_name);
 		
 		
 		//Load Variables
-		this.mainDrawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
-		this.mainDrawerList = (ListView) this.findViewById(R.id.left_drawer);
-		this.drawerOptionsList = DataFetchFactory.fetchDrawerOptions();
+		this.mainDrawerLayout  = (DrawerLayout) this.findViewById(R.id.drawer_layout);
+		this.mainDrawerList    = (ListView) this.findViewById(R.id.left_drawer);
 		
-		//Load List View in to Drawer
+		//Set Option into Drawer
 		this.mainDrawerList.setAdapter(
-				new ArrayAdapter<String>(this, R.layout.drawer_list_item, this.drawerOptionsList)
+				new DrawerAdapter(this, this.activeUser)
 		);
 		
-		//Set Drawer Listener 
-		this.mainDrawerList.setOnItemClickListener(new DrawerItemClickListener()); 
-			//DrawerItemClickListener Local Private Class
+		//Set Drawer ClickListener 
+		this.mainDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		
+		//Init Stack
+		this.fragmentStack = new Stack<Fragment>();
 		
 		
 	}
@@ -77,14 +105,15 @@ public abstract class MainInterfaceActivity extends Activity {
 		getMenuInflater().inflate(R.menu.actionbar_main_menu, menu);
 		
 		SubMenu categoriesMenu = (SubMenu) menu.findItem(R.id.item_categories).getSubMenu();
-		String[] mainCategories = DataFetchFactory.fetchMainCategories();		
+		String[] mainCategories = DataFetchFactory.fetchMainCategories();
 		for(String e : mainCategories)
 		{
 			categoriesMenu.add(R.id.item_categories, R.string.id_btn_maincategory , Menu.NONE, e);
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
-						/*Population Methods*/
+					
+							/*Population Methods*/
 	
 	
 	//Make Invalid to Change Category as it changes the fragment 
@@ -92,6 +121,7 @@ public abstract class MainInterfaceActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu){
 		boolean drawerOpen = this.mainDrawerLayout.isDrawerOpen(this.mainDrawerList);
         menu.findItem(R.id.item_categories).setVisible(!drawerOpen);
+        menu.findItem(R.id.btn_cart).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 		
@@ -112,7 +142,6 @@ public abstract class MainInterfaceActivity extends Activity {
 	//ActionBar Buttons
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
-		Log.v("ID of Element", Integer.toString(item.getItemId()) );
         switch( item.getItemId() )
         {
         //CallBack Search
@@ -122,9 +151,6 @@ public abstract class MainInterfaceActivity extends Activity {
         	this.startActivity(searchIntent);
         	//Create a new search activity that looks good.
         	return true;
-        case R.string.id_btn_maincategory:
-        	this.loadCategoryFragment(item);
-        	return true;
         default:
         	//Return Super Call if not valid
         	return super.onOptionsItemSelected(item);
@@ -133,17 +159,6 @@ public abstract class MainInterfaceActivity extends Activity {
 
 	}
 	
-	//Category Menu
-	private void loadCategoryFragment(MenuItem item) {
-		Bundle bundle = new Bundle();
-		bundle.putString(ConstanceClass.MAINCATEGORY_FRAGMENT_CATEGORY_ID, (String) item.getTitle());
-		MainCategoryFragment fragment= new MainCategoryFragment();
-		fragment.setArguments(bundle);
-		//TODO: Make Fragment work with cart
-		AndroidResourceFactory.setNewFragment(this, fragment, this.getContentFragmentId());
-		
-	}
-
 	//Drawer
 		//**** Hack to Access Local Class Variables and Methods
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -153,27 +168,177 @@ public abstract class MainInterfaceActivity extends Activity {
         }
     }
     private void selectItem(int position) {
-    	this.initDrawerActivity(position);
-    	this.mainDrawerList.setItemChecked(position, true);
+    	if(this.activeUser == null)
+    	{
+    		this.guestDrawerListener(position);
+    	}
+    	else{
+    		this.userDrawerListener(position);
+    	}
+    	this.mainDrawerList.setItemChecked(position, false);
     	this.mainDrawerLayout.closeDrawer(this.mainDrawerList);
     }
 
-    //Listener for specific values of drawer
-    private void initDrawerActivity(int position){
+    //Listener for Drawers
+    	//Guest Drawer
+    private void guestDrawerListener(int position){
+    	
+    	//Global Bundle for Each. Saving Memory, 
+    	Bundle bundle = new Bundle();
+    	
     	switch(position){
-    	case 0: //Home (Restart Main Activity)
-    		Intent homeIntent = new Intent(this, MainActivity.class);
-        	this.startActivity(homeIntent);
-        	break;
-    	case 2: //Settings
+    	case 0:
+    		//Home (Refresh)
+    		if(this instanceof MainActivity ){
+    			this.finish();
+        		this.startActivity(this.getIntent());
+    		}
+    		else{
+    			Intent homeIntent = new Intent(this, MainActivity.class);
+    			this.startActivity(homeIntent);
+    		}
+    		break;
+    	case 1:
+    		//Category (new Fragment)
+    		//Home (Refresh)
+    		if(this instanceof MainActivity ){
+    	  		bundle.putString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY, ConstantClass.MAINCATEGORY_FRAGMENT_MAIN_VALUE);
+    	  		MainCategoryFragment fragment= new MainCategoryFragment();
+    	  		fragment.setArguments(bundle);
+    	  		this.fragmentStack.push(fragment);
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+    		}
+    		else{
+    			Intent homeIntent = new Intent(this, MainActivity.class);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGEMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY);
+    			this.startActivity(homeIntent);
+    		}
+    		break;
+    	case 2:
+    		//About (new Activity)
+    		Intent aboutIntent = new Intent(this, AboutActivity.class);
+    		this.startActivity(aboutIntent);
+    		break;
+    	case 3:
+    		//Log-In (new Activity)
+    		Intent loginIntent = new Intent(this, LogInRegisterActivity.class);
+    		bundle.putBoolean(ConstantClass.LOGINREGISTER_FLAG, true); //true to start in login
+    		loginIntent.putExtras(bundle);
+        	this.startActivity(loginIntent);
+    		break;
+    	case 4:
+    		//Register (new Register)
+    		Intent registerIntent = new Intent(this, LogInRegisterActivity.class);
+    		bundle.putBoolean(ConstantClass.LOGINREGISTER_FLAG, false); //false to start in login
+    		registerIntent.putExtras(bundle);
+        	this.startActivity(registerIntent);
+    		break;
+    	}
+    }
+    	//User Drawer
+    private void userDrawerListener(int position){
+    	
+    	//Global Bundle for Each. Saving Memory, 
+    	Bundle bundle = new Bundle();
+    	
+    	switch(position){
+    	case 0:
+    		//Home (Reload)
+    		if(this instanceof MainActivity ){
+    			this.finish();
+        		this.startActivity(this.getIntent());
+    		}
+    		else{
+    			Intent homeIntent = new Intent(this, MainActivity.class);
+    			this.startActivity(homeIntent);
+    		}
+    		break;
+    	case 1:
+    		//Categories (new Fragment)
+    		if(this instanceof MainActivity ){
+    	  		bundle.putString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY, ConstantClass.MAINCATEGORY_FRAGMENT_MAIN_VALUE);
+    	  		MainCategoryFragment fragment= new MainCategoryFragment();
+    	  		fragment.setArguments(bundle);
+    	  		this.fragmentStack.push(fragment);
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+    		}
+    		else{
+    			Intent homeIntent = new Intent(this, MainActivity.class);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGEMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY);
+    			this.startActivity(homeIntent);
+    		}
+    		break;
+    	case 2:
+    		//My Items (new Fragment)
+    		//Categories (new Fragment)
+    		if(this instanceof MainActivity ){
+    	  		MyItemsFragment fragment= new MyItemsFragment();
+    	  		this.fragmentStack.push(fragment);
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+    		}
+    		else{
+    			Intent homeIntent = new Intent(this, MainActivity.class);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGEMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS);
+    			this.startActivity(homeIntent);
+    		}
+    		
+    		break;
+    	case 3:
+    		//Sell Item (new Fragment)
+    		if(this instanceof MainActivity ){
+    	  		SellItemFragment fragment= new SellItemFragment();
+    	  		this.fragmentStack.push(fragment);
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+    		}
+    		else{
+    			Intent homeIntent = new Intent(this, MainActivity.class);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGEMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS);
+    			this.startActivity(homeIntent);
+    		}
+    		break;
+    	case 4:
+    		//Settings (new Activity)
     		Intent settingsIntent = new Intent(this, SettingsActivity.class);
     		this.startActivity(settingsIntent);
+    		break;
+    	case 5:
+    		//About (new Activity)
+    		Intent aboutIntent = new Intent(this, AboutActivity.class);
+    		this.startActivity(aboutIntent);
+    		break;
+    	case 6:
+    		//Log-Out (refresh)
+    		
+    			//Destroy Preferences
+    		SharedPreferences preferences = //If Open First Time: Creates File; O.W. Reads it
+			this.getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+    		preferences.edit().clear().commit();
+    			//Refresh MainActivity
+    		if(this instanceof MainActivity ){
+    			this.finish();
+        		this.startActivity(this.getIntent());
+    		}
+    		else{
+    			Intent homeIntent = new Intent(this, MainActivity.class);
+    			this.startActivity(homeIntent);
+    		}
+    		break;
     	}
     }
     
-    
-    //TODO: Create fragment change with categories
-    
+  	//Make On Back Return to Previous Element
+  		@Override
+  		public void onBackPressed() {
+  			//Normal Back if no other Fragment is Use
+  			if(this.fragmentStack.size() <= 1){
+  				super.onBackPressed();
+  			}
+  			else{
+  				this.fragmentStack.pop();
+  				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+  			}
+  		}
+  	
     
     //Cart Button Listener Abstract
     public abstract void cartButtonListner(MenuItem menuItem);

@@ -4,7 +4,7 @@ public class DataFetchFactory {
 
 	//Fetch Drawer Options
 	public static String[] fetchDrawerOptions(){
-		return new String[]{ "Home", "Orders", "Settings", "Admin", "Log Out" };
+		return new String[]{ "Home", "My Orders", "Settings", "About" };
 	}
 	
 	public static String[] fetchMainCategories(){
