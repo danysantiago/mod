@@ -5,7 +5,6 @@ import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import android.app.ActionBar;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -47,7 +46,7 @@ public class SearchActivity extends MainInterfaceActivity {
 		public boolean onOptionsItemSelected(MenuItem item){
 			switch(item.getItemId()){
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 			}
 			return super.onOptionsItemSelected(item);
 		}
