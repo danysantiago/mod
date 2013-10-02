@@ -1,7 +1,7 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
-import icom5016.modstore.resources.ConstanceClass;
+import icom5016.modstore.resources.ConstantClass;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,8 +24,8 @@ public class SearchFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_search, container,false);
 		
 		//Obtain from bundle
-		this.searchQuery = this.getArguments().getString(ConstanceClass.SEARCH_FRAGMENT_QUERY_ID);
-		this.isEmptyQuery = this.getArguments().getBoolean(ConstanceClass.SEARCH_FRAGMENT_BOOL_ID);
+		this.searchQuery = this.getArguments().getString(ConstantClass.SEARCH_FRAGMENT_QUERY_ID);
+		this.isEmptyQuery = this.getArguments().getBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_ID);
 		Log.v("Arraived", "Yay");
 		
 		

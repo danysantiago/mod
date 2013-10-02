@@ -1,9 +1,8 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.fragments.CartFragment;
 import icom5016.modstore.fragments.SearchFragment;
 import icom5016.modstore.resources.AndroidResourceFactory;
-import icom5016.modstore.resources.ConstanceClass;
+import icom5016.modstore.resources.ConstantClass;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -13,8 +12,6 @@ import android.widget.SearchView;
 
 public class SearchActivity extends MainInterfaceActivity {
 		
-	private SearchFragment currentFragment;
-
 
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +27,17 @@ public class SearchActivity extends MainInterfaceActivity {
 			
 			//Load Search Fragment
 			if(savedInstanceState == null){
+				
+				//Load Empty Query into Bundel and starts Fragment
 				Bundle bundle = new Bundle();
-				bundle.putString(ConstanceClass.SEARCH_FRAGMENT_QUERY_ID, "");
-				bundle.putBoolean(ConstanceClass.SEARCH_FRAGMENT_BOOL_ID, true);
+				bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_ID, "");
+				bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_ID, true);
 				SearchFragment fragment = new SearchFragment();
 				fragment.setArguments(bundle);
-				this.currentFragment = fragment;
-				AndroidResourceFactory.setNewFragment(this, this.currentFragment, this.getContentFragmentId());
+				
+				this.fragmentStack.push(fragment);
+				
+				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
 			}
 			
 		};
@@ -57,7 +58,10 @@ public class SearchActivity extends MainInterfaceActivity {
 		@Override
 		public boolean onCreateOptionsMenu(Menu menu) {
 			super.onCreateOptionsMenu(menu);
+			
+			//Hide Buttons
 			menu.findItem(R.id.btn_search).setVisible(false);
+			menu.findItem(R.id.btn_cart).setVisible(false);
 			
 			//Make Visible Search Bar and Expanded
 			MenuItem searchBarItem = menu.findItem(R.id.searchbar);
@@ -71,27 +75,14 @@ public class SearchActivity extends MainInterfaceActivity {
 			return true;
 			
 		}
-			//Must be overriding for SubMenu
+		
+		//Must be overriding for SubMenu Hiding 
 		@Override
 		public boolean onPrepareOptionsMenu(Menu menu){
 	        menu.findItem(R.id.item_categories).setVisible(false);
 			return true;
 		}
 
-		
-		public void cartButtonListner(MenuItem menuItem) {
-			if(this.isCartActive){
-				menuItem.setIcon(R.drawable.btn_cart );
-				AndroidResourceFactory.setNewFragment(this, this.currentFragment , this.getContentFragmentId());
-	    	}
-	    	else{
-	    	  menuItem.setIcon(R.drawable.navigation_cancel);
-	    	  AndroidResourceFactory.setNewFragment(this, new CartFragment(), this.getContentFragmentId());
-	    	}
-	    	//Create A new Activity for Cart
-	    	this.isCartActive = !this.isCartActive;
-		}
-		
 		//Query Listener
 				//**** Hack to Access Local Class Variables and Methods
 		private class SearchQueryListener implements SearchView.OnQueryTextListener{
@@ -108,16 +99,27 @@ public class SearchActivity extends MainInterfaceActivity {
 			}
 		}
 		//Custom Methods for Class SearchQueryListener
-			private boolean customQueryTextOnSubmit(String query){
-				Bundle bundle = new Bundle();
-				bundle.putString(ConstanceClass.SEARCH_FRAGMENT_QUERY_ID, query);
-				bundle.putBoolean(ConstanceClass.SEARCH_FRAGMENT_BOOL_ID, false);
-				SearchFragment fragment= new SearchFragment();
-				fragment.setArguments(bundle);
-				this.currentFragment = fragment;
-				AndroidResourceFactory.setNewFragment(this, this.currentFragment, this.getContentFragmentId()); 
-				//TODO Collapse Text View and bring fragment on front
-				return true;
-			}
+		private boolean customQueryTextOnSubmit(String query){
+			
+			Bundle bundle = new Bundle();
+			bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_ID, query);
+			bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_ID, false);
+			SearchFragment fragment= new SearchFragment();
+			fragment.setArguments(bundle);
+			this.fragmentStack.push(fragment);
+			AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId()); 
+			
+			return true;
+		}
 		
+		
+		
+		
+		
+			
+		//Abstract Methods
+			public void cartButtonListner(MenuItem menuItem) {
+				//NoOp
+			}
+			
 }

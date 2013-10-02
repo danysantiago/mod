@@ -1,7 +1,7 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
-import icom5016.modstore.resources.ConstanceClass;
+import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ public class MainCategoryFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState){
 		
-		this.categoryTitle = getArguments().getString(ConstanceClass.MAINCATEGORY_FRAGMENT_CATEGORY_ID);
+		this.categoryTitle = getArguments().getString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY);
 		this.subCategories = DataFetchFactory.fetchSubCategories(this.categoryTitle);
 		View view = inflater.inflate(R.layout.fragment_maincategory, container,false);
 		//Change Text View for Demo Purpose

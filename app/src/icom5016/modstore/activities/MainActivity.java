@@ -1,8 +1,13 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CartFragment;
+import icom5016.modstore.fragments.MainCategoryFragment;
 import icom5016.modstore.fragments.MainFragment;
+import icom5016.modstore.fragments.MyItemsFragment;
+import icom5016.modstore.fragments.SellItemFragment;
 import icom5016.modstore.resources.AndroidResourceFactory;
+import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.resources.User;
 import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -30,6 +35,9 @@ public class MainActivity extends MainInterfaceActivity {
 		//Get ActionBar
 		final ActionBar ActionBarVar = this.getActionBar();
 		
+		//Get User Variable
+		final User UserVar = this.activeUser; 
+		
 		//Enables ActionBar Logo to behave like drawer button
 		ActionBarVar.setDisplayHomeAsUpEnabled(true);
 		ActionBarVar.setHomeButtonEnabled(true);
@@ -48,25 +56,72 @@ public class MainActivity extends MainInterfaceActivity {
             }
 
             public void onDrawerOpened(View drawerView) {
-                ActionBarVar.setTitle("Hello User");
+            	if(UserVar == null){
+            		ActionBarVar.setTitle("Hello Guest");
+				}
+				else{
+					ActionBarVar.setTitle("Hello "+UserVar.getFirstName());
+				}
+            	
+            	
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 		};
+		 
 		
 		 this.mainDrawerLayout.setDrawerListener(this.mainDrawerToggle);
 		 
 		 
 		 			/*  Generates Initial Fragment  */
-		//Default Fragment
-	    if (savedInstanceState == null) {
-	    	AndroidResourceFactory.setNewFragment(this, new MainFragment(), this.getContentFragmentId());
-	    }
-
+		 Bundle bundle = this.getIntent().getExtras();
+		
+		 
+		 if(bundle != null){
+			 
+			 //This only Works if Bundle is Loaded
+			 int mainActivityCase = bundle.getInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY);
+			 
+			 //Load Fragment Base on Bundle
+			 switch(mainActivityCase){
+			 case ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY:
+				 //Case: Category
+				Bundle categoryBundle = new Bundle();
+				categoryBundle.putString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY, ConstantClass.MAINCATEGORY_FRAGMENT_MAIN_VALUE);
+		  		MainCategoryFragment fragment= new MainCategoryFragment();
+		  		fragment.setArguments(categoryBundle);
+		  		this.fragmentStack.push(fragment);
+		  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+				break;
+			 case ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS:
+				//Case: My Items
+				 this.fragmentStack.push(new MyItemsFragment());
+			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+				break;
+			 case ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS:
+				 //Case: Sell Items
+				 this.fragmentStack.push(new SellItemFragment());
+			     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+				 break;
+			 default:
+				 //Case: Default Main View
+				 this.fragmentStack.push(new MainFragment());
+			     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+				 break;
+			 }
+		 }
+		 else{
+			
+			 this.fragmentStack.push(new MainFragment());
+		     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+		 }
 	}
 	
 	
 					/*Drawer Toggle Specific Overrides */
 	
+	
+
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 		
@@ -76,8 +131,15 @@ public class MainActivity extends MainInterfaceActivity {
             return true;
         }
         
+        switch( item.getItemId() )
+        {
+        //Category Listener
+        case R.string.id_btn_maincategory:
+        	this.loadSpecificCategoryFragment(item);
+        	break;
+        }
         
-        //Note Super must be call
+        //Note: Super must be call
         return super.onOptionsItemSelected(item);
 	}
 
@@ -100,10 +162,11 @@ public class MainActivity extends MainInterfaceActivity {
     public void cartButtonListner(MenuItem menuItem) {
 		if(this.isCartActive){
 			menuItem.setIcon(R.drawable.btn_cart );
-    		AndroidResourceFactory.setNewFragment(this, new MainFragment() , this.getContentFragmentId());
+    		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek() , this.getContentFragmentId());
     	}
     	else{
     	  menuItem.setIcon(R.drawable.navigation_cancel);
+    	  this.fragmentStack.push(new CartFragment());
     	  AndroidResourceFactory.setNewFragment(this, new CartFragment(), this.getContentFragmentId());
     	}
     	//Create A new Activity for Cart
@@ -111,6 +174,14 @@ public class MainActivity extends MainInterfaceActivity {
 		
 	}
     
-    
+    //Category Menu
+  	private void loadSpecificCategoryFragment(MenuItem item) {
+  		Bundle bundle = new Bundle();
+  		bundle.putString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY, (String) item.getTitle());
+  		MainCategoryFragment fragment= new MainCategoryFragment();
+  		fragment.setArguments(bundle);
+  		this.fragmentStack.push(fragment);
+  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+  	}
 
 }
