@@ -43,11 +43,10 @@ public class MainCategoryFragment extends Fragment {
 		this.categoryTitle = getArguments().getString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY);
 		this.subCategories = DataFetchFactory.fetchSubCategories(this.categoryTitle);
 		View view = inflater.inflate(R.layout.fragment_maincategory, container, false);
-		// Change Text View for Demo Purpose
-		// TextView textView = (TextView)
-		// view.findViewById(R.id.textview_maincategory);
-		// textView.setText(categoryTitle+"\n\nSubcategories: "+this.subCategories[0]+" "+this.subCategories[1]+" "+this.subCategories[2]+" "+this.subCategories[3]);
-
+		
+		// Set category title
+		TextView title = (TextView) view.findViewById(R.id.category_textView);
+		title.setText(this.categoryTitle);
 		//Get views
 		pd = (ProgressBar) view.findViewById(R.id.progressBar);
 		list = (ListView) view.findViewById(R.id.listView);
@@ -149,5 +148,4 @@ public class MainCategoryFragment extends Fragment {
 			return row;
 		}
 	}
-8
 }

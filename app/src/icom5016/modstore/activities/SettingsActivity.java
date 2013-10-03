@@ -1,7 +1,6 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CreditCardsFragment;
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.Menu;
@@ -35,6 +34,9 @@ public class SettingsActivity extends FragmentInterfaceActivity {
 		public void cartButtonListner(MenuItem menuItem) {
 			// TODO Auto-generated method stub
 			
+
+			// No CART
+
 		};
 				
 }
