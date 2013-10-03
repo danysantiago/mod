@@ -1,5 +1,8 @@
 package icom5016.modstore.resources;
 
+import java.util.ArrayList;
+
+import icom5016.modstore.models.CreditCard;
 import icom5016.modstore.models.User;
 import android.app.Activity;
 import android.content.Context;
@@ -59,6 +62,16 @@ public class DataFetchFactory {
 				}
 				
 				return null;
+	}
+	
+	public static ArrayList<CreditCard> getCreditCards() {
+		ArrayList<CreditCard> creditCards = new ArrayList<CreditCard>();
+		
+        creditCards.add(new CreditCard(0, "1234 1234 1234 1234", "Omar G Soto Fortuno", "06/2016"));
+        creditCards.add(new CreditCard(0, "1234 1234 1234 1234", "Daniel Santiago", "06/2016"));
+        creditCards.add(new CreditCard(0, "1234 1234 1234 1234", "Manuel E Marquez", "06/2016"));
+        
+        return creditCards;
 	}
 	
 	public static User getUserWithId(int id){
