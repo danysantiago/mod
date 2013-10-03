@@ -17,7 +17,7 @@ routes.post("/login", express.bodyParser(), function (req, res) {
       var fakeUser = {
         "id": req.params.uid,
         "auth_token": "5d4nyc0015",
-        "userName": "MyUsername",
+        "username": "MyUsername",
         "firstName": "Juan",
         "middleInitial": "",
         "lastName": "Del Pueblo",
