@@ -3,6 +3,8 @@ var config = require("./lib/config.js"),
 	app = express(),
 	mysql = require("mysql");
 
+var auth = require("./lib/routes/auth.js");
+
 // Routes middlewares
 var products = require("./lib/routes/products.js");
 var users = require("./lib/routes/users.js");
@@ -23,9 +25,8 @@ app.use(function (req, res, next) {
 // Static content
 app.use(express.static(__dirname + "/public"));
 
-app.get("/example", function (req, res) {
-    res.send({"message": "Hi from the EC2"});
-});
+//Auth Middleware
+app.use(auth)
 
 // Routes use
 app.use(products);

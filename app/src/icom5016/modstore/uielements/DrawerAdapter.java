@@ -1,8 +1,8 @@
 package icom5016.modstore.uielements;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.resources.User;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
@@ -18,7 +18,7 @@ public class DrawerAdapter extends ArrayAdapter<String> {
 		this.user = user;
 		
 		//Different List Base on User Status
-		if(this.user == null && false){
+		if(this.user == null){
 			this.listOfRows = ConstantClass.DRAWER_GUEST_LIST;
 		}
 		else{

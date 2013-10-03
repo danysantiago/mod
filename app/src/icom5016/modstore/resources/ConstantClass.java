@@ -3,7 +3,6 @@ package icom5016.modstore.resources;
 public class ConstantClass {
 	
 	//LogIn/Out Constant
-	public final static String USER_PREFERENCES_FILENAME = "userFile";
 	public final static String USER_IS_LOGIN = "userLogStatus";
 	public final static String USER_USERNAME_KEY = "userUsername";
 	public final static String USER_FIRSTNAME_KEY = "userFirstName";
@@ -11,6 +10,7 @@ public class ConstantClass {
 	public final static String USER_LASTNAME_KEY = "userLastName";
 	public final static String USER_EMAIL_KEY = "userEmail";
 	public final static String USER_IS_ADMIN_KEY = "userIsAdmin";
+	public final static String USER_UID_KEY = "userGUID";
 	
 	//Search Constants
 	public final static String SEARCH_FRAGMENT_BOOL_ID = "searchBool";
@@ -33,6 +33,8 @@ public class ConstantClass {
 	public final static int MAINACTIVITY_FRAGMENT_MY_ITEMS = 1;
 	public final static int MAINACTIVITY_FRAGMENT_SELL_ITEMS = 2;
 	
+	//ForgotLogIn
+	public final static String 	FORGOT_TAG = "forgotUserNameOrPassword";
 	
 
 }

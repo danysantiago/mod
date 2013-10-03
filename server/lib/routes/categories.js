@@ -14,7 +14,7 @@ routes.get("/categories/:name", function (req, res) {
     ],
     "products": [
       {
-        "cid": 123,
+        "pid": 123,
         "category_id": 3,
         "description": "Some fake description",
         "name": "FakeAwesomeProduct",
@@ -25,7 +25,7 @@ routes.get("/categories/:name", function (req, res) {
         "created_ts": Date.now()
       },
       {
-        "cid": 124,
+        "pid": 124,
         "category_id": 3,
         "description": "Something something",
         "name": "Another product 2",
@@ -36,7 +36,7 @@ routes.get("/categories/:name", function (req, res) {
         "created_ts": Date.now()
       },
       {
-        "cid": 125,
+        "pid": 125,
         "category_id": 3,
         "description": "Some fake description",
         "name": "An item",
