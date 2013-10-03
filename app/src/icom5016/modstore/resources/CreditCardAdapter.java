@@ -31,6 +31,7 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
         CreditCardHolder holder = null;
        
         if(row == null) {
+        	
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
            

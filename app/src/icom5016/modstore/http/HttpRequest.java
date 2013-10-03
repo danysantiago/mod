@@ -125,12 +125,14 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 		
 		try {
 		  
-	    Log.d("http", "Performing request: " + params.getString("method") +
+	    Log.d("HttpRequest", "Performing request: " + params.getString("method") +
 	        " " + params.getString("url"));
 		
 			HttpResponse response = client.execute(request);
 			
 			int statusCode = response.getStatusLine().getStatusCode();
+			
+			Log.d("HttpRequest", "Response Code: " + statusCode);
 			
 			if(statusCode == HttpStatus.SC_OK){
 				String fullRes = EntityUtils.toString(response.getEntity());
