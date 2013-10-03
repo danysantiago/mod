@@ -1,26 +1,26 @@
 package icom5016.modstore.fragments;
 
-import java.util.ArrayList;
-
 import icom5016.modstore.activities.R;
 import icom5016.modstore.resources.CreditCard;
 import icom5016.modstore.uielements.CreditCardAdapter;
-import android.app.Fragment;
+
+import java.util.ArrayList;
+
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class SettingsFragment extends FragmentActivity {
-	//private ListView lstCreditCards;
+public class CreditCardsFragment extends Fragment {
+	private ListView lstCreditCards;
 	
-	public SettingsFragment(){
+	public CreditCardsFragment() {
+		
 	};
 	
-	/*@Override
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_creditcards, container,false);
 		
@@ -35,22 +35,5 @@ public class SettingsFragment extends FragmentActivity {
         lstCreditCards.setAdapter(adapter);
         
         return view;
-	}*/
-	
-    private FragmentTabHost mTabHost;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_settings);
-
-        mTabHost = (FragmentTabHost)findViewById(android.R.id.settingsTabHost);
-        mTabHost.setup(this, getSupportFragmentManager(), R.id.settingsTabContent);
-
-        mTabHost.addTab(mTabHost.newTabSpec("payment").setIndicator("Payment"),
-                AboutFragment.class, null);
-
     }
-
-
 }
