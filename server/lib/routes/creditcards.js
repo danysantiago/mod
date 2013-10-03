@@ -47,7 +47,7 @@ routes.get("/cc/:ccid", function (req, res) {
   res.send(404);
 });
 
-routes.get("/cc/", function (req, res) {
+routes.get("/cc", function (req, res) {
   res.send({"creditcards":fakeCC});
 });
 
