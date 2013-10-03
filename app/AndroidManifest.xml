@@ -43,6 +43,8 @@
         </activity>
         <activity android:name="icom5016.modstore.activities.AboutActivity" >
         </activity>
+        <activity android:name="icom5016.modstore.activities.AdminActivity"></activity>
+        <activity android:name="icom5016.modstore.activities.ForgotActivity"></activity>
     </application>
 
 </manifest>

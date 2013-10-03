@@ -24,6 +24,7 @@ public class ConstantClass {
 	//Drawer Lists
 	public final static String[] DRAWER_GUEST_LIST = new String[]{"Home", "Categories", "About", "Log in","Register",}; 
 	public final static String[] DRAWER_USER_LIST = new String[]{"Home", "Categories", "My Items", "Sell Item", "Settings", "About","Log Out"};
+	public final static String[] DRAWER_ADMIN_LIST = new String[]{"Home", "Categories", "My Items", "Sell Item", "Settings", "About","Log Out", "Admin Menu"};
 	
 	//Log-In Register Key
 	public final static String LOGINREGISTER_FLAG = "loginOrRegister";
@@ -36,6 +37,9 @@ public class ConstantClass {
 	
 	//ForgotLogIn
 	public final static String 	FORGOT_TAG = "forgotUserNameOrPassword";
+	public final static String FORGOT_TYPE_KEY = "forgotTypeKey";
+	public final static int FORGOT_TYPE_EMAIL = 0;
+	public final static int FORGOT_TYPE_PASSWORD = 1;
 	
 
 }

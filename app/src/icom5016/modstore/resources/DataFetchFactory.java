@@ -23,7 +23,7 @@ public class DataFetchFactory {
 
 	public static User fetchAndValidateUser(String string, String string2) {
 		
-		return new User("mamanu", "Manuel", "Enrique", "Marquez", "manuel.marquez1@upr.edu", true);
+		return new User("mamanu", "Manuel", "Enrique", "Marquez", "manuel.marquez1@upr.edu",0 ,true);
 	}
 	
 	public static void setUserInSharedPreferences(User user, Activity activity){
@@ -54,11 +54,16 @@ public class DataFetchFactory {
 					String middleName = preferences.getString(ConstantClass.USER_MIDDLENAME_KEY, "");
 					String lastName = preferences.getString(ConstantClass.USER_LASTNAME_KEY, "");
 					String email = preferences.getString(ConstantClass.USER_EMAIL_KEY, "");
-					boolean isAdmin = preferences.getBoolean(ConstantClass.USER_IS_ADMIN_KEY, false);	
-					return new User(userName, firstName, middleName, lastName, email, isAdmin);	
+					boolean isAdmin = preferences.getBoolean(ConstantClass.USER_IS_ADMIN_KEY, false);
+					int guid = preferences.getInt(ConstantClass.USER_GUID_KEY, -1);
+					return new User(userName, firstName, middleName, lastName, email, guid ,isAdmin);	
 				}
 				
 				return null;
+	}
+	
+	public static User getUserWithId(int id){
+		return null;
 	}
 	
 }

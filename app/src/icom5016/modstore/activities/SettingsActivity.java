@@ -1,6 +1,9 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CreditCardsFragment;
+import icom5016.modstore.models.User;
+import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.resources.DataFetchFactory;
 import icom5016.modstore.uielements.ListPagerAdapter;
 import icom5016.modstore.uielements.TabPagerFactory;
 
@@ -21,6 +24,7 @@ public class SettingsActivity extends FragmentActivity implements OnTabChangeLis
 	
 	private TabHost mTabHost;
 	private ViewPager pager;
+	private User user = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,7 @@ public class SettingsActivity extends FragmentActivity implements OnTabChangeLis
 		ActionBarVar.setTitle(R.string.app_name);
 		
 		
-		//
+		//Init Tabs
 		this.initTabHost();
 		
 		
@@ -49,29 +53,22 @@ public class SettingsActivity extends FragmentActivity implements OnTabChangeLis
 
 	}
 
-					/*Navigate Up the Stack*/
+	//Load User in on Resume
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Bundle bundle = this.getIntent().getExtras();
+		if(bundle != null){
+			int userGuid = bundle.getInt(ConstantClass.USER_GUID_KEY, -1);
+			this.user = DataFetchFactory.getUserWithId(userGuid);
+		}
+	}
 	
-		/*@Override
-		protected void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
+					/*Navigate Up the Stack*/
 			
-			setContentView(R.layout.viewpager_generic);
-	        mTabHost = (FragmentTabHost)findViewById(R.id.tabHost);
-	        mTabHost.setup(this, getSupportFragmentManager(), R.id.tabContent);
+			
+	
 
-	        mTabHost.addTab(mTabHost.newTabSpec("payment").setIndicator("Payment"),
-	        		CreditCardsFragment.class, null);
-	        mTabHost.addTab(mTabHost.newTabSpec("reg").setIndicator("Register"),
-	        		RegisterFragment.class, null);*/
-			
-			//Load Search Fragment
-			/*if(savedInstanceState == null){
-				this.fragmentStack.push(new SettingsFragment());
-				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
-			}*/
-			
-			
-			
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){

@@ -13,7 +13,7 @@ public class User {
 	
 	
 	public User(String username, String firstName, String middleName,
-			String lastName, String emailString, boolean isAdmin) {
+			String lastName, String emailString, int guid, boolean isAdmin) {
 		super();
 		this.username = username;
 		this.firstName = firstName;
@@ -21,6 +21,7 @@ public class User {
 		this.lastName = lastName;
 		this.emailString = emailString;
 		this.isAdmin = isAdmin;
+		this.guid = guid;
 	}
 	public String getUsername() {
 		return username;
