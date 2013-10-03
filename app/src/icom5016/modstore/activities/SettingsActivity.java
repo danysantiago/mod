@@ -29,6 +29,12 @@ public class SettingsActivity extends FragmentInterfaceActivity {
 			
 			
 			
+		}
+
+		@Override
+		public void cartButtonListner(MenuItem menuItem) {
+			// TODO Auto-generated method stub
+			
 		};
 				
 }

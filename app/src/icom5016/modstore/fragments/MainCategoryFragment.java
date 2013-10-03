@@ -149,5 +149,5 @@ public class MainCategoryFragment extends Fragment {
 			return row;
 		}
 	}
-
+8
 }

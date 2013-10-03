@@ -1,5 +1,6 @@
 package icom5016.modstore.activities;
 
+import icom5016.modstore.uielements.LogInRegisterAdapter;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -20,9 +21,7 @@ public class LogInRegisterActivity extends FragmentInterfaceActivity {
 		this.setContentView(R.layout.activity_lr_pager);
 		
 		ViewPager pager = (ViewPager) this.findViewById(R.id.lr_pager);
-		//pager.setAdapter(new  );
-		
-
+		pager.setAdapter(new LogInRegisterAdapter(this.getSupportFragmentManager()) );
 		
 	}
 
