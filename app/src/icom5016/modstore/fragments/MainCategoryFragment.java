@@ -3,6 +3,7 @@ package icom5016.modstore.fragments;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.ImageLoader;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -109,9 +111,13 @@ public class MainCategoryFragment extends Fragment {
 	}
 
 	public class ProductAdapter extends ArrayAdapter<JSONObject> {
+		
+		private ImageLoader imageloader;
 
 		public ProductAdapter(Context context, JSONArray jsonArr) throws JSONException {
 			super(context, R.layout.listview_product_row_1);
+			
+			imageloader = new ImageLoader(context);
 			
 			for(int i = 0; i < jsonArr.length(); i++) {
 				this.add(jsonArr.getJSONObject(i));
@@ -137,6 +143,9 @@ public class MainCategoryFragment extends Fragment {
 
 				TextView price = (TextView) row.findViewById(R.id.price_textView);
 				price.setText(productJson.getString("price"));
+				
+				ImageView image = (ImageView) row.findViewById(R.id.imageView);
+				imageloader.DisplayImage("http://files.gamebanana.com/img/ico/sprays/1up_orcaexample.png", image);
 				
 				row.setTag(productJson);
 
