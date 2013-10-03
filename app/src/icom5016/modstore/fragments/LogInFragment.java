@@ -1,10 +1,19 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
 import icom5016.modstore.uielements.ForgotDialog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -74,17 +83,63 @@ public class LogInFragment extends Fragment implements OnClickListener{
 		EditText username_box = (EditText) this.getView().findViewById(R.id.login_field_username);
 		EditText password_box = (EditText) this.getView().findViewById(R.id.login_field_password);
 		
-		User user = DataFetchFactory.fetchAndValidateUser(username_box.getText().toString(), password_box.getText().toString());
+		String username = username_box.getText().toString().trim();
+		String password = password_box.getText().toString().trim();
 		
-		if(user != null){
-			//Set Preferences
-			DataFetchFactory.setUserInSharedPreferences(user, this.getActivity());
-			this.getActivity().finish();
-		}
-		else{
-			Toast.makeText(this.getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();;
-		}
+		try {
+	        doHttpLogin(username, password);
+        } catch (JSONException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+        }	
+	}
+	
+	private void doHttpLogin(String username, String password) throws JSONException {
+		Bundle params = new Bundle();
+		params.putString("url", Server.BASE_URL + "/login");
+		params.putString("method", "POST");
 		
+		JSONObject credentials = new JSONObject();
+		credentials.put("user", username);
+		credentials.put("pass", password);
+		
+		HttpRequest request = new HttpRequest(params, credentials, new HttpCallback() {
+			
+			@Override
+			public void onSucess(JSONObject json) {
+				try {
+					if(json.getString("status").equals("OK")) {
+						User user = new User(json);
+						setUserInSharedPreferences(user);
+						getActivity().finish();
+					} else {
+						Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();;
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			@Override
+			public void onFailed() {
+				Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();;
+			}
+		});
+		request.execute();
+	    
+    }
+
+	public void setUserInSharedPreferences(User user){
+		SharedPreferences.Editor preferencesEdit = getActivity().getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE).edit();
+		preferencesEdit.putString(ConstantClass.USER_USERNAME_KEY, user.getUsername());
+		preferencesEdit.putString(ConstantClass.USER_FIRSTNAME_KEY, user.getFirstName());
+		preferencesEdit.putString(ConstantClass.USER_LASTNAME_KEY, user.getLastName());
+		preferencesEdit.putString(ConstantClass.USER_MIDDLENAME_KEY, user.getMiddleName());
+		preferencesEdit.putString(ConstantClass.USER_EMAIL_KEY, user.getEmail());
+		preferencesEdit.putBoolean(ConstantClass.USER_IS_ADMIN_KEY, user.isAdmin());
+		preferencesEdit.putInt(ConstantClass.USER_GUID_KEY, user.getGuid());
+		preferencesEdit.putBoolean(ConstantClass.USER_IS_LOGIN, true);
+		preferencesEdit.commit();
 	}
 	
 }
