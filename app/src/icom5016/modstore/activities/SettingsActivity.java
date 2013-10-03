@@ -1,7 +1,7 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CreditCardsFragment;
-import icom5016.modstore.uielements.RegisterFragment;
+import icom5016.modstore.fragments.RegisterFragment;
 import icom5016.modstore.uielements.ListPagerAdapter;
 import icom5016.modstore.uielements.TabPagerFactory;
 
@@ -52,8 +52,7 @@ public class SettingsActivity extends FragmentActivity implements OnTabChangeLis
 
 					/*Navigate Up the Stack*/
 	
-<<<<<<< HEAD
-		@Override
+		/*@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			
@@ -64,7 +63,7 @@ public class SettingsActivity extends FragmentActivity implements OnTabChangeLis
 	        mTabHost.addTab(mTabHost.newTabSpec("payment").setIndicator("Payment"),
 	        		CreditCardsFragment.class, null);
 	        mTabHost.addTab(mTabHost.newTabSpec("reg").setIndicator("Register"),
-	        		RegisterFragment.class, null);
+	        		RegisterFragment.class, null);*/
 			
 			//Load Search Fragment
 			/*if(savedInstanceState == null){
