@@ -1,5 +1,6 @@
 package icom5016.modstore.resources;
 
+
 public class DataFetchFactory {
 
 	//TODO: Change to Dynamic Loading
@@ -11,6 +12,11 @@ public class DataFetchFactory {
 	public static String[] fetchSubCategories(String categoryTitle) {
 		//Super static
 		return new String[]{"Yay","this","is","static","don't","forget"};
+	}
+
+	public static User fetchAndValidateUser(String string, String string2) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

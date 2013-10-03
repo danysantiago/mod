@@ -19,6 +19,10 @@
     <string name="title_about">About</string>
     <string name="about_logo_description">Mod Store Logo</string>
     <string name="about_description">This is Pure Android, Bitch!</string>
-    
+    <string name="login_show">Show</string>
+    <string name="login_str">Log In</string>
+    <string name="register_str">Register</string>
     <string name="no_data_label">No Data</string>
+    <string name="login_forgot">Forgot?</string>
+    <string name="login_error">Error in Username or Password, Please Try Again</string>
 </resources>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/login_field_username"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="51dp"
+        android:ems="10"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/login_field_password"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_field_username"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPassword" />
+	
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_forgot"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/login_str"/>
+
+    <CheckBox
+        android:id="@+id/login_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/login_field_password"
+        android:layout_below="@+id/login_field_password"
+        android:text="@string/login_show"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/login_forgot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/login_field_password"
+        android:layout_below="@+id/login_show"
+        android:text="@string/login_forgot"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="15sp"
+        android:textColor="@color/dark_blue" />
+
+</RelativeLayout>

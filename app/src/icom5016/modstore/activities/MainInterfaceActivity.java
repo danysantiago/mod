@@ -265,6 +265,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
     			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY);
+    			homeIntent.putExtras(bundle);
     			this.startActivity(homeIntent);
     		}
     		break;
@@ -279,6 +280,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
     			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS);
+    			homeIntent.putExtras(bundle);
     			this.startActivity(homeIntent);
     		}
     		
@@ -293,6 +295,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
     			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS);
+    			homeIntent.putExtras(bundle);
     			this.startActivity(homeIntent);
     		}
     		break;
