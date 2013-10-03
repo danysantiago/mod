@@ -1,21 +1,23 @@
 package icom5016.modstore.fragments;
 
-import java.util.ArrayList;
-
 import icom5016.modstore.activities.R;
 import icom5016.modstore.resources.CreditCard;
-import icom5016.modstore.resources.CreditCardAdapter;
-import android.app.Fragment;
+import icom5016.modstore.uielements.CreditCardAdapter;
+
+import java.util.ArrayList;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class SettingsFragment extends Fragment {
+public class CreditCardsFragment extends Fragment {
 	private ListView lstCreditCards;
 	
-	public SettingsFragment(){
+	public CreditCardsFragment() {
+		
 	};
 	
 	@Override
@@ -33,8 +35,5 @@ public class SettingsFragment extends Fragment {
         lstCreditCards.setAdapter(adapter);
         
         return view;
-	}
-	
-    
-
+    }
 }
