@@ -1,6 +1,7 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CreditCardsFragment;
+import icom5016.modstore.uielements.RegisterFragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.Menu;
@@ -19,6 +20,8 @@ public class SettingsActivity extends FragmentInterfaceActivity {
 
 	        mTabHost.addTab(mTabHost.newTabSpec("payment").setIndicator("Payment"),
 	        		CreditCardsFragment.class, null);
+	        mTabHost.addTab(mTabHost.newTabSpec("reg").setIndicator("Register"),
+	        		RegisterFragment.class, null);
 			
 			//Load Search Fragment
 			/*if(savedInstanceState == null){
