@@ -4,7 +4,6 @@ import icom5016.modstore.models.User;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 
 
@@ -28,7 +27,7 @@ public class DataFetchFactory {
 	}
 	
 	public static void setUserInSharedPreferences(User user, Activity activity){
-		SharedPreferences.Editor preferencesEdit = PreferenceManager.getDefaultSharedPreferences(activity).edit();
+		SharedPreferences.Editor preferencesEdit = activity.getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE).edit();
 		preferencesEdit.putString(ConstantClass.USER_USERNAME_KEY, user.getUsername());
 		preferencesEdit.putString(ConstantClass.USER_FIRSTNAME_KEY, user.getFirstName());
 		preferencesEdit.putString(ConstantClass.USER_LASTNAME_KEY, user.getLastName());
