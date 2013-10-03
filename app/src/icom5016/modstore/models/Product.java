@@ -11,6 +11,16 @@ public class Product {
 	private String price;
 	private String brand;
 	private String model;
+	
+	public Product(String pid, String name, String description, String price, String brand, String model) {
+		super();
+		this.pid = pid;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.brand = brand;
+		this.model = model;
+	}
 
 	public Product(JSONObject jsonObject) {
 		try {
