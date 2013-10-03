@@ -8,6 +8,7 @@ public class User {
 	private String middleName;
 	private String lastName;
 	private String emailString;
+	private int guid;
 	private boolean isAdmin;
 	
 	
@@ -26,6 +27,12 @@ public class User {
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public int getGuid() {
+		return guid;
+	}
+	public void setGuid(int guid) {
+		this.guid = guid;
 	}
 	public String getFirstName() {
 		return firstName;

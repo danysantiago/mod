@@ -1,8 +1,10 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
 import icom5016.modstore.resources.User;
+import icom5016.modstore.uielements.ForgotDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -65,7 +67,7 @@ public class LogInFragment extends Fragment implements OnClickListener{
 	}
 	
 	public void forgotButtonListener(TextView view){
-		
+		new ForgotDialog().show(this.getActivity().getFragmentManager(), ConstantClass.FORGOT_TAG);;
 	}
 	
 	public void loginButtonListener(Button view){
@@ -75,6 +77,8 @@ public class LogInFragment extends Fragment implements OnClickListener{
 		User user = DataFetchFactory.fetchAndValidateUser(username_box.getText().toString(), password_box.getText().toString());
 		
 		if(user != null){
+			//Set Preferences
+			DataFetchFactory.setUserInSharedPreferences(user, this.getActivity());
 			this.getActivity().finish();
 		}
 		else{

@@ -56,34 +56,27 @@ public abstract class MainInterfaceActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		//Verify Log-In
-		SharedPreferences preferences = //If Open First Time: Creates File; O.W. Reads it
-				this.getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
-		boolean isUserLogIn = preferences.getBoolean(ConstantClass.USER_IS_LOGIN, false);
-		
-			//If Log-In Create 
-		if(isUserLogIn){
-			//pre: must be log-in thus data will be loaded into preferences
-			String userName = preferences.getString(ConstantClass.USER_USERNAME_KEY, ""); 
-			String firstName = preferences.getString(ConstantClass.USER_FIRSTNAME_KEY, "");
-			String middleName = preferences.getString(ConstantClass.USER_MIDDLENAME_KEY, "");
-			String lastName = preferences.getString(ConstantClass.USER_LASTNAME_KEY, "");
-			String email = preferences.getString(ConstantClass.USER_EMAIL_KEY, "");
-			boolean isAdmin = preferences.getBoolean(ConstantClass.USER_IS_ADMIN_KEY, false);	
-			this.activeUser = new User(userName, firstName, middleName, lastName, email, isAdmin);	
-		}
-		
-		
 			//Load ActionBar Variable
 		final ActionBar ActionBarVar = this.getActionBar();
 		
 			//Set Action Bar title
 		ActionBarVar.setTitle(R.string.app_name);
 		
-		
 		//Load Variables
 		this.mainDrawerLayout  = (DrawerLayout) this.findViewById(R.id.drawer_layout);
 		this.mainDrawerList    = (ListView) this.findViewById(R.id.left_drawer);
+		
+		//Init Stack
+		this.fragmentStack = new Stack<Fragment>();
+		
+		
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		this.activeUser = DataFetchFactory.getUserInSharedPreferences(this);
 		
 		//Set Option into Drawer
 		this.mainDrawerList.setAdapter(
@@ -92,13 +85,8 @@ public abstract class MainInterfaceActivity extends Activity {
 		
 		//Set Drawer ClickListener 
 		this.mainDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		
-		//Init Stack
-		this.fragmentStack = new Stack<Fragment>();
-		
-		
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -328,20 +316,22 @@ public abstract class MainInterfaceActivity extends Activity {
     		break;
     	}
     }
-    
-  	//Make On Back Return to Previous Element
-  		@Override
-  		public void onBackPressed() {
-  			//Normal Back if no other Fragment is Use
-  			if(this.fragmentStack.size() <= 1){
-  				super.onBackPressed();
-  			}
-  			else{
-  				this.fragmentStack.pop();
-  				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
-  			}
-  		}
-  	
+
+
+
+	//Make On Back Return to Previous Element
+	@Override
+	public void onBackPressed() {
+		//Normal Back if no other Fragment is Use
+		if(this.fragmentStack.size() <= 1){
+			super.onBackPressed();
+		}
+		else{
+			this.fragmentStack.pop();
+			AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+		}
+	}
+
     
     //Cart Button Listener Abstract
     public abstract void cartButtonListner(MenuItem menuItem);

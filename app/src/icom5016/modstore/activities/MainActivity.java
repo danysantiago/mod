@@ -7,11 +7,11 @@ import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.SellItemFragment;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.resources.User;
 import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -35,8 +35,6 @@ public class MainActivity extends MainInterfaceActivity {
 		//Get ActionBar
 		final ActionBar ActionBarVar = this.getActionBar();
 		
-		//Get User Variable
-		final User UserVar = this.activeUser; 
 		
 		//Enables ActionBar Logo to behave like drawer button
 		ActionBarVar.setDisplayHomeAsUpEnabled(true);
@@ -56,14 +54,7 @@ public class MainActivity extends MainInterfaceActivity {
             }
 
             public void onDrawerOpened(View drawerView) {
-            	if(UserVar == null){
-            		ActionBarVar.setTitle("Hello Guest");
-				}
-				else{
-					ActionBarVar.setTitle("Hello "+UserVar.getFirstName());
-				}
-            	
-            	
+            	ActionBarVar.setTitle("Hello Guest");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 		};
@@ -118,6 +109,7 @@ public class MainActivity extends MainInterfaceActivity {
 	}
 	
 	
+	
 					/*Drawer Toggle Specific Overrides */
 	
 	
@@ -158,7 +150,26 @@ public class MainActivity extends MainInterfaceActivity {
     }
 
  
-    //Cart Button Listener 
+    @Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+    	final ActionBar ActionBarVar = this.getActionBar();
+    	boolean drawerOpen = this.mainDrawerLayout.isDrawerOpen(this.mainDrawerList);
+    	if(drawerOpen){
+    		if(this.activeUser == null){
+    			ActionBarVar.setTitle("Hello Guest");
+    		}
+    		else{
+    			ActionBarVar.setTitle("Hello "+this.activeUser.getFirstName());
+    		}
+    	}
+    	
+    	return super.onPrepareOptionsMenu(menu);
+		
+	}
+
+
+
+	//Cart Button Listener 
     public void cartButtonListner(MenuItem menuItem) {
 		if(this.isCartActive){
 			menuItem.setIcon(R.drawable.btn_cart );
@@ -173,6 +184,8 @@ public class MainActivity extends MainInterfaceActivity {
     	this.isCartActive = !this.isCartActive;
 		
 	}
+    
+    
     
     //Category Menu
   	private void loadSpecificCategoryFragment(MenuItem item) {
