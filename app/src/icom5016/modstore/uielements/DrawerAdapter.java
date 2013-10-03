@@ -1,8 +1,8 @@
 package icom5016.modstore.uielements;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.resources.User;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 

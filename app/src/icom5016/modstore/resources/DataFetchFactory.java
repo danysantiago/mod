@@ -1,5 +1,7 @@
 package icom5016.modstore.resources;
 
+import icom5016.modstore.models.User;
+
 
 public class DataFetchFactory {
 
