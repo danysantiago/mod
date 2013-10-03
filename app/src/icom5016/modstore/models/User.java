@@ -11,13 +11,12 @@ public class User {
 	private String middleName;
 	private String lastName;
 	private String email;
-	private int uid;
+	private int guid;
 	private boolean isAdmin;
 	private String token;
 	
 	
-	public User(String username, String firstName, String middleName,
-			String lastName, String email, boolean isAdmin) {
+	public User(String username, String firstName, String middleName, String lastName, String email, int guid ,boolean isAdmin) {
 		super();
 		this.username = username;
 		this.firstName = firstName;
@@ -25,6 +24,7 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.isAdmin = isAdmin;
+		this.guid = guid;
 	}
 	
 	public User(JSONObject jsonObject) {
@@ -45,8 +45,8 @@ public class User {
 		return username;
 	}
 	
-	public int getUid() {
-		return uid;
+	public int getGuid() {
+		return guid;
 	}
 
 	public String getFirstName() {

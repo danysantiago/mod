@@ -22,9 +22,10 @@ public class DrawerAdapter extends ArrayAdapter<String> {
 			this.listOfRows = ConstantClass.DRAWER_GUEST_LIST;
 		}
 		else{
-			
 			this.listOfRows = ConstantClass.DRAWER_USER_LIST;
-			
+			if(this.user.isAdmin()){
+				this.listOfRows = ConstantClass.DRAWER_ADMIN_LIST;
+			}
 		}
 		super.addAll(this.listOfRows);
 	}
@@ -36,6 +37,9 @@ public class DrawerAdapter extends ArrayAdapter<String> {
 		}
 		else{
 			this.listOfRows = ConstantClass.DRAWER_USER_LIST;
+			if(this.user.isAdmin()){
+				this.listOfRows = ConstantClass.DRAWER_ADMIN_LIST;
+			}
 		}
 	}
 

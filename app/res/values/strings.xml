@@ -25,4 +25,9 @@
     <string name="no_data_label">No Data</string>
     <string name="login_forgot">Forgot?</string>
     <string name="login_error">Error in Username or Password, Please Try Again</string>
+    <string name="forgot_dialog_title">Forgot?</string>
+    <string-array name="forgot_dialog_values">
+        <item >Email</item>
+        <item >Password</item>
+    </string-array>
 </resources>

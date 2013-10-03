@@ -290,7 +290,9 @@ public abstract class MainInterfaceActivity extends Activity {
     		break;
     	case 4:
     		//Settings (new Activity)
+    		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
     		Intent settingsIntent = new Intent(this, SettingsActivity.class);
+    		settingsIntent.putExtras(bundle);
     		this.startActivity(settingsIntent);
     		break;
     	case 5:
@@ -314,6 +316,13 @@ public abstract class MainInterfaceActivity extends Activity {
     			this.startActivity(homeIntent);
     		}
     		break;
+    	case 7:
+    		//Admin Menu
+    			//Send User ID
+    		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
+    		Intent adminIntent = new Intent(this, AdminActivity.class);
+    		adminIntent.putExtras(bundle);
+    		this.startActivity(adminIntent);
     	}
     }
 
