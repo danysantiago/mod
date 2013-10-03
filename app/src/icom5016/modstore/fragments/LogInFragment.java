@@ -6,12 +6,12 @@ import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.resources.DataFetchFactory;
 import icom5016.modstore.uielements.ForgotDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 public class LogInFragment extends Fragment implements OnClickListener{
 	
+	private ProgressDialog pd;
 	
 	public LogInFragment(){
 	};
@@ -87,11 +88,15 @@ public class LogInFragment extends Fragment implements OnClickListener{
 		String password = password_box.getText().toString().trim();
 		
 		try {
+			pd = new ProgressDialog(getActivity());
+			pd.setMessage(getResources().getString(R.string.logging_message));
+			pd.show();
+			
 	        doHttpLogin(username, password);
         } catch (JSONException e) {
 	        // TODO Auto-generated catch block
 	        e.printStackTrace();
-        }	
+        }
 	}
 	
 	private void doHttpLogin(String username, String password) throws JSONException {
@@ -123,6 +128,11 @@ public class LogInFragment extends Fragment implements OnClickListener{
 			@Override
 			public void onFailed() {
 				Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();;
+			}
+			
+			@Override
+			public void onDone() {
+				pd.dismiss();
 			}
 		});
 		request.execute();
