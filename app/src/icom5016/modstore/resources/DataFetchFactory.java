@@ -27,19 +27,6 @@ public class DataFetchFactory {
 		return new User("mamanu", "Manuel", "Enrique", "Marquez", "manuel.marquez1@upr.edu", true);
 	}
 	
-	public static void setUserInSharedPreferences(User user, Activity activity){
-		SharedPreferences.Editor preferencesEdit = PreferenceManager.getDefaultSharedPreferences(activity).edit();
-		preferencesEdit.putString(ConstantClass.USER_USERNAME_KEY, user.getUsername());
-		preferencesEdit.putString(ConstantClass.USER_FIRSTNAME_KEY, user.getFirstName());
-		preferencesEdit.putString(ConstantClass.USER_LASTNAME_KEY, user.getLastName());
-		preferencesEdit.putString(ConstantClass.USER_MIDDLENAME_KEY, user.getMiddleName());
-		preferencesEdit.putString(ConstantClass.USER_EMAIL_KEY, user.getEmail());
-		preferencesEdit.putBoolean(ConstantClass.USER_IS_ADMIN_KEY, user.isAdmin());
-		preferencesEdit.putInt(ConstantClass.USER_UID_KEY, user.getUid());
-		preferencesEdit.putBoolean(ConstantClass.USER_IS_LOGIN, true);
-		preferencesEdit.commit();
-	}
-	
 	public static User getUserInSharedPreferences(Activity activity){
 		//Verify Log-In
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
