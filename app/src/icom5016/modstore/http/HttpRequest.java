@@ -125,8 +125,10 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 		
 		try {
 		  
-	    Log.d("HttpRequest", "Performing request: " + params.getString("method") +
-	        " " + params.getString("url"));
+		    Log.d("HttpRequest", "Performing request: " + params.getString("method") +
+		        " " + params.getString("url"));
+		    
+		    request.setHeader("auth_token", "1234567890");
 		
 			HttpResponse response = client.execute(request);
 			

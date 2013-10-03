@@ -1,4 +1,4 @@
-package icom5016.modstore.resources;
+package icom5016.modstore.models;
 
 public class User {
 

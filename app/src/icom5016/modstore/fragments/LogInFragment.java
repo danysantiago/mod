@@ -1,9 +1,9 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
-import icom5016.modstore.resources.User;
 import icom5016.modstore.uielements.ForgotDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

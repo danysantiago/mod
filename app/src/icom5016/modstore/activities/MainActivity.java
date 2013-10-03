@@ -5,6 +5,7 @@ import icom5016.modstore.fragments.MainCategoryFragment;
 import icom5016.modstore.fragments.MainFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.SellItemFragment;
+import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import android.app.ActionBar;

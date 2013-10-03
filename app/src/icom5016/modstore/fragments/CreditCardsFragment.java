@@ -1,7 +1,7 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
-import icom5016.modstore.resources.CreditCard;
+import icom5016.modstore.models.CreditCard;
 import icom5016.modstore.uielements.CreditCardAdapter;
 
 import java.util.ArrayList;

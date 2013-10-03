@@ -1,8 +1,12 @@
 package icom5016.modstore.resources;
 
+<<<<<<< HEAD
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+=======
+import icom5016.modstore.models.User;
+>>>>>>> 044f8fdbe1617694201a888ffbe1dc651d8d0ff0
 
 
 public class DataFetchFactory {
