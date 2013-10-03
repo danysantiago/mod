@@ -82,7 +82,6 @@ public class MainActivity extends MainInterfaceActivity {
 		  		fragment.setArguments(categoryBundle);
 		  		this.fragmentStack.push(fragment);
 		  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 				break;
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS:
 				//Case: My Items

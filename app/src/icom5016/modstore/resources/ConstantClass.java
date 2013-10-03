@@ -2,8 +2,9 @@ package icom5016.modstore.resources;
 
 public class ConstantClass {
 	
+	//Pre
+	public final static String USER_PREFERENCES_FILENAME = "preferencesUserFile";
 	//LogIn/Out Constant
-	public final static String USER_PREFERENCES_FILENAME = "userFile";
 	public final static String USER_IS_LOGIN = "userLogStatus";
 	public final static String USER_USERNAME_KEY = "userUsername";
 	public final static String USER_FIRSTNAME_KEY = "userFirstName";

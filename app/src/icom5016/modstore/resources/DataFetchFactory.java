@@ -4,6 +4,7 @@ import icom5016.modstore.models.User;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 
 
@@ -27,17 +28,16 @@ public class DataFetchFactory {
 	}
 	
 	public static void setUserInSharedPreferences(User user, Activity activity){
-		SharedPreferences preferences = //If Open First Time: Creates File; O.W. Reads it
-				activity.getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
-		preferences.edit().putString(ConstantClass.USER_USERNAME_KEY, user.getUsername()).apply();
-		preferences.edit().putString(ConstantClass.USER_FIRSTNAME_KEY, user.getFirstName()).apply();
-		preferences.edit().putString(ConstantClass.USER_LASTNAME_KEY, user.getLastName()).apply();
-		preferences.edit().putString(ConstantClass.USER_MIDDLENAME_KEY, user.getMiddleName()).apply();
-		preferences.edit().putString(ConstantClass.USER_EMAIL_KEY, user.getEmailString()).apply();
-		preferences.edit().putBoolean(ConstantClass.USER_IS_ADMIN_KEY, user.isAdmin()).apply();
-		preferences.edit().putInt(ConstantClass.USER_GUID_KEY, user.getGuid()).apply();
-		preferences.edit().putBoolean(ConstantClass.USER_IS_LOGIN, true).apply();
-		
+		SharedPreferences.Editor preferencesEdit = PreferenceManager.getDefaultSharedPreferences(activity).edit();
+		preferencesEdit.putString(ConstantClass.USER_USERNAME_KEY, user.getUsername());
+		preferencesEdit.putString(ConstantClass.USER_FIRSTNAME_KEY, user.getFirstName());
+		preferencesEdit.putString(ConstantClass.USER_LASTNAME_KEY, user.getLastName());
+		preferencesEdit.putString(ConstantClass.USER_MIDDLENAME_KEY, user.getMiddleName());
+		preferencesEdit.putString(ConstantClass.USER_EMAIL_KEY, user.getEmail());
+		preferencesEdit.putBoolean(ConstantClass.USER_IS_ADMIN_KEY, user.isAdmin());
+		preferencesEdit.putInt(ConstantClass.USER_GUID_KEY, user.getGuid());
+		preferencesEdit.putBoolean(ConstantClass.USER_IS_LOGIN, true);
+		preferencesEdit.commit();
 	}
 	
 	public static User getUserInSharedPreferences(Activity activity){
@@ -63,7 +63,7 @@ public class DataFetchFactory {
 	}
 	
 	public static User getUserWithId(int id){
-		return null;
+		return new User("mamanu", "Manuel", "Enrique", "Marquez", "manuel.marquez1@upr.edu",0 ,true);
 	}
 	
 }

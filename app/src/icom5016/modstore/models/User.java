@@ -1,5 +1,8 @@
 package icom5016.modstore.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class User {
 
 	/* Instance Fields */
@@ -7,58 +10,61 @@ public class User {
 	private String firstName;
 	private String middleName;
 	private String lastName;
-	private String emailString;
+	private String email;
 	private int guid;
 	private boolean isAdmin;
+	private String token;
 	
 	
-	public User(String username, String firstName, String middleName,
-			String lastName, String emailString, int guid, boolean isAdmin) {
+	public User(String username, String firstName, String middleName, String lastName, String email, int guid ,boolean isAdmin) {
 		super();
 		this.username = username;
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
-		this.emailString = emailString;
+		this.email = email;
 		this.isAdmin = isAdmin;
 		this.guid = guid;
 	}
+	
+	public User(JSONObject jsonObject) {
+		try {
+			this.username = jsonObject.getString("username");
+			this.firstName = jsonObject.getString("firstname");
+			this.middleName = jsonObject.getString("middleName");
+			this.lastName = jsonObject.getString("lastName");
+			this.email = jsonObject.getString("model");
+			this.isAdmin = jsonObject.getBoolean("isAdmin");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public String getUsername() {
 		return username;
 	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
+	
 	public int getGuid() {
 		return guid;
 	}
-	public void setGuid(int guid) {
-		this.guid = guid;
-	}
+
 	public String getFirstName() {
 		return firstName;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+
 	public String getMiddleName() {
 		return middleName;
 	}
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
+
 	public String getLastName() {
 		return lastName;
 	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+
+	public String getEmail() {
+		return email;
 	}
-	public String getEmailString() {
-		return emailString;
-	}
-	public void setEmailString(String emailString) {
-		this.emailString = emailString;
-	}
+
 	public boolean isAdmin() {
 		return isAdmin;
 	}

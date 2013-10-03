@@ -7,9 +7,9 @@ var routes = express();
 routes.get("/users/:uid", function (req, res) {
   var fakeUser = {
     "id": req.params.uid,
-    "userName": "MyUsername",
+    "username": "MyUsername",
     "firstName": "Juan",
-    "middleInitial": "",
+    "middleName": "",
     "lastName": "Del Pueblo",
     "email": "juan.pueblo00@uprm.edu",
     "isAdmin": false,
