@@ -13,9 +13,9 @@ public class SettingsActivity extends FragmentInterfaceActivity {
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			
-			setContentView(R.layout.fragment_settings);
-	        mTabHost = (FragmentTabHost)findViewById(R.id.settingsTabHost);
-	        mTabHost.setup(this, getSupportFragmentManager(), R.id.settingsTabContent);
+			setContentView(R.layout.viewpager_generic);
+	        mTabHost = (FragmentTabHost)findViewById(R.id.tabHost);
+	        mTabHost.setup(this, getSupportFragmentManager(), R.id.tabContent);
 
 	        mTabHost.addTab(mTabHost.newTabSpec("payment").setIndicator("Payment"),
 	        		CreditCardsFragment.class, null);
