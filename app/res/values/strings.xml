@@ -30,4 +30,5 @@
         <item >Email</item>
         <item >Password</item>
     </string-array>
+    <string name="logging_message">Logging in...</string>
 </resources>
