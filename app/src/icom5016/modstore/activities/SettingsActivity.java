@@ -1,7 +1,6 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CreditCardsFragment;
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.Menu;
@@ -14,9 +13,9 @@ public class SettingsActivity extends FragmentInterfaceActivity {
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			
-			setContentView(R.layout.fragment_settings);
-	        mTabHost = (FragmentTabHost)findViewById(R.id.settingsTabHost);
-	        mTabHost.setup(this, getSupportFragmentManager(), R.id.settingsTabContent);
+			setContentView(R.layout.viewpager_generic);
+	        mTabHost = (FragmentTabHost)findViewById(R.id.tabHost);
+	        mTabHost.setup(this, getSupportFragmentManager(), R.id.tabContent);
 
 	        mTabHost.addTab(mTabHost.newTabSpec("payment").setIndicator("Payment"),
 	        		CreditCardsFragment.class, null);
@@ -35,6 +34,9 @@ public class SettingsActivity extends FragmentInterfaceActivity {
 		public void cartButtonListner(MenuItem menuItem) {
 			// TODO Auto-generated method stub
 			
+
+			// No CART
+
 		};
 				
 }
