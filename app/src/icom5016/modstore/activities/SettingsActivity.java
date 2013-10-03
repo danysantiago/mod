@@ -1,6 +1,7 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CreditCardsFragment;
+import icom5016.modstore.uielements.RegisterFragment;
 import icom5016.modstore.uielements.ListPagerAdapter;
 import icom5016.modstore.uielements.TabPagerFactory;
 
@@ -51,6 +52,28 @@ public class SettingsActivity extends FragmentActivity implements OnTabChangeLis
 
 					/*Navigate Up the Stack*/
 	
+<<<<<<< HEAD
+		@Override
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			
+			setContentView(R.layout.viewpager_generic);
+	        mTabHost = (FragmentTabHost)findViewById(R.id.tabHost);
+	        mTabHost.setup(this, getSupportFragmentManager(), R.id.tabContent);
+
+	        mTabHost.addTab(mTabHost.newTabSpec("payment").setIndicator("Payment"),
+	        		CreditCardsFragment.class, null);
+	        mTabHost.addTab(mTabHost.newTabSpec("reg").setIndicator("Register"),
+	        		RegisterFragment.class, null);
+			
+			//Load Search Fragment
+			/*if(savedInstanceState == null){
+				this.fragmentStack.push(new SettingsFragment());
+				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+			}*/
+			
+			
+			
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
