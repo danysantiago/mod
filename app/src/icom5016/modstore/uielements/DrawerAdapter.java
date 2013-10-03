@@ -18,7 +18,7 @@ public class DrawerAdapter extends ArrayAdapter<String> {
 		this.user = user;
 		
 		//Different List Base on User Status
-		if(this.user == null && false){
+		if(this.user == null){
 			this.listOfRows = ConstantClass.DRAWER_GUEST_LIST;
 		}
 		else{
