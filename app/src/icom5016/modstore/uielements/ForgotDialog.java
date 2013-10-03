@@ -10,6 +10,7 @@ public class ForgotDialog extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		return super.onCreateDialog(savedInstanceState);
+
 	}
 	
 }

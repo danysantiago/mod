@@ -5,7 +5,6 @@ import icom5016.modstore.fragments.MainCategoryFragment;
 import icom5016.modstore.fragments.MainFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.SellItemFragment;
-import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import android.app.ActionBar;
@@ -82,30 +81,30 @@ public class MainActivity extends MainInterfaceActivity {
 		  		MainCategoryFragment fragment= new MainCategoryFragment();
 		  		fragment.setArguments(categoryBundle);
 		  		this.fragmentStack.push(fragment);
-		  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
-			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+		  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 				break;
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS:
 				//Case: My Items
 				 this.fragmentStack.push(new MyItemsFragment());
-			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 				break;
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS:
 				 //Case: Sell Items
 				 this.fragmentStack.push(new SellItemFragment());
-			     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+			     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 				 break;
 			 default:
 				 //Case: Default Main View
 				 this.fragmentStack.push(new MainFragment());
-			     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+			     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 				 break;
 			 }
 		 }
 		 else{
 			
 			 this.fragmentStack.push(new MainFragment());
-		     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+		     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 		 }
 	}
 	
@@ -174,12 +173,12 @@ public class MainActivity extends MainInterfaceActivity {
     public void cartButtonListner(MenuItem menuItem) {
 		if(this.isCartActive){
 			menuItem.setIcon(R.drawable.btn_cart );
-    		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek() , this.getContentFragmentId());
+    		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek() , MainInterfaceActivity.getContentFragmentId());
     	}
     	else{
     	  menuItem.setIcon(R.drawable.navigation_cancel);
     	  this.fragmentStack.push(new CartFragment());
-    	  AndroidResourceFactory.setNewFragment(this, new CartFragment(), this.getContentFragmentId());
+    	  AndroidResourceFactory.setNewFragment(this, new CartFragment(), MainInterfaceActivity.getContentFragmentId());
     	}
     	//Create A new Activity for Cart
     	this.isCartActive = !this.isCartActive;
@@ -195,7 +194,7 @@ public class MainActivity extends MainInterfaceActivity {
   		MainCategoryFragment fragment= new MainCategoryFragment();
   		fragment.setArguments(bundle);
   		this.fragmentStack.push(fragment);
-  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
   	}
 
 }

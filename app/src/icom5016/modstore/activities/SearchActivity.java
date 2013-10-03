@@ -36,7 +36,7 @@ public class SearchActivity extends MainInterfaceActivity {
 				
 				this.fragmentStack.push(fragment);
 				
-				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 			}
 			
 		};
@@ -106,7 +106,7 @@ public class SearchActivity extends MainInterfaceActivity {
 			SearchFragment fragment= new SearchFragment();
 			fragment.setArguments(bundle);
 			this.fragmentStack.push(fragment);
-			AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId()); 
+			AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId()); 
 			
 			return true;
 		}

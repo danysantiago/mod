@@ -1,7 +1,6 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CreditCardsFragment;
-import icom5016.modstore.fragments.RegisterFragment;
 import icom5016.modstore.uielements.ListPagerAdapter;
 import icom5016.modstore.uielements.TabPagerFactory;
 

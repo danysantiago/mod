@@ -23,7 +23,7 @@ public class AboutActivity extends MainInterfaceActivity {
 		ActionBarVar.setHomeButtonEnabled(true);
 		
 		//Set Fragment
-		AndroidResourceFactory.setNewFragment(this, new AboutFragment(), this.getContentFragmentId());
+		AndroidResourceFactory.setNewFragment(this, new AboutFragment(), MainInterfaceActivity.getContentFragmentId());
 
 		
 	}

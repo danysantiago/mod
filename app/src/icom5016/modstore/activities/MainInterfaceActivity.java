@@ -119,7 +119,7 @@ public abstract class MainInterfaceActivity extends Activity {
 	
 						/*Supplementary Methods*/
 	
-	protected int getContentFragmentId()
+	protected static int getContentFragmentId()
 	{
 		return R.id.content_frame;
 	}
@@ -194,7 +194,7 @@ public abstract class MainInterfaceActivity extends Activity {
     	  		MainCategoryFragment fragment= new MainCategoryFragment();
     	  		fragment.setArguments(bundle);
     	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
     		}
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
@@ -248,7 +248,7 @@ public abstract class MainInterfaceActivity extends Activity {
     	  		MainCategoryFragment fragment= new MainCategoryFragment();
     	  		fragment.setArguments(bundle);
     	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
     		}
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
@@ -263,7 +263,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		if(this instanceof MainActivity ){
     	  		MyItemsFragment fragment= new MyItemsFragment();
     	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
     		}
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
@@ -278,7 +278,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		if(this instanceof MainActivity ){
     	  		SellItemFragment fragment= new SellItemFragment();
     	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
     		}
     		else{
     			Intent homeIntent = new Intent(this, MainActivity.class);
@@ -328,7 +328,7 @@ public abstract class MainInterfaceActivity extends Activity {
 		}
 		else{
 			this.fragmentStack.pop();
-			AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), this.getContentFragmentId());
+			AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 		}
 	}
 
