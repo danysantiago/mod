@@ -19,7 +19,7 @@ routes.post("/login", express.bodyParser(), function (req, res) {
         "auth_token": "5d4nyc0015",
         "username": "MyUsername",
         "firstName": "Juan",
-        "middleInitial": "",
+        "middleName": "",
         "lastName": "Del Pueblo",
         "email": "juan.pueblo00@uprm.edu",
         "isAdmin": false,
