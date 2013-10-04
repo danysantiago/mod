@@ -47,7 +47,7 @@ routes.get("/addresses/:aid", function (req, res) {
 });
 
 routes.get("/addresses", function (req, res) {
-  res.send({"addresses":fakeCC});
+  res.send({"addresses":fakeAddrs});
 });
 
 module.exports = routes;
