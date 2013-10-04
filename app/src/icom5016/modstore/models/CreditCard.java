@@ -1,7 +1,5 @@
 package icom5016.modstore.models;
 
-import icom5016.modstore.activities.R;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
