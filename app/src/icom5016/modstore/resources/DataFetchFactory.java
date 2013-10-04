@@ -51,16 +51,6 @@ public class DataFetchFactory {
 		return null;
 	}
 	
-	public static ArrayList<CreditCard> getCreditCards() {
-		ArrayList<CreditCard> creditCards = new ArrayList<CreditCard>();
-		
-        creditCards.add(new CreditCard(0, "1234 1234 1234 1234", "Omar G Soto Fortuno", "06/2016"));
-        creditCards.add(new CreditCard(0, "1234 1234 1234 1234", "Daniel Santiago", "06/2016"));
-        creditCards.add(new CreditCard(0, "1234 1234 1234 1234", "Manuel E Marquez", "06/2016"));
-        
-        return creditCards;
-	}
-	
 	public static User getUserWithId(int id){
 		return new User("mamanu", "Manuel", "Enrique", "Marquez", "manuel.marquez1@upr.edu",0 ,true);
 	}

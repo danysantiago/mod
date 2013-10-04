@@ -5,6 +5,10 @@ import icom5016.modstore.models.CreditCard;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,12 +22,27 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
 	Context context;
     int layoutResourceId;   
     ArrayList<CreditCard> data = null;
-   
-    public CreditCardAdapter(Context context, int layoutResourceId, ArrayList<CreditCard> data) {
-        super(context, layoutResourceId, data);
+    
+    String error;
+    public CreditCardAdapter(Context context, int layoutResourceId, JSONObject jsonObj) {
+        super(context, layoutResourceId);
+        
+		ArrayList<CreditCard> creditCards = new ArrayList<CreditCard>();
+		
+		try {
+			JSONArray jsonArr = jsonObj.getJSONArray("creditcards");
+			
+			for (int i = 0; i < jsonArr.length(); i++) {
+				creditCards.add(new CreditCard(jsonArr.getJSONObject(i)));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			error = e.getMessage();
+		}
+        
         this.layoutResourceId = layoutResourceId;
         this.context = context;
-        this.data = data;
+        this.data = creditCards;
     }
 
     @Override
@@ -32,7 +51,6 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
         CreditCardHolder holder = null;
        
         if(row == null) {
-        	
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
            

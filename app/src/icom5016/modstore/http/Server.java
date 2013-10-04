@@ -11,4 +11,9 @@ public class Server {
 	public static class Categories {
 	  public static final String GET = "/categories/";
 	}
+	
+	public static class CreditCards {
+		public static final String GET = BASE_URL + "/cc/";
+		public static final String GETALL = BASE_URL + "/cc";
+	}
 }
