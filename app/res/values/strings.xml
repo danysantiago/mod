@@ -30,4 +30,13 @@
         <item >Email</item>
         <item >Password</item>
     </string-array>
+    <string name="register_title">Setup Account</string>
+    <string name="register_instructions">You can create your account in just a few steps:</string>
+    <string name="register_username">Username:</string>
+    <string name="register_password">Password:</string>
+    <string name="register_pw_confirm">Confirm Password:</string>
+    <string name="register_email">Email:</string>
+    <string name="register_fn">First Name:</string>
+    <string name="register_ln">Last Name:</string>
+    
 </resources>
