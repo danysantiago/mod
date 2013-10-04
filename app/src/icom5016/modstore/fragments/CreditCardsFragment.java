@@ -33,15 +33,14 @@ public class CreditCardsFragment extends Fragment {
 	private ProgressBar listProgressBar;
 	private TextView txtError;
 	
-	public CreditCardsFragment() {
-		
-	};
+	public CreditCardsFragment() { };
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_list, container,false);
 		ActionBar ab = this.getActivity().getActionBar();
 
+		// Load all the fragment elements.
         lstCreditCards = (ListView)view.findViewById(R.id.lstListView);       
     	btnAdd = (ImageButton)view.findViewById(R.id.btnListAdd);
         txtTitle = (TextView)view.findViewById(R.id.txtListTitle);
@@ -60,6 +59,8 @@ public class CreditCardsFragment extends Fragment {
         txtTitle.setText("Credit Cards:");
         
         showLoading();
+        
+        requestCategories();
         
         return view;
     }
@@ -82,7 +83,7 @@ public class CreditCardsFragment extends Fragment {
 		txtError.setVisibility(View.GONE);
 	}
 	
-	private void showError() {
+	public void showError() {
 		listProgressBar.setVisibility(View.GONE);
 		lstCreditCards.setVisibility(View.GONE);
 		btnAdd.setVisibility(View.GONE);
@@ -91,14 +92,14 @@ public class CreditCardsFragment extends Fragment {
 		txtError.setVisibility(View.VISIBLE);
 	}
 	
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
+	private void requestCategories() {
 		//Perform http request
 		Bundle params = new Bundle();
+		
 		params.putString("method", "GET");
 		params.putString("url", Server.CreditCards.GETALL);
+		
 		HttpRequest request = new HttpRequest(params, new HttpCallback() {
-
 			@Override
 			public void onSucess(JSONObject json) {
 				//Pass JSON to Adapter
@@ -111,11 +112,11 @@ public class CreditCardsFragment extends Fragment {
 
 			@Override
 			public void onFailed() {
-				Toast.makeText(getActivity(), "Could not get data",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Couldn't load the Credit Cards [ERR: 2]", Toast.LENGTH_SHORT).show();
 				showError();
 			}
 		});
+		
 		request.execute();
 	}
 }
