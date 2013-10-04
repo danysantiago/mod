@@ -114,7 +114,7 @@ public class LogInFragment extends Fragment implements OnClickListener{
 			public void onSucess(JSONObject json) {
 				try {
 					if(json.getString("status").equals("OK")) {
-						User user = new User(json);
+						User user = new User(json.getJSONObject("account"));
 						setUserInSharedPreferences(user);
 						getActivity().finish();
 					} else {
