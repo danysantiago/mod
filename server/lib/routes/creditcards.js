@@ -55,8 +55,6 @@ var fakeCC = [
 ];
 
 routes.get("/cc/:ccid", function (req, res) {
-  id = -1;
-
   for (i = 0; i < fakeCC.length; i++) {
     if (fakeCC[i].ccid == req.params.ccid) {
       res.send(fakeCC[i]);
