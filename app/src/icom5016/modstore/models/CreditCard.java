@@ -1,5 +1,8 @@
 package icom5016.modstore.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class CreditCard {	
 	
 	int type; /* 0 = VISA, 1 = MASTERCARD */
@@ -16,5 +19,16 @@ public class CreditCard {
 		this.number = number;
 		this.name = name;
 		this.expire = expire;
+	}
+	
+	public CreditCard(JSONObject json) {
+		try {
+			this.type = json.getInt("type");
+			this.number = json.getString("number");
+			this.name = json.getString("name");
+			this.expire = json.getString("expirationDate");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -1,7 +1,13 @@
 package icom5016.modstore.activities;
 
-import android.app.Activity;
+import android.view.MenuItem;
 
-public class ForgotActivity extends Activity {
+public class ForgotActivity extends MainInterfaceActivity {
+
+	@Override
+	public void cartButtonListner(MenuItem menuItem) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
