@@ -2,26 +2,27 @@ package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.resources.DataFetchFactory;
-
-import java.util.Calendar;
-
-import android.app.Activity;
+import icom5016.modstore.uielements.ImagesAdapter;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class NewCreditCardDialogFragment extends DialogFragment {
 	Spinner cboTypes;
 	Spinner cboYears;
+	Spinner cboAddresses;
+	
+	EditText txtFullname;
+	EditText txtNumber;
+	EditText txtSecurityCode;
+	EditText txtExpireMonth;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -43,73 +44,20 @@ public class NewCreditCardDialogFragment extends DialogFragment {
                }
            });
 	    
-	    Dialog dialog = builder.create();
-	    
-	    Calendar c = Calendar.getInstance();
-	    int year = c.get(Calendar.YEAR);
-	    
-	    String strYears[] = new String[15];
-	    
-	    for (int i = 0; i < 15; i++) {
-	    	strYears[i] = String.valueOf(year + i);
-	    }
-	    
 	    cboTypes = (Spinner)v.findViewById(R.id.cboType);
-	    CreditCardTypesAdapter adapter = new CreditCardTypesAdapter(getActivity(), R.layout.listview_image_row, DataFetchFactory.getCreditCardImages());
+	    cboYears = (Spinner)v.findViewById(R.id.cboCCExpireYear);
+	    cboAddresses = (Spinner)v.findViewById(R.id.cboCCAddress);
+	    txtFullname = (EditText)v.findViewById(R.id.txtCCFullName);
+	    txtNumber = (EditText)v.findViewById(R.id.txtCCNumber);
+	    txtSecurityCode = (EditText)v.findViewById(R.id.txtCCSecurityCode);
+	    txtExpireMonth = (EditText)v.findViewById(R.id.txtCCExpireMonth);
+	    
+	    ImagesAdapter adapter = new ImagesAdapter(getActivity(), R.layout.listview_image_row, DataFetchFactory.getCreditCardImages());
 		cboTypes.setAdapter(adapter);
 		
-		cboYears = (Spinner)v.findViewById(R.id.cboCCExpireYear);
-		ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, strYears);
+		ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, DataFetchFactory.getNextYears(15));
 	    cboYears.setAdapter(adapter2);
 
-	    return dialog;
-	}
-
-	private class CreditCardTypesAdapter extends ArrayAdapter<Integer> {
-		Context context;
-	    int layoutResourceId;   
-
-	    public CreditCardTypesAdapter(Context context, int layoutResourceId, int creditCardImages[]) {
-	        super(context, layoutResourceId);
-
-			for (int i = 0; i < creditCardImages.length; i++) {
-				this.add(Integer.valueOf(creditCardImages[i]));
-			}
-	        
-	        this.layoutResourceId = layoutResourceId;
-	        this.context = context;
-	    }
-
-	    	    
-	    @Override
-	    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-	    	return getView(position, convertView, parent);
-	    }
-
-	    @Override
-	    public View getView(int position, View convertView, ViewGroup parent) {
-	        View row = convertView;
-	        ImageHolder holder = null;
-	       
-	        if(row == null) {
-	            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-	            row = inflater.inflate(layoutResourceId, parent, false);
-	           
-	            holder = new ImageHolder();
-	            holder.imgListImage = (ImageView)row.findViewById(R.id.imgListImage);
-	           
-	            row.setTag(holder);
-	        } else {
-	            holder = (ImageHolder)row.getTag();
-	        }
-	       
-	        holder.imgListImage.setImageResource(this.getItem(position));
-
-	        return row;
-	    }
-	   
-	    class ImageHolder {
-	        ImageView imgListImage;
-	    }
+	    return builder.create();
 	}
 }

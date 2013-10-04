@@ -9,16 +9,18 @@ public class CreditCard {
 	public String number;
 	public String name;
 	public String expire;
+	public String securityCode;
 	
 	public CreditCard() {
 		super();
 	}
 	
-	public CreditCard(int type, String number, String name, String expire) {
+	public CreditCard(int type, String number, String name, String expire, String securityCode) {
 		this.type = type;
 		this.number = number;
 		this.name = name;
 		this.expire = expire;
+		this.securityCode = securityCode;
 	}
 	
 	public CreditCard(JSONObject json) {
@@ -27,6 +29,7 @@ public class CreditCard {
 			this.number = json.getString("number");
 			this.name = json.getString("name");
 			this.expire = json.getString("expirationDate");
+			this.securityCode = json.getString("scode");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
