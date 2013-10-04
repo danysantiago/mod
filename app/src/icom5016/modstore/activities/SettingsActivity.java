@@ -1,5 +1,7 @@
 package icom5016.modstore.activities;
 
+import icom5016.modstore.fragments.AddressesFragment;
+import icom5016.modstore.fragments.BasicInfoSettingsFragment;
 import icom5016.modstore.fragments.CreditCardsFragment;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
@@ -38,7 +40,7 @@ public class SettingsActivity extends FragmentActivity implements OnTabChangeLis
 		ActionBarVar.setDisplayHomeAsUpEnabled(true);
 		ActionBarVar.setHomeButtonEnabled(true);
 		//Set title
-		ActionBarVar.setTitle(R.string.app_name);
+		ActionBarVar.setTitle("Settings");
 		
 		
 		//Init Tabs
@@ -64,11 +66,7 @@ public class SettingsActivity extends FragmentActivity implements OnTabChangeLis
 		}
 	}
 	
-					/*Navigate Up the Stack*/
-			
-			
-	
-
+	/*Navigate Up the Stack*/
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
@@ -79,9 +77,11 @@ public class SettingsActivity extends FragmentActivity implements OnTabChangeLis
 		return super.onOptionsItemSelected(item);
 	}
 
-				/*Generates Tab List */
+	/*Generates Tab List */
 	private List<Fragment> getFragmentList(){
 		List<Fragment> result = new ArrayList<Fragment>();
+		result.add(new BasicInfoSettingsFragment());
+		result.add(new AddressesFragment());
 		result.add(new CreditCardsFragment());
 		return result;
 	}
@@ -91,7 +91,9 @@ public class SettingsActivity extends FragmentActivity implements OnTabChangeLis
         mTabHost.setup();
 
         // TODO OMAR: Put your taps here
-        SettingsActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("cc").setIndicator("Payment"));
+        SettingsActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("basic").setIndicator("Basic Information"));
+        SettingsActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("addr").setIndicator("Addresses"));
+        SettingsActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("cc").setIndicator("Credit Cards"));
 
         mTabHost.setOnTabChangedListener(this);
     }
