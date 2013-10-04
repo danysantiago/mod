@@ -39,4 +39,8 @@
     <string name="register_fn">First Name:</string>
     <string name="register_ln">Last Name:</string>
     <string name="logging_message">Logging in...</string>
+    <string name="hint_ccnumber">Credit Card Number</string>
+    <string name="hint_ccfullname">Full Name</string>
+    <string name="hint_ccv">CCV</string>
+    <string name="hint_ccmonth">Month</string>
 </resources>

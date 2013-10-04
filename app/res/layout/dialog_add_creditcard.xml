@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/txtCCFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:hint="@string/hint_ccfullname"
+        android:maxLength="20" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/txtCCNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txtCCFullName"
+        android:ems="12"
+        android:hint="@string/hint_ccnumber"
+        android:inputType="number"
+        android:maxLength="16" />
+
+    <EditText
+        android:id="@+id/txtCCSecurityCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtCCNumber"
+        android:ems="3"
+        android:hint="@string/hint_ccv"
+        android:inputType="number"
+        android:maxLength="3" />
+
+    <EditText
+        android:id="@+id/txtCCExpireMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txtCCNumber"
+        android:ems="4"
+        android:maxLength="2"
+        android:hint="@string/hint_ccmonth"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/cboCCExpireYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtCCSecurityCode"
+        android:layout_alignTop="@+id/txtCCExpireMonth"
+        android:layout_toLeftOf="@+id/txtCCSecurityCode"
+        android:layout_toRightOf="@+id/txtCCExpireMonth"
+        android:hint="Year" />
+
+    <Spinner
+        android:id="@+id/cboType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtCCNumber"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/txtCCNumber"
+        android:layout_toRightOf="@+id/txtCCNumber" />
+
+    <Spinner
+        android:id="@+id/cboAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txtCCSecurityCode" />
+
+</RelativeLayout>

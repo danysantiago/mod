@@ -9,6 +9,7 @@ import icom5016.modstore.uielements.CreditCardAdapter;
 import org.json.JSONObject;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,7 @@ public class CreditCardsFragment extends ListFragment {
 
 	@Override
 	void addOnClickListener(View v) {
-		Toast t = Toast.makeText(v.getContext(), "The user wants to add something!", Toast.LENGTH_SHORT);
-		t.show();
+        DialogFragment dialog = new NewCreditCardDialogFragment();
+        dialog.show(getActivity().getSupportFragmentManager(), "NewCreditCardDialog");
 	}
 }
