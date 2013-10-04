@@ -37,7 +37,7 @@ var fakeAddrs = [{
 
 routes.get("/addresses/:aid", function (req, res) {
   for (i = 0; i < fakeAddrs.length; i++) {
-    if (fakeAddrs[i].ccid == req.params.aid) {
+    if (fakeAddrs[i].aid == req.params.aid) {
       res.send(fakeAddrs[i]);
       return;
     }
