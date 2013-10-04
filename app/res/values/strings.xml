@@ -38,5 +38,5 @@
     <string name="register_email">Email:</string>
     <string name="register_fn">First Name:</string>
     <string name="register_ln">Last Name:</string>
-    
+    <string name="logging_message">Logging in...</string>
 </resources>
