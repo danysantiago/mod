@@ -1,11 +1,13 @@
 package icom5016.modstore.models;
 
+import icom5016.modstore.activities.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CreditCard {	
 	
-	int type; /* 0 = VISA, 1 = MASTERCARD */
+	public int type; /* visa, mastercard, americanexpress, discover, ebay, googlecheckout, paypal */
 	public String number;
 	public String name;
 	public String expire;

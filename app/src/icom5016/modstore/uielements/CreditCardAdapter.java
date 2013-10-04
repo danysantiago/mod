@@ -3,6 +3,7 @@ package icom5016.modstore.uielements;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.fragments.CreditCardsFragment;
 import icom5016.modstore.models.CreditCard;
+import icom5016.modstore.resources.DataFetchFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
 	Context context;
     int layoutResourceId;   
+    int creditCardImages[];
 
     public CreditCardAdapter(Context context, int layoutResourceId, JSONObject json) {
         super(context, layoutResourceId);
@@ -39,6 +41,7 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
         
         this.layoutResourceId = layoutResourceId;
         this.context = context;
+        this.creditCardImages = DataFetchFactory.getCreditCardImages();
     }
 
     @Override
@@ -54,6 +57,7 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
             holder.txtName = (TextView)row.findViewById(R.id.txtCCName);
             holder.txtNumber = (TextView)row.findViewById(R.id.txtCCNumber);
             holder.txtExpire = (TextView)row.findViewById(R.id.txtCCExpire);
+            holder.imgCreditCard = (ImageView)row.findViewById(R.id.imgCreditCard);
            
             row.setTag(holder);
         } else {
@@ -64,7 +68,12 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
         holder.txtName.setText(creditCard.name);
         holder.txtNumber.setText(creditCard.number);
         holder.txtExpire.setText(creditCard.expire);
-        //holder.imgIcon.setImageResource(weather.icon);
+        
+        if (creditCard.type < creditCardImages.length) {
+        	holder.imgCreditCard.setImageResource(this.creditCardImages[creditCard.type]);
+        } else {
+        	// Set No Recognized Image...
+        }
 
         return row;
     }

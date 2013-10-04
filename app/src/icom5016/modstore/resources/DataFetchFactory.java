@@ -2,6 +2,7 @@ package icom5016.modstore.resources;
 
 import java.util.ArrayList;
 
+import icom5016.modstore.activities.R;
 import icom5016.modstore.models.CreditCard;
 import icom5016.modstore.models.User;
 import android.app.Activity;
@@ -49,6 +50,10 @@ public class DataFetchFactory {
 		}
 		
 		return null;
+	}
+	
+	public static int[] getCreditCardImages() {
+		return new int[]{R.drawable.cc_visa, R.drawable.cc_mastercard, R.drawable.cc_americanexpress, R.drawable.cc_discover, R.drawable.cc_ebay, R.drawable.cc_googlecheckout, R.drawable.cc_paypal};
 	}
 	
 	public static User getUserWithId(int id){

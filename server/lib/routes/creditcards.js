@@ -4,13 +4,15 @@ var config = require("../config.js"),
 
 var routes = express();
 
+/* visa, mastercard, americanexpress, discover, ebay, googlecheckout, paypal */
+
 var fakeCC = [
   {
     "ccid": 0,
     "number": "1234-5678-0101-1010",
     "scode": "555",
     "name": "Omar Soto",
-    "type": 1, // VISA, MASTERCARD
+    "type": 0,
     "expirationDate": "05/2016",
     "created_ts": Date.now()
   },
@@ -19,7 +21,16 @@ var fakeCC = [
     "number": "1234-5678-0101-1010",
     "scode": "555",
     "name": "Manuel Marquez",
-    "type": 2, // VISA, MASTERCARD
+    "type": 1,
+    "expirationDate": "05/2016",
+    "created_ts": Date.now()
+  },
+  {
+    "ccid": 2,
+    "number": "1234-5678-0101-1010",
+    "scode": "555",
+    "name": "Daniel Santiago",
+    "type": 2,
     "expirationDate": "05/2016",
     "created_ts": Date.now()
   },
@@ -27,8 +38,17 @@ var fakeCC = [
     "ccid": 3,
     "number": "1234-5678-0101-1010",
     "scode": "555",
-    "name": "Daniel Santiago",
-    "type": 1, // VISA, MASTERCARD
+    "name": "Juan Ocasio",
+    "type": 3,
+    "expirationDate": "05/2016",
+    "created_ts": Date.now()
+  },
+  {
+    "ccid": 4,
+    "number": "1234-5678-0101-1010",
+    "scode": "555",
+    "name": "Wilma Pastrana",
+    "type": 4,
     "expirationDate": "05/2016",
     "created_ts": Date.now()
   }
