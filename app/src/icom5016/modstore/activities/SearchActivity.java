@@ -3,6 +3,7 @@ package icom5016.modstore.activities;
 import icom5016.modstore.fragments.SearchFragment;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.uielements.SearchFilterDialog;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.Menu;
@@ -48,6 +49,10 @@ public class SearchActivity extends MainInterfaceActivity {
 			switch(item.getItemId()){
 			case android.R.id.home:
 				finish();
+				break;
+			case R.id.btn_search_filter:
+				new SearchFilterDialog().show(this.getFragmentManager(), ConstantClass.SEARCH_FILTER_DIALOG_TAG);
+				break;	
 			}
 			return super.onOptionsItemSelected(item);
 		}
@@ -71,10 +76,15 @@ public class SearchActivity extends MainInterfaceActivity {
 
 			this.searchView.setOnQueryTextListener(new SearchQueryListener()); 
 			
+			//Make Visible Settings
+			menu.findItem(R.id.btn_search_filter).setVisible(true);
 			
 			return true;
 			
 		}
+		
+		
+		
 		
 		//Must be overriding for SubMenu Hiding 
 		@Override

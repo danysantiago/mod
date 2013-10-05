@@ -42,5 +42,7 @@ public class ConstantClass {
 	public final static int FORGOT_TYPE_USERNAME = 0;
 	public final static int FORGOT_TYPE_PASSWORD = 1;
 	
+	//SEARCH FILTER
+	public final static String SEARCH_FILTER_DIALOG_TAG = "searchFilterDialogTag";
 
 }
