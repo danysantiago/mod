@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CreditCard {	
-	
+	public int cid;
 	public int type; /* visa, mastercard, americanexpress, discover, ebay, googlecheckout, paypal */
 	public String number;
 	public String name;
@@ -15,7 +15,8 @@ public class CreditCard {
 		super();
 	}
 	
-	public CreditCard(int type, String number, String name, String expire, String securityCode) {
+	public CreditCard(int cid, int type, String number, String name, String expire, String securityCode) {
+		this.cid = cid;
 		this.type = type;
 		this.number = number;
 		this.name = name;
@@ -25,6 +26,7 @@ public class CreditCard {
 	
 	public CreditCard(JSONObject json) {
 		try {
+			this.cid = json.getInt("ccid");
 			this.type = json.getInt("type");
 			this.number = json.getString("number");
 			this.name = json.getString("name");
