@@ -1,9 +1,8 @@
-package icom5016.modstore.fragments;
+package icom5016.modstore.uielements;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.CreditCard;
 import icom5016.modstore.resources.DataFetchFactory;
-import icom5016.modstore.uielements.ImagesAdapter;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -12,11 +11,12 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
-public class CreditCardDialogFragment extends DialogFragment {
+public class CreditCardDialog extends DialogFragment {
 	Spinner cboTypes;
 	Spinner cboYears;
 	Spinner cboAddresses;
@@ -26,13 +26,15 @@ public class CreditCardDialogFragment extends DialogFragment {
 	EditText txtSecurityCode;
 	EditText txtExpireMonth;
 	
+	CheckBox chkDefault;
+	
 	public CreditCard creditCard;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	    LayoutInflater inflater = getActivity().getLayoutInflater();
-	    View v = inflater.inflate(R.layout.dialog_add_creditcard, null);
+	    View v = inflater.inflate(R.layout.dialog_creditcard, null);
 	    
 	    String positiveButton = (creditCard == null) ? "Add" : "Update";
 	    String title = (creditCard == null) ? "Add a Credit Card" : "View Credit Card";
@@ -42,12 +44,12 @@ public class CreditCardDialogFragment extends DialogFragment {
 	    	.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
 			   @Override
 			   public void onClick(DialogInterface dialog, int id) {
-			       // sign in the user ...
+			       // PUT/POST to Server.
 			   }
 	    	})
 	    	.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                public void onClick(DialogInterface dialog, int id) {
-            	   CreditCardDialogFragment.this.getDialog().cancel();
+            	   CreditCardDialog.this.getDialog().cancel();
                }
            });
 	    
@@ -58,6 +60,7 @@ public class CreditCardDialogFragment extends DialogFragment {
 	    txtNumber = (EditText)v.findViewById(R.id.txtCCNumber);
 	    txtSecurityCode = (EditText)v.findViewById(R.id.txtCCSecurityCode);
 	    txtExpireMonth = (EditText)v.findViewById(R.id.txtCCExpireMonth);
+	    chkDefault = (CheckBox)v.findViewById(R.id.chkCCDefault);
 	    
 	    ImagesAdapter adapter = new ImagesAdapter(getActivity(), R.layout.listview_image_row, DataFetchFactory.getCreditCardImages());
 		cboTypes.setAdapter(adapter);
@@ -81,6 +84,7 @@ public class CreditCardDialogFragment extends DialogFragment {
 	    	txtSecurityCode.setText(creditCard.securityCode);
 	    	txtExpireMonth.setText(temp[0]);
 	    	cboTypes.setSelection(creditCard.type);
+	    	chkDefault.setSelected(creditCard.isDefault);
 
 	    	for (int i = 0; i < tempAdapter.getCount(); i++) {
 	    		if (tempAdapter.getItem(i).equals(temp[1])) {

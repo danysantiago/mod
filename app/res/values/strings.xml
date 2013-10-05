@@ -48,4 +48,10 @@
     <string name="hint_ccfullname">Full Name</string>
     <string name="hint_ccv">CCV</string>
     <string name="hint_ccmonth">Month</string>
+    <string name="hint_ccdefault">Default?</string>
+    <string name="hint_addrline1">Address Line 1</string>
+    <string name="hint_addrline2">Address Line 2</string>
+    <string name="hint_addrcity">City</string>
+    <string name="hint_addrstate">State</string>
+    <string name="hint_addrzipcode">Zip Code</string>
 </resources>

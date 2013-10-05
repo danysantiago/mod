@@ -1,15 +1,13 @@
 package icom5016.modstore.resources;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.User;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-
-
-
 
 public class DataFetchFactory {
 
@@ -70,5 +68,18 @@ public class DataFetchFactory {
 	    }
 	    
 	    return strYears;
+	}
+	
+	public static String[] getCountries() {
+		Locale[] isoCountries = Locale.getAvailableLocales();
+		String[] countries = new String[isoCountries.length];
+		int i = 0;
+		
+		for (Locale isoCountry : isoCountries) {
+			//Locale l = new Locale("", isoCountry);
+			countries[i] = isoCountry.getDisplayName();
+		}
+		
+		return countries;
 	}
 }

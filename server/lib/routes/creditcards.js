@@ -14,6 +14,7 @@ var fakeCC = [
     "name": "Omar Soto",
     "type": 0,
     "expirationDate": "05/2016",
+    "isDefault" : true,
     "created_ts": Date.now()
   },
   {
@@ -23,6 +24,7 @@ var fakeCC = [
     "name": "Manuel Marquez",
     "type": 1,
     "expirationDate": "05/2016",
+    "isDefault" : false,
     "created_ts": Date.now()
   },
   {
@@ -32,6 +34,7 @@ var fakeCC = [
     "name": "Daniel Santiago",
     "type": 2,
     "expirationDate": "05/2016",
+    "isDefault" : false,
     "created_ts": Date.now()
   },
   {
@@ -41,6 +44,7 @@ var fakeCC = [
     "name": "Juan Ocasio",
     "type": 3,
     "expirationDate": "05/2016",
+    "isDefault" : false,
     "created_ts": Date.now()
   },
   {
@@ -50,6 +54,7 @@ var fakeCC = [
     "name": "Wilma Pastrana",
     "type": 4,
     "expirationDate": "05/2016",
+    "isDefault" : false,
     "created_ts": Date.now()
   }
 ];
