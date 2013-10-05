@@ -1,6 +1,5 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.fragments.CartFragment;
 import icom5016.modstore.fragments.MainCategoryFragment;
 import icom5016.modstore.fragments.MainFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
@@ -167,22 +166,6 @@ public class MainActivity extends MainInterfaceActivity {
 	}
 
 
-
-	//Cart Button Listener 
-    public void cartButtonListner(MenuItem menuItem) {
-		if(this.isCartActive){
-			menuItem.setIcon(R.drawable.btn_cart );
-    		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek() , MainInterfaceActivity.getContentFragmentId());
-    	}
-    	else{
-    	  menuItem.setIcon(R.drawable.navigation_cancel);
-    	  this.fragmentStack.push(new CartFragment());
-    	  AndroidResourceFactory.setNewFragment(this, new CartFragment(), MainInterfaceActivity.getContentFragmentId());
-    	}
-    	//Create A new Activity for Cart
-    	this.isCartActive = !this.isCartActive;
-		
-	}
     
     
     

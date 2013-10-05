@@ -19,12 +19,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 
 
 /*
@@ -34,7 +38,9 @@ import android.widget.ListView;
 public abstract class MainInterfaceActivity extends Activity {
 	
 					/* Instance variables */
-	
+		
+					/*Cart Variables */
+	private PopupWindow popUp;
 	
 	//Drawer Variables
 	protected DrawerLayout mainDrawerLayout; //Contains main layout variable
@@ -43,9 +49,6 @@ public abstract class MainInterfaceActivity extends Activity {
 	//User variable
 	protected User activeUser = null;
 		//If Null User Does Not Exist
-	
-	//Cart Toggle Variable
-	protected boolean isCartActive = false;
 	
 	//Fragment Stack
 	protected Stack<Fragment> fragmentStack;
@@ -331,17 +334,28 @@ public abstract class MainInterfaceActivity extends Activity {
 	//Make On Back Return to Previous Element
 	@Override
 	public void onBackPressed() {
-		//Normal Back if no other Fragment is Use
-		if(this.fragmentStack.size() <= 1){
-			super.onBackPressed();
-		}
-		else{
-			this.fragmentStack.pop();
-			AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-		}
+
+			//Normal Back if no other Fragment is Use
+			if(this.fragmentStack.size() <= 1){
+				super.onBackPressed();
+			}
+			else{
+				this.fragmentStack.pop();
+				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+			}		
 	}
 
     
     //Cart Button Listener Abstract
-    public abstract void cartButtonListner(MenuItem menuItem);
+    public void cartButtonListner(MenuItem menuItem){
+        
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+        this.popUp = new PopupWindow(inflater.inflate(R.layout.popup_cart, null, false),LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT, true);
+        this.popUp.showAtLocation(this.findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
+    }
+    
+    //Close Cart Listener
+    public void closeCartListener(View view){
+    	this.popUp.dismiss();
+    }
 }

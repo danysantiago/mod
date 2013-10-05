@@ -24,7 +24,7 @@ public class ForgotDialog extends DialogFragment {
 		            	  Intent forgotIntent = new Intent(getActivity(), ForgotActivity.class);
 		            	   switch(which){
 		            	   case 0: //UserName
-		            		   bundle.putInt(ConstantClass.FORGOT_TYPE_KEY, ConstantClass.FORGOT_TYPE_EMAIL);
+		            		   bundle.putInt(ConstantClass.FORGOT_TYPE_KEY, ConstantClass.FORGOT_TYPE_USERNAME);
 		            		   forgotIntent.putExtras(bundle);
 		            		   startActivity(forgotIntent);
 		            		   break;

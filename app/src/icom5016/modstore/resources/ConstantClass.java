@@ -39,7 +39,7 @@ public class ConstantClass {
 	//ForgotLogIn
 	public final static String 	FORGOT_TAG = "forgotUserNameOrPassword";
 	public final static String FORGOT_TYPE_KEY = "forgotTypeKey";
-	public final static int FORGOT_TYPE_EMAIL = 0;
+	public final static int FORGOT_TYPE_USERNAME = 0;
 	public final static int FORGOT_TYPE_PASSWORD = 1;
 	
 

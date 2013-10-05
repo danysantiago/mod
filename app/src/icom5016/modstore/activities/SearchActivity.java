@@ -11,6 +11,7 @@ import android.widget.SearchView;
 
 public class SearchActivity extends MainInterfaceActivity {
 		
+	private SearchView searchView;
 
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class SearchActivity extends MainInterfaceActivity {
 			//Load Search Fragment
 			if(savedInstanceState == null){
 				
-				//Load Empty Query into Bundel and starts Fragment
+				//Load Empty Query into Bundle and starts Fragment
 				Bundle bundle = new Bundle();
 				bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_ID, "");
 				bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_ID, true);
@@ -65,10 +66,10 @@ public class SearchActivity extends MainInterfaceActivity {
 			//Make Visible Search Bar and Expanded
 			MenuItem searchBarItem = menu.findItem(R.id.searchbar);
 			searchBarItem.setVisible(true);
-			SearchView searchBarView = (SearchView) searchBarItem.getActionView();
-			searchBarView.setIconified(false);
+			this.searchView = (SearchView) searchBarItem.getActionView();
+			this.searchView.setIconified(false);
 
-			searchBarView.setOnQueryTextListener(new SearchQueryListener()); 
+			this.searchView.setOnQueryTextListener(new SearchQueryListener()); 
 			
 			
 			return true;
@@ -94,6 +95,7 @@ public class SearchActivity extends MainInterfaceActivity {
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
+				searchView.clearFocus();
 				return customQueryTextOnSubmit(query);
 			}
 		}
@@ -107,18 +109,11 @@ public class SearchActivity extends MainInterfaceActivity {
 			fragment.setArguments(bundle);
 			this.fragmentStack.push(fragment);
 			AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId()); 
-			
 			return true;
 		}
 		
 		
 		
 		
-		
-			
-		//Abstract Methods
-			public void cartButtonListner(MenuItem menuItem) {
-				//NoOp
-			}
 			
 }

@@ -38,5 +38,11 @@
     <string name="register_email">Email:</string>
     <string name="register_fn">First Name:</string>
     <string name="register_ln">Last Name:</string>
-    <string name="logging_message">Logging in...</string>
+    <string name="logging_message">Logging in#8230;</string>
+    <string name="forgot_title">Forgot Something?</string>
+    <string name="forgot_message">If you forgotten your password or username, please enter your account’s email.</string>
+    <string name="forgot_send">Send</string>
+    <string name="login_username_hint">Username</string>
+    <string name="login_password_hint">Password</string>
+    
 </resources>

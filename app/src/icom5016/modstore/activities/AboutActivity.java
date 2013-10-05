@@ -57,10 +57,5 @@ public class AboutActivity extends MainInterfaceActivity {
 		return true;
 	}
 	
-	@Override
-	public void cartButtonListner(MenuItem menuItem) {
-		//NoOp
-	}
-
 
 }
