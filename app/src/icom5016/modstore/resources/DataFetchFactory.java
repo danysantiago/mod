@@ -1,5 +1,7 @@
 package icom5016.modstore.resources;
 
+import java.util.Calendar;
+
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.User;
 import android.app.Activity;
@@ -57,4 +59,16 @@ public class DataFetchFactory {
 		return new User("mamanu", "Manuel", "Enrique", "Marquez", "manuel.marquez1@upr.edu",0 ,true);
 	}
 	
+	public static String[] getNextYears(int next) {
+	    Calendar c = Calendar.getInstance();
+	    int year = c.get(Calendar.YEAR);
+	    
+	    String strYears[] = new String[next];
+	    
+	    for (int i = 0; i < next; i++) {
+	    	strYears[i] = String.valueOf(year + i);
+	    }
+	    
+	    return strYears;
+	}
 }

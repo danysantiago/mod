@@ -44,5 +44,8 @@
     <string name="forgot_send">Send</string>
     <string name="login_username_hint">Username</string>
     <string name="login_password_hint">Password</string>
-    
+    <string name="hint_ccnumber">Credit Card Number</string>
+    <string name="hint_ccfullname">Full Name</string>
+    <string name="hint_ccv">CCV</string>
+    <string name="hint_ccmonth">Month</string>
 </resources>

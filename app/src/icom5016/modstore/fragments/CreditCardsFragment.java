@@ -4,14 +4,19 @@ import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
+import icom5016.modstore.models.CreditCard;
 import icom5016.modstore.uielements.CreditCardAdapter;
 
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class CreditCardsFragment extends ListFragment {
@@ -41,6 +46,7 @@ public class CreditCardsFragment extends ListFragment {
 				//Pass JSON to Adapter
 				CreditCardAdapter adapter = new CreditCardAdapter(getActivity(), R.layout.listview_creditcard_row, json);
 				lstCreditCards.setAdapter(adapter);
+				lstCreditCards.setOnItemClickListener(new listOnClick());
 
 				//Show list view
 				showList();
@@ -55,10 +61,19 @@ public class CreditCardsFragment extends ListFragment {
 		
 		request.execute();
 	}
+	
+	class listOnClick implements OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	        DialogFragment dialog = new CreditCardDialogFragment();
+	        ((CreditCardDialogFragment)dialog).creditCard = (CreditCard)lstCreditCards.getAdapter().getItem(arg2);
+	        dialog.show(getActivity().getSupportFragmentManager(), "NewCreditCardDialog");
+		}
+	}
 
 	@Override
 	void addOnClickListener(View v) {
-		Toast t = Toast.makeText(v.getContext(), "The user wants to add something!", Toast.LENGTH_SHORT);
-		t.show();
+        DialogFragment dialog = new CreditCardDialogFragment();
+        dialog.show(getActivity().getSupportFragmentManager(), "NewCreditCardDialog");
 	}
 }
