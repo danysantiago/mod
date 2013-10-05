@@ -11,6 +11,7 @@ var fakeAddrs = [{
     "state": "",
     "country": "Puerto Rico",
     "zipcode": "00680",
+    "isDefault" : true,
     "created_ts": Date.now()
   },
   {
@@ -21,6 +22,7 @@ var fakeAddrs = [{
     "state": "",
     "country": "Puerto Rico",
     "zipcode": "00716",
+    "isDefault" : false,
     "created_ts": Date.now()
   },
   {
@@ -31,6 +33,7 @@ var fakeAddrs = [{
     "state": "",
     "country": "Puerto Rico",
     "zipcode": "00731",
+    "isDefault" : false,
     "created_ts": Date.now()
   }
 ];

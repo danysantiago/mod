@@ -6,6 +6,7 @@ import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.CreditCard;
 import icom5016.modstore.uielements.CreditCardAdapter;
+import icom5016.modstore.uielements.CreditCardDialog;
 
 import org.json.JSONObject;
 
@@ -28,12 +29,12 @@ public class CreditCardsFragment extends ListFragment {
         
         setTitle("Credit Cards:");
         
-        requestCategories();
+        requestCreditCards();
         
         return v;
     }
 	
-	private void requestCategories() {
+	private void requestCreditCards() {
 		//Perform http request
 		Bundle params = new Bundle();
 		
@@ -65,15 +66,15 @@ public class CreditCardsFragment extends ListFragment {
 	class listOnClick implements OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-	        DialogFragment dialog = new CreditCardDialogFragment();
-	        ((CreditCardDialogFragment)dialog).creditCard = (CreditCard)lstCreditCards.getAdapter().getItem(arg2);
+	        DialogFragment dialog = new CreditCardDialog();
+	        ((CreditCardDialog)dialog).creditCard = (CreditCard)lstCreditCards.getAdapter().getItem(arg2);
 	        dialog.show(getActivity().getSupportFragmentManager(), "NewCreditCardDialog");
 		}
 	}
 
 	@Override
 	void addOnClickListener(View v) {
-        DialogFragment dialog = new CreditCardDialogFragment();
+        DialogFragment dialog = new CreditCardDialog();
         dialog.show(getActivity().getSupportFragmentManager(), "NewCreditCardDialog");
 	}
 }
