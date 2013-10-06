@@ -1,88 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:layout_height="match_parent" >
 
     <ImageView
         android:id="@+id/imgCreditCard"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:src="@drawable/cc_mastercard" />
 
-    <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="5dp" >
-        
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+    <TextView
+        android:id="@+id/lblNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imgCreditCard"
+        android:text="@string/cc_number"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
-	        <TextView
-	            android:id="@+id/lblNumber"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/cc_number"
-	            android:textSize="15sp"
-	            android:textStyle="bold" />
-	
-	        <TextView
-	            android:id="@+id/txtCCNumber"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:paddingLeft="3dp"
-	            android:text="Number?"
-	            android:textSize="12sp" />
+    <TextView
+        android:id="@+id/txtCCNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lblNumber"
+        android:layout_alignBottom="@+id/lblNumber"
+        android:layout_toRightOf="@+id/lblNumber"
+        android:paddingLeft="3dp"
+        android:text="Number?"
+        android:textSize="12sp" />
 
-        </LinearLayout>
+    <TextView
+        android:id="@+id/lblExpire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="40dp"
+        android:text="@string/cc_expire"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-            
-	        <TextView
-	            android:id="@+id/lblName"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/cc_name"
-	            android:textSize="15sp" 
-	            android:textStyle="bold" />
-	
-	        <TextView
-	            android:id="@+id/txtCCName"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:paddingLeft="3dp"
-	            android:text="Name?"
-	            android:textSize="12sp" />
+    <TextView
+        android:id="@+id/txtCCExpire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblExpire"
+        android:layout_below="@+id/txtCCNumber"
+        android:text="expire?"
+        android:textSize="12sp" />
 
-        </LinearLayout>
+    <TextView
+        android:id="@+id/lblName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtCCExpire"
+        android:layout_alignLeft="@+id/lblNumber"
+        android:text="@string/cc_name"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/txtCCName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lblName"
+        android:layout_alignBottom="@+id/lblName"
+        android:layout_toRightOf="@+id/lblName"
+        android:paddingLeft="3dp"
+        android:text="Name?"
+        android:textSize="12sp" />
+    
+    <ImageView
+        android:id="@+id/imgCCDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/btn_check_on_focused_holo_dark" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/lblExpire"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cc_expire"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtCCExpire"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-             />
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

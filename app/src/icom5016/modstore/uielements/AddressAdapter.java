@@ -55,6 +55,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
             holder.lblLine2 = (TextView)row.findViewById(R.id.lblAddrAddressLine2);
             holder.lblLocation = (TextView)row.findViewById(R.id.lblAddrLocation);
             holder.lblCountry = (TextView)row.findViewById(R.id.lblAddrCountry);
+            holder.imgDefault = (ImageView)row.findViewById(R.id.imgAddrDefault);
            
             row.setTag(holder);
         } else {
@@ -66,6 +67,12 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         holder.lblLine2.setText(addr.line2);
         holder.lblLocation.setText(addr.getLocation());
         holder.lblCountry.setText(addr.country);
+        
+        if (addr.isDefault) {
+        	holder.imgDefault.setVisibility(View.VISIBLE);
+        } else {
+        	holder.imgDefault.setVisibility(View.GONE);
+        }
 
         return row;
     }
@@ -75,5 +82,6 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         TextView lblLine2;
         TextView lblLocation;
         TextView lblCountry;
+        ImageView imgDefault;
     }
 }

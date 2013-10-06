@@ -84,14 +84,14 @@ public class CreditCardDialog extends DialogFragment {
 	    	txtSecurityCode.setText(creditCard.securityCode);
 	    	txtExpireMonth.setText(temp[0]);
 	    	cboTypes.setSelection(creditCard.type);
-	    	chkDefault.setSelected(creditCard.isDefault);
-
+	    	chkDefault.setChecked(creditCard.isDefault);
+	    	
 	    	for (int i = 0; i < tempAdapter.getCount(); i++) {
 	    		if (tempAdapter.getItem(i).equals(temp[1])) {
 	    			pos = i;
 	    		}
 	    	}
-	    	
+
 	    	if (pos != -1)
 	    		cboYears.setSelection(pos);
 	    }

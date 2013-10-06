@@ -58,6 +58,7 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
             holder.txtNumber = (TextView)row.findViewById(R.id.txtCCNumber);
             holder.txtExpire = (TextView)row.findViewById(R.id.txtCCExpire);
             holder.imgCreditCard = (ImageView)row.findViewById(R.id.imgCreditCard);
+            holder.imgDefault = (ImageView)row.findViewById(R.id.imgCCDefault);
            
             row.setTag(holder);
         } else {
@@ -68,13 +69,14 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
         holder.txtName.setText(creditCard.name);
         holder.txtNumber.setText(creditCard.number);
         holder.txtExpire.setText(creditCard.expire);
-        
+        holder.imgDefault.setVisibility((creditCard.isDefault) ? View.VISIBLE : View.GONE);
+
         if (creditCard.type < creditCardImages.length) {
         	holder.imgCreditCard.setImageResource(this.creditCardImages[creditCard.type]);
         } else {
         	// Set No Recognized Image...
         }
-
+        
         return row;
     }
    
@@ -83,5 +85,6 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
         TextView txtName;
         TextView txtNumber;
         TextView txtExpire;
+        ImageView imgDefault;
     }
 }

@@ -78,7 +78,7 @@ public class AddressDialog extends DialogFragment {
 	    	txtCity.setText(address.city);
 	    	txtState.setText(address.state);
 	    	txtZipcode.setText(address.zipcode);
-	    	chkDefault.setSelected(address.isDefault);
+	    	chkDefault.setChecked(address.isDefault);
 
 	    	for (int i = 0; i < tempAdapter.getCount(); i++) {
 	    		if (tempAdapter.getItem(i).equals(address.country)) {
