@@ -69,4 +69,8 @@
     <string name="placeholder_search_desc">Placeholder Search Icon</string>
     <string name="search_progress_msg">Searching…</string>
     <string name="search_error">Unable to complete search. Please try again.</string>
+    <string name="hint_ccyear">Year</string>
+    <string name="category_list_title">Select a category</string>
+    <string name="placeholder_category_desc">Placeholder List Icon</string>
+    <string name="category_list_error">Unable to generate list. Please try again.</string>
 </resources>

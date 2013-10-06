@@ -1,6 +1,6 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.fragments.MainCategoryFragment;
+import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.SellItemFragment;
 import icom5016.modstore.models.User;
@@ -193,8 +193,8 @@ public abstract class MainInterfaceActivity extends Activity {
     		//Category (new Fragment)
     		//Home (Refresh)
     		if(this instanceof MainActivity ){
-    	  		bundle.putString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY, ConstantClass.MAINCATEGORY_FRAGMENT_MAIN_VALUE);
-    	  		MainCategoryFragment fragment= new MainCategoryFragment();
+    	  		bundle.putInt(ConstantClass.CATEGORY_LIST_PARENT_KEY, -1);
+    	  		CategoryListFragment fragment= new CategoryListFragment();
     	  		fragment.setArguments(bundle);
     	  		this.fragmentStack.push(fragment);
     	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
@@ -247,8 +247,8 @@ public abstract class MainInterfaceActivity extends Activity {
     	case 1:
     		//Categories (new Fragment)
     		if(this instanceof MainActivity ){
-    	  		bundle.putString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY, ConstantClass.MAINCATEGORY_FRAGMENT_MAIN_VALUE);
-    	  		MainCategoryFragment fragment= new MainCategoryFragment();
+    			bundle.putInt(ConstantClass.CATEGORY_LIST_PARENT_KEY, -1);
+    	  		CategoryListFragment fragment= new CategoryListFragment();
     	  		fragment.setArguments(bundle);
     	  		this.fragmentStack.push(fragment);
     	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());

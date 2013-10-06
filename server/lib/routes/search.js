@@ -44,7 +44,7 @@ routes.get("/search/", function (req, res) {
     ]
   };
 
-  res.send(fakeProduct);
+  res.send(fakeList);
 });
 
 

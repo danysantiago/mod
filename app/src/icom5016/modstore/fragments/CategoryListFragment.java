@@ -1,0 +1,97 @@
+package icom5016.modstore.fragments;
+
+import icom5016.modstore.activities.R;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
+import icom5016.modstore.resources.ConstantClass;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+public class CategoryListFragment extends Fragment {
+	
+	private ListView categoriesList;
+	private ProgressBar categoryListProgressBar;
+	private ImageView categoryListImageView;
+	private LinearLayout categoriesListLayout;
+	
+	public CategoryListFragment(){
+	};
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState){
+		//Inflate Layout
+		View view = inflater.inflate(R.layout.fragment_category_list, container,false);
+		
+		
+		//Instance Views
+		this.categoriesListLayout = (LinearLayout) view.findViewById(R.id.categoryLinearLayout);
+		this.categoriesList = (ListView) view.findViewById(R.id.categoryListView);
+		this.categoryListProgressBar = (ProgressBar) view.findViewById(R.id.categoryListProgressBar);
+		this.categoryListImageView = (ImageView) view.findViewById(R.id.placehoderCategoryList);
+		
+		Bundle bundle = this.getArguments();
+		int parent = -1; //If -1 Default
+		
+		
+		if(bundle != null){
+			parent = bundle.getInt(ConstantClass.CATEGORY_LIST_PARENT_KEY);
+		}	
+		
+		this.doHttpCategoryList(parent);
+		
+		return view;
+	}
+	
+	private void doHttpCategoryList(int parent){
+		//Hide Icon Make Visible ProgressBar
+		this.categoryListImageView.setVisibility(View.GONE);
+		this.categoryListProgressBar.setVisibility(View.VISIBLE);
+		
+		
+		//Perform http request
+		Bundle params = new Bundle();
+		params.putString("method", "GET");
+		params.putString("url", Server.Categories.GET+Integer.toString(parent));
+		
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+			
+			@Override
+			public void onSucess(JSONObject json) {
+				
+				
+				//Set Visibility
+				categoriesListLayout.setVisibility(View.VISIBLE);
+			}
+			
+			@Override
+			public void onFailed() {
+				
+				
+				categoryListImageView.setVisibility(View.VISIBLE);
+				Toast.makeText(getActivity(), R.string.category_list_error, Toast.LENGTH_LONG).show();
+			}
+			
+			@Override
+			public void onDone() {
+				categoryListProgressBar.setVisibility(View.GONE);
+			}
+		});
+		request.execute();
+	}
+
+}
