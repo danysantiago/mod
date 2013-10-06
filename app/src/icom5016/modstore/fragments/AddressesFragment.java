@@ -19,7 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-public class AddressesFragment extends ListFragment {
+public class AddressesFragment extends SettingListFragment {
 	public AddressesFragment() { };
 	
 	@Override
@@ -47,8 +47,8 @@ public class AddressesFragment extends ListFragment {
 			public void onSucess(JSONObject json) {
 				//Pass JSON to Adapter
 				AddressAdapter adapter = new AddressAdapter(getActivity(), R.layout.listview_address_row, json);
-				lstCreditCards.setAdapter(adapter);
-				lstCreditCards.setOnItemClickListener(new listOnClick());
+				lstListView.setAdapter(adapter);
+				lstListView.setOnItemClickListener(new listOnClick());
 
 				//Show list view
 				showList();
@@ -68,7 +68,7 @@ public class AddressesFragment extends ListFragment {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 	        DialogFragment dialog = new AddressDialog();
-	        ((AddressDialog)dialog).address = (Address)lstCreditCards.getAdapter().getItem(arg2);
+	        ((AddressDialog)dialog).address = (Address)lstListView.getAdapter().getItem(arg2);
 	        dialog.show(getActivity().getSupportFragmentManager(), "AddressDialog");
 		}
 	}

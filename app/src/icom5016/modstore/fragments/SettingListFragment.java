@@ -12,22 +12,22 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public abstract class ListFragment extends Fragment {
-	protected ListView lstCreditCards;
+public abstract class SettingListFragment extends Fragment {
+	protected ListView lstListView;
 	protected ImageButton btnAdd;
 	protected TextView txtTitle;
 	protected ProgressBar listProgressBar;
 	protected TextView txtError;
 	protected ActionBar actionBar;
 	
-	public ListFragment() { };
+	public SettingListFragment() { };
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.fragment_list, container,false);
+		View view = inflater.inflate(R.layout.fragment_settinglist, container,false);
 		
 		// Load all the fragment elements.
-        lstCreditCards = (ListView)view.findViewById(R.id.lstListView);       
+        lstListView = (ListView)view.findViewById(R.id.lstListView);       
     	btnAdd = (ImageButton)view.findViewById(R.id.btnListAdd);
         txtTitle = (TextView)view.findViewById(R.id.txtListTitle);
         listProgressBar = (ProgressBar)view.findViewById(R.id.listProgressBar);
@@ -52,7 +52,7 @@ public abstract class ListFragment extends Fragment {
 	
 	protected void showLoading() {
 		listProgressBar.setVisibility(View.VISIBLE);
-		lstCreditCards.setVisibility(View.GONE);
+		lstListView.setVisibility(View.GONE);
 		btnAdd.setVisibility(View.GONE);
 		txtTitle.setVisibility(View.GONE);
 		listProgressBar.setVisibility(View.GONE);
@@ -61,7 +61,7 @@ public abstract class ListFragment extends Fragment {
 	
 	protected void showList() {
 		listProgressBar.setVisibility(View.GONE);
-		lstCreditCards.setVisibility(View.VISIBLE);
+		lstListView.setVisibility(View.VISIBLE);
 		btnAdd.setVisibility(View.VISIBLE);
 		txtTitle.setVisibility(View.VISIBLE);
 		listProgressBar.setVisibility(View.GONE);
@@ -70,7 +70,7 @@ public abstract class ListFragment extends Fragment {
 	
 	protected void showError() {
 		listProgressBar.setVisibility(View.GONE);
-		lstCreditCards.setVisibility(View.GONE);
+		lstListView.setVisibility(View.GONE);
 		btnAdd.setVisibility(View.GONE);
 		txtTitle.setVisibility(View.GONE);
 		listProgressBar.setVisibility(View.GONE);

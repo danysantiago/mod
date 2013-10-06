@@ -20,7 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-public class CreditCardsFragment extends ListFragment {
+public class CreditCardsFragment extends SettingListFragment {
 	public CreditCardsFragment() { };
 	
 	@Override
@@ -46,8 +46,8 @@ public class CreditCardsFragment extends ListFragment {
 			public void onSucess(JSONObject json) {
 				//Pass JSON to Adapter
 				CreditCardAdapter adapter = new CreditCardAdapter(getActivity(), R.layout.listview_creditcard_row, json);
-				lstCreditCards.setAdapter(adapter);
-				lstCreditCards.setOnItemClickListener(new listOnClick());
+				lstListView.setAdapter(adapter);
+				lstListView.setOnItemClickListener(new listOnClick());
 
 				//Show list view
 				showList();
@@ -67,7 +67,7 @@ public class CreditCardsFragment extends ListFragment {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 	        DialogFragment dialog = new CreditCardDialog();
-	        ((CreditCardDialog)dialog).creditCard = (CreditCard)lstCreditCards.getAdapter().getItem(arg2);
+	        ((CreditCardDialog)dialog).creditCard = (CreditCard)lstListView.getAdapter().getItem(arg2);
 	        dialog.show(getActivity().getSupportFragmentManager(), "NewCreditCardDialog");
 		}
 	}

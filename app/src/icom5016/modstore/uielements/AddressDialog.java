@@ -80,11 +80,11 @@ public class AddressDialog extends DialogFragment {
 	    	txtZipcode.setText(address.zipcode);
 	    	chkDefault.setSelected(address.isDefault);
 
-	    	/*for (int i = 0; i < tempAdapter.getCount(); i++) {
+	    	for (int i = 0; i < tempAdapter.getCount(); i++) {
 	    		if (tempAdapter.getItem(i).equals(address.country)) {
 	    			pos = i;
 	    		}
-	    	}*/
+	    	}
 
 	    	if (pos != -1)
 	    		cboCountries.setSelection(pos);
