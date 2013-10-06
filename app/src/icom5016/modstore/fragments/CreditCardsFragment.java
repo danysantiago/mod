@@ -1,12 +1,10 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
-import icom5016.modstore.fragments.AddressesFragment.listOnClick;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.CreditCard;
-import icom5016.modstore.uielements.AddressAdapter;
 import icom5016.modstore.uielements.CreditCardAdapter;
 import icom5016.modstore.uielements.CreditCardDialog;
 

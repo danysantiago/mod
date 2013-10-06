@@ -1,7 +1,6 @@
 package icom5016.modstore.uielements;
 
 import icom5016.modstore.activities.R;
-import icom5016.modstore.models.Address;
 import icom5016.modstore.models.SettingRow;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SettingListAdapter extends ArrayAdapter<SettingRow> {
