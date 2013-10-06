@@ -39,4 +39,12 @@
         android:text="TextView"
         android:textSize="12sp" />
 
+    <ImageView
+        android:id="@+id/imgAddrDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/btn_check_on_focused_holo_dark" />
+
 </RelativeLayout>
