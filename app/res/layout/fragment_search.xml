@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textview_search"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="Search Fragment" >
-    
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-</TextView>
+    <ImageView
+        android:id="@+id/placehoder_search"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/placeholder_search_desc"
+        android:src="@drawable/placeholder_search_black" />
+	<ListView
+            android:id="@+id/listview_search_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" >
+        </ListView>
+    
+</RelativeLayout>

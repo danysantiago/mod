@@ -42,8 +42,8 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 				
 				//Load Empty Query into Bundle and starts Fragment
 				Bundle bundle = new Bundle();
-				bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_ID, "");
-				bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_ID, true);
+				bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY, "");
+				bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_KEY, false);
 				bundle.putInt(ConstantClass.SEARCH_DIALOG_SORT_KEY, sortSpinnerValue);
 				bundle.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY, categoriesSpinnerValue);
 				bundle.putInt(ConstantClass.SEARCH_DIALOG_RATING_KEY, ratingSpinnerValue);
@@ -139,8 +139,8 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 		private boolean customQueryTextOnSubmit(String query){
 			
 			Bundle bundle = new Bundle();
-			bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_ID, query);
-			bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_ID, false);
+			bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY, query);
+			bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_KEY, true);
 			bundle.putInt(ConstantClass.SEARCH_DIALOG_SORT_KEY, sortSpinnerValue);
 			bundle.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY, categoriesSpinnerValue);
 			bundle.putInt(ConstantClass.SEARCH_DIALOG_RATING_KEY, ratingSpinnerValue);

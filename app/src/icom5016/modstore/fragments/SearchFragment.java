@@ -3,17 +3,17 @@ package icom5016.modstore.fragments;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.resources.ConstantClass;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 public class SearchFragment extends Fragment {
 	
-	private String searchQuery = "";
-	private boolean isEmptyQuery = true;
+	private Bundle searchArgs;
+	private boolean isSearchClick;
+	private ProgressDialog pd;
 	
 	public SearchFragment(){
 	};
@@ -21,22 +21,36 @@ public class SearchFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState){
+		
+		//Set Layout
 		View view = inflater.inflate(R.layout.fragment_search, container,false);
 		
-		//Obtain from bundle
-		this.searchQuery = this.getArguments().getString(ConstantClass.SEARCH_FRAGMENT_QUERY_ID);
-		this.isEmptyQuery = this.getArguments().getBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_ID);
-		Log.v("Arraived", "Yay");
-		
-		
-		TextView textView = (TextView) view.findViewById(R.id.textview_search);
-		if(isEmptyQuery)
-			textView.setText("Nothing to Search");
-		else{
-			textView.setText(this.searchQuery);
-		}
-		
+		//Get Args
+		 this.searchArgs = this.getArguments();
+		 
+		 this.isSearchClick = this.searchArgs.getBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_KEY);
+		 
+		 //If Search Click False return view
+		 if(!isSearchClick){
+			 return view;
+		 }
+
+		 //GenerateFragment
+		// try {
+				pd = new ProgressDialog(getActivity());
+				pd.setMessage(getResources().getString(R.string.search_progress_msg));
+				pd.show();
+				
+		        this.doHttpSearch(searchArgs);
+	      //  } catch (JSONException e) {
+		    //    e.printStackTrace();
+	        //}
+	    
 		return view;
+	}
+	
+	private void doHttpSearch(Bundle bundle){
+		
 	}
 	
 }
