@@ -2,8 +2,6 @@ package icom5016.modstore.uielements;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.Address;
-import icom5016.modstore.models.CreditCard;
-import icom5016.modstore.resources.DataFetchFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;

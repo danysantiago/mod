@@ -13,7 +13,7 @@ public class User {
 	private String email;
 	private int guid;
 	private boolean isAdmin;
-	private String token;
+	//private String token;
 	
 	
 	public User(String username, String firstName, String middleName, String lastName, String email, int guid ,boolean isAdmin) {

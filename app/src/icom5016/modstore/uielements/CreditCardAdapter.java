@@ -1,7 +1,6 @@
 package icom5016.modstore.uielements;
 
 import icom5016.modstore.activities.R;
-import icom5016.modstore.fragments.CreditCardsFragment;
 import icom5016.modstore.models.CreditCard;
 import icom5016.modstore.resources.DataFetchFactory;
 
@@ -11,7 +10,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

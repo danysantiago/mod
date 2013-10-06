@@ -1,11 +1,13 @@
 package icom5016.modstore.fragments;
 
+import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.uielements.ProductAdapter;
+import icom5016.modstore.uielements.ProductListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,6 +115,7 @@ public class MainCategoryFragment extends Fragment {
 					//Show list view
 					pd.setVisibility(View.GONE);
 					list.setVisibility(View.VISIBLE);
+					list.setOnItemClickListener(new ProductListener((MainInterfaceActivity) getActivity()));
 
 				} catch (JSONException e) {
 					Toast.makeText(getActivity(), "Bad JSON parsing...",

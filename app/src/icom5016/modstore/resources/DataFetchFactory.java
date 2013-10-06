@@ -1,10 +1,10 @@
 package icom5016.modstore.resources;
 
-import java.util.Calendar;
-import java.util.Locale;
-
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.User;
+
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;

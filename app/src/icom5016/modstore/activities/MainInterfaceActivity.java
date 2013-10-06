@@ -51,7 +51,7 @@ public abstract class MainInterfaceActivity extends Activity {
 		//If Null User Does Not Exist
 	
 	//Fragment Stack
-	protected Stack<Fragment> fragmentStack;
+	public Stack<Fragment> fragmentStack;
 	
 	
 	@Override
@@ -122,7 +122,7 @@ public abstract class MainInterfaceActivity extends Activity {
 	
 						/*Supplementary Methods*/
 	
-	protected static int getContentFragmentId()
+	public static int getContentFragmentId()
 	{
 		return R.id.content_frame;
 	}
