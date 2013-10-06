@@ -5,14 +5,23 @@ import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.uielements.SearchFilterDialog;
 import android.app.ActionBar;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
-public class SearchActivity extends MainInterfaceActivity {
+public class SearchActivity extends MainInterfaceActivity implements SearchFilterDialog.SearchFilterDialogListener {
 		
 	private SearchView searchView;
+	
+				/*Filter Values*/
+    private int sortSpinnerValue;
+    private int categoriesSpinnerValue;
+    private int ratingSpinnerValue;
+    private int conditionSpinnerValue;
+    private double startPriceValue;
+    private double endPriceValue;
 
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +35,8 @@ public class SearchActivity extends MainInterfaceActivity {
 			ActionBarVar.setHomeButtonEnabled(true);
 			ActionBarVar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 			
+			this.setDefaultFilterParams();
+
 			//Load Search Fragment
 			if(savedInstanceState == null){
 				
@@ -33,6 +44,12 @@ public class SearchActivity extends MainInterfaceActivity {
 				Bundle bundle = new Bundle();
 				bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_ID, "");
 				bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_ID, true);
+				bundle.putInt(ConstantClass.SEARCH_DIALOG_SORT_KEY, sortSpinnerValue);
+				bundle.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY, categoriesSpinnerValue);
+				bundle.putInt(ConstantClass.SEARCH_DIALOG_RATING_KEY, ratingSpinnerValue);
+				bundle.putInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY, conditionSpinnerValue);
+				bundle.putDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY, startPriceValue);
+				bundle.putDouble(ConstantClass.SEARCH_DIALOG_END_PRICE_KEY, endPriceValue);
 				SearchFragment fragment = new SearchFragment();
 				fragment.setArguments(bundle);
 				
@@ -42,7 +59,15 @@ public class SearchActivity extends MainInterfaceActivity {
 			}
 			
 		};
+		
+					/*Set Default Values*/
+		@Override
+		protected void onResume() {
+			super.onResume();
+		}
+					
 					/*Navigate Up the Stack*/
+		
 		
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item){
@@ -51,7 +76,8 @@ public class SearchActivity extends MainInterfaceActivity {
 				finish();
 				break;
 			case R.id.btn_search_filter:
-				new SearchFilterDialog().show(this.getFragmentManager(), ConstantClass.SEARCH_FILTER_DIALOG_TAG);
+				SearchFilterDialog.newInstance(sortSpinnerValue, categoriesSpinnerValue, ratingSpinnerValue, conditionSpinnerValue, startPriceValue, endPriceValue)
+				.show(this.getFragmentManager(), ConstantClass.SEARCH_FILTER_DIALOG_TAG);
 				break;	
 			}
 			return super.onOptionsItemSelected(item);
@@ -115,6 +141,12 @@ public class SearchActivity extends MainInterfaceActivity {
 			Bundle bundle = new Bundle();
 			bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_ID, query);
 			bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_ID, false);
+			bundle.putInt(ConstantClass.SEARCH_DIALOG_SORT_KEY, sortSpinnerValue);
+			bundle.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY, categoriesSpinnerValue);
+			bundle.putInt(ConstantClass.SEARCH_DIALOG_RATING_KEY, ratingSpinnerValue);
+			bundle.putInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY, conditionSpinnerValue);
+			bundle.putDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY, startPriceValue);
+			bundle.putDouble(ConstantClass.SEARCH_DIALOG_END_PRICE_KEY, endPriceValue);
 			SearchFragment fragment= new SearchFragment();
 			fragment.setArguments(bundle);
 			this.fragmentStack.push(fragment);
@@ -123,7 +155,33 @@ public class SearchActivity extends MainInterfaceActivity {
 		}
 		
 		
+					/*Dialog Listener*/
+		@Override
+		public void onDialogOkClick(DialogFragment dialog) {
+			SearchFilterDialog sfDialog = (SearchFilterDialog) dialog;
+			
+			sortSpinnerValue = sfDialog.getSortSpinnerValue();
+		    categoriesSpinnerValue = sfDialog.getCategoriesSpinnerValue();
+		    ratingSpinnerValue = sfDialog.getRatingSpinnerValue();
+		    conditionSpinnerValue = sfDialog.getConditionSpinnerValue();
+		    startPriceValue = sfDialog.getStartPriceValue();
+		    endPriceValue = sfDialog.getEndPriceValue();
+		}
+		@Override
+		public void onDialogCancelClick(DialogFragment dialog) {
+		}
 		
+						/*Set Default Values*/
+		private void setDefaultFilterParams() {
+			sortSpinnerValue = 0;
+		    categoriesSpinnerValue = 0;
+		    ratingSpinnerValue = 0;
+		    conditionSpinnerValue = 0;
+		    startPriceValue = -1;
+		    endPriceValue = -1;
+
+		}
+
 		
 			
 }

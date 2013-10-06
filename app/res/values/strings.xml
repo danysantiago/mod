@@ -55,4 +55,15 @@
     <string name="hint_addrcity">City</string>
     <string name="hint_addrstate">State</string>
     <string name="hint_addrzipcode">Zip Code</string>
+    <string name="search_filter_title">Refine Search</string>
+    <string name="search_filter_cancel">Cancel</string>
+    <string name="search_filter_sort">Sort</string>
+    <string name="search_filter_categories">Categories</string>
+    <string name="search_filter_rating">Rating</string>
+    <string name="search_filter_condition">Condition</string>
+    <string name="search_filter_price">Price</string>
+    <string name="search_filter_to">To</string>
+    <string name="search_filter_start_hint">$0.00</string>
+    <string name="search_filter_end_hint">Any</string>
+    <string name="search_filter_error_price">Error in Price Order</string>
 </resources>

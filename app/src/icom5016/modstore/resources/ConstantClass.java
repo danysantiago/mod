@@ -44,5 +44,17 @@ public class ConstantClass {
 	
 	//SEARCH FILTER
 	public final static String SEARCH_FILTER_DIALOG_TAG = "searchFilterDialogTag";
+	public final static String[] SEARCH_FILTER_SORT = new String[]{"Best Match","Price: Low to High", "Price: High to Low", "Time: ending soonest", "Time: newly listed"};
+	public static final String[] SEARCH_FILTER_RATING = new String[]{"Any", "5 Stars or More", "4 Stars or More", "3 Stars or More", "2 Stars or More", "1 Stars or More" };
+	public static final String[] SEARCH_FILTER_CONDITION = new String[]{"Any", "Buy It Now", "Bid Only"};
+	
+	//Dialog Keys
+	public static final String SEARCH_DIALOG_SORT_KEY = "dialogSortKey";
+	public static final String SEARCH_DIALOG_CATEGORIES_KEY = "dialogCategoriesKey";
+	public static final String SEARCH_DIALOG_RATING_KEY = "dialogRatingKey";
+	public static final String SEARCH_DIALOG_CONDITION_KEY = "dialogConditionKey";
+	public static final String SEARCH_DIALOG_START_PRICE_KEY = "dialogStartPriceKey";
+	public static final String SEARCH_DIALOG_END_PRICE_KEY = "dialogEndPriceKey";
+	
 
 }

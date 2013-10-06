@@ -82,4 +82,11 @@ public class DataFetchFactory {
 		
 		return countries;
 	}
+	
+	public static String[] fetchAllCategories(){
+		return new String[]{"Books", "Electronics", "Computers", "Clothing", "Shoes", "Sports" };
+	}
+
+	
+	
 }
