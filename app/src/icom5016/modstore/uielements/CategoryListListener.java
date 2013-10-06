@@ -1,10 +1,14 @@
 package icom5016.modstore.uielements;
 
 import icom5016.modstore.activities.MainInterfaceActivity;
+import icom5016.modstore.fragments.CategoryListFragment;
+import icom5016.modstore.models.Category;
+import icom5016.modstore.resources.AndroidResourceFactory;
+import icom5016.modstore.resources.ConstantClass;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
 public class CategoryListListener implements OnItemClickListener {
 
@@ -16,9 +20,14 @@ public class CategoryListListener implements OnItemClickListener {
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		Toast.makeText(this.activity, "Yay Category Click", Toast.LENGTH_SHORT).show();
-
+	public void onItemClick(AdapterView<?> listView, View view, int pos, long arg3) {
+		Category category = (Category) listView.getAdapter().getItem(pos);
+		CategoryListFragment clf = new CategoryListFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(ConstantClass.CATEGORY_LIST_PARENT_KEY, category.getId());
+		clf.setArguments(bundle);
+		this.activity.fragmentStack.push(clf);
+		AndroidResourceFactory.setNewFragment(activity, this.activity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 	}
 
 }

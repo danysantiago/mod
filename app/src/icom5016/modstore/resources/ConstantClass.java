@@ -55,5 +55,7 @@ public class ConstantClass {
 	public static final String SEARCH_DIALOG_START_PRICE_KEY = "dialogStartPriceKey";
 	public static final String SEARCH_DIALOG_END_PRICE_KEY = "dialogEndPriceKey";
 	
-
+	//ProductList Constant
+	public static final String PRODUCT_LIST_CATEGORY_KEY ="productListCategoryKey";
+	
 }

@@ -5,6 +5,7 @@ import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
+import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.uielements.CategoryListAdapter;
 import icom5016.modstore.uielements.CategoryListListener;
@@ -90,6 +91,13 @@ public class CategoryListFragment extends Fragment {
 					
 					if(listJson.length() == 0){
 						//Open ProductListFragment
+						Bundle bundle = new Bundle();
+						bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, Integer.parseInt(parentJson.getString("id")));
+						ProductListFragment plf = new ProductListFragment();
+						plf.setArguments(bundle);
+						MainInterfaceActivity mia = (MainInterfaceActivity) getActivity();
+						mia.fragmentStack.push(plf);
+						AndroidResourceFactory.setNewFragment(mia, mia.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 					}
 					else{
 						//Populate stuff
