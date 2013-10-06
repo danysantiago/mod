@@ -92,7 +92,7 @@ public class CategoryListFragment extends Fragment {
 					if(listJson.length() == 0){
 						//Open ProductListFragment
 						Bundle bundle = new Bundle();
-						bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, Integer.parseInt(parentJson.getString("id")));
+						bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, parentJson.getInt("id"));
 						ProductListFragment plf = new ProductListFragment();
 						plf.setArguments(bundle);
 						MainInterfaceActivity mia = (MainInterfaceActivity) getActivity();
