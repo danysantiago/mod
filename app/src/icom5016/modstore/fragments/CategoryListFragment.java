@@ -1,11 +1,15 @@
 package icom5016.modstore.fragments;
 
+import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.uielements.CategoryListAdapter;
+import icom5016.modstore.uielements.CategoryListListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class CategoryListFragment extends Fragment {
@@ -26,6 +31,7 @@ public class CategoryListFragment extends Fragment {
 	private ProgressBar categoryListProgressBar;
 	private ImageView categoryListImageView;
 	private LinearLayout categoriesListLayout;
+	private TextView categoryListTextView;
 	
 	public CategoryListFragment(){
 	};
@@ -42,6 +48,7 @@ public class CategoryListFragment extends Fragment {
 		this.categoriesList = (ListView) view.findViewById(R.id.categoryListView);
 		this.categoryListProgressBar = (ProgressBar) view.findViewById(R.id.categoryListProgressBar);
 		this.categoryListImageView = (ImageView) view.findViewById(R.id.placehoderCategoryList);
+		this.categoryListTextView = (TextView) view.findViewById(R.id.categoryListText);
 		
 		Bundle bundle = this.getArguments();
 		int parent = -1; //If -1 Default
@@ -73,9 +80,45 @@ public class CategoryListFragment extends Fragment {
 			@Override
 			public void onSucess(JSONObject json) {
 				
+				//Get Info with Json
 				
-				//Set Visibility
-				categoriesListLayout.setVisibility(View.VISIBLE);
+				try {
+					//Get Parent
+					JSONObject parentJson = json.getJSONObject("parent");
+					//Get List
+					JSONArray listJson = json.getJSONArray("list");
+					
+					if(listJson.length() == 0){
+						//Open ProductListFragment
+					}
+					else{
+						//Populate stuff
+						
+						//Change Text View
+						String parentName = parentJson.getString("name");
+						categoryListTextView.setText(parentName);
+						
+						/*
+						
+						//Pass it to adapter and to listview
+						CategoryListAdapter adapter = new CategoryListAdapter(getActivity(), listJson);
+						categoriesList.setAdapter(adapter);
+						categoriesList.setOnItemClickListener(new CategoryListListener((MainInterfaceActivity) getActivity()));
+						//Set Visibility
+						categoriesListLayout.setVisibility(View.VISIBLE);
+						*/
+					}
+					
+					
+				} catch (JSONException e) {
+					Toast.makeText(getActivity(), "Bad JSON parsing...",
+							Toast.LENGTH_SHORT).show();
+					categoryListImageView.setVisibility(View.VISIBLE);
+				}
+				
+				
+				
+				
 			}
 			
 			@Override

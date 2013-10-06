@@ -5,49 +5,80 @@ var config = require("../config.js"),
 var routes = express();
 
 routes.get("/categories/:name", function (req, res) {
-  var fakeList = {
-    "category": req.params.name,
-    "sub-categories": [
-        "Television",
-        "Computers",
-        "Cameras"
-    ],
-    "products": [
-      {
-        "pid": 123,
-        "category_id": 3,
-        "description": "Some fake description",
-        "name": "FakeAwesomeProduct",
-        "brand": "Pier Brand",
-        "model": "ES-132",
-        "dimensions": "3'x3'x3'",
-        "price": "$99.99",
-        "created_ts": Date.now()
-      },
-      {
-        "pid": 124,
-        "category_id": 3,
-        "description": "Something something",
-        "name": "Another product 2",
-        "brand": "NoBrandMe",
-        "model": "Meh",
-        "dimensijons": "3'x4'x4'",
-        "price": "$1.99",
-        "created_ts": Date.now()
-      },
-      {
-        "pid": 125,
-        "category_id": 3,
-        "description": "Some fake description",
-        "name": "An item",
-        "brand": "China Brand",
-        "model": "Chuch Version",
-        "dimensions": "2'x3'x3'",
-        "price": "$29.99",
-        "created_ts": Date.now()
-      }
-    ]
-  };
+  
+
+  if(req.params.name == "-1"){
+    var fakeList = {
+        "parent": {
+            "id": "-1",
+            "name": ""
+        },
+        "list": [
+          {
+            "name": "Electronics",
+            "id": "0"
+          },
+          {
+            "name": "Books",
+            "id": "1"
+          },
+         {
+            "name": "Computers",
+            "id": "2"
+          },
+          {
+            "name": "Clothing",
+            "id": "3"
+          },
+          {
+            "name": "Shoes",
+            "id": "4"
+          },
+          {
+            "name": "Sports",
+            "id": "5"
+          }
+        ]
+    };
+  }
+  else if(req.params.name == "6"){ //Set Up for temp
+    var fakeList = {
+        "parent": {
+            "id": "6",
+            "name": "Children"
+        },
+        "list": [
+        ]
+    };
+  }
+  else{
+    var fakeList = {
+        "parent": {
+            "id": "1",
+            "name": "Books"
+        },
+        "list": [
+          {
+            "name": "Children",
+            "id": "6"
+          },
+          {
+            "name": "Fiction",
+            "id": "7"
+          },
+         {
+            "name": "Technology",
+            "id": "8"
+          },
+          {
+            "name": "Business",
+            "id": "9"
+          }
+        ]
+    };
+  }
+
+  
 
   res.send(fakeList);
 });
