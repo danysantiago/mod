@@ -3,18 +3,15 @@ package icom5016.modstore.fragments;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
-import icom5016.modstore.http.ImageLoader;
 import icom5016.modstore.http.Server;
-import icom5016.modstore.models.Product;
 import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.uielements.ProductAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -143,47 +139,4 @@ public class MainCategoryFragment extends Fragment {
 		noDataTextView.setVisibility(View.VISIBLE);
 	}
 
-	public class ProductAdapter extends ArrayAdapter<Product> {
-		
-		private ImageLoader imageloader;
-
-		public ProductAdapter(Context context, JSONArray jsonArr) throws JSONException {
-			super(context, R.layout.listview_product_row_1);
-			
-			imageloader = new ImageLoader(context);
-			
-			for(int i = 0; i < jsonArr.length(); i++) {
-				this.add(new Product(jsonArr.getJSONObject(i)));
-			}
-			
-		}
-		
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = convertView;
-
-			Product product = this.getItem(position);
-
-			LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
-			
-			row = inflater.inflate(R.layout.listview_product_row_1, parent, false);
-
-			TextView name = (TextView) row.findViewById(R.id.name_textView);
-			name.setText(product.getName());
-
-			TextView description = (TextView) row.findViewById(R.id.description_textView);
-			description.setText(product.getDescription());
-
-			TextView price = (TextView) row.findViewById(R.id.price_textView);
-			price.setText(product.getPrice());
-			
-			ImageView image = (ImageView) row.findViewById(R.id.imageView);
-			imageloader.DisplayImage("http://files.gamebanana.com/img/ico/sprays/1up_orcaexample.png", image);
-			
-			row.setTag(product);
-
-			return row;
-		}
-	}
 }

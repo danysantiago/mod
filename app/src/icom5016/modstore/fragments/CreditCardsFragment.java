@@ -10,7 +10,6 @@ import icom5016.modstore.uielements.CreditCardDialog;
 
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;

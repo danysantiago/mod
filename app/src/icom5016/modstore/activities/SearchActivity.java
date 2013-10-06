@@ -53,9 +53,7 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 				SearchFragment fragment = new SearchFragment();
 				fragment.setArguments(bundle);
 				
-				this.fragmentStack.push(fragment);
-				
-				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+				AndroidResourceFactory.setNewFragment(this, fragment, MainInterfaceActivity.getContentFragmentId());
 			}
 			
 		};

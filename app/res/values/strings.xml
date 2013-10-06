@@ -68,4 +68,5 @@
     <string name="search_filter_error_price">Error in Price Order</string>
     <string name="placeholder_search_desc">Placeholder Search Icon</string>
     <string name="search_progress_msg">Searching…</string>
+    <string name="search_error">Unable to complete search. Please try again.</string>
 </resources>
