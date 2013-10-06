@@ -38,6 +38,11 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         this.layoutResourceId = layoutResourceId;
         this.context = context;
     }
+    
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+    	return getView(position, convertView, parent);
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
