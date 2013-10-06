@@ -9,6 +9,7 @@ var routes = express();
 var fakeCC = [
   {
     "ccid": 0,
+    "aid": 0, 
     "number": "1234-5678-0101-1010",
     "scode": "555",
     "name": "Omar Soto",
@@ -19,6 +20,7 @@ var fakeCC = [
   },
   {
     "ccid": 1,
+    "aid": 1, 
     "number": "1234-5678-0101-1010",
     "scode": "555",
     "name": "Manuel Marquez",
@@ -29,6 +31,7 @@ var fakeCC = [
   },
   {
     "ccid": 2,
+    "aid": 2, 
     "number": "1234-5678-0101-1010",
     "scode": "555",
     "name": "Daniel Santiago",
@@ -39,6 +42,7 @@ var fakeCC = [
   },
   {
     "ccid": 3,
+    "aid": 0, 
     "number": "1234-5678-0101-1010",
     "scode": "555",
     "name": "Juan Ocasio",
@@ -49,6 +53,7 @@ var fakeCC = [
   },
   {
     "ccid": 4,
+    "aid": 1, 
     "number": "1234-5678-0101-1010",
     "scode": "555",
     "name": "Wilma Pastrana",
