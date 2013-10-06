@@ -76,4 +76,7 @@
     <string name="category_list_title">Select a category</string>
     <string name="placeholder_category_desc">Placeholder List Icon</string>
     <string name="category_list_error">Unable to generate list. Please try again.</string>
+    <string name="category_list_placeholder_text">Placeholder Category</string>
+    <string name="category_list_row_desc">Image of Right Arrow</string>
+    <string name="cc_image_desc">Image of Credit Card</string>
 </resources>

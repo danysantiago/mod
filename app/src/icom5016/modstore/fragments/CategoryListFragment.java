@@ -96,9 +96,12 @@ public class CategoryListFragment extends Fragment {
 						
 						//Change Text View
 						String parentName = parentJson.getString("name");
-						categoryListTextView.setText(parentName);
+						if(!parentName.isEmpty())
+							categoryListTextView.setText(parentName);
+						else
+							categoryListTextView.setText(R.string.category_list_title);
 						
-						/*
+						
 						
 						//Pass it to adapter and to listview
 						CategoryListAdapter adapter = new CategoryListAdapter(getActivity(), listJson);
@@ -106,7 +109,6 @@ public class CategoryListFragment extends Fragment {
 						categoriesList.setOnItemClickListener(new CategoryListListener((MainInterfaceActivity) getActivity()));
 						//Set Visibility
 						categoriesListLayout.setVisibility(View.VISIBLE);
-						*/
 					}
 					
 					
