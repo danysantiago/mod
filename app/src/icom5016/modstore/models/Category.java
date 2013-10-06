@@ -11,8 +11,8 @@ public class Category {
 	
 	
 	public Category(JSONObject json) throws NumberFormatException, JSONException{
-		this.parentId = Integer.parseInt(json.getString("parentid"));
-		this.id = Integer.parseInt(json.getString("id"));
+		this.parentId = json.getInt("parentId");
+		this.id = json.getInt("id");
 		this.name = json.getString("name");
 	}
 	
