@@ -1,7 +1,6 @@
 var config = require("../config.js"),
     express = require("express");
 
-
 var routes = express();
 
 routes.get("/search/", function (req, res) {
@@ -46,7 +45,5 @@ routes.get("/search/", function (req, res) {
 
   res.send(fakeList);
 });
-
-
 
 module.exports = routes;
