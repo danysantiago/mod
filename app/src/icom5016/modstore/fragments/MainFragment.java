@@ -4,7 +4,6 @@ import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.Product;
 import icom5016.modstore.resources.AndroidResourceFactory;
-import icom5016.modstore.resources.ConstantClass;
 
 import java.util.Random;
 

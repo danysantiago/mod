@@ -53,7 +53,6 @@ public class ProductListFragment extends Fragment {
 		this.plListView = (ListView) view.findViewById(R.id.plListView);
 		this.plTextView = (TextView) view.findViewById(R.id.plTextView);
 		
-		
 		Bundle bundle = this.getArguments();
 		
 		if(bundle == null){
@@ -131,7 +130,6 @@ public class ProductListFragment extends Fragment {
 								    } 
 
 								    public void onNothingSelected(AdapterView<?> adapterView) {
-										spinnerChange = true;
 								        return;
 								    } 
 								}); 
@@ -178,5 +176,10 @@ public class ProductListFragment extends Fragment {
 				request.execute();
 	}
 
+	@Override
+	public void onResume() {
+		this.spinnerChange = false;
+		super.onResume();
+	}
 	
 }
