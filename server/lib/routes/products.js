@@ -4,7 +4,7 @@ var config = require("../config.js"),
 var routes = express();
 
 var fakeProducts = [{
-  "aid": 0,
+  "pid": 0,
   "uid": 0,
   "cid": 3,
   "description": "Some fake description",
@@ -19,7 +19,7 @@ var fakeProducts = [{
   "image_src": "not yet implemented",
   "created_ts": Date.now()
 },{
-  "aid": 1,
+  "pid": 1,
   "uid": 0,
   "cid": 9,
   "description": "Some other fake description",
@@ -34,7 +34,7 @@ var fakeProducts = [{
   "image_src": "not yet implemented",
   "created_ts": Date.now()
 },{
-  "aid": 2,
+  "pid": 2,
   "uid": 0,
   "cid": 13,
   "description": "The Super Mega Pro Laptop ASUS!",
@@ -52,7 +52,7 @@ var fakeProducts = [{
 
 routes.get("/products/:pid", function (req, res) {
   for (i = 0; i < fakeProducts.length; i++) {
-    if (fakeProducts[i].id == req.params.pid) {
+    if (fakeProducts[i].pid == req.params.pid) {
       res.send(fakeProducts[i]);
       return;
     }
