@@ -1,13 +1,24 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
+import icom5016.modstore.models.Category;
+import icom5016.modstore.resources.DataFetchFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -23,6 +34,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -94,6 +106,10 @@ public class ProductEditFragment extends Fragment {
 			}
 		});
 		
+		cboCategory.setVisibility(View.GONE);
+		
+		requestCategories();
+		
 		return view;
 	}
 	
@@ -128,4 +144,73 @@ public class ProductEditFragment extends Fragment {
             }
         }
     }
+
+	private void requestCategories() {
+		//Perform http request
+		Bundle params = new Bundle();
+		
+		params.putString("method", "GET");
+		params.putString("url", Server.Addresses.GETALL);
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+			@Override
+			public void onSucess(JSONObject json) {
+				List<Category> cats = new ArrayList<Category>();
+				getCategories(json, cats, -1);
+				
+				//Pass JSON to Adapter
+				ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_list_item_1, cats);
+			    cboCategory.setAdapter(adapter);
+
+				//Show list view
+				cboCategory.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onFailed() {
+				Toast.makeText(getActivity(), "Couldn't load the Categories [ERR: 1]", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		request.execute();
+	}
+	
+	private void getCategories(JSONObject json, List<Category> cats, int level) {
+		JSONArray jsonArr;
+		JSONObject obj;
+		String name;
+		int parentId, id;
+
+		try {
+			jsonArr = json.getJSONArray("categories");
+			
+			for (int i = 0; i < json.length(); i++) {
+				obj = jsonArr.getJSONObject(i);
+				parentId = obj.getInt("parentId");
+				
+				if (parentId == level) {
+					name = obj.getString("name");
+					id = obj.getInt("id");
+					
+					name = repeat("-", level + 1) + name;
+					
+					cats.add(new Category(parentId, id, name));
+					
+					getCategories(json, cats, level + 1);
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String repeat(String c, int n) {
+		String out = "";
+		
+		for (int i = 0; i < n; i++) {
+			out += c;
+		}
+		
+		return out;
+	}
 }
