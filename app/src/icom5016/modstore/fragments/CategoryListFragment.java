@@ -96,6 +96,7 @@ public class CategoryListFragment extends Fragment {
 						ProductListFragment plf = new ProductListFragment();
 						plf.setArguments(bundle);
 						MainInterfaceActivity mia = (MainInterfaceActivity) getActivity();
+						mia.fragmentStack.pop();
 						mia.fragmentStack.push(plf);
 						AndroidResourceFactory.setNewFragment(mia, mia.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 					}
