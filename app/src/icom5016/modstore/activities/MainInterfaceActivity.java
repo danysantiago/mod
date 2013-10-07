@@ -15,8 +15,10 @@ import java.util.Stack;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -56,11 +58,16 @@ public abstract class MainInterfaceActivity extends Activity {
 	//Fragment Stack
 	public Stack<Fragment> fragmentStack;
 	
+	private MainInterfaceActivity thisActivity;
+	
+	Bundle bundle;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		thisActivity = this;
 		
 			//Load ActionBar Variable
 		final ActionBar ActionBarVar = this.getActionBar();
@@ -233,7 +240,7 @@ public abstract class MainInterfaceActivity extends Activity {
     private void userDrawerListener(int position){
     	
     	//Global Bundle for Each. Saving Memory, 
-    	Bundle bundle = new Bundle();
+    	bundle = new Bundle();
     	
     	switch(position){
     	case 0:
@@ -265,75 +272,70 @@ public abstract class MainInterfaceActivity extends Activity {
     		break;
     	case 2:
     		//My Items (new Fragment)
-    		//Categories (new Fragment)
-    		if(this instanceof MainActivity ){
-    	  		MyItemsFragment fragment= new MyItemsFragment();
-    	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-    		}
-    		else{
-    			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS);
-    			homeIntent.putExtras(bundle);
-    			this.startActivity(homeIntent);
-    		}
+    		AlertDialog.Builder myItemsDialog = new AlertDialog.Builder(this);
+    		myItemsDialog.setTitle("My Items")
+			   .setPositiveButton("Sell Item", new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog, int id) {
+			    		if(thisActivity instanceof MainActivity ){
+			    	  		MyItemsFragment fragment= new MyItemsFragment();
+			    	  		thisActivity.fragmentStack.push(fragment);
+			    	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+			    		}
+			    		else{
+			    			Intent homeIntent = new Intent(thisActivity, MainActivity.class);
+			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS);
+			    			homeIntent.putExtras(bundle);
+			    			thisActivity.startActivity(homeIntent);
+			    		}
+			       }
+			   })
+			   .setNeutralButton("Items for Sale", new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog, int id) {
+			    		//Items for Sale (new Fragment)
+			    		if(thisActivity instanceof MainActivity ){
+			    	  		ProductsForSaleFragment fragment = new ProductsForSaleFragment();
+			    	  		thisActivity.fragmentStack.push(fragment);
+			    	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+			    		}
+			    		else{
+			    			Intent homeIntent = new Intent(thisActivity, MainActivity.class);
+			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_FOR_SALE);
+			    			homeIntent.putExtras(bundle);
+			    			thisActivity.startActivity(homeIntent);
+			    		}
+			       }
+			   })
+			   .setNegativeButton("Items Sold", new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog, int id) {
+			    		if(thisActivity instanceof MainActivity ){
+			    	  		ProductsSoldFragment fragment = new ProductsSoldFragment();
+			    	  		thisActivity.fragmentStack.push(fragment);
+			    	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+			    		}
+			    		else{
+			    			Intent homeIntent = new Intent(thisActivity, MainActivity.class);
+			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_SOLD);
+			    			homeIntent.putExtras(bundle);
+			    			thisActivity.startActivity(homeIntent);
+			    		}
+			       }
+			   });
+    		myItemsDialog.create().show();
     		
     		break;
     	case 3:
-    		//Sell Item (new Fragment)
-    		if(this instanceof MainActivity ){
-    	  		ProductSellEditFragment fragment = new ProductSellEditFragment();
-    	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-    		}
-    		else{
-    			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS);
-    			homeIntent.putExtras(bundle);
-    			this.startActivity(homeIntent);
-    		}
-    		break;
-    	case 4:
-    		//Items for Sale (new Fragment)
-    		if(this instanceof MainActivity ){
-    	  		ProductsForSaleFragment fragment = new ProductsForSaleFragment();
-    	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-    		}
-    		else{
-    			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_FOR_SALE);
-    			homeIntent.putExtras(bundle);
-    			this.startActivity(homeIntent);
-    		}
-    		break;
-    	case 5:
-    		//Items Sold (new Fragment)
-    		if(this instanceof MainActivity ){
-    	  		ProductsSoldFragment fragment = new ProductsSoldFragment();
-    	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-    		}
-    		else{
-    			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_SOLD);
-    			homeIntent.putExtras(bundle);
-    			this.startActivity(homeIntent);
-    		}
-    		break;
-    	case 6:
     		//Settings (new Activity)
     		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
     		Intent settingsIntent = new Intent(this, SettingsActivity.class);
     		settingsIntent.putExtras(bundle);
     		this.startActivity(settingsIntent);
     		break;
-    	case 7:
+    	case 4:
     		//About (new Activity)
     		Intent aboutIntent = new Intent(this, AboutActivity.class);
     		this.startActivity(aboutIntent);
     		break;
-    	case 8:
+    	case 5:
     		//Log-Out (refresh)
     		
     			//Destroy Preferences
@@ -349,7 +351,7 @@ public abstract class MainInterfaceActivity extends Activity {
     			this.startActivity(homeIntent);
     		}
     		break;
-    	case 9:
+    	case 6:
     		//Admin Menu
     			//Send User ID
     		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());

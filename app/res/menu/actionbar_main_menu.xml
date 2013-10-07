@@ -27,6 +27,7 @@
           android:actionViewClass="android.widget.SearchView"  />
     
     <!-- Category Submenu (Dynamicly Populated in Java) -->
+    
 	    <item android:title="@string/btn_category_str"
 	        android:id="@+id/item_categories"
 	        android:showAsAction="always|withText" 
