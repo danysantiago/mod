@@ -30,7 +30,7 @@
         android:ems="10"
         android:hint="@string/hint_productdescription"
         android:inputType="textMultiLine" 
-        android:minLines="2"
+        android:minLines="3"
         android:maxLines="3" />
 
     <EditText
@@ -115,7 +115,8 @@
         android:id="@+id/cboProductCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/btnProductSelectPhoto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/btnProductSelectPhoto" />
 
 </RelativeLayout>
