@@ -54,4 +54,15 @@ public class Address {
 		
 		return location;
 	}
+	
+	public String toString() {
+		String out = this.line1;
+		
+		if (!line2.isEmpty())
+			out += "\n" + this.line2;
+		
+		out += "\n" + this.getLocation() + "\n" + this.country;
+		
+		return out;
+	}
 }
