@@ -5,7 +5,6 @@ import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
-import icom5016.modstore.resources.DataFetchFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -24,6 +23,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -53,12 +53,15 @@ public class ProductEditFragment extends Fragment {
 	EditText txtEndAuction;
 	Spinner cboCategory;
 	Button btnSelectPhoto;
+	Button btnAdd;
 	
 	Calendar myCalendar = Calendar.getInstance();
 	OnDateSetListener dateSetListener;
 	
 	Uri selectedPhoto;
 	byte selectedPhotoBytes[];
+	
+	ProgressDialog pd;
 	
 	private static final int SELECT_PICTURE = 1;
 	
@@ -76,6 +79,7 @@ public class ProductEditFragment extends Fragment {
 		txtEndAuction = (EditText)view.findViewById(R.id.txtProductEndAuction);
 		cboCategory = (Spinner)view.findViewById(R.id.cboProductCategory);
 		btnSelectPhoto = (Button)view.findViewById(R.id.btnProductSelectPhoto);
+		btnAdd = (Button)view.findViewById(R.id.btnProductAdd);
 		
 		dateSetListener = new DatePickerDialog.OnDateSetListener() {
 		    @Override
@@ -106,8 +110,17 @@ public class ProductEditFragment extends Fragment {
 			}
 		});
 		
+		btnAdd.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// User wants to add. Do a PUT to Node or whatever. 
+			}
+		});
+		
 		cboCategory.setVisibility(View.GONE);
 		
+		pd = ProgressDialog.show(getActivity(), "Loading", "Loading Categories...", true, false);
+
 		requestCategories();
 		
 		return view;
@@ -150,24 +163,31 @@ public class ProductEditFragment extends Fragment {
 		Bundle params = new Bundle();
 		
 		params.putString("method", "GET");
-		params.putString("url", Server.Addresses.GETALL);
+		params.putString("url", Server.Categories.GETALL);
 		
 		HttpRequest request = new HttpRequest(params, new HttpCallback() {
 			@Override
 			public void onSucess(JSONObject json) {
-				List<Category> cats = new ArrayList<Category>();
-				getCategories(json, cats, -1);
+				List<Category> cats = getCategories(json);
 				
-				//Pass JSON to Adapter
-				ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_list_item_1, cats);
-			    cboCategory.setAdapter(adapter);
-
-				//Show list view
-				cboCategory.setVisibility(View.VISIBLE);
+				if (cats.size() > 0) {
+					//Pass JSON to Adapter
+					ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_list_item_1, cats);
+				    cboCategory.setAdapter(adapter);
+	
+					//Show list view
+					cboCategory.setVisibility(View.VISIBLE);
+					
+					pd.dismiss();
+				} else {
+					pd.dismiss();
+					Toast.makeText(getActivity(), "No Categories where found.", Toast.LENGTH_SHORT).show();
+				}
 			}
 
 			@Override
 			public void onFailed() {
+				pd.dismiss();
 				Toast.makeText(getActivity(), "Couldn't load the Categories [ERR: 1]", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -175,7 +195,13 @@ public class ProductEditFragment extends Fragment {
 		request.execute();
 	}
 	
-	private void getCategories(JSONObject json, List<Category> cats, int level) {
+	private List<Category> getCategories(JSONObject json) {
+		List<Category> cats = new ArrayList<Category>();
+		getCategoriesRecurv(json, cats, 0, -1);
+		return cats;
+	}
+	
+	private void getCategoriesRecurv(JSONObject json, List<Category> cats, int level, int lookId) {
 		JSONArray jsonArr;
 		JSONObject obj;
 		String name;
@@ -184,19 +210,19 @@ public class ProductEditFragment extends Fragment {
 		try {
 			jsonArr = json.getJSONArray("categories");
 			
-			for (int i = 0; i < json.length(); i++) {
+			for (int i = 0; i < jsonArr.length(); i++) {
 				obj = jsonArr.getJSONObject(i);
 				parentId = obj.getInt("parentId");
 				
-				if (parentId == level) {
+				if (parentId == lookId) {
 					name = obj.getString("name");
 					id = obj.getInt("id");
 					
-					name = repeat("-", level + 1) + name;
+					name = repeat("   ", level) + name;
 					
 					cats.add(new Category(parentId, id, name));
 					
-					getCategories(json, cats, level + 1);
+					getCategoriesRecurv(json, cats, level + 1, id);
 				}
 			}
 		} catch (JSONException e) {
