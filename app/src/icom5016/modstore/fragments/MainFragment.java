@@ -1,8 +1,10 @@
 package icom5016.modstore.fragments;
 
+import icom5016.modstore.activities.MainInterfaceActivity;
+import icom5016.modstore.activities.R;
+
 import java.util.Random;
 
-import icom5016.modstore.activities.R;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -10,6 +12,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -42,6 +46,15 @@ public class MainFragment extends Fragment {
 		}
 		
 		list.setAdapter(adapter);
+		
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				getActivity().getFragmentManager().beginTransaction().replace(MainInterfaceActivity.getContentFragmentId(), new ProductFragment()).commit();
+				
+			}
+		});
 
 	}
 	
