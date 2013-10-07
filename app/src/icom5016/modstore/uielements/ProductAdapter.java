@@ -42,16 +42,16 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 			
 			row = inflater.inflate(R.layout.listview_product_row_1, parent, false);
 
-			TextView name = (TextView) row.findViewById(R.id.name_textView);
+			TextView name = (TextView) row.findViewById(R.id.name_textView2);
 			name.setText(product.getName());
 
-			TextView description = (TextView) row.findViewById(R.id.description_textView);
+			TextView description = (TextView) row.findViewById(R.id.description_textView2);
 			description.setText(product.getDescription());
 
-			TextView price = (TextView) row.findViewById(R.id.price_textView);
+			TextView price = (TextView) row.findViewById(R.id.price_textView2);
 			price.setText(product.getPrice());
 			
-			ImageView image = (ImageView) row.findViewById(R.id.imageView);
+			ImageView image = (ImageView) row.findViewById(R.id.imageView5);
 			imageloader.DisplayImage("http://files.gamebanana.com/img/ico/sprays/1up_orcaexample.png", image);
 			
 			row.setTag(product);

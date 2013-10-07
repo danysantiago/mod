@@ -126,6 +126,13 @@ public class Product {
 	public double getBid_price() {
 		return bid_price;
 	}
+	
+	public String getBid() {
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumFractionDigits(2);
+		// Some logic must be there to decide what price will be shown. 
+		return "$" + nf.format(bid_price);
+	}
 
 	public void setBid_price(double bid_price) {
 		this.bid_price = bid_price;

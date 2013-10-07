@@ -2,7 +2,7 @@ package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
-import icom5016.modstore.fragments.ProductSellEditFragment;
+import icom5016.modstore.fragments.ProductsForSaleFragment;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
@@ -280,7 +280,8 @@ public abstract class MainInterfaceActivity extends Activity {
     	case 3:
     		//Sell Item (new Fragment)
     		if(this instanceof MainActivity ){
-    	  		ProductSellEditFragment fragment= new ProductSellEditFragment();
+    	  		//ProductSellEditFragment fragment= new ProductSellEditFragment();
+    	  		ProductsForSaleFragment fragment = new ProductsForSaleFragment();
     	  		this.fragmentStack.push(fragment);
     	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
     		}
