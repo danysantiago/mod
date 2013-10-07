@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -49,9 +50,24 @@ public class ProductFragment extends Fragment {
 		TextView sellerTV = (TextView) view.findViewById(R.id.sellerTextView);
 		ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
 		LinearLayout ratingLayout = (LinearLayout) view.findViewById(R.id.ratingLayout);
+		LinearLayout bidLayout = (LinearLayout) view.findViewById(R.id.bidLinearLayout);
+		
+		Button buyButton = (Button) view.findViewById(R.id.btnProductAdd);
+		Button bidButton = (Button) view.findViewById(R.id.bidButton);
+		
+		if(product.getAuction_ends().length() > 0) {
+			buyButton.setVisibility(View.GONE);
+			
+			TextView endDate = (TextView) view.findViewById(R.id.endDateTextView);
+			endDate.setText(product.getAuction_ends());
+			priceTV.setText("Highest Bid: " + product.getBid());
+		} else {
+			bidLayout.setVisibility(View.GONE);
+			
+			priceTV.setText("Price: " + product.getPrice());
+		}
 		
 		productNameTV.setText(product.getName());
-		priceTV.setText("Price: " + product.getPrice());
 		brandTV.setText("Brand: " + product.getBrand());
 		modelTV.setText("Model: " + product.getModel());
 		dimensionsTV.setText("Dimensions: " + product.getDimensions());

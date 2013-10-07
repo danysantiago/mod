@@ -19,6 +19,30 @@
             android:text="Product Name"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <LinearLayout
+            android:id="@+id/bidLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" >
+
+            <TextView
+                android:id="@+id/endDateTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ending Date"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Button
+                android:id="@+id/bidButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Bit" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/btnProductAdd"
             style="?android:attr/buttonStyleSmall"
