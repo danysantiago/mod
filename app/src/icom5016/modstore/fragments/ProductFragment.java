@@ -16,6 +16,7 @@ public class ProductFragment extends Fragment {
 		ProductFragment pf = new ProductFragment();
 		pf.setProduct(product);
 		return pf;
+		
 	}
 
 	public Product getProduct() {

@@ -5,7 +5,6 @@ import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
-import icom5016.modstore.resources.DataFetchFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -24,6 +23,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -53,12 +53,15 @@ public class ProductEditFragment extends Fragment {
 	EditText txtEndAuction;
 	Spinner cboCategory;
 	Button btnSelectPhoto;
+	Button btnAdd;
 	
 	Calendar myCalendar = Calendar.getInstance();
 	OnDateSetListener dateSetListener;
 	
 	Uri selectedPhoto;
 	byte selectedPhotoBytes[];
+	
+	ProgressDialog pd;
 	
 	private static final int SELECT_PICTURE = 1;
 	
@@ -76,6 +79,7 @@ public class ProductEditFragment extends Fragment {
 		txtEndAuction = (EditText)view.findViewById(R.id.txtProductEndAuction);
 		cboCategory = (Spinner)view.findViewById(R.id.cboProductCategory);
 		btnSelectPhoto = (Button)view.findViewById(R.id.btnProductSelectPhoto);
+		btnAdd = (Button)view.findViewById(R.id.btnProductAdd);
 		
 		dateSetListener = new DatePickerDialog.OnDateSetListener() {
 		    @Override
@@ -106,8 +110,17 @@ public class ProductEditFragment extends Fragment {
 			}
 		});
 		
+		btnAdd.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// User wants to add. Do a PUT to Node or whatever. 
+			}
+		});
+		
 		cboCategory.setVisibility(View.GONE);
 		
+		pd = ProgressDialog.show(getActivity(), "Loading", "Loading Categories...", true, false);
+
 		requestCategories();
 		
 		return view;
@@ -164,11 +177,17 @@ public class ProductEditFragment extends Fragment {
 	
 					//Show list view
 					cboCategory.setVisibility(View.VISIBLE);
+					
+					pd.dismiss();
+				} else {
+					pd.dismiss();
+					Toast.makeText(getActivity(), "No Categories where found.", Toast.LENGTH_SHORT).show();
 				}
 			}
 
 			@Override
 			public void onFailed() {
+				pd.dismiss();
 				Toast.makeText(getActivity(), "Couldn't load the Categories [ERR: 1]", Toast.LENGTH_SHORT).show();
 			}
 		});
