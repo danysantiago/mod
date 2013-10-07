@@ -79,4 +79,14 @@
     <string name="category_list_placeholder_text">Placeholder Category</string>
     <string name="category_list_row_desc">Image of Right Arrow</string>
     <string name="cc_image_desc">Image of Credit Card</string>
+    <string name="hint_productname">Name</string>
+    <string name="hint_productdescription">Description</string>
+    <string name="hint_productbrand">Brand</string>
+    <string name="hint_productmodel">Model</string>
+    <string name="hint_productdimensions">Dimensions</string>
+    <string name="hint_productquantity">Quantity</string>
+    <string name="hint_productbuyoutprice">Buyout Price</string>
+    <string name="hint_productbidprice">Bid Price</string>
+    <string name="hint_productendauction">Auction Ends</string>
+    <string name="product_selectphoto">Select a Photo</string>
 </resources>

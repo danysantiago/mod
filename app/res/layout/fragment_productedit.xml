@@ -1,7 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <EditText
+        android:id="@+id/txtProductName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:hint="@string/hint_productname" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/txtProductDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/txtProductName"
+        android:ems="10"
+        android:hint="@string/hint_productdescription"
+        android:inputType="textMultiLine" 
+        android:minLines="2"
+        android:maxLines="3" />
+
+    <EditText
+        android:id="@+id/txtProductBrand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/txtProductDescription"
+        android:ems="7"
+        android:hint="@string/hint_productbrand" />
+
+    <EditText
+        android:id="@+id/txtProductModel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtProductBrand"
+        android:layout_alignBottom="@+id/txtProductBrand"
+        android:layout_alignParentRight="true"
+        android:ems="7"
+        android:hint="@string/hint_productmodel" />
+
+    <EditText
+        android:id="@+id/txtProductDimensions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/txtProductBrand"
+        android:layout_below="@+id/txtProductBrand"
+        android:ems="7"
+        android:hint="@string/hint_productdimensions" />
+
+    <EditText
+        android:id="@+id/txtProductQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/txtProductModel"
+        android:layout_below="@+id/txtProductBrand"
+        android:ems="7"
+        android:hint="@string/hint_productquantity"
+        android:inputType="numberSigned" />
+
+    <EditText
+        android:id="@+id/txtProductBuyoutPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtProductDimensions"
+        android:layout_below="@+id/txtProductDimensions"
+        android:ems="7"
+        android:hint="@string/hint_productbuyoutprice"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/txtProductBidPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtProductBuyoutPrice"
+        android:layout_alignBottom="@+id/txtProductBuyoutPrice"
+        android:layout_alignRight="@+id/txtProductQuantity"
+        android:ems="7"
+        android:hint="@string/hint_productbidprice"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/txtProductEndAuction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtProductBuyoutPrice"
+        android:layout_below="@+id/txtProductBuyoutPrice"
+        android:ems="7"
+        android:hint="@string/hint_productendauction" />
+
+    <Button
+        android:id="@+id/btnProductSelectPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtProductEndAuction"
+        android:layout_alignRight="@+id/txtProductBidPrice"
+        android:layout_below="@+id/txtProductEndAuction"
+        android:text="@string/product_selectphoto" />
+
+    <Spinner
+        android:id="@+id/cboProductCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnProductSelectPhoto"
+        android:layout_below="@+id/btnProductSelectPhoto" />
 
 </RelativeLayout>
