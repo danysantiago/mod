@@ -41,7 +41,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class ProductEditFragment extends Fragment {
+public class ProductSellEditFragment extends Fragment {
 	EditText txtName;
 	EditText txtDescription;
 	EditText txtBrand;
