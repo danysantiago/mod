@@ -1,11 +1,13 @@
 package icom5016.modstore.fragments;
 
+import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.uielements.ProductAdapter;
+import icom5016.modstore.uielements.ProductListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,7 +68,7 @@ public class SearchFragment extends Fragment {
 		//Perform http request
 		Bundle params = new Bundle();
 		params.putString("method", "GET");
-		params.putString("url", Server.Search.GET);		
+		params.putString("url", Server.Products.GETALL);		
 		//Must Change
 		JSONObject filter_params = new JSONObject();
 		try{
@@ -96,7 +98,7 @@ public class SearchFragment extends Fragment {
 					
 					//Change View Visibility
 					placeHolderImage.setVisibility(View.GONE);
-					//list.setOnItemClickListener(new ProductListener((MainInterfaceActivity) getActivity()));
+					list.setOnItemClickListener(new ProductListener((MainInterfaceActivity) getActivity()));
 					list.setVisibility(View.VISIBLE);
 
 				} catch (JSONException e) {

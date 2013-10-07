@@ -3,7 +3,6 @@ package icom5016.modstore.activities;
 import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.ProductEditFragment;
-import icom5016.modstore.fragments.SellItemFragment;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
