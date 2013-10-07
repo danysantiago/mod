@@ -2,7 +2,6 @@ package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
-import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.fragments.ProductsForSaleFragment;
 import icom5016.modstore.fragments.ProductsSoldFragment;
 import icom5016.modstore.models.User;

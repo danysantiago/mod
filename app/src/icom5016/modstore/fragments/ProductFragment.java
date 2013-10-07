@@ -44,6 +44,7 @@ public class ProductFragment extends Fragment {
 		TextView priceTV = (TextView) view.findViewById(R.id.priceTextView);
 		TextView brandTV = (TextView) view.findViewById(R.id.brandTextView);
 		TextView modelTV = (TextView) view.findViewById(R.id.modelTextView);
+		TextView dimensionsTV = (TextView) view.findViewById(R.id.dimensionsTextView);
 		TextView descriptionTV = (TextView) view.findViewById(R.id.descriptionTextView);
 		TextView sellerTV = (TextView) view.findViewById(R.id.sellerTextView);
 		ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
@@ -53,6 +54,7 @@ public class ProductFragment extends Fragment {
 		priceTV.setText("Price: " + product.getPrice());
 		brandTV.setText("Brand: " + product.getBrand());
 		modelTV.setText("Model: " + product.getModel());
+		dimensionsTV.setText("Dimensions: " + product.getDimensions());
 		descriptionTV.setText(product.getDescription());
 		sellerTV.setText("Seller: " + "Juan Del Pueblo (8)");
 		
