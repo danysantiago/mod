@@ -1,18 +1,19 @@
 package icom5016.modstore.fragments;
 
+import icom5016.modstore.activities.MainInterfaceActivity;
+import icom5016.modstore.activities.R;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
+import icom5016.modstore.models.Category;
+import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.uielements.ProductAdapter;
+import icom5016.modstore.uielements.ProductListener;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import icom5016.modstore.activities.MainInterfaceActivity;
-import icom5016.modstore.activities.R;
-import icom5016.modstore.http.HttpRequest;
-import icom5016.modstore.http.Server;
-import icom5016.modstore.http.HttpRequest.HttpCallback;
-import icom5016.modstore.resources.AndroidResourceFactory;
-import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.uielements.CategoryListAdapter;
-import icom5016.modstore.uielements.CategoryListListener;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ProductListFragment extends Fragment {
@@ -31,6 +33,7 @@ public class ProductListFragment extends Fragment {
 	private ProgressBar plProgressBar;
 	private Spinner plSpinner;
 	private LinearLayout plLinearLayout;
+	private TextView plTextView;
 	private ListView plListView;
 	private int categoryId;
 	
@@ -44,6 +47,7 @@ public class ProductListFragment extends Fragment {
 		this.plSpinner = (Spinner) view.findViewById(R.id.plSpinner);
 		this.plLinearLayout = (LinearLayout) view.findViewById(R.id.plLinearLayout);
 		this.plListView = (ListView) view.findViewById(R.id.plListView);
+		this.plTextView = (TextView) view.findViewById(R.id.plTextView);
 
 		Bundle bundle = this.getArguments();
 		
@@ -88,6 +92,33 @@ public class ProductListFragment extends Fragment {
 							//Get Products
 							JSONArray productsJson = json.getJSONArray("products");
 						
+							Category mCategory = new Category(categoryJson);
+							
+							if(mCategory.getParentId() >= 0){
+								plTextView.setText(mCategory.getName());
+							}
+							
+							if(subCategoryJson.length() == 0){
+								plSpinner.setVisibility(View.INVISIBLE);
+							}
+							else
+							{
+								//Set the Adapter
+							}
+							
+							
+							//Load Products
+							if(productsJson.length() == 0){
+								plPlaceHolder.setVisibility(View.VISIBLE);
+								Toast.makeText(getActivity(), "Empty", Toast.LENGTH_LONG).show();
+							}
+							else{
+								//Pass it to adapter and to List View
+								ProductAdapter adapter = new ProductAdapter(getActivity(), productsJson);
+								plListView.setAdapter(adapter);
+								plListView.setOnItemClickListener(new ProductListener((MainInterfaceActivity) getActivity()));
+							}
+							
 							plLinearLayout.setVisibility(View.VISIBLE);
 						} catch (JSONException e) {
 							Toast.makeText(getActivity(), "Bad JSON parsing...",

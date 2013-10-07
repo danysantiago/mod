@@ -65,28 +65,28 @@ routes.get("/products/category/:pid", function (req, res) {
   var categoryList = {
     "products": fakeProducts,
      "category": {
-           "parentid":"-1",
+           "parentId":"-1",
             "id": "1",
             "name": "Books"
             },
     "subcategory": [
                      {
-                    "parentid":"1",
+                    "parentId":"1",
                     "name": "Children",
                     "id": "6"
                       },
                       {
-                        "parentid":"1",
+                        "parentId":"1",
                         "name": "Fiction",
                         "id": "7"
                       },
                      {
-                        "parentid":"1",
+                        "parentId":"1",
                         "name": "Technology",
                         "id": "8"
                       },
                       {
-                        "parentid":"1",
+                        "parentId":"1",
                         "name": "Business",
                         "id": "9"
                       }
