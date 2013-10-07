@@ -119,4 +119,15 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/btnProductSelectPhoto" />
 
+    <Button
+        android:id="@+id/btnProductAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/product_sellit"
+        android:textSize="25sp"
+        android:textColor="@color/dark_green" />
+
 </RelativeLayout>
