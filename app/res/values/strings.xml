@@ -91,4 +91,6 @@
     <string name="hint_productendauction">Auction Ends</string>
     <string name="product_selectphoto">Select a Photo</string>
     <string name="product_sellit">Sell It!</string>
+    <string name="product_list_placeholder_desc">Placeholder for Product List</string>
+    <string name="product_list_best_match">Best Seller in</string>
 </resources>

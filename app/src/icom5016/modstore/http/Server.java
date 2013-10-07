@@ -6,6 +6,7 @@ public class Server {
 
 	public static class Products {
 	  public static final String GET = BASE_URL+"/products/";
+	  public static final String GETCATEGORIES = BASE_URL + "/products/category/";
 	  public static final String GETALL = BASE_URL+"/products";
 	}
 	
