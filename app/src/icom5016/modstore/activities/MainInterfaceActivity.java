@@ -1,7 +1,7 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CategoryListFragment;
-import icom5016.modstore.fragments.MyItemsFragment;
+import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.fragments.ProductsForSaleFragment;
 import icom5016.modstore.fragments.ProductsSoldFragment;
 import icom5016.modstore.models.Category;
@@ -275,19 +275,19 @@ public abstract class MainInterfaceActivity extends Activity {
     	case 2:
     		break;
     	case 3:
-    		//My Items (new Fragment)
+    		//My Market (new Fragments: Sell Item, Items for Sale, Items Sold)
     		AlertDialog.Builder myItemsDialog = new AlertDialog.Builder(this);
-    		myItemsDialog.setTitle("Sell Menu")
-			   .setPositiveButton("Sell Item", new DialogInterface.OnClickListener() {
+    		myItemsDialog.setTitle("My Market")
+			   .setNegativeButton("Sell Item", new DialogInterface.OnClickListener() {
 				   public void onClick(DialogInterface dialog, int id) {
 			    		if(thisActivity instanceof MainActivity ){
-			    	  		MyItemsFragment fragment= new MyItemsFragment();
+			    	  		ProductSellEditFragment fragment= new ProductSellEditFragment();
 			    	  		thisActivity.fragmentStack.push(fragment);
 			    	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 			    		}
 			    		else{
 			    			Intent homeIntent = new Intent(thisActivity, MainActivity.class);
-			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS);
+			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS);
 			    			homeIntent.putExtras(bundle);
 			    			thisActivity.startActivity(homeIntent);
 			    		}
@@ -309,7 +309,7 @@ public abstract class MainInterfaceActivity extends Activity {
 			    		}
 			       }
 			   })
-			   .setNegativeButton("Items Sold", new DialogInterface.OnClickListener() {
+			   .setPositiveButton("Items Sold", new DialogInterface.OnClickListener() {
 				   public void onClick(DialogInterface dialog, int id) {
 			    		if(thisActivity instanceof MainActivity ){
 			    	  		ProductsSoldFragment fragment = new ProductsSoldFragment();
