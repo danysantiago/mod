@@ -93,4 +93,8 @@
     <string name="product_sellit">Sell It!</string>
     <string name="product_list_placeholder_desc">Placeholder for Product List</string>
     <string name="product_list_best_match">Best Seller in</string>
+    <string name="label_endingon">Auction Ending On:</string>
+    <string name="label_endedon">Auction Ended On:</string>
+    <string name="label_maxbid">Bid:</string>
+    <string name="label_quantity">Quantity:</string>
 </resources>

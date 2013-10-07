@@ -104,7 +104,7 @@ public class MainFragment extends Fragment {
 			View view = inflater.inflate(R.layout.listview_home_row_2, parent,false);
 			TextView productNameTV = (TextView) view.findViewById(R.id.productNameTextView);
 			TextView priceTV = (TextView) view.findViewById(R.id.priceTextView);
-			ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+			ImageView imageView = (ImageView) view.findViewById(R.id.imageView5);
 			
 			Product p = this.getItem(position);
 			
