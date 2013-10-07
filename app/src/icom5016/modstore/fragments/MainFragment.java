@@ -3,6 +3,8 @@ package icom5016.modstore.fragments;
 import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.Product;
+import icom5016.modstore.resources.AndroidResourceFactory;
+import icom5016.modstore.resources.ConstantClass;
 
 import java.util.Random;
 
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,10 +45,10 @@ public class MainFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		
 		Product[] pList = new Product[4];
-		pList[0] = new Product(1, 2, 2, "A Product 1", "Some lazy short description,", "Shiny Inc.", "Star12", "2x3x2", 20.99, 1, -1, "", null);
+		pList[0] = new Product(0, 2, 2, "A Product 1", "Some lazy short description,", "Shiny Inc.", "Star12", "2x3x2", 20.99, 1, -1, "", null);
 		pList[1] = new Product(1, 2, 2, "1993 Useless Rock", "A wonderful and hard rock, dated to 1993.", "Rocky", "1bdg35adc", "2.2x1.2x1.4", 99.99, 1, -1, "", null);
-		pList[2] = new Product(1, 2, 2, "A Cat", "Just a cat, found on the street, please feed it well.", "Da Street", "v1", "Varies", 10.00, 1, -1, "", null);
-		pList[3] = new Product(1, 2, 2, "A Product 3", "Some lazy short description for another product", "Awesome P", "A129", "1x1x1", 120.00, 1, -1, "", null);
+		pList[2] = new Product(2, 2, 2, "A Cat", "Just a cat, found on the street, please feed it well.", "Da Street", "v1", "Varies", 10.00, 1, -1, "", null);
+		pList[3] = new Product(3, 2, 2, "Another Product", "Some lazy short description for another product", "Awesome P", "A129", "1x1x1", 120.00, 1, -1, "", null);
 		
 		list1 = (ListView) view.findViewById(R.id.listView1);
 		MainAdapter adapter1 = new MainAdapter(getActivity(), R.layout.listview_home_row_2);
@@ -57,8 +60,11 @@ public class MainFragment extends Fragment {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				getActivity().getFragmentManager().beginTransaction().replace(MainInterfaceActivity.getContentFragmentId(), ProductFragment.getInstance((Product) list1.getAdapter().getItem(position))).commit();
-				
+				MainInterfaceActivity activity = (MainInterfaceActivity) getActivity();
+				Product product = (Product) list1.getAdapter().getItem(position);
+				ProductFragment pf = ProductFragment.getInstance(product);
+				activity.fragmentStack.push(pf);
+				AndroidResourceFactory.setNewFragment(activity, activity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 			}
 		});
 		
@@ -72,14 +78,19 @@ public class MainFragment extends Fragment {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				getActivity().getFragmentManager().beginTransaction().replace(MainInterfaceActivity.getContentFragmentId(), ProductFragment.getInstance((Product) list2.getAdapter().getItem(position))).commit();
-				
+				MainInterfaceActivity activity = (MainInterfaceActivity) getActivity();
+				Product product = (Product) list2.getAdapter().getItem(position);
+				ProductFragment pf = ProductFragment.getInstance(product);
+				activity.fragmentStack.push(pf);
+				AndroidResourceFactory.setNewFragment(activity, activity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());				
 			}
 		});
 
 	}
 	
 	public class MainAdapter extends ArrayAdapter<Product> {
+		
+		int[] images = {R.drawable.cat1, R.drawable.cat2, R.drawable.cat3, R.drawable.cat4};
 
 		public MainAdapter(Context context, int resource) {
 			super(context, resource);
@@ -93,9 +104,14 @@ public class MainFragment extends Fragment {
 			View view = inflater.inflate(R.layout.listview_home_row_2, parent,false);
 			TextView productNameTV = (TextView) view.findViewById(R.id.productNameTextView);
 			TextView priceTV = (TextView) view.findViewById(R.id.priceTextView);
+			ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
 			
-			productNameTV.setText(this.getItem(position).getName());
-			priceTV.setText(this.getItem(position).getPrice());
+			Product p = this.getItem(position);
+			
+			productNameTV.setText(p.getName());
+			priceTV.setText(p.getPrice());
+			imageView.setImageResource(images[p.getPid()]);
+			
 			
 			return view;
 		}
