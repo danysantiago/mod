@@ -11,6 +11,7 @@ var users = require("./lib/routes/users.js");
 var categories = require("./lib/routes/categories.js");
 var creditcards = require("./lib/routes/creditcards.js");
 var addresses = require("./lib/routes/addresses.js");
+var cart = require("./lib/routes/cart.js")
 var orderdetails = require("./lib/routes/orderdetails.js");
 
 app.configure(function() {
@@ -36,6 +37,7 @@ app.use(categories);
 app.use(creditcards);
 app.use(addresses);
 app.use(orderdetails);
+app.use(cart);
 
 //DB Connection & port app listening
 dbClient = mysql.createConnection(config.dbAddress);

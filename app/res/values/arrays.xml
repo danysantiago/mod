@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="static_categories_array">
-        <item >Books</item>
-        <item >Apparel</item>
-        <item >Video Games</item>
-    </string-array>
-    
-</resources>

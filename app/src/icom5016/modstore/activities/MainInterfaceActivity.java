@@ -386,12 +386,16 @@ public abstract class MainInterfaceActivity extends Activity {
     public void cartButtonListner(MenuItem menuItem){
         
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-        this.popUp = new PopupWindow(inflater.inflate(R.layout.popup_cart, null, false),LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT, true);
+        this.popUp = new PopupWindow(inflater.inflate(R.layout.popup_cart_empty, null, false),LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT, true);
         this.popUp.showAtLocation(this.findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
     }
     
-    //Close Cart Listener
-    public void closeCartListener(View view){
+    //Cart Listener
+    public void cartDismissListener(View view){
+    	this.popUp.dismiss();
+    }
+    
+    public void cartContinueShoppingListener(View view){
     	this.popUp.dismiss();
     }
 }

@@ -98,6 +98,11 @@
     <string name="label_endedon">Auction Ended On:</string>
     <string name="label_maxbid">Bid:</string>
     <string name="label_quantity">Quantity:</string>
+    <string name="cart_dismiss_btn_desc">Cart Button Dismiss</string>
+    <string name="cart_text_title">Cart</string>
+    <string name="cart_continue_shopping_text">Continue Shipping</string>
+    <string name="cart_empty_string">Your cart is empty.</string>
+    <string name="cart_checkout_btn_text">Checkout</string>
     <string name="label_shippingaddress">Shipping Address:</string>
     <string name="label_trackingnum">Tracking Number:</string>
     <string name="btn_submittracking">Update</string>
