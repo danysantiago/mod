@@ -171,13 +171,14 @@ public class ProductEditFragment extends Fragment {
 				List<Category> cats = getCategories(json);
 				
 				if (cats.size() > 0) {
-					pd.dismiss();
 					//Pass JSON to Adapter
 					ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_list_item_1, cats);
 				    cboCategory.setAdapter(adapter);
 	
 					//Show list view
 					cboCategory.setVisibility(View.VISIBLE);
+					
+					pd.dismiss();
 				} else {
 					pd.dismiss();
 					Toast.makeText(getActivity(), "No Categories where found.", Toast.LENGTH_SHORT).show();
