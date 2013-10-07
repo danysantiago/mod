@@ -1,19 +1,11 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
-import icom5016.modstore.http.HttpRequest;
-import icom5016.modstore.http.Server;
-import icom5016.modstore.http.HttpRequest.HttpCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 public class MainFragment extends Fragment {
 
@@ -26,7 +18,7 @@ public class MainFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_main, container,false);
 		return view;
 	}
-	
+	/*
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 	  super.onViewCreated(view, savedInstanceState);
@@ -54,5 +46,5 @@ public class MainFragment extends Fragment {
         
       }
     });
-	}
+	}*/
 }

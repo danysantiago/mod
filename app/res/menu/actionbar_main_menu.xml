@@ -35,5 +35,13 @@
 	           <!-- Dynamicly Filled -->
 	        </menu>
 	    </item>
+	    
+	    <item 
+	        android:id="@+id/btn_search_filter" 
+	        android:visible="false"
+	        android:orderInCategory="1000"
+	        android:showAsAction="ifRoom" 
+	        android:icon="@drawable/btn_filter" android:title="@string/btn_filters">
+	    </item>
 </menu>
                   

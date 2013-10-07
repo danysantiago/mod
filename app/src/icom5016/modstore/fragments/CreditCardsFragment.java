@@ -1,39 +1,114 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.models.CreditCard;
 import icom5016.modstore.uielements.CreditCardAdapter;
+import icom5016.modstore.uielements.CreditCardDialog;
 
-import java.util.ArrayList;
+import org.json.JSONObject;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
-public class CreditCardsFragment extends Fragment {
-	private ListView lstCreditCards;
-	
-	public CreditCardsFragment() {
-		
-	};
+public class CreditCardsFragment extends SettingListFragment {
+	public CreditCardsFragment() { };
+	int pos;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.fragment_creditcards, container,false);
-		
-		ArrayList<CreditCard> creditCards = new ArrayList<CreditCard>();
-        creditCards.add(new CreditCard(0, "1234 1234 1234 1234", "Omar G Soto Fortuno", "06/2016"));
-        creditCards.add(new CreditCard(0, "1234 1234 1234 1234", "Daniel Santiago", "06/2016"));
-        creditCards.add(new CreditCard(0, "1234 1234 1234 1234", "Manuel E Marquez", "06/2016"));
-       
-        CreditCardAdapter adapter = new CreditCardAdapter(view.getContext(), R.layout.listview_creditcard_row, creditCards);
-       
-        lstCreditCards = (ListView)view.findViewById(R.id.lstListView);       
-        lstCreditCards.setAdapter(adapter);
+		View v = super.onCreateView(inflater, container, savedInstanceState);
         
-        return view;
+        setTitle("Credit Cards:");
+        
+        requestCreditCards();
+        
+        return v;
     }
+	
+	private void requestCreditCards() {
+		//Perform http request
+		Bundle params = new Bundle();
+		
+		params.putString("method", "GET");
+		params.putString("url", Server.CreditCards.GETALL);
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+			@Override
+			public void onSucess(JSONObject json) {
+				//Pass JSON to Adapter
+				CreditCardAdapter adapter = new CreditCardAdapter(getActivity(), R.layout.listview_creditcard_row, json);
+				lstListView.setAdapter(adapter);
+				lstListView.setOnItemClickListener(new listOnClick());
+
+				//Show list view
+				showList();
+			}
+
+			@Override
+			public void onFailed() {
+				Toast.makeText(getActivity(), "Couldn't load the Credit Cards [ERR: 2]", Toast.LENGTH_SHORT).show();
+				showError();
+			}
+		});
+		
+		request.execute();
+	}
+	
+	class listOnClick implements OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	        //DialogFragment dialog = new CreditCardDialog();
+	        //((CreditCardDialog)dialog).creditCard = (CreditCard)lstListView.getAdapter().getItem(arg2);
+	        //dialog.show(getActivity().getSupportFragmentManager(), "NewCreditCardDialog");
+	        pos = arg2;
+	        requestAddresses();
+		}
+	}
+	
+	private void requestAddresses() {
+		//Perform http request
+		Bundle params = new Bundle();
+		
+		params.putString("method", "GET");
+		params.putString("url", Server.Addresses.GETALL);
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+			@Override
+			public void onSucess(JSONObject json) {
+		        DialogFragment dialog = new CreditCardDialog();
+		        
+		        if (pos != -1) {
+		        	((CreditCardDialog)dialog).creditCard = (CreditCard)lstListView.getAdapter().getItem(pos);
+		        }
+		        ((CreditCardDialog)dialog).addressesJson = json;
+		        
+		        dialog.show(getActivity().getSupportFragmentManager(), "NewCreditCardDialog");
+			}
+
+			@Override
+			public void onFailed() {
+				Toast.makeText(getActivity(), "Couldn't load the Addresses for Credit Card Dialog [ERR: 3]", Toast.LENGTH_SHORT).show();
+				showError();
+			}
+		});
+		
+		request.execute();
+	}
+
+	@Override
+	void addOnClickListener(View v) {
+		pos = -1;
+        requestAddresses();
+        //DialogFragment dialog = new CreditCardDialog();
+        //dialog.show(getActivity().getSupportFragmentManager(), "NewCreditCardDialog");
+	}
 }

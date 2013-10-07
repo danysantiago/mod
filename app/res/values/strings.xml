@@ -30,4 +30,53 @@
         <item >Email</item>
         <item >Password</item>
     </string-array>
+    <string name="register_title">Setup Account</string>
+    <string name="register_instructions">You can create your account in just a few steps:</string>
+    <string name="register_username">Username:</string>
+    <string name="register_password">Password:</string>
+    <string name="register_pw_confirm">Confirm Password:</string>
+    <string name="register_email">Email:</string>
+    <string name="register_fn">First Name:</string>
+    <string name="register_ln">Last Name:</string>
+    <string name="logging_message">Logging in#8230;</string>
+    <string name="forgot_title">Forgot Something?</string>
+    <string name="forgot_message">If you forgotten your password or username, please enter your account’s email.</string>
+    <string name="forgot_send">Send</string>
+    <string name="login_username_hint">Username</string>
+    <string name="login_password_hint">Password</string>
+    <string name="hint_ccnumber">Credit Card Number</string>
+    <string name="hint_ccfullname">Full Name</string>
+    <string name="hint_ccv">CCV</string>
+    <string name="hint_ccmonth">Month</string>
+    <string name="btn_filters">Filters</string>
+    <string name="hint_ccdefault">Default?</string>
+    <string name="hint_addrline1">Address Line 1</string>
+    <string name="hint_addrline2">Address Line 2</string>
+    <string name="hint_addrcity">City</string>
+    <string name="hint_addrstate">State</string>
+    <string name="hint_addrzipcode">Zip Code</string>
+    <string name="search_filter_title">Refine Search</string>
+    <string name="search_filter_cancel">Cancel</string>
+    <string name="search_filter_sort">Sort</string>
+    <string name="search_filter_categories">Categories</string>
+    <string name="search_filter_rating">Rating</string>
+    <string name="search_filter_condition">Condition</string>
+    <string name="search_filter_price">Price</string>
+    <string name="search_filter_to">To</string>
+    <string name="search_filter_start_hint">$0.00</string>
+    <string name="search_filter_end_hint">Any</string>
+    <string name="search_filter_error_price">Error in Price Order</string>
+    <string name="placeholder_search_desc">Placeholder Search Icon</string>
+    <string name="search_progress_msg">Searching…</string>
+    <string name="search_error">Unable to complete search. Please try again.</string>
+    <color name="dark_gray">#707070</color>
+    <string name="new_password">New Password&#8230;</string>
+    <string name="new_password_confirm">Confirm New Password&#8230;</string>
+    <string name="hint_ccyear">Year</string>
+    <string name="category_list_title">Select a category</string>
+    <string name="placeholder_category_desc">Placeholder List Icon</string>
+    <string name="category_list_error">Unable to generate list. Please try again.</string>
+    <string name="category_list_placeholder_text">Placeholder Category</string>
+    <string name="category_list_row_desc">Image of Right Arrow</string>
+    <string name="cc_image_desc">Image of Credit Card</string>
 </resources>

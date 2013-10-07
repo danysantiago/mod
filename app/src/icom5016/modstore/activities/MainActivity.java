@@ -1,7 +1,6 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.fragments.CartFragment;
-import icom5016.modstore.fragments.MainCategoryFragment;
+import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.MainFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.SellItemFragment;
@@ -65,7 +64,7 @@ public class MainActivity extends MainInterfaceActivity {
 		 
 		 			/*  Generates Initial Fragment  */
 		 Bundle bundle = this.getIntent().getExtras();
-		
+		 Bundle fragmentBundle = new Bundle();
 		 
 		 if(bundle != null){
 			 
@@ -76,11 +75,10 @@ public class MainActivity extends MainInterfaceActivity {
 			 switch(mainActivityCase){
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY:
 				 //Case: Category
-				Bundle categoryBundle = new Bundle();
-				categoryBundle.putString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY, ConstantClass.MAINCATEGORY_FRAGMENT_MAIN_VALUE);
-		  		MainCategoryFragment fragment= new MainCategoryFragment();
-		  		fragment.setArguments(categoryBundle);
-		  		this.fragmentStack.push(fragment);
+				fragmentBundle.putInt(ConstantClass.CATEGORY_LIST_PARENT_KEY, -1);
+	    	  	CategoryListFragment fragment= new CategoryListFragment();
+	    	  	fragment.setArguments(fragmentBundle);
+	    	  	this.fragmentStack.push(fragment);
 		  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 				break;
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS:
@@ -167,33 +165,18 @@ public class MainActivity extends MainInterfaceActivity {
 	}
 
 
-
-	//Cart Button Listener 
-    public void cartButtonListner(MenuItem menuItem) {
-		if(this.isCartActive){
-			menuItem.setIcon(R.drawable.btn_cart );
-    		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek() , MainInterfaceActivity.getContentFragmentId());
-    	}
-    	else{
-    	  menuItem.setIcon(R.drawable.navigation_cancel);
-    	  this.fragmentStack.push(new CartFragment());
-    	  AndroidResourceFactory.setNewFragment(this, new CartFragment(), MainInterfaceActivity.getContentFragmentId());
-    	}
-    	//Create A new Activity for Cart
-    	this.isCartActive = !this.isCartActive;
-		
-	}
     
     
     
     //Category Menu
   	private void loadSpecificCategoryFragment(MenuItem item) {
-  		Bundle bundle = new Bundle();
+  		/*Bundle bundle = new Bundle();
   		bundle.putString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY, (String) item.getTitle());
   		MainCategoryFragment fragment= new MainCategoryFragment();
   		fragment.setArguments(bundle);
   		this.fragmentStack.push(fragment);
   		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+  		*/
   	}
 
 }

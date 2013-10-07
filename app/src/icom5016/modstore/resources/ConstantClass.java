@@ -15,12 +15,11 @@ public class ConstantClass {
 	public final static String USER_GUID_KEY = "userGUID";
 	
 	//Search Constants
-	public final static String SEARCH_FRAGMENT_BOOL_ID = "searchBool";
-	public final static String SEARCH_FRAGMENT_QUERY_ID = "searchQuery";
+	public final static String SEARCH_FRAGMENT_BOOL_KEY = "searchBool";
+	public final static String SEARCH_FRAGMENT_QUERY_KEY = "searchQuery";
 	
 	//Category Constants
-	public final static String MAINCATEGORY_FRAGMENT_CATEGORY_KEY = "searchCategory";
-	public final static String MAINCATEGORY_FRAGMENT_MAIN_VALUE = "mainCategoryList";
+	public final static String CATEGORY_LIST_PARENT_KEY = "categoryListParentKey";
 	
 	//Drawer Lists
 	public final static String[] DRAWER_GUEST_LIST = new String[]{"Home", "Categories", "About", "Log in","Register",}; 
@@ -39,8 +38,24 @@ public class ConstantClass {
 	//ForgotLogIn
 	public final static String 	FORGOT_TAG = "forgotUserNameOrPassword";
 	public final static String FORGOT_TYPE_KEY = "forgotTypeKey";
-	public final static int FORGOT_TYPE_EMAIL = 0;
+	public final static int FORGOT_TYPE_USERNAME = 0;
 	public final static int FORGOT_TYPE_PASSWORD = 1;
 	
-
+	//SEARCH FILTER
+	public final static String SEARCH_FILTER_DIALOG_TAG = "searchFilterDialogTag";
+	public final static String[] SEARCH_FILTER_SORT = new String[]{"Best Match","Price: Low to High", "Price: High to Low", "Time: ending soonest", "Time: newly listed"};
+	public static final String[] SEARCH_FILTER_RATING = new String[]{"Any", "5 Stars or More", "4 Stars or More", "3 Stars or More", "2 Stars or More", "1 Stars or More" };
+	public static final String[] SEARCH_FILTER_CONDITION = new String[]{"Any", "Buy It Now", "Bid Only"};
+	
+	//Dialog Keys
+	public static final String SEARCH_DIALOG_SORT_KEY = "dialogSortKey";
+	public static final String SEARCH_DIALOG_CATEGORIES_KEY = "dialogCategoriesKey";
+	public static final String SEARCH_DIALOG_RATING_KEY = "dialogRatingKey";
+	public static final String SEARCH_DIALOG_CONDITION_KEY = "dialogConditionKey";
+	public static final String SEARCH_DIALOG_START_PRICE_KEY = "dialogStartPriceKey";
+	public static final String SEARCH_DIALOG_END_PRICE_KEY = "dialogEndPriceKey";
+	
+	//ProductList Constant
+	public static final String PRODUCT_LIST_CATEGORY_KEY ="productListCategoryKey";
+	
 }

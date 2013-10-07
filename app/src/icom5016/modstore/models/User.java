@@ -13,7 +13,7 @@ public class User {
 	private String email;
 	private int guid;
 	private boolean isAdmin;
-	private String token;
+	//private String token;
 	
 	
 	public User(String username, String firstName, String middleName, String lastName, String email, int guid ,boolean isAdmin) {
@@ -30,10 +30,10 @@ public class User {
 	public User(JSONObject jsonObject) {
 		try {
 			this.username = jsonObject.getString("username");
-			this.firstName = jsonObject.getString("firstname");
+			this.firstName = jsonObject.getString("firstName");
 			this.middleName = jsonObject.getString("middleName");
 			this.lastName = jsonObject.getString("lastName");
-			this.email = jsonObject.getString("model");
+			this.email = jsonObject.getString("email");
 			this.isAdmin = jsonObject.getBoolean("isAdmin");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

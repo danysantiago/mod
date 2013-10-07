@@ -2,8 +2,11 @@ package icom5016.modstore.uielements;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.CreditCard;
+import icom5016.modstore.resources.DataFetchFactory;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,17 +16,30 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
 	Context context;
     int layoutResourceId;   
-    ArrayList<CreditCard> data = null;
-   
-    public CreditCardAdapter(Context context, int layoutResourceId, ArrayList<CreditCard> data) {
-        super(context, layoutResourceId, data);
+    int creditCardImages[];
+
+    public CreditCardAdapter(Context context, int layoutResourceId, JSONObject json) {
+        super(context, layoutResourceId);
+
+		try {
+			JSONArray jsonArr = json.getJSONArray("creditcards");
+			
+			for (int i = 0; i < jsonArr.length(); i++) {
+				this.add(new CreditCard(jsonArr.getJSONObject(i)));
+			}
+		} catch (JSONException e) {
+			Toast.makeText(context, "Couldn't load the Credit Cards [ERR: 1]", Toast.LENGTH_SHORT).show();
+			//((CreditCardsFragment)context.getF).showError();
+		}
+        
         this.layoutResourceId = layoutResourceId;
         this.context = context;
-        this.data = data;
+        this.creditCardImages = DataFetchFactory.getCreditCardImages();
     }
 
     @Override
@@ -32,7 +48,6 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
         CreditCardHolder holder = null;
        
         if(row == null) {
-        	
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
            
@@ -40,21 +55,26 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
             holder.txtName = (TextView)row.findViewById(R.id.txtCCName);
             holder.txtNumber = (TextView)row.findViewById(R.id.txtCCNumber);
             holder.txtExpire = (TextView)row.findViewById(R.id.txtCCExpire);
-            
-            //holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
-            //holder.txtName = (TextView)row.findViewById(R.id.;
+            holder.imgCreditCard = (ImageView)row.findViewById(R.id.imgCreditCard);
+            holder.imgDefault = (ImageView)row.findViewById(R.id.imgCCDefault);
            
             row.setTag(holder);
         } else {
             holder = (CreditCardHolder)row.getTag();
         }
        
-        CreditCard creditCard = data.get(position);
+        CreditCard creditCard = this.getItem(position);
         holder.txtName.setText(creditCard.name);
         holder.txtNumber.setText(creditCard.number);
         holder.txtExpire.setText(creditCard.expire);
-        //holder.imgIcon.setImageResource(weather.icon);
-       
+        holder.imgDefault.setVisibility((creditCard.isDefault) ? View.VISIBLE : View.GONE);
+
+        if (creditCard.type < creditCardImages.length) {
+        	holder.imgCreditCard.setImageResource(this.creditCardImages[creditCard.type]);
+        } else {
+        	// Set No Recognized Image...
+        }
+        
         return row;
     }
    
@@ -63,5 +83,6 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
         TextView txtName;
         TextView txtNumber;
         TextView txtExpire;
+        ImageView imgDefault;
     }
 }

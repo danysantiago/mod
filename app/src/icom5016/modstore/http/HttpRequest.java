@@ -96,6 +96,7 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 				if(payload != null) {
 					HttpPost post = (HttpPost) request;
 					post.setEntity(new StringEntity(payload.toString()));
+					post.setHeader("Content-Type", "application/json");
 				}
 			} else if (method.equalsIgnoreCase("PUT")) {
 				request = new HttpPut(url.toString());
@@ -180,12 +181,15 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 		} else {
 			callback.onFailed();
 		}
+		
+		callback.onDone();
 	}
 	
 	public static abstract class HttpCallback {
 		public abstract void onSucess(JSONObject json);
 		//public abstract void onProgress();
 		public abstract void onFailed();
+		public void onDone() {};
 	}
 
 }

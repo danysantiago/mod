@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <TextView
-        android:id="@+id/lblAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/addr_address"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+    android:layout_height="match_parent"
+    android:paddingLeft="5dp" >
     
     <TextView
         android:id="@+id/lblAddrAddressLine1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/lblAddress"
         android:text="TextView"
         android:textSize="12sp" />
 
@@ -32,43 +22,29 @@
         android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/lblZipcode"
+        android:id="@+id/lblAddrLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/addr_zipcode"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/lblAddrZipCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/lblAddrAddressLine1"
-        android:layout_alignBottom="@+id/lblAddrAddressLine1"
-        android:layout_alignLeft="@+id/lblZipcode"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/lblAddrAddressLine2"
         android:text="TextView"
         android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/lblCity"
+        android:id="@+id/lblAddrCountry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/lblAddrCity"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/lblAddrLocation"
+        android:text="TextView"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/imgAddrDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="44dp"
-        android:text="@string/addr_city"
-        android:textSize="15sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/lblAddrCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/lblAddrAddressLine2"
-        android:layout_alignLeft="@+id/lblCity"
-        android:text="TextView"
-        android:textSize="12sp" />
+        android:layout_centerVertical="true"
+        android:src="@drawable/btn_check_on_focused_holo_dark" />
 
 </RelativeLayout>

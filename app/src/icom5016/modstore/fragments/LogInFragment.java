@@ -8,9 +8,13 @@ import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.resources.DataFetchFactory;
 import icom5016.modstore.uielements.ForgotDialog;
-import android.app.Activity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -28,6 +32,7 @@ import android.widget.Toast;
 
 public class LogInFragment extends Fragment implements OnClickListener{
 	
+	private ProgressDialog pd;
 	
 	public LogInFragment(){
 	};
@@ -82,51 +87,70 @@ public class LogInFragment extends Fragment implements OnClickListener{
 		EditText username_box = (EditText) this.getView().findViewById(R.id.login_field_username);
 		EditText password_box = (EditText) this.getView().findViewById(R.id.login_field_password);
 		
-		String user = username_box.getText().toString().trim();
-		String pass = password_box.getText().toString().trim();
-		
-		doHttpLogin(user, pass);
-		
-	}
-	
-	public void doHttpLogin(String username, String password) {
+		String username = username_box.getText().toString().trim();
+		String password = password_box.getText().toString().trim();
 		
 		try {
-			JSONObject credentials = new JSONObject();
-			credentials.put("user", username);
-			credentials.put("pass", password);
-		}
-		
+			pd = new ProgressDialog(getActivity());
+			pd.setMessage(getResources().getString(R.string.logging_message));
+			pd.show();
+			
+	        doHttpLogin(username, password);
+        } catch (JSONException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+        }
+	}
+	
+	private void doHttpLogin(String username, String password) throws JSONException {
 		Bundle params = new Bundle();
 		params.putString("url", Server.BASE_URL + "/login");
 		params.putString("method", "POST");
-		params.putString("payload", credentials.toString());
-		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+		
+		JSONObject credentials = new JSONObject();
+		credentials.put("user", username);
+		credentials.put("pass", password);
+		
+		HttpRequest request = new HttpRequest(params, credentials, new HttpCallback() {
 			
 			@Override
 			public void onSucess(JSONObject json) {
-				User user = new User(json);
-				setUserInSharedPreferences(user);
-				getActivity().finish();
+				try {
+					if(json.getString("status").equals("OK")) {
+						User user = new User(json.getJSONObject("account"));
+						setUserInSharedPreferences(user);
+						getActivity().finish();
+					} else {
+						Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();;
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			@Override
 			public void onFailed() {
 				Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();;
 			}
+			
+			@Override
+			public void onDone() {
+				pd.dismiss();
+			}
 		});
 		request.execute();
-	}
-	
+	    
+    }
+
 	public void setUserInSharedPreferences(User user){
-		SharedPreferences.Editor preferencesEdit = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+		SharedPreferences.Editor preferencesEdit = getActivity().getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE).edit();
 		preferencesEdit.putString(ConstantClass.USER_USERNAME_KEY, user.getUsername());
 		preferencesEdit.putString(ConstantClass.USER_FIRSTNAME_KEY, user.getFirstName());
 		preferencesEdit.putString(ConstantClass.USER_LASTNAME_KEY, user.getLastName());
 		preferencesEdit.putString(ConstantClass.USER_MIDDLENAME_KEY, user.getMiddleName());
 		preferencesEdit.putString(ConstantClass.USER_EMAIL_KEY, user.getEmail());
 		preferencesEdit.putBoolean(ConstantClass.USER_IS_ADMIN_KEY, user.isAdmin());
-		preferencesEdit.putInt(ConstantClass.USER_UID_KEY, user.getUid());
+		preferencesEdit.putInt(ConstantClass.USER_GUID_KEY, user.getGuid());
 		preferencesEdit.putBoolean(ConstantClass.USER_IS_LOGIN, true);
 		preferencesEdit.commit();
 	}
