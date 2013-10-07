@@ -8,6 +8,7 @@ import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.uielements.ProductAdapter;
+import icom5016.modstore.uielements.ProductListAdapter;
 import icom5016.modstore.uielements.ProductListener;
 
 import org.json.JSONArray;
@@ -104,6 +105,9 @@ public class ProductListFragment extends Fragment {
 							else
 							{
 								//Set the Adapter
+								ProductListAdapter spinnerAdapter = new ProductListAdapter(getActivity(), subCategoryJson);
+								plSpinner.setAdapter(spinnerAdapter);
+								plSpinner.setOnItemSelectedListener(new ProductListListener((MainInterfaceActivity)getActivity()) );
 							}
 							
 							
