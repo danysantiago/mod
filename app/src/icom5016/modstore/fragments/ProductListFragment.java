@@ -33,6 +33,7 @@ public class ProductListFragment extends Fragment {
 	private LinearLayout plLinearLayout;
 	private ListView plListView;
 	private int categoryId;
+
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
