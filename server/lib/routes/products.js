@@ -61,6 +61,40 @@ routes.get("/products/:pid", function (req, res) {
   res.send(404);
 });
 
+routes.get("/products/category/:pid", function (req, res) {
+  var categoryList = {
+    "products": fakeProducts,
+     "category": {
+           "parentid":"-1",
+            "id": "1",
+            "name": "Books"
+            },
+    "subcategory": [
+                     {
+                    "parentid":"1",
+                    "name": "Children",
+                    "id": "6"
+                      },
+                      {
+                        "parentid":"1",
+                        "name": "Fiction",
+                        "id": "7"
+                      },
+                     {
+                        "parentid":"1",
+                        "name": "Technology",
+                        "id": "8"
+                      },
+                      {
+                        "parentid":"1",
+                        "name": "Business",
+                        "id": "9"
+                      }
+                   ]
+  };
+  res.send(categoryList);
+});
+
 routes.get("/products", function (req, res) {
   res.send({"products": fakeProducts});
 });
@@ -92,6 +126,8 @@ routes.get("/products/:pid/reviews", function (req, res) {
 
   res.send(fakeReviews);
 });
+
+
 
 
 module.exports = routes;

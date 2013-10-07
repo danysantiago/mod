@@ -91,4 +91,60 @@ public class Product {
 		return model;
 	}
 
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
+
+	public int getCid() {
+		return cid;
+	}
+
+	public void setCid(int cid) {
+		this.cid = cid;
+	}
+
+	public String getDimensions() {
+		return dimensions;
+	}
+
+	public void setDimensions(String dimensions) {
+		this.dimensions = dimensions;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public double getBid_price() {
+		return bid_price;
+	}
+
+	public void setBid_price(double bid_price) {
+		this.bid_price = bid_price;
+	}
+
+	public String getAuction_ends() {
+		return auction_ends;
+	}
+
+	public void setAuction_ends(String auction_ends) {
+		this.auction_ends = auction_ends;
+	}
+
+	public String getImage_src() {
+		return image_src;
+	}
+
+	public void setImage_src(String image_src) {
+		this.image_src = image_src;
+	}
+
 }
