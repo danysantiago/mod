@@ -69,4 +69,14 @@
     <string name="placeholder_search_desc">Placeholder Search Icon</string>
     <string name="search_progress_msg">Searching…</string>
     <string name="search_error">Unable to complete search. Please try again.</string>
+    <color name="dark_gray">#707070</color>
+    <string name="new_password">New Password&#8230;</string>
+    <string name="new_password_confirm">Confirm New Password&#8230;</string>
+    <string name="hint_ccyear">Year</string>
+    <string name="category_list_title">Select a category</string>
+    <string name="placeholder_category_desc">Placeholder List Icon</string>
+    <string name="category_list_error">Unable to generate list. Please try again.</string>
+    <string name="category_list_placeholder_text">Placeholder Category</string>
+    <string name="category_list_row_desc">Image of Right Arrow</string>
+    <string name="cc_image_desc">Image of Credit Card</string>
 </resources>

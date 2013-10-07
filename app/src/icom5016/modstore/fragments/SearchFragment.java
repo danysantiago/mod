@@ -82,7 +82,7 @@ public class SearchFragment extends Fragment {
 		}
 		
 		
-		HttpRequest request = new HttpRequest(params ,new HttpCallback() {
+		HttpRequest request = new HttpRequest(params, filter_params ,new HttpCallback() {
 			
 			@Override
 			public void onSucess(JSONObject json) {

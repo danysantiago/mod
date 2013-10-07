@@ -19,8 +19,7 @@ public class ConstantClass {
 	public final static String SEARCH_FRAGMENT_QUERY_KEY = "searchQuery";
 	
 	//Category Constants
-	public final static String MAINCATEGORY_FRAGMENT_CATEGORY_KEY = "searchCategory";
-	public final static String MAINCATEGORY_FRAGMENT_MAIN_VALUE = "mainCategoryList";
+	public final static String CATEGORY_LIST_PARENT_KEY = "categoryListParentKey";
 	
 	//Drawer Lists
 	public final static String[] DRAWER_GUEST_LIST = new String[]{"Home", "Categories", "About", "Log in","Register",}; 
@@ -56,5 +55,7 @@ public class ConstantClass {
 	public static final String SEARCH_DIALOG_START_PRICE_KEY = "dialogStartPriceKey";
 	public static final String SEARCH_DIALOG_END_PRICE_KEY = "dialogEndPriceKey";
 	
-
+	//ProductList Constant
+	public static final String PRODUCT_LIST_CATEGORY_KEY ="productListCategoryKey";
+	
 }

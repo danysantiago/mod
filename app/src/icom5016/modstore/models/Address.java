@@ -39,11 +39,7 @@ public class Address {
 			this.state = json.getString("state");
 			this.country = json.getString("country");
 			this.zipcode = json.getString("zipcode");
-
-			// Temporary, NodeJS is not updated yet.
-			if (json.has("isDefault")) {
-				this.isDefault = json.getBoolean("isDefault");
-			}
+			this.isDefault = json.getBoolean("isDefault");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

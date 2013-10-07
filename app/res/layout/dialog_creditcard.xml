@@ -62,7 +62,7 @@
         android:layout_alignTop="@+id/txtCCExpireMonth"
         android:layout_toLeftOf="@+id/txtCCSecurityCode"
         android:layout_toRightOf="@+id/txtCCExpireMonth"
-        android:hint="Year" />
+        android:hint="@string/hint_ccyear" />
 
     <Spinner
         android:id="@+id/cboType"

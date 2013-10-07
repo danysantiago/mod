@@ -4,6 +4,7 @@
     android:layout_height="match_parent" >
 
     <ImageView
+        android:contentDescription="@string/cc_image_desc"
         android:id="@+id/imgCreditCard"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 public class CreditCard {	
 	public int cid;
+	public int aid;
 	public int type;
 	public String number;
 	public String name;
@@ -16,7 +17,7 @@ public class CreditCard {
 		super();
 	}
 	
-	public CreditCard(int cid, int type, String number, String name, String expire, String securityCode, boolean isDefault) {
+	public CreditCard(int cid, int aid, int type, String number, String name, String expire, String securityCode, boolean isDefault) {
 		this.cid = cid;
 		this.type = type;
 		this.number = number;
@@ -29,16 +30,13 @@ public class CreditCard {
 	public CreditCard(JSONObject json) {
 		try {
 			this.cid = json.getInt("ccid");
+			this.aid = json.getInt("aid");
 			this.type = json.getInt("type");
 			this.number = json.getString("number");
 			this.name = json.getString("name");
 			this.expire = json.getString("expirationDate");
 			this.securityCode = json.getString("scode");
-			
-			// Temporary, NodeJS is not updated yet.
-			if (json.has("isDefault")) {
-				this.isDefault = json.getBoolean("isDefault");
-			}
+			this.isDefault = json.getBoolean("isDefault");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

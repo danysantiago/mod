@@ -41,7 +41,7 @@ public class MainCategoryFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		this.categoryTitle = getArguments().getString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY);		
+		//this.categoryTitle = getArguments().getString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY);		
 		View view = inflater.inflate(R.layout.fragment_maincategory, container, false);
 		
 		// Set subcategories
