@@ -36,7 +36,7 @@ public class ProductListFragment extends Fragment {
 	private TextView plTextView;
 	private ListView plListView;
 	private int categoryId;
-
+	private boolean spinnerChange = false;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +49,8 @@ public class ProductListFragment extends Fragment {
 		this.plLinearLayout = (LinearLayout) view.findViewById(R.id.plLinearLayout);
 		this.plListView = (ListView) view.findViewById(R.id.plListView);
 		this.plTextView = (TextView) view.findViewById(R.id.plTextView);
-
+		
+		
 		Bundle bundle = this.getArguments();
 		
 		if(bundle == null){
@@ -105,6 +106,32 @@ public class ProductListFragment extends Fragment {
 							else
 							{
 								//Set the Adapter
+//								ProductListAdapter spinnerAdapter = new ProductListAdapter(getActivity(), subCategoryJson);
+//								plSpinner.setAdapter(spinnerAdapter);
+//								
+//								
+//								plSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//								    public void onItemSelected(AdapterView<?> listView, View view, int pos, long l) { 
+//								        if(spinnerChange){
+//								        	Category category = (Category) listView.getAdapter().getItem(pos);
+//								    		Bundle bundle = new Bundle();
+//								    		bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, category.getId());
+//								    		ProductListFragment plf = new ProductListFragment();
+//								    		plf.setArguments(bundle);
+//								    		MainInterfaceActivity mia = (MainInterfaceActivity) getActivity();
+//											mia.fragmentStack.push(plf);
+//											spinnerChange = false;
+//											AndroidResourceFactory.setNewFragment(mia, mia.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+//								        }
+//								        else
+//								        	spinnerChange = true;
+//								    } 
+//
+//								    public void onNothingSelected(AdapterView<?> adapterView) {
+//										spinnerChange = true;
+//								        return;
+//								    } 
+//								}); 
 							}
 							
 							
@@ -147,5 +174,6 @@ public class ProductListFragment extends Fragment {
 				});
 				request.execute();
 	}
+
 	
 }
