@@ -30,8 +30,6 @@ public class AddressesFragment extends SettingListFragment {
 
         requestAddresses();
         
-        //Locale.getDefault().getDisplayCountry();
-        
         return v;
     }
 

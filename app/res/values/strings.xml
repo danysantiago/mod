@@ -70,6 +70,7 @@
     <string name="search_progress_msg">Searching…</string>
     <string name="search_error">Unable to complete search. Please try again.</string>
     <color name="dark_gray">#707070</color>
+    <color name="dark_green">#336600</color>
     <string name="new_password">New Password&#8230;</string>
     <string name="new_password_confirm">Confirm New Password&#8230;</string>
     <string name="hint_ccyear">Year</string>
@@ -79,4 +80,15 @@
     <string name="category_list_placeholder_text">Placeholder Category</string>
     <string name="category_list_row_desc">Image of Right Arrow</string>
     <string name="cc_image_desc">Image of Credit Card</string>
+    <string name="hint_productname">Name</string>
+    <string name="hint_productdescription">Description</string>
+    <string name="hint_productbrand">Brand</string>
+    <string name="hint_productmodel">Model</string>
+    <string name="hint_productdimensions">Dimensions</string>
+    <string name="hint_productquantity">Quantity</string>
+    <string name="hint_productbuyoutprice">Buyout Price</string>
+    <string name="hint_productbidprice">Bid Price</string>
+    <string name="hint_productendauction">Auction Ends</string>
+    <string name="product_selectphoto">Select a Photo</string>
+    <string name="product_sellit">Sell It!</string>
 </resources>

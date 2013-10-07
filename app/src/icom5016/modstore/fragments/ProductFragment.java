@@ -16,6 +16,7 @@ public class ProductFragment extends Fragment {
 		ProductFragment pf = new ProductFragment();
 		pf.setProduct(product);
 		return pf;
+		
 	}
 
 	public Product getProduct() {
@@ -31,6 +32,11 @@ public class ProductFragment extends Fragment {
             Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_product, container,false);
 		return view;
+	}
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 	}
 
 }

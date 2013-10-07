@@ -68,7 +68,7 @@ public class SearchFragment extends Fragment {
 		//Perform http request
 		Bundle params = new Bundle();
 		params.putString("method", "GET");
-		params.putString("url", Server.Search.GET);		
+		params.putString("url", Server.Products.GETALL);		
 		//Must Change
 		JSONObject filter_params = new JSONObject();
 		try{
