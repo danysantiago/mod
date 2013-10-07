@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -337,7 +336,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		//Log-Out (refresh)
     		
     			//Destroy Preferences
-    		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    		SharedPreferences preferences = getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
     		preferences.edit().clear().commit();
     			//Refresh MainActivity
     		if(this instanceof MainActivity ){
