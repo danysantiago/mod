@@ -3,7 +3,9 @@ package icom5016.modstore.activities;
 import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.MainFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
+import icom5016.modstore.fragments.ProductListFragment;
 import icom5016.modstore.fragments.SellItemFragment;
+import icom5016.modstore.models.Category;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import android.app.ActionBar;
@@ -170,13 +172,21 @@ public class MainActivity extends MainInterfaceActivity {
     
     //Category Menu
   	private void loadSpecificCategoryFragment(MenuItem item) {
-  		/*Bundle bundle = new Bundle();
-  		bundle.putString(ConstantClass.MAINCATEGORY_FRAGMENT_CATEGORY_KEY, (String) item.getTitle());
-  		MainCategoryFragment fragment= new MainCategoryFragment();
+  		//Iterate to Confirm selection
+  		Category selectedCategory = null;
+  		for(Category e: this.mainCategories){
+  			if(e.getName().equals(item.getTitle())){
+  				selectedCategory = e;
+  				break;
+  			}
+  		}
+  		Bundle bundle = new Bundle();
+  		bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, selectedCategory.getId());
+  		ProductListFragment fragment= new ProductListFragment();
   		fragment.setArguments(bundle);
   		this.fragmentStack.push(fragment);
   		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-  		*/
+  		
   	}
 
 }

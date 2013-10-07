@@ -23,8 +23,8 @@ public class ConstantClass {
 	
 	//Drawer Lists
 	public final static String[] DRAWER_GUEST_LIST = new String[]{"Home", "Categories", "About", "Log in","Register",}; 
-	public final static String[] DRAWER_USER_LIST = new String[]{"Home", "Categories", "My Items", "Sell Item", "Settings", "About","Log Out"};
-	public final static String[] DRAWER_ADMIN_LIST = new String[]{"Home", "Categories", "My Items", "Sell Item", "Settings", "About","Log Out", "Admin Menu"};
+	public final static String[] DRAWER_USER_LIST = new String[]{"Home", "Categories", "My Items", "My Market", "Settings", "About","Log Out"};
+	public final static String[] DRAWER_ADMIN_LIST = new String[]{"Home", "Categories", "My Items", "My Market", "Settings", "About","Log Out", "Admin Menu"};
 	
 	//Log-In Register Key
 	public final static String LOGINREGISTER_FLAG = "loginOrRegister";
@@ -34,6 +34,8 @@ public class ConstantClass {
 	public final static int MAINACTIVITY_FRAGMENT_CATEGORY = 0;
 	public final static int MAINACTIVITY_FRAGMENT_MY_ITEMS = 1;
 	public final static int MAINACTIVITY_FRAGMENT_SELL_ITEMS = 2;
+	public final static int MAINACTIVITY_FRAGMENT_ITEMS_FOR_SALE = 3;
+	public final static int MAINACTIVITY_FRAGMENT_ITEMS_SOLD = 4;
 	
 	//ForgotLogIn
 	public final static String 	FORGOT_TAG = "forgotUserNameOrPassword";

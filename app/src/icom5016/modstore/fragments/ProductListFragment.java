@@ -6,8 +6,10 @@ import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
+import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.uielements.ProductAdapter;
+import icom5016.modstore.uielements.ProductListSpinnerAdapter;
 import icom5016.modstore.uielements.ProductListener;
 
 import org.json.JSONArray;
@@ -19,6 +21,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -49,7 +52,6 @@ public class ProductListFragment extends Fragment {
 		this.plLinearLayout = (LinearLayout) view.findViewById(R.id.plLinearLayout);
 		this.plListView = (ListView) view.findViewById(R.id.plListView);
 		this.plTextView = (TextView) view.findViewById(R.id.plTextView);
-		
 		
 		Bundle bundle = this.getArguments();
 		
@@ -106,32 +108,31 @@ public class ProductListFragment extends Fragment {
 							else
 							{
 								//Set the Adapter
-//								ProductListAdapter spinnerAdapter = new ProductListAdapter(getActivity(), subCategoryJson);
-//								plSpinner.setAdapter(spinnerAdapter);
-//								
-//								
-//								plSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//								    public void onItemSelected(AdapterView<?> listView, View view, int pos, long l) { 
-//								        if(spinnerChange){
-//								        	Category category = (Category) listView.getAdapter().getItem(pos);
-//								    		Bundle bundle = new Bundle();
-//								    		bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, category.getId());
-//								    		ProductListFragment plf = new ProductListFragment();
-//								    		plf.setArguments(bundle);
-//								    		MainInterfaceActivity mia = (MainInterfaceActivity) getActivity();
-//											mia.fragmentStack.push(plf);
-//											spinnerChange = false;
-//											AndroidResourceFactory.setNewFragment(mia, mia.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-//								        }
-//								        else
-//								        	spinnerChange = true;
-//								    } 
-//
-//								    public void onNothingSelected(AdapterView<?> adapterView) {
-//										spinnerChange = true;
-//								        return;
-//								    } 
-//								}); 
+								ProductListSpinnerAdapter spinnerAdapter = new ProductListSpinnerAdapter(getActivity(), subCategoryJson);
+								plSpinner.setAdapter(spinnerAdapter);
+								
+								
+								plSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+								    public void onItemSelected(AdapterView<?> listView, View view, int pos, long l) { 
+								        if(spinnerChange){
+								        	Category category = (Category) listView.getAdapter().getItem(pos);
+								    		Bundle bundle = new Bundle();
+								    		bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, category.getId());
+								    		ProductListFragment plf = new ProductListFragment();
+								    		plf.setArguments(bundle);
+								    		MainInterfaceActivity mia = (MainInterfaceActivity) getActivity();
+											mia.fragmentStack.push(plf);
+											spinnerChange = false;
+											AndroidResourceFactory.setNewFragment(mia, mia.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+								        }
+								        else
+								        	spinnerChange = true;
+								    } 
+
+								    public void onNothingSelected(AdapterView<?> adapterView) {
+								        return;
+								    } 
+								}); 
 							}
 							
 							
@@ -175,5 +176,10 @@ public class ProductListFragment extends Fragment {
 				request.execute();
 	}
 
+	@Override
+	public void onResume() {
+		this.spinnerChange = false;
+		super.onResume();
+	}
 	
 }

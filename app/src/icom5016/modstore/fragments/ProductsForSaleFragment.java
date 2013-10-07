@@ -1,10 +1,12 @@
 package icom5016.modstore.fragments;
 
+import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
-import icom5016.modstore.fragments.CreditCardsFragment.listOnClick;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
+import icom5016.modstore.models.Product;
+import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.uielements.ProductDetailsAdapter;
 
 import org.json.JSONException;
@@ -16,6 +18,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +57,7 @@ public class ProductsForSaleFragment extends Fragment {
 					ProductDetailsAdapter adapter;
 					adapter = new ProductDetailsAdapter(getActivity(), R.layout.listview_product_row_2, json.getJSONArray("products"), false);
 					lstList.setAdapter(adapter);
-					//lstListView.setOnItemClickListener(new listOnClick());
+					lstList.setOnItemClickListener(new listOnClick((MainInterfaceActivity)getActivity()));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -71,5 +75,22 @@ public class ProductsForSaleFragment extends Fragment {
 		
 		pd = ProgressDialog.show(getActivity(), "Loading", "Loading Products...");
 		request.execute();
+	}
+	
+	class listOnClick implements OnItemClickListener {
+		private MainInterfaceActivity activity;
+		
+		public listOnClick(MainInterfaceActivity activity) {
+			super();
+			this.activity = activity;
+		}
+		
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+			ProductSellEditFragment f = new ProductSellEditFragment();
+			f.setProduct((Product)lstList.getAdapter().getItem(arg2));
+			activity.fragmentStack.push(f);
+			AndroidResourceFactory.setNewFragment(activity, this.activity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+		}
 	}
 }

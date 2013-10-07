@@ -5,6 +5,7 @@ import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
+import icom5016.modstore.models.Product;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -40,6 +41,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 public class ProductSellEditFragment extends Fragment {
@@ -63,6 +65,8 @@ public class ProductSellEditFragment extends Fragment {
 	byte selectedPhotoBytes[];
 	
 	ProgressDialog pd;
+	
+	Product product;
 	
 	private static final int SELECT_PICTURE = 1;
 	
@@ -126,6 +130,42 @@ public class ProductSellEditFragment extends Fragment {
 		requestCategories();
 		
 		return view;
+	}
+	
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	private void loadProduct() {
+		if (product != null) {
+			txtName.setText(product.getName());
+			txtDescription.setText(product.getDescription());
+			txtBrand.setText(product.getBrand());
+			txtModel.setText(product.getModel());
+			txtDimensions.setText(product.getDimensions());
+			txtQuantity.setText(String.valueOf(product.getQuantity()));
+			txtBuyoutPrice.setText(String.valueOf(product.getPriceNumber()));
+			if (product.getBid_price() != -1) {
+				txtBidPrice.setText(String.valueOf(product.getBid_price()));
+			}
+			txtEndAuction.setText(product.getAuction_ends());
+			
+			SpinnerAdapter tempAdapter = cboCategory.getAdapter();
+			
+			for (int i = 0; i < tempAdapter.getCount(); i++) {
+				Category tempCat = (Category)tempAdapter.getItem(i);
+				if (tempCat.getId() == product.getCid()) {
+					cboCategory.setSelection(i);
+					break;
+				}
+			}
+			
+			btnAdd.setText(R.string.product_updateit);
+			
+			// Disable things that cant be edited. 
+			txtQuantity.setEnabled(false);
+			txtBidPrice.setEnabled(false);
+		}
 	}
 	
 	private void updateLabel() {

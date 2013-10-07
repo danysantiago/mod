@@ -67,7 +67,7 @@ public class ProductDetailsAdapter extends ArrayAdapter<Product> {
         holder.txtDescription.setText(product.getDescription());
         holder.txtPrice.setText(product.getPrice());
         holder.txtEndingOn.setText(product.getAuction_ends());
-        //holder.txtQuantity.setText(product.getQuantity());
+        holder.txtQuantity.setText(String.valueOf(product.getQuantity()));
         
         if (product.getBid_price() != -1) {
         	holder.lblBid.setVisibility(View.VISIBLE);

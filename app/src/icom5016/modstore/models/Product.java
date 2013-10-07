@@ -82,6 +82,10 @@ public class Product {
 		// Some logic must be there to decide what price will be shown. 
 		return "$" + nf.format(buyout_price);
 	}
+	
+	public double getPriceNumber() {
+		return buyout_price;
+	}
 
 	public String getBrand() {
 		return brand;

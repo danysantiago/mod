@@ -1,8 +1,10 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CategoryListFragment;
-import icom5016.modstore.fragments.MyItemsFragment;
+import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.fragments.ProductsForSaleFragment;
+import icom5016.modstore.fragments.ProductsSoldFragment;
+import icom5016.modstore.models.Category;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
@@ -13,12 +15,13 @@ import java.util.Stack;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,7 +42,10 @@ import android.widget.PopupWindow;
 public abstract class MainInterfaceActivity extends Activity {
 	
 					/* Instance variables */
-		
+					
+					/*Category Vairables */
+	protected Category[] mainCategories;
+	
 					/*Cart Variables */
 	private PopupWindow popUp;
 	
@@ -54,11 +60,16 @@ public abstract class MainInterfaceActivity extends Activity {
 	//Fragment Stack
 	public Stack<Fragment> fragmentStack;
 	
+	private MainInterfaceActivity thisActivity;
+	
+	Bundle bundle;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		thisActivity = this;
 		
 			//Load ActionBar Variable
 		final ActionBar ActionBarVar = this.getActionBar();
@@ -97,10 +108,10 @@ public abstract class MainInterfaceActivity extends Activity {
 		getMenuInflater().inflate(R.menu.actionbar_main_menu, menu);
 		
 		SubMenu categoriesMenu = (SubMenu) menu.findItem(R.id.item_categories).getSubMenu();
-		String[] mainCategories = DataFetchFactory.fetchMainCategories();
-		for(String e : mainCategories)
+		this.mainCategories = DataFetchFactory.fetchMainCategories();
+		for(Category e : mainCategories)
 		{
-			categoriesMenu.add(R.id.item_categories, R.string.id_btn_maincategory , Menu.NONE, e);
+			categoriesMenu.add(R.id.item_categories, R.string.id_btn_maincategory , Menu.NONE, e.getName());
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -231,7 +242,7 @@ public abstract class MainInterfaceActivity extends Activity {
     private void userDrawerListener(int position){
     	
     	//Global Bundle for Each. Saving Memory, 
-    	Bundle bundle = new Bundle();
+    	bundle = new Bundle();
     	
     	switch(position){
     	case 0:
@@ -262,35 +273,59 @@ public abstract class MainInterfaceActivity extends Activity {
     		}
     		break;
     	case 2:
-    		//My Items (new Fragment)
-    		//Categories (new Fragment)
-    		if(this instanceof MainActivity ){
-    	  		MyItemsFragment fragment= new MyItemsFragment();
-    	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-    		}
-    		else{
-    			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS);
-    			homeIntent.putExtras(bundle);
-    			this.startActivity(homeIntent);
-    		}
-    		
     		break;
     	case 3:
-    		//Sell Item (new Fragment)
-    		if(this instanceof MainActivity ){
-    	  		//ProductSellEditFragment fragment= new ProductSellEditFragment();
-    	  		ProductsForSaleFragment fragment = new ProductsForSaleFragment();
-    	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-    		}
-    		else{
-    			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS);
-    			homeIntent.putExtras(bundle);
-    			this.startActivity(homeIntent);
-    		}
+    		//My Market (new Fragments: Sell Item, Items for Sale, Items Sold)
+    		AlertDialog.Builder myItemsDialog = new AlertDialog.Builder(this);
+    		myItemsDialog.setTitle("My Market")
+			   .setNegativeButton("Sell Item", new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog, int id) {
+			    		if(thisActivity instanceof MainActivity ){
+			    	  		ProductSellEditFragment fragment= new ProductSellEditFragment();
+			    	  		thisActivity.fragmentStack.push(fragment);
+			    	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+			    		}
+			    		else{
+			    			Intent homeIntent = new Intent(thisActivity, MainActivity.class);
+			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS);
+			    			homeIntent.putExtras(bundle);
+			    			thisActivity.startActivity(homeIntent);
+			    		}
+			       }
+			   })
+			   .setNeutralButton("Items for Sale", new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog, int id) {
+			    		//Items for Sale (new Fragment)
+			    		if(thisActivity instanceof MainActivity ){
+			    	  		ProductsForSaleFragment fragment = new ProductsForSaleFragment();
+			    	  		thisActivity.fragmentStack.push(fragment);
+			    	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+			    		}
+			    		else{
+			    			Intent homeIntent = new Intent(thisActivity, MainActivity.class);
+			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_FOR_SALE);
+			    			homeIntent.putExtras(bundle);
+			    			thisActivity.startActivity(homeIntent);
+			    		}
+			       }
+			   })
+			   .setPositiveButton("Items Sold", new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog, int id) {
+			    		if(thisActivity instanceof MainActivity ){
+			    	  		ProductsSoldFragment fragment = new ProductsSoldFragment();
+			    	  		thisActivity.fragmentStack.push(fragment);
+			    	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+			    		}
+			    		else{
+			    			Intent homeIntent = new Intent(thisActivity, MainActivity.class);
+			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_SOLD);
+			    			homeIntent.putExtras(bundle);
+			    			thisActivity.startActivity(homeIntent);
+			    		}
+			       }
+			   });
+    		myItemsDialog.create().show();
+    		
     		break;
     	case 4:
     		//Settings (new Activity)
@@ -308,7 +343,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		//Log-Out (refresh)
     		
     			//Destroy Preferences
-    		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    		SharedPreferences preferences = getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
     		preferences.edit().clear().commit();
     			//Refresh MainActivity
     		if(this instanceof MainActivity ){
