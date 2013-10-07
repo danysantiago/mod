@@ -218,12 +218,12 @@ public class ProductSellEditFragment extends Fragment {
 					//Show list view
 					cboCategory.setVisibility(View.VISIBLE);
 					
-					pd.dismiss();
-					
 					loadProduct();
+					
+					pd.dismiss();
 				} else {
 					pd.dismiss();
-					Toast.makeText(getActivity(), "No Categories where found.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "No Categories were found.", Toast.LENGTH_SHORT).show();
 				}
 			}
 

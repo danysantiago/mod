@@ -2,7 +2,9 @@ package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
+import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.fragments.ProductsForSaleFragment;
+import icom5016.modstore.fragments.ProductsSoldFragment;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
@@ -280,8 +282,7 @@ public abstract class MainInterfaceActivity extends Activity {
     	case 3:
     		//Sell Item (new Fragment)
     		if(this instanceof MainActivity ){
-    	  		//ProductSellEditFragment fragment= new ProductSellEditFragment();
-    	  		ProductsForSaleFragment fragment = new ProductsForSaleFragment();
+    	  		ProductSellEditFragment fragment = new ProductSellEditFragment();
     	  		this.fragmentStack.push(fragment);
     	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
     		}
@@ -293,18 +294,46 @@ public abstract class MainInterfaceActivity extends Activity {
     		}
     		break;
     	case 4:
+    		//Items for Sale (new Fragment)
+    		if(this instanceof MainActivity ){
+    	  		ProductsForSaleFragment fragment = new ProductsForSaleFragment();
+    	  		this.fragmentStack.push(fragment);
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+    		}
+    		else{
+    			Intent homeIntent = new Intent(this, MainActivity.class);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_FOR_SALE);
+    			homeIntent.putExtras(bundle);
+    			this.startActivity(homeIntent);
+    		}
+    		break;
+    	case 5:
+    		//Items Sold (new Fragment)
+    		if(this instanceof MainActivity ){
+    	  		ProductsSoldFragment fragment = new ProductsSoldFragment();
+    	  		this.fragmentStack.push(fragment);
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+    		}
+    		else{
+    			Intent homeIntent = new Intent(this, MainActivity.class);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_SOLD);
+    			homeIntent.putExtras(bundle);
+    			this.startActivity(homeIntent);
+    		}
+    		break;
+    	case 6:
     		//Settings (new Activity)
     		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
     		Intent settingsIntent = new Intent(this, SettingsActivity.class);
     		settingsIntent.putExtras(bundle);
     		this.startActivity(settingsIntent);
     		break;
-    	case 5:
+    	case 7:
     		//About (new Activity)
     		Intent aboutIntent = new Intent(this, AboutActivity.class);
     		this.startActivity(aboutIntent);
     		break;
-    	case 6:
+    	case 8:
     		//Log-Out (refresh)
     		
     			//Destroy Preferences
@@ -320,7 +349,7 @@ public abstract class MainInterfaceActivity extends Activity {
     			this.startActivity(homeIntent);
     		}
     		break;
-    	case 7:
+    	case 9:
     		//Admin Menu
     			//Send User ID
     		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
