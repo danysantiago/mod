@@ -9,7 +9,7 @@
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,8 @@
         android:theme="@style/ModStoreTheme" >
         <activity
             android:name="icom5016.modstore.activities.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,24 +28,36 @@
         </activity>
         <activity
             android:name="icom5016.modstore.activities.SearchActivity"
-            android:parentActivityName="icom5016.modstore.activities.MainActivity" >
+            android:parentActivityName="icom5016.modstore.activities.MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.myfirstapp.MainActivity" />
         </activity>
         <activity
             android:name="icom5016.modstore.activities.SettingsActivity"
-            android:parentActivityName="icom5016.modstore.activities.MainActivity" >
+            android:parentActivityName="icom5016.modstore.activities.MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.myfirstapp.MainActivity" />
         </activity>
-        <activity android:name="icom5016.modstore.activities.LogInRegisterActivity" >
+        <activity
+            android:name="icom5016.modstore.activities.LogInRegisterActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="icom5016.modstore.activities.AboutActivity" >
+        <activity
+            android:name="icom5016.modstore.activities.AboutActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="icom5016.modstore.activities.AdminActivity"></activity>
-        <activity android:name="icom5016.modstore.activities.ForgotActivity"></activity>
+        <activity
+            android:name="icom5016.modstore.activities.AdminActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="icom5016.modstore.activities.ForgotActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>
