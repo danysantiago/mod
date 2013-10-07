@@ -63,6 +63,10 @@ routes.get("/categories/:parentId", function (req, res) {
   res.send({"parent" : parent, "list" : childrens});
 });
 
+routes.get("/categories", function (req, res) {
+  res.send(fakeCategories);
+}
+
 /*routes.get("/categories/:name", function (req, res) {
   
 
