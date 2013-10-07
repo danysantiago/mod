@@ -4,7 +4,6 @@ import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
-import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.uielements.ProductAdapter;
 
 import org.json.JSONArray;
@@ -17,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -69,6 +69,21 @@ public class MainCategoryFragment extends Fragment {
 		pd = (ProgressBar) view.findViewById(R.id.progressBar);
 		list = (ListView) view.findViewById(R.id.listView);
 		noDataTextView = (TextView) view.findViewById(R.id.textView);
+		
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
+				JSONObject product = (JSONObject) list.getAdapter().getItem(pos);
+				try {
+					Toast.makeText(getActivity(), "Will open product with id: " + product.getInt("cid"), Toast.LENGTH_SHORT).show();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
 
 		return view;
 	}

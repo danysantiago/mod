@@ -32,5 +32,10 @@ public class ProductFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_product, container,false);
 		return view;
 	}
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+	}
 
 }
