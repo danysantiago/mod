@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class ProductListAdapter extends ArrayAdapter<Category> {
+public class ProductListSpinnerAdapter extends ArrayAdapter<Category> {
 	
-	public ProductListAdapter(Context context, JSONArray jsonArr) throws JSONException {
+	public ProductListSpinnerAdapter(Context context, JSONArray jsonArr) throws JSONException {
 		super(context, R.layout.listview_product_list_spinner);
 		
 		//Add Rows
