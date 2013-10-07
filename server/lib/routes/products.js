@@ -62,7 +62,7 @@ routes.get("/products/:pid", function (req, res) {
 });
 
 routes.get("/products", function (req, res) {
-  res.send(fakeProducts);
+  res.send({"products": fakeProducts});
 });
 
 routes.get("/products/:pid/reviews", function (req, res) {
