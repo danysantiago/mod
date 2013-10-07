@@ -4,6 +4,7 @@ import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.fragments.ProductsForSaleFragment;
 import icom5016.modstore.fragments.ProductsSoldFragment;
+import icom5016.modstore.models.Category;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
@@ -41,7 +42,10 @@ import android.widget.PopupWindow;
 public abstract class MainInterfaceActivity extends Activity {
 	
 					/* Instance variables */
-		
+					
+					/*Category Vairables */
+	protected Category[] mainCategories;
+	
 					/*Cart Variables */
 	private PopupWindow popUp;
 	
@@ -104,10 +108,10 @@ public abstract class MainInterfaceActivity extends Activity {
 		getMenuInflater().inflate(R.menu.actionbar_main_menu, menu);
 		
 		SubMenu categoriesMenu = (SubMenu) menu.findItem(R.id.item_categories).getSubMenu();
-		String[] mainCategories = DataFetchFactory.fetchMainCategories();
-		for(String e : mainCategories)
+		this.mainCategories = DataFetchFactory.fetchMainCategories();
+		for(Category e : mainCategories)
 		{
-			categoriesMenu.add(R.id.item_categories, R.string.id_btn_maincategory , Menu.NONE, e);
+			categoriesMenu.add(R.id.item_categories, R.string.id_btn_maincategory , Menu.NONE, e.getName());
 		}
 		return super.onCreateOptionsMenu(menu);
 	}
