@@ -178,6 +178,9 @@ public class ProductEditFragment extends Fragment {
 	
 					//Show list view
 					cboCategory.setVisibility(View.VISIBLE);
+				} else {
+					pd.dismiss();
+					Toast.makeText(getActivity(), "No Categories where found.", Toast.LENGTH_SHORT).show();
 				}
 			}
 
