@@ -270,9 +270,11 @@ public abstract class MainInterfaceActivity extends Activity {
     		}
     		break;
     	case 2:
+    		break;
+    	case 3:
     		//My Items (new Fragment)
     		AlertDialog.Builder myItemsDialog = new AlertDialog.Builder(this);
-    		myItemsDialog.setTitle("My Items")
+    		myItemsDialog.setTitle("Sell Menu")
 			   .setPositiveButton("Sell Item", new DialogInterface.OnClickListener() {
 				   public void onClick(DialogInterface dialog, int id) {
 			    		if(thisActivity instanceof MainActivity ){
@@ -322,19 +324,19 @@ public abstract class MainInterfaceActivity extends Activity {
     		myItemsDialog.create().show();
     		
     		break;
-    	case 3:
+    	case 4:
     		//Settings (new Activity)
     		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
     		Intent settingsIntent = new Intent(this, SettingsActivity.class);
     		settingsIntent.putExtras(bundle);
     		this.startActivity(settingsIntent);
     		break;
-    	case 4:
+    	case 5:
     		//About (new Activity)
     		Intent aboutIntent = new Intent(this, AboutActivity.class);
     		this.startActivity(aboutIntent);
     		break;
-    	case 5:
+    	case 6:
     		//Log-Out (refresh)
     		
     			//Destroy Preferences
@@ -350,7 +352,7 @@ public abstract class MainInterfaceActivity extends Activity {
     			this.startActivity(homeIntent);
     		}
     		break;
-    	case 6:
+    	case 7:
     		//Admin Menu
     			//Send User ID
     		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
