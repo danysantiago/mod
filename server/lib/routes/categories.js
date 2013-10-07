@@ -65,7 +65,7 @@ routes.get("/categories/:parentId", function (req, res) {
 
 routes.get("/categories", function (req, res) {
   res.send(fakeCategories);
-}
+});
 
 /*routes.get("/categories/:name", function (req, res) {
   
