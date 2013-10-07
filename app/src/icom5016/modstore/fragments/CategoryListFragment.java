@@ -46,10 +46,10 @@ public class CategoryListFragment extends Fragment {
 		
 		
 		//Instance Views
-		this.categoriesListLayout = (LinearLayout) view.findViewById(R.id.categoryLinearLayout);
+		this.categoriesListLayout = (LinearLayout) view.findViewById(R.id.productLinearLayout);
 		this.categoriesList = (ListView) view.findViewById(R.id.categoryListView);
-		this.categoryListProgressBar = (ProgressBar) view.findViewById(R.id.categoryListProgressBar);
-		this.categoryListImageView = (ImageView) view.findViewById(R.id.placehoderCategoryList);
+		this.categoryListProgressBar = (ProgressBar) view.findViewById(R.id.productListProgressBar);
+		this.categoryListImageView = (ImageView) view.findViewById(R.id.placehoderProductList);
 		this.categoryListTextView = (TextView) view.findViewById(R.id.categoryListText);
 		
 		Bundle bundle = this.getArguments();

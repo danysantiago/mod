@@ -29,6 +29,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -66,6 +67,7 @@ public class ProductSellEditFragment extends Fragment {
 	private static final int SELECT_PICTURE = 1;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		if (savedInstanceState != null) Log.d("productStatus", savedInstanceState.toString());
 		View view = inflater.inflate(R.layout.fragment_productedit, container, false);
 		
 		txtName = (EditText)view.findViewById(R.id.txtProductName);
@@ -171,17 +173,22 @@ public class ProductSellEditFragment extends Fragment {
 				List<Category> cats = getCategories(json);
 				
 				if (cats.size() > 0) {
-					//Pass JSON to Adapter
-					ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_list_item_1, cats);
-				    cboCategory.setAdapter(adapter);
-	
-					//Show list view
-					cboCategory.setVisibility(View.VISIBLE);
-					
-					pd.dismiss();
+					if (getActivity() != null) {
+						//Pass JSON to Adapter
+						ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_list_item_1, cats);
+					    cboCategory.setAdapter(adapter);
+		
+						//Show list view
+						cboCategory.setVisibility(View.VISIBLE);
+						
+						pd.dismiss();
+					} else {
+						pd.dismiss();
+						//Toast.makeText(this, "There was a problem loading the Categories. [ERR: 1]", Toast.LENGTH_SHORT).show();
+					}
 				} else {
 					pd.dismiss();
-					Toast.makeText(getActivity(), "No Categories where found.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "No Categories were found.", Toast.LENGTH_SHORT).show();
 				}
 			}
 
