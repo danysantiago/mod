@@ -1,6 +1,7 @@
 package icom5016.modstore.resources;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.models.Category;
 import icom5016.modstore.models.User;
 
 import java.util.Calendar;
@@ -12,8 +13,15 @@ import android.content.SharedPreferences;
 public class DataFetchFactory {
 
 	//TODO: Change to Dynamic Loading
-	public static String[] fetchMainCategories(){
-		return new String[]{"Books", "Electronics", "Computers", "Clothing", "Shoes", "Sports" };
+	public static Category[] fetchMainCategories(){
+		return new Category[]{
+				new Category(-1, 0, "Books"),
+				new Category(-1, 5, "Electronics"),
+				new Category(-1, 11, "Computers"),
+				new Category(-1, 16, "Clothing"),
+				new Category(-1,26, "Shoes"),
+				new Category(-1,30, "Sports")
+		};
 	}
 
 	//TODO: Load 
