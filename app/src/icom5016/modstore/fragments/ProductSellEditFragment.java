@@ -1,18 +1,30 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
+import icom5016.modstore.models.Category;
+import icom5016.modstore.models.Product;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -23,13 +35,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
-public class ProductEditFragment extends Fragment {
+public class ProductSellEditFragment extends Fragment {
 	EditText txtName;
 	EditText txtDescription;
 	EditText txtBrand;
@@ -41,12 +55,17 @@ public class ProductEditFragment extends Fragment {
 	EditText txtEndAuction;
 	Spinner cboCategory;
 	Button btnSelectPhoto;
+	Button btnAdd;
 	
 	Calendar myCalendar = Calendar.getInstance();
 	OnDateSetListener dateSetListener;
 	
 	Uri selectedPhoto;
 	byte selectedPhotoBytes[];
+	
+	ProgressDialog pd;
+	
+	Product product;
 	
 	private static final int SELECT_PICTURE = 1;
 	
@@ -64,6 +83,7 @@ public class ProductEditFragment extends Fragment {
 		txtEndAuction = (EditText)view.findViewById(R.id.txtProductEndAuction);
 		cboCategory = (Spinner)view.findViewById(R.id.cboProductCategory);
 		btnSelectPhoto = (Button)view.findViewById(R.id.btnProductSelectPhoto);
+		btnAdd = (Button)view.findViewById(R.id.btnProductAdd);
 		
 		dateSetListener = new DatePickerDialog.OnDateSetListener() {
 		    @Override
@@ -94,7 +114,56 @@ public class ProductEditFragment extends Fragment {
 			}
 		});
 		
+		btnAdd.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// User wants to add. Do a PUT to Node or whatever. 
+			}
+		});
+		
+		cboCategory.setVisibility(View.GONE);
+		
+		pd = ProgressDialog.show(getActivity(), "Loading", "Loading Categories...", true, false);
+
+		requestCategories();
+		
 		return view;
+	}
+	
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	private void loadProduct() {
+		if (product != null) {
+			txtName.setText(product.getName());
+			txtDescription.setText(product.getDescription());
+			txtBrand.setText(product.getBrand());
+			txtModel.setText(product.getModel());
+			txtDimensions.setText(product.getDimensions());
+			txtQuantity.setText(String.valueOf(product.getQuantity()));
+			txtBuyoutPrice.setText(String.valueOf(product.getPriceNumber()));
+			if (product.getBid_price() != -1) {
+				txtBidPrice.setText(String.valueOf(product.getBid_price()));
+			}
+			txtEndAuction.setText(product.getAuction_ends());
+			
+			SpinnerAdapter tempAdapter = cboCategory.getAdapter();
+			
+			for (int i = 0; i < tempAdapter.getCount(); i++) {
+				Category tempCat = (Category)tempAdapter.getItem(i);
+				if (tempCat.getId() == product.getCid()) {
+					cboCategory.setSelection(i);
+					break;
+				}
+			}
+			
+			btnAdd.setText(R.string.product_updateit);
+			
+			// Disable things that cant be edited. 
+			txtQuantity.setEnabled(false);
+			txtBidPrice.setEnabled(false);
+		}
 	}
 	
 	private void updateLabel() {
@@ -128,4 +197,88 @@ public class ProductEditFragment extends Fragment {
             }
         }
     }
+
+	private void requestCategories() {
+		//Perform http request
+		Bundle params = new Bundle();
+		
+		params.putString("method", "GET");
+		params.putString("url", Server.Categories.GETALL);
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+			@Override
+			public void onSucess(JSONObject json) {
+				List<Category> cats = getCategories(json);
+				
+				if (cats.size() > 0) {
+					//Pass JSON to Adapter
+					ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_list_item_1, cats);
+				    cboCategory.setAdapter(adapter);
+	
+					//Show list view
+					cboCategory.setVisibility(View.VISIBLE);
+					
+					pd.dismiss();
+					
+					loadProduct();
+				} else {
+					pd.dismiss();
+					Toast.makeText(getActivity(), "No Categories where found.", Toast.LENGTH_SHORT).show();
+				}
+			}
+
+			@Override
+			public void onFailed() {
+				pd.dismiss();
+				Toast.makeText(getActivity(), "Couldn't load the Categories [ERR: 1]", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		request.execute();
+	}
+	
+	private List<Category> getCategories(JSONObject json) {
+		List<Category> cats = new ArrayList<Category>();
+		getCategoriesRecurv(json, cats, 0, -1);
+		return cats;
+	}
+	
+	private void getCategoriesRecurv(JSONObject json, List<Category> cats, int level, int lookId) {
+		JSONArray jsonArr;
+		JSONObject obj;
+		String name;
+		int parentId, id;
+
+		try {
+			jsonArr = json.getJSONArray("categories");
+			
+			for (int i = 0; i < jsonArr.length(); i++) {
+				obj = jsonArr.getJSONObject(i);
+				parentId = obj.getInt("parentId");
+				
+				if (parentId == lookId) {
+					name = obj.getString("name");
+					id = obj.getInt("id");
+					
+					name = repeat("   ", level) + name;
+					
+					cats.add(new Category(parentId, id, name));
+					
+					getCategoriesRecurv(json, cats, level + 1, id);
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String repeat(String c, int n) {
+		String out = "";
+		
+		for (int i = 0; i < n; i++) {
+			out += c;
+		}
+		
+		return out;
+	}
 }

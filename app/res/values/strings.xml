@@ -70,6 +70,7 @@
     <string name="search_progress_msg">Searching…</string>
     <string name="search_error">Unable to complete search. Please try again.</string>
     <color name="dark_gray">#707070</color>
+    <color name="dark_green">#336600</color>
     <string name="new_password">New Password&#8230;</string>
     <string name="new_password_confirm">Confirm New Password&#8230;</string>
     <string name="hint_ccyear">Year</string>
@@ -89,4 +90,12 @@
     <string name="hint_productbidprice">Bid Price</string>
     <string name="hint_productendauction">Auction Ends</string>
     <string name="product_selectphoto">Select a Photo</string>
+    <string name="product_sellit">Sell It!</string>
+    <string name="product_updateit">Update It!</string>
+    <string name="product_list_placeholder_desc">Placeholder for Product List</string>
+    <string name="product_list_best_match">Best Seller in</string>
+    <string name="label_endingon">Auction Ending On:</string>
+    <string name="label_endedon">Auction Ended On:</string>
+    <string name="label_maxbid">Bid:</string>
+    <string name="label_quantity">Quantity:</string>
 </resources>

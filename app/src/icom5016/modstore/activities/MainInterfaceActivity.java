@@ -2,8 +2,7 @@ package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
-import icom5016.modstore.fragments.ProductEditFragment;
-import icom5016.modstore.fragments.SellItemFragment;
+import icom5016.modstore.fragments.ProductsForSaleFragment;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
@@ -19,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -280,7 +280,8 @@ public abstract class MainInterfaceActivity extends Activity {
     	case 3:
     		//Sell Item (new Fragment)
     		if(this instanceof MainActivity ){
-    	  		ProductEditFragment fragment= new ProductEditFragment();
+    	  		//ProductSellEditFragment fragment= new ProductSellEditFragment();
+    	  		ProductsForSaleFragment fragment = new ProductsForSaleFragment();
     	  		this.fragmentStack.push(fragment);
     	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
     		}
@@ -307,8 +308,7 @@ public abstract class MainInterfaceActivity extends Activity {
     		//Log-Out (refresh)
     		
     			//Destroy Preferences
-    		SharedPreferences preferences = //If Open First Time: Creates File; O.W. Reads it
-			this.getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+    		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
     		preferences.edit().clear().commit();
     			//Refresh MainActivity
     		if(this instanceof MainActivity ){

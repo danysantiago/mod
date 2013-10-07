@@ -16,8 +16,6 @@ public class Category {
 		this.name = json.getString("name");
 	}
 	
-	
-	
 	public Category(int parentId, int id, String name) {
 		super();
 		this.parentId = parentId;
@@ -34,4 +32,7 @@ public class Category {
 		return name;
 	}
 	
+	public String toString() {
+		return getName();
+	}
 }

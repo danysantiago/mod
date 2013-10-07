@@ -5,6 +5,7 @@ import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
+import icom5016.modstore.models.Category;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.uielements.CategoryListAdapter;
@@ -89,23 +90,25 @@ public class CategoryListFragment extends Fragment {
 					//Get List
 					JSONArray listJson = json.getJSONArray("list");
 					
+					Category parentCategory = new Category(parentJson);
+					
 					if(listJson.length() == 0){
 						//Open ProductListFragment
 						Bundle bundle = new Bundle();
-						bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, parentJson.getInt("id"));
+						bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, parentCategory.getId());
 						ProductListFragment plf = new ProductListFragment();
 						plf.setArguments(bundle);
 						MainInterfaceActivity mia = (MainInterfaceActivity) getActivity();
+						mia.fragmentStack.pop();
 						mia.fragmentStack.push(plf);
 						AndroidResourceFactory.setNewFragment(mia, mia.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 					}
 					else{
 						//Populate stuff
 						
-						//Change Text View
-						String parentName = parentJson.getString("name");
-						if(!parentName.isEmpty())
-							categoryListTextView.setText(parentName);
+						
+						if(parentCategory.getId() >= 0)
+							categoryListTextView.setText(parentCategory.getName());
 						else
 							categoryListTextView.setText(R.string.category_list_title);
 						
