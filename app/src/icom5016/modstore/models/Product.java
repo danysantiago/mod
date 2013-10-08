@@ -1,7 +1,10 @@
 package icom5016.modstore.models;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -76,7 +79,10 @@ public class Product {
 		return description;
 	}
 
-	public String getPrice() {
+	public double getPrice(){
+		return this.buyout_price;
+	}
+	public String getPriceString() {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(2);
 		// Some logic must be there to decide what price will be shown. 
@@ -157,5 +163,12 @@ public class Product {
 	public void setImage_src(String image_src) {
 		this.image_src = image_src;
 	}
-
+	
+	public static Product[] getaProductArrayFromJSON(JSONArray jsonArr) throws JSONException{
+		List<Product> lp = new ArrayList<Product>();
+		for(int i = 0; i < jsonArr.length(); i++) {
+			lp.add(new Product(jsonArr.getJSONObject(i)));
+		}
+		return (Product[]) lp.toArray();
+	}
 }

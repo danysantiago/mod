@@ -4,7 +4,11 @@ import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.fragments.ProductsForSaleFragment;
 import icom5016.modstore.fragments.ProductsSoldFragment;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
+import icom5016.modstore.models.Product;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
@@ -13,10 +17,15 @@ import icom5016.modstore.uielements.DrawerAdapter;
 
 import java.util.Stack;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +42,8 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 /*
@@ -43,7 +54,9 @@ public abstract class MainInterfaceActivity extends Activity {
 	
 					/* Instance variables */
 					
-					/*Category Vairables */
+					/*Progress Dialog*/
+	private ProgressDialog pd;
+					/*Category Variables */
 	protected Category[] mainCategories;
 	
 					/*Cart Variables */
@@ -385,12 +398,76 @@ public abstract class MainInterfaceActivity extends Activity {
     //Cart Button Listener Abstract
     public void cartButtonListner(MenuItem menuItem){
         
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-        this.popUp = new PopupWindow(inflater.inflate(R.layout.popup_cart_empty, null, false),LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT, true);
-        this.popUp.showAtLocation(this.findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
+    	if(this.activeUser == null){
+    		Toast.makeText(this, R.string.cart_login_msg , Toast.LENGTH_SHORT).show();
+    	}
+    	else{
+    		this.doHttpCart(this.activeUser);
+    	}
     }
     
-    //Cart Listener
+    private void doHttpCart(User activeUser) {
+    	
+    	pd = new ProgressDialog(this);
+		pd.setMessage(getResources().getString(R.string.cart_pd_text));
+		pd.show();
+		
+    	Bundle params = new Bundle();
+		params.putString("url", Server.Cart.GET+activeUser.getGuid());
+		params.putString("method", "GET");
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+			
+			@Override
+			public void onSucess(JSONObject json) {
+				try {
+					JSONArray cartList = json.getJSONArray("cart");
+					
+					if(cartList.length() == 0){
+				    	LayoutInflater inflater = (LayoutInflater) thisActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+				        thisActivity.popUp = new PopupWindow(inflater.inflate(R.layout.popup_cart_empty, null, false),LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT, true);
+				        thisActivity.popUp.showAtLocation(thisActivity.findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
+					}
+					else{
+						LayoutInflater inflater = (LayoutInflater) thisActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+						View view = inflater.inflate(R.layout.popup_cart_list, null, false);
+				        thisActivity.popUp = new PopupWindow(view,LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT, true);
+				        thisActivity.popUp.showAtLocation(thisActivity.findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
+				        
+				        //Generate Products Array
+				        Product[] products = Product.getaProductArrayFromJSON(cartList);
+				        
+				        double totalPrice = 0;
+				        for(Product e: products){
+				        	totalPrice += e.getPrice();
+				        }
+				        TextView subTotal = (TextView) view.findViewById(R.id.cartTitle);
+				        subTotal.setText("Subtotal = $"+totalPrice);
+				        
+				        
+				        
+					}
+					
+				} catch (JSONException e) {
+					Toast.makeText(thisActivity, "Bad JSON parsing...",
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+			
+			@Override
+			public void onFailed() {
+				Toast.makeText(thisActivity, R.string.cart_error_msg, Toast.LENGTH_LONG).show();
+			}
+			
+			@Override
+			public void onDone() {
+				pd.dismiss();
+			}
+		});
+		request.execute();
+	}
+
+	//Cart Listener
     public void cartDismissListener(View view){
     	this.popUp.dismiss();
     }

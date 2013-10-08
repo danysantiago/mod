@@ -106,4 +106,7 @@
     <string name="label_shippingaddress">Shipping Address:</string>
     <string name="label_trackingnum">Tracking Number:</string>
     <string name="btn_submittracking">Update</string>
+    <string name="cart_login_msg">Please Login to View Cart</string>
+    <string name="cart_pd_text">Obtaining Cart&#8230;</string>
+    <string name="cart_error_msg">Error Obtaining Cart, Please try again later.</string>
 </resources>

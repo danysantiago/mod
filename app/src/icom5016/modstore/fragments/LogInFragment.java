@@ -101,7 +101,7 @@ public class LogInFragment extends Fragment implements OnClickListener{
 	
 	private void doHttpLogin(String username, String password) throws JSONException {
 		Bundle params = new Bundle();
-		params.putString("url", Server.BASE_URL + "/login");
+		params.putString("url", Server.Login.POST);
 		params.putString("method", "POST");
 		
 		JSONObject credentials = new JSONObject();
