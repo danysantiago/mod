@@ -4,7 +4,9 @@ import icom5016.modstore.fragments.CategoryListFragment;
 import icom5016.modstore.fragments.MainFragment;
 import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.ProductListFragment;
-import icom5016.modstore.fragments.SellItemFragment;
+import icom5016.modstore.fragments.ProductSellEditFragment;
+import icom5016.modstore.fragments.ProductsForSaleFragment;
+import icom5016.modstore.fragments.ProductsSoldFragment;
 import icom5016.modstore.models.Category;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
@@ -89,10 +91,20 @@ public class MainActivity extends MainInterfaceActivity {
 			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 				break;
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS:
-				 //Case: Sell Items
-				 this.fragmentStack.push(new SellItemFragment());
-			     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-				 break;
+			    ProductSellEditFragment sellEditfragment= new ProductSellEditFragment();
+    	  		this.fragmentStack.push(sellEditfragment);
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+				break;
+			 case ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_FOR_SALE:
+				ProductsForSaleFragment forSalefragment = new ProductsForSaleFragment();
+	    	  	this.fragmentStack.push(forSalefragment);
+	    	  	AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+				break;
+			 case ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_SOLD:
+				ProductsSoldFragment soldFragment = new ProductsSoldFragment();
+	    	  	this.fragmentStack.push(soldFragment);
+	    	  	AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+				break;
 			 default:
 				 //Case: Default Main View
 				 this.fragmentStack.push(new MainFragment());

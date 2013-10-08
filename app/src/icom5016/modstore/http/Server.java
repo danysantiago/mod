@@ -4,6 +4,14 @@ public class Server {
 	
 	public static final String BASE_URL = "http://ec2-54-226-36-4.compute-1.amazonaws.com:8080";
 
+	public static class Cart{
+		public static final String GET = BASE_URL+"/cart/";
+	}
+	
+	public static class Login{
+		public static final String POST = BASE_URL+"/login";
+	}
+	
 	public static class Products {
 	  public static final String GET = BASE_URL+"/products/";
 	  public static final String GETCATEGORIES = BASE_URL + "/products/category/";

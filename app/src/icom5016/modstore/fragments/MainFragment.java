@@ -109,7 +109,7 @@ public class MainFragment extends Fragment {
 			Product p = this.getItem(position);
 			
 			productNameTV.setText(p.getName());
-			priceTV.setText(p.getPrice());
+			priceTV.setText(p.getPriceString());
 			imageView.setImageResource(images[p.getPid()]);
 			
 			
