@@ -1,8 +1,8 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CategoryListFragment;
+import icom5016.modstore.fragments.ItemWatchFragment;
 import icom5016.modstore.fragments.MainFragment;
-import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.ProductListFragment;
 import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.fragments.ProductsForSaleFragment;
@@ -87,7 +87,7 @@ public class MainActivity extends MainInterfaceActivity {
 				break;
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS:
 				//Case: My Items
-				 this.fragmentStack.push(new MyItemsFragment());
+				 this.fragmentStack.push(new ItemWatchFragment());
 			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 				break;
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS:
@@ -105,6 +105,7 @@ public class MainActivity extends MainInterfaceActivity {
 	    	  	this.fragmentStack.push(soldFragment);
 	    	  	AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 				break;
+			
 			 default:
 				 //Case: Default Main View
 				 this.fragmentStack.push(new MainFragment());
