@@ -1,8 +1,6 @@
 package icom5016.modstore.models;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -165,10 +163,10 @@ public class Product {
 	}
 	
 	public static Product[] getaProductArrayFromJSON(JSONArray jsonArr) throws JSONException{
-		List<Product> lp = new ArrayList<Product>();
+		Product[] lp = new Product[jsonArr.length()];
 		for(int i = 0; i < jsonArr.length(); i++) {
-			lp.add(new Product(jsonArr.getJSONObject(i)));
+			lp[i] = new Product(jsonArr.getJSONObject(i));
 		}
-		return (Product[]) lp.toArray();
+		return lp;
 	}
 }
