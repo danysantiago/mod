@@ -60,4 +60,7 @@ public class ConstantClass {
 	//ProductList Constant
 	public static final String PRODUCT_LIST_CATEGORY_KEY ="productListCategoryKey";
 	
+	//Cart Constant
+	public static final String CART_CONFIRM_TAG = "cartConfirmTag";
+	
 }
