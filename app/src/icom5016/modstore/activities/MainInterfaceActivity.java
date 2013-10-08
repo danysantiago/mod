@@ -290,6 +290,7 @@ public abstract class MainInterfaceActivity extends Activity implements CartConf
     		}
     		break;
     	case 2:
+
     		if(this instanceof MainActivity ){
     			bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, -1);
     	  		ItemWatchFragment fragment= new ItemWatchFragment();
