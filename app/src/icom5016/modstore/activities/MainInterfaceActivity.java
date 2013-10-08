@@ -1,6 +1,7 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CategoryListFragment;
+import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.fragments.ProductsForSaleFragment;
 import icom5016.modstore.fragments.ProductsSoldFragment;
@@ -289,6 +290,10 @@ public abstract class MainInterfaceActivity extends Activity implements CartConf
     		}
     		break;
     	case 2:
+    		//My Items (new Activity)
+    		MyItemsFragment fragment= new MyItemsFragment();
+	  		thisActivity.fragmentStack.push(fragment);
+	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
     		break;
     	case 3:
     		//My Market (new Fragments: Sell Item, Items for Sale, Items Sold)
