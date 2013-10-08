@@ -1,7 +1,7 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CategoryListFragment;
-import icom5016.modstore.fragments.MyItemsFragment;
+import icom5016.modstore.fragments.ItemWatchFragment;
 import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.fragments.ProductsForSaleFragment;
 import icom5016.modstore.fragments.ProductsSoldFragment;
@@ -290,15 +290,26 @@ public abstract class MainInterfaceActivity extends Activity implements CartConf
     		}
     		break;
     	case 2:
-    		//My Items (new Activity)
-    		MyItemsFragment fragment= new MyItemsFragment();
-	  		thisActivity.fragmentStack.push(fragment);
-	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+
+    		if(this instanceof MainActivity ){
+    			bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, -1);
+    	  		ItemWatchFragment fragment= new ItemWatchFragment();
+    	  		fragment.setArguments(bundle);
+    	  		this.fragmentStack.push(fragment);
+    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+    		}
+    		else{
+    			Intent homeIntent = new Intent(this, MainActivity.class);
+    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS);
+    			homeIntent.putExtras(bundle);
+    			this.startActivity(homeIntent);
+    		}
     		break;
+    		
     	case 3:
     		//My Market (new Fragments: Sell Item, Items for Sale, Items Sold)
-    		AlertDialog.Builder myItemsDialog = new AlertDialog.Builder(this);
-    		myItemsDialog.setTitle("My Market")
+    		AlertDialog.Builder myMarketDialog = new AlertDialog.Builder(this);
+    		myMarketDialog.setTitle("My Market")
 			   .setNegativeButton("Sell Item", new DialogInterface.OnClickListener() {
 				   public void onClick(DialogInterface dialog, int id) {
 			    		if(thisActivity instanceof MainActivity ){
@@ -345,7 +356,7 @@ public abstract class MainInterfaceActivity extends Activity implements CartConf
 			    		}
 			       }
 			   });
-    		myItemsDialog.create().show();
+    		myMarketDialog.create().show();
     		
     		break;
     	case 4:
