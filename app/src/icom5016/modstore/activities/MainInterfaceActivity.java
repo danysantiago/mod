@@ -1,6 +1,7 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.CategoryListFragment;
+import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.fragments.ProductsForSaleFragment;
 import icom5016.modstore.fragments.ProductsSoldFragment;
@@ -13,6 +14,8 @@ import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
+import icom5016.modstore.uielements.CartConfirmDialog;
+import icom5016.modstore.uielements.CartListAdapter;
 import icom5016.modstore.uielements.DrawerAdapter;
 
 import java.util.Stack;
@@ -24,6 +27,7 @@ import org.json.JSONObject;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -50,7 +54,7 @@ import android.widget.Toast;
  *  Abstract Class with template for Activity Bar
  */
 
-public abstract class MainInterfaceActivity extends Activity {
+public abstract class MainInterfaceActivity extends Activity implements CartConfirmDialog.CartCofirmDialogListener {
 	
 					/* Instance variables */
 					
@@ -286,6 +290,10 @@ public abstract class MainInterfaceActivity extends Activity {
     		}
     		break;
     	case 2:
+    		//My Items (new Activity)
+    		MyItemsFragment fragment= new MyItemsFragment();
+	  		thisActivity.fragmentStack.push(fragment);
+	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
     		break;
     	case 3:
     		//My Market (new Fragments: Sell Item, Items for Sale, Items Sold)
@@ -439,10 +447,14 @@ public abstract class MainInterfaceActivity extends Activity {
 				        
 				        double totalPrice = 0;
 				        for(Product e: products){
-				        	totalPrice += e.getPrice();
+				        	totalPrice += e.getPrice()*e.getQuantity();
 				        }
 				        TextView subTotal = (TextView) view.findViewById(R.id.cartTitle);
 				        subTotal.setText("Subtotal = $"+totalPrice);
+				        
+				        ListView lv = (ListView) view.findViewById(R.id.cartListView);
+				        CartListAdapter cla = new CartListAdapter(thisActivity, cartList);
+				        lv.setAdapter(cla);
 				        
 				        
 				        
@@ -475,4 +487,21 @@ public abstract class MainInterfaceActivity extends Activity {
     public void cartContinueShoppingListener(View view){
     	this.popUp.dismiss();
     }
+    
+    public void cartCheckoutBtn(View view){
+    	new CartConfirmDialog().show(this.getFragmentManager(), ConstantClass.CART_CONFIRM_TAG);
+    }
+    
+    public void onDialogBuyClick(DialogFragment dialog){
+    	LayoutInflater inflater = (LayoutInflater) thisActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+		View view = inflater.inflate(R.layout.popup_cart_invoice, null, false);
+		this.popUp.dismiss();
+		thisActivity.popUp = new PopupWindow(view,LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT, true);
+        thisActivity.popUp.showAtLocation(this.findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
+    }
+	public void onDialogCancelClick(DialogFragment dialog){
+		
+	}
+    
+    
 }

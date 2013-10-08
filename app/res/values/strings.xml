@@ -109,4 +109,10 @@
     <string name="cart_login_msg">Please Login to View Cart</string>
     <string name="cart_pd_text">Obtaining Cart&#8230;</string>
     <string name="cart_error_msg">Error Obtaining Cart, Please try again later.</string>
+    <string name="cart_invoice_title">Your Invoice</string>
+    <string name="cart_cc">Credit Card</string>
+    <string name="cart_address">Address</string>
+    <string name="cart_dialog_title">My Order Summary</string>
+    <string name="cart_dialog_cancel">Cancel</string>
+    <string name="cart_dialog_confirm_to_buy">Commit to Buy</string>
 </resources>
