@@ -5,6 +5,8 @@ var config = require("./lib/config.js"),
 
 var auth = require("./lib/routes/auth.js");
 
+var sql;
+
 // Routes middlewares
 var products = require("./lib/routes/products.js");
 var users = require("./lib/routes/users.js");
@@ -24,6 +26,11 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use(function (req, res, next) {
+    req.sql = sql;
+    next();
+});
+
 // Static content
 app.use(express.static(__dirname + "/public"));
 
@@ -39,10 +46,8 @@ app.use(addresses);
 app.use(orderdetails);
 app.use(cart);
 
-app.listen(config.appPort);
-
 //DB Connection & port app listening
-/*dbClient = mysql.createConnection(config.dbAddress);
+sql = dbClient = mysql.createConnection(config.dbAddress);
 dbClient.connect(function (err) {
     if(err) {
         return console.error("Could not connect to mysql", err);
