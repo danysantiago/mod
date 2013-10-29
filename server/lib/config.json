@@ -1,7 +1,7 @@
 {
     "development": {
             "appName": "MOD",
-            "dbAddress": "mysql://root:aguacate@localhost/db",
+            "dbAddress": "mysql://root:aguacate@ec2-54-226-36-4.compute-1.amazonaws.com/modstore",
             "localAddress": "localhost",
             "appPort": 8080,
             "appProtocol": "http"

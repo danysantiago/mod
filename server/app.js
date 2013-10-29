@@ -27,7 +27,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (req, res, next) {
-    req.sql = sql;
+    req.db = sql;
     next();
 });
 
@@ -57,4 +57,4 @@ dbClient.connect(function (err) {
 
     app.listen(config.appPort);
     console.log("App started, listening at port %s", config.appPort);
-});*/
+});
