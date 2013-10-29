@@ -57,4 +57,4 @@ dbClient.connect(function (err) {
 
     app.listen(config.appPort);
     console.log("App started, listening at port %s", config.appPort);
-});
+});*/
