@@ -39,8 +39,10 @@ app.use(addresses);
 app.use(orderdetails);
 app.use(cart);
 
+app.listen(config.appPort);
+
 //DB Connection & port app listening
-dbClient = mysql.createConnection(config.dbAddress);
+/*dbClient = mysql.createConnection(config.dbAddress);
 dbClient.connect(function (err) {
     if(err) {
         return console.error("Could not connect to mysql", err);
@@ -50,4 +52,4 @@ dbClient.connect(function (err) {
 
     app.listen(config.appPort);
     console.log("App started, listening at port %s", config.appPort);
-});
+});*/
