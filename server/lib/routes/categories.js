@@ -79,7 +79,7 @@ routes.get("/categories/:parentId", function (req, res) {
     if (req.params.parentId == -1) {
       query = "SELECT * FROM category WHERE id NOT IN (SELECT child_category_id FROM category_parent);";
     } else {
-      query = "SELECT id, name, (SELECT parent_category_id FROM category_parent WHERE child_category_id=id) as parent_category_id FROM category WHERE id=" + req.params.parentId + " UNION SELECT id, name, parent_category_id FROM category INNER JOIN category_parent ON id=child_category_id WHERE parent_category_id=" + req.params.parentId;
+      query = "SELECT id, name, (SELECT parent_category_id FROM category_parent WHERE child_category_id=id) as parent_category_id FROM category WHERE id=" + mysql.escape(req.params.parentId) + " UNION SELECT id, name, parent_category_id FROM category INNER JOIN category_parent ON id=child_category_id WHERE parent_category_id=" + mysql.escape(req.params.parentId);
     }
 
     console.log("MySQL QUERY: " + query);
