@@ -61,6 +61,10 @@ routes.get("/products/:pid", function (req, res) {
   res.send(404);
 });
 
+/*
+ SELECT product_id, user_id, category_id, description, name, brand, model, dimensions, buy_price, quantity, starting_bid_price, auction_end_ts, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail od WHERE od.product_id = p.product_id), 0)) AS available FROM product p WHERE (auction_end_ts > NOW() OR auction_end_ts IS NULL) HAVING available > 0;
+ */
+
 routes.get("/products/category/:pid", function (req, res) {
   var categoryList = {
     "products": fakeProducts,
