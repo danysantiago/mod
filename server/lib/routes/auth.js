@@ -37,6 +37,7 @@ routes.use(function (req, res, next) {
 
   if(req.headers.auth_token) {
     if (auth_tokens[req.headers.auth_token]) {
+      req.logged_user = auth_tokens[req.headers.auth_token];
       next();
     } else {
       res.send(401);
