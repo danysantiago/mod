@@ -1,7 +1,7 @@
 {
     "development": {
             "appName": "MOD",
-            "dbAddress": "mysql://root:aguacate@localhost/db",
+            "dbAddress": "mysql://root:aguacate@localhost/modstore",
             "localAddress": "localhost",
             "appPort": 8080,
             "appProtocol": "http"
@@ -9,7 +9,7 @@
 
     "production": {
             "appName": "MOD",
-            "dbAddress": "mysql://root:aguacate@localhost/db",
+            "dbAddress": "mysql://root:aguacate@localhost/modstore",
             "localAddress": "localhost",
             "appPort": 8080,
             "appProtocol": "http"
