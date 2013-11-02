@@ -140,7 +140,7 @@ public class LogInFragment extends Fragment implements OnClickListener{
     }
 
 	public void setUserInSharedPreferences(User user){
-		SharedPreferences.Editor preferencesEdit = getActivity().getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE).edit();
+		SharedPreferences.Editor preferencesEdit = getActivity().getSharedPreferences(ConstantClass.USER_FILE, Context.MODE_PRIVATE).edit();
 		preferencesEdit.putString(ConstantClass.USER_USERNAME_KEY, user.getUsername());
 		preferencesEdit.putString(ConstantClass.USER_FIRSTNAME_KEY, user.getFirstName());
 		preferencesEdit.putString(ConstantClass.USER_LASTNAME_KEY, user.getLastName());

@@ -40,16 +40,6 @@ public class AboutActivity extends MainInterfaceActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-					/* Disable Buttons */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		menu.findItem(R.id.btn_search).setVisible(false);
-		menu.findItem(R.id.btn_cart).setVisible(false);
-		
-		return true;
-		
-	}
 		//Must be overriding for SubMenu
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu){

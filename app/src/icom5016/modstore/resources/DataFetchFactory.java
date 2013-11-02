@@ -4,14 +4,24 @@ import icom5016.modstore.activities.R;
 import icom5016.modstore.models.Category;
 import icom5016.modstore.models.User;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public class DataFetchFactory {
 
+
+							/* User Data */
+	
+	
+	
+	
+	
 	//TODO: Change to Dynamic Loading
 	public static Category[] fetchMainCategories(){
 		return new Category[]{
@@ -35,10 +45,10 @@ public class DataFetchFactory {
 		return new User("mamanu", "Manuel", "Enrique", "Marquez", "manuel.marquez1@upr.edu",0 ,true);
 	}
 	
-	public static User getUserInSharedPreferences(Activity activity){
+	public static User getUserFromSPref(Activity activity){
 		//Verify Log-In
 		SharedPreferences preferences = //If Open First Time: Creates File; O.W. Reads it
-				activity.getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+				activity.getSharedPreferences(ConstantClass.USER_FILE, Context.MODE_PRIVATE);
 		boolean isUserLogIn = preferences.getBoolean(ConstantClass.USER_IS_LOGIN, false);
 		
 			//If Log-In Create 
@@ -60,6 +70,7 @@ public class DataFetchFactory {
 	public static int[] getCreditCardImages() {
 		return new int[]{R.drawable.cc_visa, R.drawable.cc_mastercard, R.drawable.cc_americanexpress, R.drawable.cc_discover, R.drawable.cc_ebay, R.drawable.cc_googlecheckout, R.drawable.cc_paypal};
 	}
+	
 	
 	public static User getUserWithId(int id){
 		return new User("mamanu", "Manuel", "Enrique", "Marquez", "manuel.marquez1@upr.edu",0 ,true);

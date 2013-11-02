@@ -1,4 +1,4 @@
-package icom5016.modstore.uielements;
+package icom5016.modstore.adapter;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.User;
@@ -7,8 +7,6 @@ import android.content.Context;
 import android.widget.ArrayAdapter;
 
 public class DrawerAdapter extends ArrayAdapter<String> {
-
-	
 
 	private  String[] listOfRows;
 	private  User user;

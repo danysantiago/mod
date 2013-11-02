@@ -1,38 +1,40 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.fragments.CategoryListFragment;
-import icom5016.modstore.fragments.ProductSellEditFragment;
-import icom5016.modstore.fragments.ProductsForSaleFragment;
-import icom5016.modstore.fragments.ProductsSoldFragment;
+import icom5016.modstore.adapter.DrawerAdapter;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
-import icom5016.modstore.uielements.DrawerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.PopupWindow;
+import android.widget.Toast;
 
 
 /*
@@ -44,10 +46,8 @@ public abstract class MainInterfaceActivity extends Activity {
 					/* Instance variables */
 					
 					/*Category Vairables */
-	protected Category[] mainCategories;
+	protected List<Category> mainCategoriesList = new ArrayList<Category>(); //If Size is 0 Nothing is Listed
 	
-					/*Cart Variables */
-	private PopupWindow popUp;
 	
 	//Drawer Variables
 	protected DrawerLayout mainDrawerLayout; //Contains main layout variable
@@ -60,29 +60,42 @@ public abstract class MainInterfaceActivity extends Activity {
 	//Fragment Stack
 	public Stack<Fragment> fragmentStack;
 	
+	//Own Reference
 	private MainInterfaceActivity thisActivity;
 	
-	Bundle bundle;
+	//Progress Dialog
+	protected ProgressDialog processDialog;
+	
+	//Menu
+	private Menu categoriesMenu;
+	
+	
+	
+						/* Set Up Methods */
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		thisActivity = this;
+		//Load self activity
+		this.thisActivity = this;
 		
-			//Load ActionBar Variable
+		//Load ActionBar Variable
 		final ActionBar ActionBarVar = this.getActionBar();
 		
-			//Set Action Bar title
+		//Set Action Bar title
 		ActionBarVar.setTitle(R.string.app_name);
 		
 		//Load Variables
 		this.mainDrawerLayout  = (DrawerLayout) this.findViewById(R.id.drawer_layout);
 		this.mainDrawerList    = (ListView) this.findViewById(R.id.left_drawer);
 		
-		//Init Stack
+		//Init Fragment Stack
 		this.fragmentStack = new Stack<Fragment>();
+		
+		//Init Progress Dialog
+		this.processDialog = new ProgressDialog(this);
 		
 		
 	}
@@ -91,49 +104,199 @@ public abstract class MainInterfaceActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		
-		this.activeUser = DataFetchFactory.getUserInSharedPreferences(this);
+		//Load Current User
+		loadActiveUser();
+			//No Verification needed beacuse user can be NULL
 		
-		//Set Option into Drawer
+		//Set DrawerList based on the type of user
 		this.mainDrawerList.setAdapter(
 				new DrawerAdapter(this, this.activeUser)
 		);
 		
 		//Set Drawer ClickListener 
 		this.mainDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		
+		
+		
 	}
+	
+							/* Data Fetch Methods for Other Clases */
+				/*Since ALl Methods in this section are treated as Asyncronous 
+				 * it must be verify with a verificationMethod */
+	
+	protected void loadMainCategoriesList(Menu menu) { 		
+		this.categoriesMenu = menu;
+		boolean loaded = getMainCategoriesFromSPref();
+		if(!loaded){ //Shared Preferences not Loaded or Refresh Rate Exided
+			processDialog.setMessage(this.getResources().getText(R.string.pd_mactivity));
+			processDialog.show();
+			getMainCategoriesFromHTTP();
+			return;
+		}
+		
+		updateSubMenuCategories(this.categoriesMenu);
+		processDialog.dismiss();
+	}
+	
+	private boolean getMainCategoriesFromSPref() {
+		//First Load Categories
+				SharedPreferences categoriesPref = getSharedPreferences(ConstantClass.CATEGORIES_FILE, Context.MODE_PRIVATE);
+				
+				//Get Size of Categories
+				int catSize = categoriesPref.getInt(ConstantClass.CategoriesFile.CATEGORIES_ARRAY_SIZE_KEY, 0);
+				int refreshSize = categoriesPref.getInt(ConstantClass.CategoriesFile.CATEGORIES_REFRESH_COUNT_KEY, ConstantClass.CategoriesFile.CATEGORIES_REFRESH_VALUE);
+				
+				if(refreshSize >= ConstantClass.CategoriesFile.CATEGORIES_REFRESH_VALUE || catSize == 0) //Must Reset Values
+					return false;
+					
+				
+				List<Category> retList = new ArrayList<Category>();
+				
+				for(int i=0; i<catSize; i++)
+				{
+					int id = categoriesPref.getInt(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_ID_KEY+Integer.toString(i), 
+							ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_INT);
+					int parentId = categoriesPref.getInt(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_PARENTID_KEY+Integer.toString(i), 
+							ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_INT);
+					String name = categoriesPref.getString(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_NAME_KEY+Integer.toString(i), 
+								ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_STRING);
+					
+					//Fail Safe
+					if(id == ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_INT ||
+					   parentId == ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_INT ||
+					   name.equals(ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_STRING))
+						return false;
+					
+					retList.add(new Category(parentId, id, name));
+				}
+				//Update Refresh Value
+				categoriesPref.edit().putInt(ConstantClass.CategoriesFile.CATEGORIES_REFRESH_COUNT_KEY, refreshSize+1).commit();
+				
+				//Set Values
+				this.mainCategoriesList = retList;
+		
+		return true;
+	}
+	
+	private void getMainCategoriesFromHTTP() {
+
+		//Perform http request
+		Bundle params = new Bundle();
+		params.putString("method", "GET");
+		params.putString("url", Server.Categories.GET+Integer.toString(-1)); //Get Parent which is -1
+		
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+
+			@Override
+			public void onSucess(JSONObject json) {
+				//Also add to editor;
+				Editor catFileEditor = getSharedPreferences(ConstantClass.CATEGORIES_FILE, Context.MODE_PRIVATE).edit();
+				
+				//New Generate List
+				try {
+					JSONArray categoryList = json.getJSONArray("list");
+					
+					List<Category> retList = new ArrayList<Category>();
+					
+					//Put Size
+					catFileEditor.putInt(ConstantClass.CategoriesFile.CATEGORIES_ARRAY_SIZE_KEY, categoryList.length());
+					catFileEditor.putInt(ConstantClass.CategoriesFile.CATEGORIES_REFRESH_COUNT_KEY, 0);
+					
+					for(int i=0; i<categoryList.length(); i++){
+						
+						Category tempCat = new Category(categoryList.getJSONObject(i));
+						
+						catFileEditor.putInt(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_ID_KEY+Integer.toString(i), tempCat.getId());
+						catFileEditor.putInt(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_PARENTID_KEY+Integer.toString(i), tempCat.getParentId());
+						catFileEditor.putString(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_NAME_KEY+Integer.toString(i), tempCat.getName());
+						
+						//Add to List
+						retList.add(tempCat);
+						
+						
+					}
+					
+					//Set List
+					mainCategoriesList = retList;
+					
+					//Commit Changes
+					catFileEditor.commit();
+					
+					updateSubMenuCategories(categoriesMenu);
+					
+				} catch (JSONException e) {
+					Toast.makeText(thisActivity, R.string.errmsg_bad_json,
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+
+			@Override
+			public void onFailed() {
+				Toast.makeText(thisActivity, R.string.errmsg_no_connection, Toast.LENGTH_SHORT).show();
+			}
+			
+			@Override
+			public void onDone(){
+				//Regardless Dimsiss Progress Dialog
+				processDialog.dismiss();
+			}
+			
+		});
+		request.execute();
+	}
+	
+	private void updateSubMenuCategories(Menu menu){
+		SubMenu categoriesMenu = (SubMenu) menu.findItem(R.id.item_categories).getSubMenu();
+		for(Category e : this.mainCategoriesList)
+		{
+			categoriesMenu.add(R.id.item_categories, R.string.id_btn_maincategory , Menu.NONE, e.getName());
+		}
+	}
+
+	protected void loadActiveUser(){
+		this.activeUser = DataFetchFactory.getUserFromSPref(this);
+	}
+
+	
+									/*Verification Methods
+									 * They work on pares with Load Methods for Async Verification*/
+	
+	protected boolean areMainCategoriesListLoaded(){
+		return this.mainCategoriesList.size() <= 0;
+	}
+	
+	protected boolean isUserLogin(boolean sendToLogInFlag){ //Starts New Activity Based on Flag
+		if(sendToLogInFlag){
+			if(this.activeUser == null){
+				//Flush User File
+				SharedPreferences preferences = getSharedPreferences(ConstantClass.USER_FILE, Context.MODE_PRIVATE);
+	    		preferences.edit().clear().commit();
+				
+				//Start Login Activity
+				Intent loginIntent = new Intent(this, LogInRegisterActivity.class);
+				this.startActivity(loginIntent);
+				
+			}
+		}
+		return this.activeUser == null;
+	}
+		
+		
+							/*Option Menus Generation */
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.actionbar_main_menu, menu);
 		
-		SubMenu categoriesMenu = (SubMenu) menu.findItem(R.id.item_categories).getSubMenu();
-		this.mainCategories = DataFetchFactory.fetchMainCategories();
-		for(Category e : mainCategories)
-		{
-			categoriesMenu.add(R.id.item_categories, R.string.id_btn_maincategory , Menu.NONE, e.getName());
-		}
 		return super.onCreateOptionsMenu(menu);
 	}
 					
-							/*Population Methods*/
-	
-	
-	//Make Invalid to Change Category as it changes the fragment 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu){
-		boolean drawerOpen = this.mainDrawerLayout.isDrawerOpen(this.mainDrawerList);
-        menu.findItem(R.id.item_categories).setVisible(!drawerOpen);
-        menu.findItem(R.id.btn_cart).setVisible(!drawerOpen);
-		return super.onPrepareOptionsMenu(menu);
-	}
-		
-	
-	
-	
 	
 						/*Supplementary Methods*/
 	
+	//Method that obtain the Content Frame for all Activities
 	public static int getContentFragmentId()
 	{
 		return R.id.content_frame;
@@ -143,6 +306,7 @@ public abstract class MainInterfaceActivity extends Activity {
 						/*Listeners Implementation*/
 	
 	//ActionBar Buttons
+	// Note: Only the ones that are shared are implemented here
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch( item.getItemId() )
@@ -162,8 +326,25 @@ public abstract class MainInterfaceActivity extends Activity {
 
 	}
 	
-	//Drawer
-		//**** Hack to Access Local Class Variables and Methods
+
+							/* Navigation Methods */
+	@Override
+	public void onBackPressed() {
+
+			//Normal Back if no other Fragment is Use
+			if(this.fragmentStack.size() <= 1){
+				super.onBackPressed();
+			}
+			else{
+				this.fragmentStack.pop();
+				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+			}		
+	}
+
+	
+			/* Drawer Listener */
+
+	//**** Hack to Access Local Class Variables and Methods
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -171,6 +352,8 @@ public abstract class MainInterfaceActivity extends Activity {
         }
     }
     private void selectItem(int position) {
+    	
+    	//Base on Usertype matches the actions listeners
     	if(this.activeUser == null)
     	{
     		this.guestDrawerListener(position);
@@ -182,11 +365,12 @@ public abstract class MainInterfaceActivity extends Activity {
     	this.mainDrawerLayout.closeDrawer(this.mainDrawerList);
     }
 
-    //Listener for Drawers
-    	//Guest Drawer
+    							/*Listener for Drawers */
+    
+    //Guest Drawer
     private void guestDrawerListener(int position){
     	
-    	//Global Bundle for Each. Saving Memory, 
+    	//Global Bundle
     	Bundle bundle = new Bundle();
     	
     	switch(position){
@@ -201,35 +385,20 @@ public abstract class MainInterfaceActivity extends Activity {
     			this.startActivity(homeIntent);
     		}
     		break;
+    		
     	case 1:
-    		//Category (new Fragment)
-    		//Home (Refresh)
-    		if(this instanceof MainActivity ){
-    	  		bundle.putInt(ConstantClass.CATEGORY_LIST_PARENT_KEY, -1);
-    	  		CategoryListFragment fragment= new CategoryListFragment();
-    	  		fragment.setArguments(bundle);
-    	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-    		}
-    		else{
-    			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY);
-    			this.startActivity(homeIntent);
-    		}
-    		break;
-    	case 2:
     		//About (new Activity)
     		Intent aboutIntent = new Intent(this, AboutActivity.class);
     		this.startActivity(aboutIntent);
     		break;
-    	case 3:
+    	case 2:
     		//Log-In (new Activity)
     		Intent loginIntent = new Intent(this, LogInRegisterActivity.class);
     		bundle.putBoolean(ConstantClass.LOGINREGISTER_FLAG, true); //true to start in login
     		loginIntent.putExtras(bundle);
         	this.startActivity(loginIntent);
     		break;
-    	case 4:
+    	case 3:
     		//Register (new Register)
     		Intent registerIntent = new Intent(this, LogInRegisterActivity.class);
     		bundle.putBoolean(ConstantClass.LOGINREGISTER_FLAG, false); //false to start in login
@@ -238,11 +407,12 @@ public abstract class MainInterfaceActivity extends Activity {
     		break;
     	}
     }
-    	//User Drawer
+    
+    //User Drawer
     private void userDrawerListener(int position){
     	
-    	//Global Bundle for Each. Saving Memory, 
-    	bundle = new Bundle();
+    	//Global Bundle
+    	Bundle bundle = new Bundle();
     	
     	switch(position){
     	case 0:
@@ -257,95 +427,28 @@ public abstract class MainInterfaceActivity extends Activity {
     		}
     		break;
     	case 1:
-    		//Categories (new Fragment)
-    		if(this instanceof MainActivity ){
-    			bundle.putInt(ConstantClass.CATEGORY_LIST_PARENT_KEY, -1);
-    	  		CategoryListFragment fragment= new CategoryListFragment();
-    	  		fragment.setArguments(bundle);
-    	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-    		}
-    		else{
-    			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY);
-    			homeIntent.putExtras(bundle);
-    			this.startActivity(homeIntent);
-    		}
     		break;
     	case 2:
     		break;
     	case 3:
-    		//My Market (new Fragments: Sell Item, Items for Sale, Items Sold)
-    		AlertDialog.Builder myItemsDialog = new AlertDialog.Builder(this);
-    		myItemsDialog.setTitle("My Market")
-			   .setNegativeButton("Sell Item", new DialogInterface.OnClickListener() {
-				   public void onClick(DialogInterface dialog, int id) {
-			    		if(thisActivity instanceof MainActivity ){
-			    	  		ProductSellEditFragment fragment= new ProductSellEditFragment();
-			    	  		thisActivity.fragmentStack.push(fragment);
-			    	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-			    		}
-			    		else{
-			    			Intent homeIntent = new Intent(thisActivity, MainActivity.class);
-			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS);
-			    			homeIntent.putExtras(bundle);
-			    			thisActivity.startActivity(homeIntent);
-			    		}
-			       }
-			   })
-			   .setNeutralButton("Items for Sale", new DialogInterface.OnClickListener() {
-				   public void onClick(DialogInterface dialog, int id) {
-			    		//Items for Sale (new Fragment)
-			    		if(thisActivity instanceof MainActivity ){
-			    	  		ProductsForSaleFragment fragment = new ProductsForSaleFragment();
-			    	  		thisActivity.fragmentStack.push(fragment);
-			    	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-			    		}
-			    		else{
-			    			Intent homeIntent = new Intent(thisActivity, MainActivity.class);
-			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_FOR_SALE);
-			    			homeIntent.putExtras(bundle);
-			    			thisActivity.startActivity(homeIntent);
-			    		}
-			       }
-			   })
-			   .setPositiveButton("Items Sold", new DialogInterface.OnClickListener() {
-				   public void onClick(DialogInterface dialog, int id) {
-			    		if(thisActivity instanceof MainActivity ){
-			    	  		ProductsSoldFragment fragment = new ProductsSoldFragment();
-			    	  		thisActivity.fragmentStack.push(fragment);
-			    	  		AndroidResourceFactory.setNewFragment(thisActivity, thisActivity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-			    		}
-			    		else{
-			    			Intent homeIntent = new Intent(thisActivity, MainActivity.class);
-			    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_SOLD);
-			    			homeIntent.putExtras(bundle);
-			    			thisActivity.startActivity(homeIntent);
-			    		}
-			       }
-			   });
-    		myItemsDialog.create().show();
-    		
-    		break;
-    	case 4:
-    		//Settings (new Activity)
+    		//My Account (Old: Settings) (new Activity)
     		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
     		Intent settingsIntent = new Intent(this, SettingsActivity.class);
     		settingsIntent.putExtras(bundle);
     		this.startActivity(settingsIntent);
     		break;
-    	case 5:
+    	case 4:
     		//About (new Activity)
     		Intent aboutIntent = new Intent(this, AboutActivity.class);
     		this.startActivity(aboutIntent);
     		break;
-    	case 6:
+    	case 5:
     		//Log-Out (refresh)
     		
-    			//Destroy Preferences
-    		SharedPreferences preferences = getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE);
+    		//Destroy Preferences
+    		SharedPreferences preferences = getSharedPreferences(ConstantClass.USER_FILE, Context.MODE_PRIVATE);
     		preferences.edit().clear().commit();
-    			//Refresh MainActivity
+    		//Refresh MainActivity
     		if(this instanceof MainActivity ){
     			this.finish();
         		this.startActivity(this.getIntent());
@@ -355,7 +458,8 @@ public abstract class MainInterfaceActivity extends Activity {
     			this.startActivity(homeIntent);
     		}
     		break;
-    	case 7:
+    	
+    	case 6:
     		//Admin Menu
     			//Send User ID
     		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
@@ -365,37 +469,6 @@ public abstract class MainInterfaceActivity extends Activity {
     	}
     }
 
-
-
-	//Make On Back Return to Previous Element
-	@Override
-	public void onBackPressed() {
-
-			//Normal Back if no other Fragment is Use
-			if(this.fragmentStack.size() <= 1){
-				super.onBackPressed();
-			}
-			else{
-				this.fragmentStack.pop();
-				AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-			}		
-	}
-
+	
     
-    //Cart Button Listener Abstract
-    public void cartButtonListner(MenuItem menuItem){
-        
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-        this.popUp = new PopupWindow(inflater.inflate(R.layout.popup_cart_empty, null, false),LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT, true);
-        this.popUp.showAtLocation(this.findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
-    }
-    
-    //Cart Listener
-    public void cartDismissListener(View view){
-    	this.popUp.dismiss();
-    }
-    
-    public void cartContinueShoppingListener(View view){
-    	this.popUp.dismiss();
-    }
 }
