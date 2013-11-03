@@ -110,6 +110,9 @@ public class MainActivity extends MainInterfaceActivity {
 		/* 			Populated Categories Menu 		*/
 		 if(this.mainCategoriesList.size() <= 0)
 			 this.loadMainCategoriesList(menu);
+		 else
+			 updateSubMenuCategories(menu);
+		 
 		return true;
 	}
 	

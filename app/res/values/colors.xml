@@ -6,5 +6,7 @@
     <color name="white">#FFFFFF</color>
     <color name="darker_white">#F6F6F6</color>
     <color name="black">#000000</color>
+    <color name="dark_brown">#734A29</color>
+    <color name="light_brown">#DE9D62</color>
     
 </resources>

@@ -1,6 +1,6 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.adapter.DrawerAdapter;
+import icom5016.modstore.adapters.DrawerAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
@@ -19,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -27,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +41,7 @@ import android.widget.Toast;
  *  Abstract Class with template for Activity Bar
  */
 
-public abstract class MainInterfaceActivity extends Activity {
+public abstract class MainInterfaceActivity extends FragmentActivity {
 	
 					/* Instance variables */
 					
@@ -246,7 +246,7 @@ public abstract class MainInterfaceActivity extends Activity {
 		request.execute();
 	}
 	
-	private void updateSubMenuCategories(Menu menu){
+	protected void updateSubMenuCategories(Menu menu){
 		SubMenu categoriesMenu = (SubMenu) menu.findItem(R.id.item_categories).getSubMenu();
 		for(Category e : this.mainCategoriesList)
 		{
@@ -302,9 +302,15 @@ public abstract class MainInterfaceActivity extends Activity {
 		return R.id.content_frame;
 	}
 	
+	//Getter for Active User use inside Fragments
+	public User getActiveUser() {
+		return activeUser;
+	}
 	
 						/*Listeners Implementation*/
 	
+	
+
 	//ActionBar Buttons
 	// Note: Only the ones that are shared are implemented here
 	@Override
@@ -427,6 +433,9 @@ public abstract class MainInterfaceActivity extends Activity {
     		}
     		break;
     	case 1:
+    		//My Orders
+    		Intent myOrdersIntent = new Intent(this, MyOrdersActivity.class);
+    		this.startActivity(myOrdersIntent);
     		break;
     	case 2:
     		break;
