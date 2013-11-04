@@ -2,8 +2,15 @@ package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +22,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class BuyingListFragment extends Fragment {
 	//User Instance Field
@@ -23,6 +31,12 @@ public class BuyingListFragment extends Fragment {
 		private Spinner spinner;
 		private View mainLayout;
 		private ScrollView sv_container;
+		
+		//Contantans
+		private final int BUYLIST_ALL = 7;
+		private final int BUYLIST_BID = 1;
+		private final int BUYLIST_PURCHASE = 2;
+		private final int BUYLIST_DIDNOTWIN = 4;
 		
 		
 		@Override
@@ -60,18 +74,46 @@ public class BuyingListFragment extends Fragment {
 						case 0:
 							
 							inflater.inflate(R.layout.buying_all_listing, parent_view);
+							try {
+								doHttpBuyingList(BUYLIST_ALL);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 							break;
 						case 1:
+							//Bidding
 							inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
+							try {
+								doHttpBuyingList(BUYLIST_BID);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 							break;
 						case 2:
+							//Purchase
 							inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
+							try {
+								doHttpBuyingList(BUYLIST_PURCHASE);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 							break;
 						case 3:
+							//Didn't Win
 							inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
+							try {
+								doHttpBuyingList(BUYLIST_DIDNOTWIN);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 							break;
 						default:
 							inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
+							try {
+								doHttpBuyingList(BUYLIST_BID);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
 							break;
 						
 						}
@@ -88,5 +130,36 @@ public class BuyingListFragment extends Fragment {
 			
 			return view;
 		}
+		
+		private void doHttpBuyingList(int listing) throws JSONException{
+			Bundle params = new Bundle();
+			params.putString("url", Server.Orders.POSTBUYLIST);
+			params.putString("method", "POST");
+			
+			JSONObject credentials = new JSONObject();
+			credentials.put("userid", this.activeUser.getGuid());
+			credentials.put("list_req", listing);
+			
+			HttpRequest request = new HttpRequest(params, credentials, new HttpCallback() {
+				
+				@Override
+				public void onSucess(JSONObject json) {
+					
+				}
+				
+				@Override
+				public void onFailed() {
+					Toast.makeText(mainActivity, R.string.errmsg_no_connection, Toast.LENGTH_LONG).show();
+				}
+				
+				@Override
+				public void onDone() {
+					//No-Op
+				}
+			});
+			request.execute();
+		    
+		}
+		
 	
 }

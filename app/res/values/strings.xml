@@ -128,12 +128,12 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
-    
+
     <!-- MyOrders Acitivity -->
     <string name="title_myorders">My Orders</string>
     <string name="sec_title_selling">Selling</string>
     <string name="sec_title_buying">Buying</string>
-    
+
     <!-- My Orders Buying Fragment -->
     <string name="listbuy_bidding">Bidding</string>
     <string name="listbuysell_no_item">No Items</string>
@@ -143,13 +143,10 @@
     <!-- My Orders Selling Fragment -->
     <string name="listsell_active">Active</string>
     <string name="listsell_sold">Sold</string>
-    
-    
-    
+
     <!-- About Activity -->
     <string name="mod_names">Manuel-Omar-Daniel</string>
     <string name="about_img_desc">About Image</string>
-    
-    
+    <string name="title_activity_log_in_register">LogInRegisterActivity</string>
 
 </resources>
