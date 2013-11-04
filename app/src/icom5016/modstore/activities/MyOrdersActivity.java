@@ -1,6 +1,7 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.BuyingListFragment;
+import icom5016.modstore.fragments.MyOrdersListFragment;
 import icom5016.modstore.fragments.SellingListFragment;
 
 import java.util.Locale;
@@ -117,17 +118,20 @@ public class MyOrdersActivity extends MainInterfaceActivity implements
 
 		@Override
 		public Fragment getItem(int position) {
-			Fragment fragment = new BuyingListFragment();
-			if(position == 1)
-				return new SellingListFragment();
-			
+			Fragment fragment = new MyOrdersListFragment();
+			switch(position){
+			case 1:
+				fragment = new BuyingListFragment();
+			case 2:
+				fragment = new SellingListFragment();
+			}
 			return fragment;
 		}
 
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
-			return 2;
+			return 3;
 		}
 
 		@Override
@@ -135,8 +139,10 @@ public class MyOrdersActivity extends MainInterfaceActivity implements
 			Locale l = Locale.getDefault();
 			switch (position) {
 			case 0:
-				return getString(R.string.sec_title_buying).toUpperCase(l);
+				return getString(R.string.sec_tittle_orders).toUpperCase(l);
 			case 1:
+				return getString(R.string.sec_title_buying).toUpperCase(l);
+			case 2:
 				return getString(R.string.sec_title_selling).toUpperCase(l);
 			}
 			return null;

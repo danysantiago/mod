@@ -122,7 +122,8 @@ public class LogInFragment extends Fragment implements OnClickListener{
 						Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();;
 					}
 				} catch (JSONException e) {
-					e.printStackTrace();
+					Toast.makeText(thisActivity, R.string.errmsg_bad_json,
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 			

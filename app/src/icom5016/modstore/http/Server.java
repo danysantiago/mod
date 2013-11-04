@@ -34,5 +34,7 @@ public class Server {
 	
 	public static class Orders{
 		public static final String POSTBUYLIST = BASE_URL+"/ordersbuy";
+		public static final String POSTSELLLIST = BASE_URL+"/orderssell";
+		public static final String POSTORDERS = BASE_URL+"/orders";
 	}
 }

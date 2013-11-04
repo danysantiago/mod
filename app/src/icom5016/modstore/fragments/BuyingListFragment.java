@@ -2,12 +2,15 @@ package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
+import icom5016.modstore.adapters.BuySellListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
+import icom5016.modstore.listeners.BuySellListListener;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,12 +23,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class BuyingListFragment extends Fragment {
-	//User Instance Field
+		//User Instance Field
 		private User activeUser;
 		private MainInterfaceActivity mainActivity;
 		private Spinner spinner;
@@ -144,6 +151,126 @@ public class BuyingListFragment extends Fragment {
 				
 				@Override
 				public void onSucess(JSONObject json) {
+					try {
+						int listRequest = json.getInt("list_req");
+						
+						
+						if(listRequest == BUYLIST_ALL){
+							
+							//Bidding Var
+							ProgressBar pbBidding = (ProgressBar) mainLayout.findViewById(R.id.buy_bidding_pb);
+							TextView tvBidding = (TextView) mainLayout.findViewById(R.id.buy_bidding_load_tv);
+							GridView gvBidding = (GridView) mainLayout.findViewById(R.id.buy_bidding_loader);
+							ListView lvBidding = (ListView) mainLayout.findViewById(R.id.buy_bidding_lv);
+							JSONArray biddingList = json.getJSONArray("bidding_list");
+							
+							if(biddingList.length() == 0){
+								pbBidding.setVisibility(View.GONE);
+								tvBidding.setText(R.string.listbuysell_no_item);
+							}
+							else{
+								gvBidding.setVisibility(View.GONE);
+								lvBidding.setAdapter(new BuySellListAdapter(mainActivity, biddingList));
+								lvBidding.setOnItemClickListener(new BuySellListListener(mainActivity));
+								lvBidding.setVisibility(View.VISIBLE);
+							}
+							
+							//Purchase Var
+							ProgressBar pbPurchase = (ProgressBar) mainLayout.findViewById(R.id.buy_purchase_pb);
+							TextView tvPurchase = (TextView) mainLayout.findViewById(R.id.buy_purchase_load_tv);
+							GridView gvPurchase = (GridView) mainLayout.findViewById(R.id.buy_purchase_loader);
+							ListView lvPurchase = (ListView) mainLayout.findViewById(R.id.buy_purchase_lv);
+							JSONArray purchaseList = json.getJSONArray("purchase_list");
+							
+							if(purchaseList.length() == 0){
+								pbPurchase.setVisibility(View.GONE);
+								tvPurchase.setText(R.string.listbuysell_no_item);
+							}
+							else{
+								gvPurchase.setVisibility(View.GONE);
+								lvPurchase.setAdapter(new BuySellListAdapter(mainActivity, purchaseList));
+								lvPurchase.setOnItemClickListener(new BuySellListListener(mainActivity));
+								lvPurchase.setVisibility(View.VISIBLE);
+							}
+							
+							//Didn't Win
+							ProgressBar pbNotwin = (ProgressBar) mainLayout.findViewById(R.id.buy_nwin_pb);
+							TextView tvNotwin = (TextView) mainLayout.findViewById(R.id.buy_nwin_load_tv);
+							GridView gvNotwin = (GridView) mainLayout.findViewById(R.id.buy_nwin_loader);
+							ListView lvNotwin = (ListView) mainLayout.findViewById(R.id.buy_nwin_lv);
+							JSONArray notwinList = json.getJSONArray("notwin_list");
+							
+							if(notwinList.length() == 0){
+								pbNotwin.setVisibility(View.GONE);
+								tvNotwin.setText(R.string.listbuysell_no_item);
+							}
+							else{
+								gvNotwin.setVisibility(View.GONE);
+								lvNotwin.setAdapter(new BuySellListAdapter(mainActivity, notwinList));
+								lvNotwin.setOnItemClickListener(new BuySellListListener(mainActivity));
+								lvNotwin.setVisibility(View.VISIBLE);
+							}
+							
+							
+							
+							
+						}
+						else if(listRequest == BUYLIST_BID){
+							JSONArray biddingList = json.getJSONArray("bidding_list");
+							ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
+							TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
+							ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
+							pbIndividual.setVisibility(View.GONE);
+							if(biddingList.length() == 0){
+								tvIndividual.setVisibility(View.VISIBLE);
+							}
+							else{
+								lvIndividual.setAdapter(new BuySellListAdapter(mainActivity, biddingList));
+								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
+								lvIndividual.setVisibility(View.VISIBLE);
+							}
+							
+							
+
+						}
+						else if(listRequest == BUYLIST_DIDNOTWIN){
+							JSONArray notwinList = json.getJSONArray("notwin_list");
+							ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
+							TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
+							ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
+							
+							pbIndividual.setVisibility(View.GONE);
+							if(notwinList.length() == 0){
+								tvIndividual.setVisibility(View.VISIBLE);
+							}
+							else{
+								lvIndividual.setAdapter(new BuySellListAdapter(mainActivity, notwinList));
+								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
+								lvIndividual.setVisibility(View.VISIBLE);
+							}
+						}
+						else if(listRequest == BUYLIST_PURCHASE){
+							JSONArray purchaseList = json.getJSONArray("purchase_list");
+							ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
+							TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
+							ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
+							
+							pbIndividual.setVisibility(View.GONE);
+							if(purchaseList.length() == 0){
+								tvIndividual.setVisibility(View.VISIBLE);
+							}
+							else{
+								lvIndividual.setAdapter(new BuySellListAdapter(mainActivity, purchaseList));
+								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
+								lvIndividual.setVisibility(View.VISIBLE);
+							}
+						}
+						
+						
+					} catch (JSONException e) {
+						Toast.makeText(mainActivity, R.string.errmsg_bad_json,
+								Toast.LENGTH_SHORT).show();
+					}
 					
 				}
 				

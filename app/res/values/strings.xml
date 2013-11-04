@@ -133,7 +133,11 @@
     <string name="title_myorders">My Orders</string>
     <string name="sec_title_selling">Selling</string>
     <string name="sec_title_buying">Buying</string>
+    <string name="sec_tittle_orders">Orders</string>
 
+    <!-- My Orders Orders Fragment  -->
+    <string name="orders_title">Orders</string>
+    
     <!-- My Orders Buying Fragment -->
     <string name="listbuy_bidding">Bidding</string>
     <string name="listbuysell_no_item">No Items</string>
