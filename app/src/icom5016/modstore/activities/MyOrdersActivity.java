@@ -122,8 +122,10 @@ public class MyOrdersActivity extends MainInterfaceActivity implements
 			switch(position){
 			case 1:
 				fragment = new BuyingListFragment();
+				break;
 			case 2:
 				fragment = new SellingListFragment();
+				break;
 			}
 			return fragment;
 		}

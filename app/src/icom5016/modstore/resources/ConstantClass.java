@@ -83,6 +83,6 @@ public class ConstantClass {
 	public static final String PRODUCT_LIST_CATEGORY_KEY ="productListCategoryKey";
 	
 	//My Orders Constants
-	public static final String[] BUYING_SPINNER = new String[]{"All Lists", "Bidding", "Purchase", "Didn't Win"};
+	public static final String[] BUYING_SPINNER = new String[]{"All Lists", "Bidding", "Didn't Win"};
 	public static final String[] SELLING_SPINNER = new String[]{"All Lists", "Active","Sold"};	
 }

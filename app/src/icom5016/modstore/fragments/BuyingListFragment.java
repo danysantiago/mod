@@ -97,15 +97,6 @@ public class BuyingListFragment extends Fragment {
 							}
 							break;
 						case 2:
-							//Purchase
-							inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
-							try {
-								doHttpBuyingList(BUYLIST_PURCHASE);
-							} catch (JSONException e) {
-								e.printStackTrace();
-							}
-							break;
-						case 3:
 							//Didn't Win
 							inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
 							try {
@@ -174,24 +165,7 @@ public class BuyingListFragment extends Fragment {
 								lvBidding.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvBidding.setVisibility(View.VISIBLE);
 							}
-							
-							//Purchase Var
-							ProgressBar pbPurchase = (ProgressBar) mainLayout.findViewById(R.id.buy_purchase_pb);
-							TextView tvPurchase = (TextView) mainLayout.findViewById(R.id.buy_purchase_load_tv);
-							GridView gvPurchase = (GridView) mainLayout.findViewById(R.id.buy_purchase_loader);
-							ListView lvPurchase = (ListView) mainLayout.findViewById(R.id.buy_purchase_lv);
-							JSONArray purchaseList = json.getJSONArray("purchase_list");
-							
-							if(purchaseList.length() == 0){
-								pbPurchase.setVisibility(View.GONE);
-								tvPurchase.setText(R.string.listbuysell_no_item);
-							}
-							else{
-								gvPurchase.setVisibility(View.GONE);
-								lvPurchase.setAdapter(new BuySellListAdapter(mainActivity, purchaseList));
-								lvPurchase.setOnItemClickListener(new BuySellListListener(mainActivity));
-								lvPurchase.setVisibility(View.VISIBLE);
-							}
+				
 							
 							//Didn't Win
 							ProgressBar pbNotwin = (ProgressBar) mainLayout.findViewById(R.id.buy_nwin_pb);
@@ -276,7 +250,7 @@ public class BuyingListFragment extends Fragment {
 				
 				@Override
 				public void onFailed() {
-					Toast.makeText(mainActivity, R.string.errmsg_no_connection, Toast.LENGTH_LONG).show();
+					Toast.makeText(mainActivity, R.string.errmsg_no_connection, Toast.LENGTH_SHORT).show();
 				}
 				
 				@Override

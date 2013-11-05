@@ -46,49 +46,6 @@
              />
 
     </GridLayout>
-	<!-- Purchase -->
-    <TextView
-        android:id="@+id/buy_purchase"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/light_gray"
-        android:text="@string/listbuy_purchase" 
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:padding="10dp"/>
-
-    <ListView
-        android:id="@+id/buy_purchase_lv"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
-
-    <GridLayout
-        android:id="@+id/buy_purchase_loader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="2" >
-
-        <TextView
-            android:id="@+id/buy_purchase_load_tv"
-            android:layout_column="0"
-            android:paddingLeft="15dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_gravity="left|center_vertical"
-            android:text="@string/listbuysell_load" />
-
-        <ProgressBar
-            android:paddingRight="15dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:id="@+id/buy_purchase_pb"
-            android:layout_column="1"
-            android:layout_gravity="right|top"
-             />
-
-    </GridLayout>
     
     <!-- Didn't Win -->
     <TextView

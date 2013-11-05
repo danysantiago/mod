@@ -137,16 +137,28 @@
 
     <!-- My Orders Orders Fragment  -->
     <string name="orders_title">Orders</string>
+    <string name="orders_number">Order # ******</string>
+    <string name="orders_total">Total: $0.00</string>
+    <string name="orders_quantity">Quantity: 0</string>
+    <string name="orders_date">Date: 1/1/1900</string>
     
     <!-- My Orders Buying Fragment -->
     <string name="listbuy_bidding">Bidding</string>
     <string name="listbuysell_no_item">No Items</string>
     <string name="listbuysell_load">Loading&#8230;</string>
-    <string name="listbuy_purchase">Purchase</string>
     <string name="listbuy_nwin">Didn\'t Win</string>
     <!-- My Orders Selling Fragment -->
     <string name="listsell_active">Active</string>
     <string name="listsell_sold">Sold</string>
+    
+    <!-- My Orders Product Adapter -->
+    <string name="listbuysellrow_img_desc">Image of Item</string>
+    <string name="listbuysellrow_title">No Title</string>
+    <string name="listbuysellrow_price">$0.00</string>
+    <string name="listbuysellrow_type">Trans. Type</string>
+    <string name="listbuysellrow_date">1/1/1900</string>
+    <string name="listbuysellrow_quantity">Quantity: 0</string>
+    <string name="listbuysellrow_tracking">N/A</string>
 
     <!-- About Activity -->
     <string name="mod_names">Manuel-Omar-Daniel</string>
