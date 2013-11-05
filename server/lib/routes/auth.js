@@ -33,18 +33,20 @@ routes.post("/login", express.bodyParser(), function (req, res) {
 
 //Auth check
 routes.use(function (req, res, next) {
-  console.log(req.headers);
+  //console.log(req.headers);
 
-  if(req.headers.auth_token) {
-    if (auth_tokens[req.headers.auth_token]) {
-      req.logged_user = auth_tokens[req.headers.auth_token];
-      next();
-    } else {
-      res.send(401);
-    }
-  } else {
-    res.send(401);
-  }
+  // if(req.headers.auth_token) {
+  //   if (auth_tokens[req.headers.auth_token]) {
+  //     req.logged_user = auth_tokens[req.headers.auth_token];
+  //     next();
+  //   } else {
+  //     res.send(401);
+  //   }
+  // } else {
+  //   res.send(401);
+  // }
+
+  next();
 });
 
 function UUID() {
