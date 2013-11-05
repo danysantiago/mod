@@ -2,13 +2,13 @@ package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
-import icom5016.modstore.adapters.BuySellListAdapter;
+import icom5016.modstore.adapters.BuyingListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
-import icom5016.modstore.listeners.BuySellListListener;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.unused.BuySellListListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -161,7 +161,7 @@ public class BuyingListFragment extends Fragment {
 							}
 							else{
 								gvBidding.setVisibility(View.GONE);
-								lvBidding.setAdapter(new BuySellListAdapter(mainActivity, biddingList));
+								lvBidding.setAdapter(new BuyingListAdapter(mainActivity, biddingList));
 								lvBidding.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvBidding.setVisibility(View.VISIBLE);
 							}
@@ -180,7 +180,7 @@ public class BuyingListFragment extends Fragment {
 							}
 							else{
 								gvNotwin.setVisibility(View.GONE);
-								lvNotwin.setAdapter(new BuySellListAdapter(mainActivity, notwinList));
+								lvNotwin.setAdapter(new BuyingListAdapter(mainActivity, notwinList));
 								lvNotwin.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvNotwin.setVisibility(View.VISIBLE);
 							}
@@ -199,7 +199,7 @@ public class BuyingListFragment extends Fragment {
 								tvIndividual.setVisibility(View.VISIBLE);
 							}
 							else{
-								lvIndividual.setAdapter(new BuySellListAdapter(mainActivity, biddingList));
+								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, biddingList));
 								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvIndividual.setVisibility(View.VISIBLE);
 							}
@@ -218,7 +218,7 @@ public class BuyingListFragment extends Fragment {
 								tvIndividual.setVisibility(View.VISIBLE);
 							}
 							else{
-								lvIndividual.setAdapter(new BuySellListAdapter(mainActivity, notwinList));
+								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, notwinList));
 								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvIndividual.setVisibility(View.VISIBLE);
 							}
@@ -234,7 +234,7 @@ public class BuyingListFragment extends Fragment {
 								tvIndividual.setVisibility(View.VISIBLE);
 							}
 							else{
-								lvIndividual.setAdapter(new BuySellListAdapter(mainActivity, purchaseList));
+								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, purchaseList));
 								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvIndividual.setVisibility(View.VISIBLE);
 							}

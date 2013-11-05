@@ -19,7 +19,7 @@ public class OrdersAdapter extends ArrayAdapter<Orders> {
 	
 	
 	public OrdersAdapter(Context context, JSONArray jsonArray) throws JSONException{
-		super(context, R.layout.orders_list_row);
+		super(context, R.layout.listview_orders_row);
 		
 		//Add to list
 		for(int i=0; i<jsonArray.length(); i++){
@@ -35,7 +35,7 @@ public class OrdersAdapter extends ArrayAdapter<Orders> {
 
 		LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
 		
-		row = inflater.inflate(R.layout.orders_list_row, parent, false);
+		row = inflater.inflate(R.layout.listview_orders_row, parent, false);
 
 		//Layout Vars
 		TextView num = (TextView) row.findViewById(R.id.ordersrow_num);

@@ -1,4 +1,4 @@
-package icom5016.modstore.adapters;
+package icom5016.modstore.unused;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
@@ -16,12 +16,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class BuySellListAdapter extends ArrayAdapter<OrderDetail> {
+public class OrderDetailsListAdapter extends ArrayAdapter<OrderDetail> {
 
 	private ImageLoader imageloader;
 	
-	public BuySellListAdapter(Context context, JSONArray jsonArray) throws JSONException {
-		super(context, R.layout.listview_products_myorders_row);
+	public OrderDetailsListAdapter(Context context, JSONArray jsonArray) throws JSONException {
+		super(context, R.layout.listview_orderdetails_row);
 		
 		imageloader = new ImageLoader(context);
 		
@@ -43,11 +43,11 @@ public class BuySellListAdapter extends ArrayAdapter<OrderDetail> {
 
 		//Layout Vars
 		TextView title = (TextView) row.findViewById(R.id.prodrow_orders_title);
-		ImageView image = (ImageView) row.findViewById(R.id.prodrow_orders_image);
+	//	ImageView image = (ImageView) row.findViewById(R.id.prodrow_orders_image);
 		TextView quantity = (TextView) row.findViewById(R.id.prodrow_orders_quantity);
-		TextView tracking = (TextView) row.findViewById(R.id.prodrow_orders_tracking);
+	//	TextView tracking = (TextView) row.findViewById(R.id.prodrow_orders_tracking);
 		TextView price = (TextView) row.findViewById(R.id.prodrow_orders_price);
-		TextView date = (TextView) row.findViewById(R.id.prodrow_orders_type);
+		//TextView date = (TextView) row.findViewById(R.id.prodrow_orders_type);
 		
 		title.setText(orderDetail.getProduct().getName());
 		quantity.setText("Quantity: "+orderDetail.getQuantity());

@@ -1,6 +1,7 @@
 package icom5016.modstore.models;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -24,6 +25,8 @@ public class Orders {
 		this.id = json.getInt("order_id");
 		
 		this.orderTS = json.getString("orders_ts");
+		
+		this.productsDetails = new ArrayList<OrderDetail>();
 		
 		JSONArray jsonArray = json.getJSONArray("order_details");
 		for(int i=0; i<jsonArray.length(); i++){

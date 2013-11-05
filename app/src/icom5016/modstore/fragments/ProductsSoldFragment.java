@@ -55,7 +55,7 @@ public class ProductsSoldFragment extends Fragment {
 				//Pass JSON to Adapter
 				try {
 					OrderedProductAdapter adapter;
-					adapter = new OrderedProductAdapter(getActivity(), R.layout.listview_orderedproduct, json.getJSONArray("orderdetails"));
+					adapter = new OrderedProductAdapter(getActivity(), R.layout.listview_ordereddetail_row, json.getJSONArray("orderdetails"));
 					lstList.setAdapter(adapter);
 					lstList.setOnItemClickListener(new listOnClick((MainInterfaceActivity)getActivity()));
 				} catch (JSONException e) {
