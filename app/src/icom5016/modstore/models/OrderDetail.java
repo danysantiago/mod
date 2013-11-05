@@ -16,9 +16,10 @@ public class OrderDetail {
 	private String trackingNumber;
 	private Product product;
 	
+	
 	public OrderDetail(int id, int orderId, Address shippingAddress,
 			User seller, User buyer, int quantity, double price,
-			String trackingNumber, Product product) {
+			String trackingNumber, Product product, String type, String timestamp) {
 		super();
 		this.id = id;
 		this.orderId = orderId;
@@ -29,6 +30,7 @@ public class OrderDetail {
 		this.price = price;
 		this.trackingNumber = trackingNumber;
 		this.product = product;
+
 	}
 
 	public OrderDetail(JSONObject json) {
@@ -43,6 +45,7 @@ public class OrderDetail {
 			this.price = json.getDouble("price");
 			this.trackingNumber = json.getString("tracking_number");
 			this.product = new Product(json.getJSONObject("product"));
+			
 		} catch(JSONException e) {
 			e.printStackTrace();
 		}
@@ -121,4 +124,6 @@ public class OrderDetail {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+
+	
 }

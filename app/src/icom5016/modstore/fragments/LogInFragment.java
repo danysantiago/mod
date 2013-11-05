@@ -6,14 +6,14 @@ import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.resources.DataFetchFactory;
 import icom5016.modstore.uielements.ForgotDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -30,6 +30,7 @@ import android.widget.Toast;
 public class LogInFragment extends Fragment implements OnClickListener{
 	
 	private ProgressDialog pd;
+	private Activity thisActivity;
 	
 	public LogInFragment(){
 	};
@@ -48,7 +49,7 @@ public class LogInFragment extends Fragment implements OnClickListener{
 		
 		Button btn = (Button) view.findViewById(R.id.login_btn);
 		btn.setOnClickListener(this);
-		
+		this.thisActivity = this.getActivity();
 		
 		return view;
 	}
@@ -101,7 +102,7 @@ public class LogInFragment extends Fragment implements OnClickListener{
 	
 	private void doHttpLogin(String username, String password) throws JSONException {
 		Bundle params = new Bundle();
-		params.putString("url", Server.Login.POST);
+		params.putString("url", Server.User.LOGIN);
 		params.putString("method", "POST");
 		
 		JSONObject credentials = new JSONObject();
@@ -115,13 +116,14 @@ public class LogInFragment extends Fragment implements OnClickListener{
 				try {
 					if(json.getString("status").equals("OK")) {
 						User user = new User(json.getJSONObject("account"));
-						setUserInSharedPreferences(user);
+						DataFetchFactory.setUserInSharedPreferences(user, thisActivity);
 						getActivity().finish();
 					} else {
 						Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();;
 					}
 				} catch (JSONException e) {
-					e.printStackTrace();
+					Toast.makeText(thisActivity, R.string.errmsg_bad_json,
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -139,17 +141,6 @@ public class LogInFragment extends Fragment implements OnClickListener{
 	    
     }
 
-	public void setUserInSharedPreferences(User user){
-		SharedPreferences.Editor preferencesEdit = getActivity().getSharedPreferences(ConstantClass.USER_PREFERENCES_FILENAME, Context.MODE_PRIVATE).edit();
-		preferencesEdit.putString(ConstantClass.USER_USERNAME_KEY, user.getUsername());
-		preferencesEdit.putString(ConstantClass.USER_FIRSTNAME_KEY, user.getFirstName());
-		preferencesEdit.putString(ConstantClass.USER_LASTNAME_KEY, user.getLastName());
-		preferencesEdit.putString(ConstantClass.USER_MIDDLENAME_KEY, user.getMiddleName());
-		preferencesEdit.putString(ConstantClass.USER_EMAIL_KEY, user.getEmail());
-		preferencesEdit.putBoolean(ConstantClass.USER_IS_ADMIN_KEY, user.isAdmin());
-		preferencesEdit.putInt(ConstantClass.USER_GUID_KEY, user.getGuid());
-		preferencesEdit.putBoolean(ConstantClass.USER_IS_LOGIN, true);
-		preferencesEdit.commit();
-	}
+	
 	
 }

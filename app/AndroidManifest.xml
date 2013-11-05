@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="15"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -57,6 +57,14 @@
         <activity
             android:name="icom5016.modstore.activities.ForgotActivity"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="icom5016.modstore.activities.MyOrdersActivity"
+            android:label="@string/title_activity_my_orders"
+            android:parentActivityName="icom5016.modstore.activities.MainInterfaceActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="icom5016.modstore.activities.MainInterfaceActivity" />
         </activity>
     </application>
 

@@ -2,8 +2,33 @@ package icom5016.modstore.resources;
 
 public class ConstantClass {
 	
-	//Pre
-	public final static String USER_PREFERENCES_FILENAME = "preferencesUserFile";
+	
+	//FILENAMES Strings
+	public final static String CATEGORIES_FILE = "categoriesFile.ini";
+	public final static String USER_FILE = "userFile.ini";
+	public final static String APP_PREFERENCES_FILE = "appPreferences.ini";
+	
+	//Categories File Variable Keys
+	public static class CategoriesFile
+	{
+		public final static String CATEGORIES_REFRESH_COUNT_KEY = "refreshCountKey";
+		public final static int CATEGORIES_REFRESH_VALUE = 500;
+		public final static String CATEGORIES_ARRAY_SIZE_KEY = "categoriesArraySizeKey";
+		
+		//Use as CATEGORIES_GENERIC_****_KEY + i utilizing shared preferences as array
+		public final static String CATEGORIES_GENERIC_ID_KEY = "categoriesGenericIdKey";
+		public final static String CATEGORIES_GENERIC_NAME_KEY = "categoriesGenericNameKey";
+		public final static String CATEGORIES_GENERIC_PARENTID_KEY = "categoriesGenericParentIdKey";
+		public final static String CATEGORIES_FAIL_VALUE_STRING = "-1339";
+		public final static int CATEGORIES_FAIL_VALUE_INT = -1339;
+	}
+	
+	//Drawer Lists
+	public final static String[] DRAWER_GUEST_LIST = new String[]{"Home", "About", "Log in","Register",}; 
+	public final static String[] DRAWER_USER_LIST = new String[]{"Home", "My Orders", "Sell Item", "My Account", "About", "Log Out"};
+	public final static String[] DRAWER_ADMIN_LIST = new String[]{"Home", "My Orders", "Sell Item", "My Account", "About", "Log Out", "Admin Menu"};
+	
+	
 	//LogIn/Out Constant
 	public final static String USER_IS_LOGIN = "userLogStatus";
 	public final static String USER_USERNAME_KEY = "userUsername";
@@ -20,11 +45,6 @@ public class ConstantClass {
 	
 	//Category Constants
 	public final static String CATEGORY_LIST_PARENT_KEY = "categoryListParentKey";
-	
-	//Drawer Lists
-	public final static String[] DRAWER_GUEST_LIST = new String[]{"Home", "Categories", "About", "Log in","Register",}; 
-	public final static String[] DRAWER_USER_LIST = new String[]{"Home", "Categories", "Item Watch", "My Market", "Settings", "About","Log Out"};
-	public final static String[] DRAWER_ADMIN_LIST = new String[]{"Home", "Categories", "Item Watch", "My Market", "Settings", "About","Log Out", "Admin Menu"};
 	
 	//Log-In Register Key
 	public final static String LOGINREGISTER_FLAG = "loginOrRegister";
@@ -61,9 +81,10 @@ public class ConstantClass {
 	//ProductList Constant
 	public static final String PRODUCT_LIST_CATEGORY_KEY ="productListCategoryKey";
 	
-	//Cart Constant
-	public static final String CART_CONFIRM_TAG = "cartConfirmTag";
-	
-	
-	
+	//My Orders Constants
+	public static final String[] BUYING_SPINNER = new String[]{"All Lists", "Bidding", "Didn't Win"};
+	public static final String[] SELLING_SPINNER = new String[]{"All Lists", "Active","Sold"};
+	public static final String ORDERID_KEY = "orderIdKey";
+	public static final Object PRODUCT_ACTIVE = "Active";
+	public static final Object PRODUCT_SOLD = "SOLD";	
 }

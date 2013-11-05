@@ -138,8 +138,8 @@ public class SearchFilterDialog extends DialogFragment {
 	private void initDialogAdapters() {
 		this.sortSpinner.setAdapter(
 					new ArrayAdapter<String>(this.getActivity(), R.layout.listview_filter_spinner, ConstantClass.SEARCH_FILTER_SORT));
-		this.categoriesSpinner.setAdapter(
-					new ArrayAdapter<String>(this.getActivity(), R.layout.listview_filter_spinner, DataFetchFactory.fetchAllCategories()));
+		//this.categoriesSpinner.setAdapter(
+			//		new ArrayAdapter<String>(this.getActivity(), R.layout.listview_filter_spinner, DataFetchFactory.fetchAllCategories()));
 		this.ratingSpinner.setAdapter(
 				new ArrayAdapter<String>(this.getActivity(), R.layout.listview_filter_spinner, ConstantClass.SEARCH_FILTER_RATING));
 		this.conditionSpinner.setAdapter(

@@ -77,4 +77,32 @@ routes.get("/users/:uid/reviews", function (req, res) {
   res.send(fakeReviews);
 });
 
+routes.get("/myuser", function (req, res) {
+  query = req.db.format("SELECT * FROM user WHERE user_id = ?;", [req.logged_user.user_id]);
+
+  console.log("MySQL QUERY: " + query);
+
+  req.db.query(query, function(err, result) {
+    if (err)
+      throw err;
+
+    if (result.length > 0) {
+      user =  {
+                "id": result[0].user_id,
+                "username": result[0].user_name,
+                "firstName": result[0].first_name,
+                "middleName": result[0].middle_name,
+                "lastName": result[0].last_name,
+                "email": result[0].email,
+                "isAdmin": (result[0].is_admin == 1),
+                "created_ts": result[0].created_ts
+              };
+
+      res.send(user);
+    } else {
+      res.send(404);
+    }
+  });
+});
+
 module.exports = routes;

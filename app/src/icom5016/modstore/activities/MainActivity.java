@@ -1,7 +1,5 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.fragments.CategoryListFragment;
-import icom5016.modstore.fragments.ItemWatchFragment;
 import icom5016.modstore.fragments.MainFragment;
 import icom5016.modstore.fragments.ProductListFragment;
 import icom5016.modstore.fragments.ProductSellEditFragment;
@@ -28,8 +26,7 @@ public class MainActivity extends MainInterfaceActivity {
 	private ActionBarDrawerToggle mainDrawerToggle;
 	
 	
-	
-	//Method used to set home/up button as drawer button
+					/* Set Ups */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,7 +35,7 @@ public class MainActivity extends MainInterfaceActivity {
 		//Get ActionBar
 		final ActionBar ActionBarVar = this.getActionBar();
 		
-		
+						/* Make Drawer Toggleble from Action Bar */
 		//Enables ActionBar Logo to behave like drawer button
 		ActionBarVar.setDisplayHomeAsUpEnabled(true);
 		ActionBarVar.setHomeButtonEnabled(true);
@@ -68,7 +65,6 @@ public class MainActivity extends MainInterfaceActivity {
 		 
 		 			/*  Generates Initial Fragment  */
 		 Bundle bundle = this.getIntent().getExtras();
-		 Bundle fragmentBundle = new Bundle();
 		 
 		 if(bundle != null){
 			 
@@ -77,14 +73,6 @@ public class MainActivity extends MainInterfaceActivity {
 			 
 			 //Load Fragment Base on Bundle
 			 switch(mainActivityCase){
-			 case ConstantClass.MAINACTIVITY_FRAGMENT_CATEGORY:
-				 //Case: Category
-				fragmentBundle.putInt(ConstantClass.CATEGORY_LIST_PARENT_KEY, -1);
-	    	  	CategoryListFragment fragment= new CategoryListFragment();
-	    	  	fragment.setArguments(fragmentBundle);
-	    	  	this.fragmentStack.push(fragment);
-		  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-				break;
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS:
 				//Case: My Items
 				 this.fragmentStack.push(new ItemWatchFragment());
@@ -118,14 +106,29 @@ public class MainActivity extends MainInterfaceActivity {
 			 this.fragmentStack.push(new MainFragment());
 		     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 		 }
+		 
+		 
 	}
 	
 	
 	
-					/*Drawer Toggle Specific Overrides */
+						/* Menu Related Methods */
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		//Calls Super
+		super.onCreateOptionsMenu(menu);
+			
+		/* 			Populated Categories Menu 		*/
+		 if(this.mainCategoriesList.size() <= 0)
+			 this.loadMainCategoriesList(menu);
+		 else
+			 updateSubMenuCategories(menu);
+		 
+		return true;
+	}
 	
-
+						/*	Listeners */
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 		
@@ -147,6 +150,33 @@ public class MainActivity extends MainInterfaceActivity {
         return super.onOptionsItemSelected(item);
 	}
 
+
+    //Load Specific Category Fragment 
+  	private void loadSpecificCategoryFragment(MenuItem item) {
+  		
+  		//Check if not Working
+  		if(this.mainCategoriesList.size() <= 0)
+  			return;
+  		
+  		//Iterate to Confirm selection
+  		Category selectedCategory = null;
+  		for(Category e: this.mainCategoriesList){
+  			if(e.getName().equals(item.getTitle())){
+  				selectedCategory = e;
+  				break;
+  			}
+  		}
+  		Bundle bundle = new Bundle();
+  		bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, selectedCategory.getId());
+  		ProductListFragment fragment= new ProductListFragment();
+  		fragment.setArguments(bundle);
+  		this.fragmentStack.push(fragment);
+  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+  		
+  	}
+	
+	
+					/* All Related to Drawer Opening Methods */
 	 @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -175,31 +205,13 @@ public class MainActivity extends MainInterfaceActivity {
     		}
     	}
     	
+    	//Removes Options based on Drawer Status
+        menu.findItem(R.id.item_categories).setVisible(!drawerOpen);
+        menu.findItem(R.id.btn_cart).setVisible(!drawerOpen);
+        menu.findItem(R.id.btn_search).setVisible(!drawerOpen);
+    	
     	return super.onPrepareOptionsMenu(menu);
 		
 	}
-
-
-    
-    
-    
-    //Category Menu
-  	private void loadSpecificCategoryFragment(MenuItem item) {
-  		//Iterate to Confirm selection
-  		Category selectedCategory = null;
-  		for(Category e: this.mainCategories){
-  			if(e.getName().equals(item.getTitle())){
-  				selectedCategory = e;
-  				break;
-  			}
-  		}
-  		Bundle bundle = new Bundle();
-  		bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, selectedCategory.getId());
-  		ProductListFragment fragment= new ProductListFragment();
-  		fragment.setArguments(bundle);
-  		this.fragmentStack.push(fragment);
-  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-  		
-  	}
 
 }

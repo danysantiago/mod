@@ -9,19 +9,19 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class Product {
-	private int pid;
-	private int uid;
-	private int cid;
-	private String name;
-	private String description;
-	private String brand;
-	private String model;
-	private String dimensions;
-	private double buyout_price;
-	private int quantity;
-	private double bid_price;
-	private String auction_ends;
-	private String image_src;
+	protected int pid;
+	protected int uid;
+	protected int cid;
+	protected String name;
+	protected String description;
+	protected String brand;
+	protected String model;
+	protected String dimensions;
+	protected double buyout_price;
+	protected int quantity;
+	protected double bid_price;
+	protected String auction_ends;
+	protected String image_src;
 	
 	public Product(int pid, int uid, int cid, String name, String description,
 			String brand, String model, String dimensions, double buyout_price,

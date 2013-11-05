@@ -30,7 +30,7 @@ public class BasicInfoSettingsFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_basicsettings, container, false);
 		lstSettingList = (ListView)view.findViewById(R.id.lstSettingList);
 		ArrayList<SettingRow> settingList = new ArrayList<SettingRow>();
-		User u = DataFetchFactory.getUserInSharedPreferences(getActivity());
+		User u = DataFetchFactory.getUserFromSPref(getActivity());
 		
 		settingList.add(new SettingRow("Username", u.getUsername()));
 		settingList.add(new SettingRow("First Name", u.getFirstName()));
