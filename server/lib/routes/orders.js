@@ -23,7 +23,9 @@ routes.get("/orders", function (req, res, next) {
     if(err) {
       return next(err);
     }
-
+   	ret = {
+   		"orders_list":results
+   	}
     res.send(200, results);
   });
 
