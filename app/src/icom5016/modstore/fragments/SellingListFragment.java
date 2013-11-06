@@ -9,7 +9,6 @@ import icom5016.modstore.http.Server;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.unused.BuySellListListener;
-import icom5016.modstore.unused.OrderDetailsListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,10 +39,6 @@ public class SellingListFragment extends Fragment {
 			private View mainLayout;
 			private ScrollView sv_container;
 			
-			//Contantans
-			private final int SELLLIST_ALL = 3;
-			private final int SELLLIST_ACTIVE = 1;
-			private final int SELLLIST_SOLD = 2;
 			
 			
 			@Override
@@ -81,7 +76,7 @@ public class SellingListFragment extends Fragment {
 							case 0:
 								inflater.inflate(R.layout.selling_all_listing, parent_view);
 								try {
-									doHttpSellingList(SELLLIST_ALL);
+									doHttpSellingList(true, true);
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -89,7 +84,7 @@ public class SellingListFragment extends Fragment {
 							case 1:
 								inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
 								try {
-									doHttpSellingList(SELLLIST_ACTIVE);
+									doHttpSellingList(true, false);
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -97,7 +92,7 @@ public class SellingListFragment extends Fragment {
 							case 2:
 								inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
 								try {
-									doHttpSellingList(SELLLIST_SOLD);
+									doHttpSellingList(false, true);
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -105,7 +100,7 @@ public class SellingListFragment extends Fragment {
 							default:
 								inflater.inflate(R.layout.buying_all_listing, parent_view);
 								try {
-									doHttpSellingList(SELLLIST_ALL);
+									doHttpSellingList(true, true);
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -128,31 +123,31 @@ public class SellingListFragment extends Fragment {
 			}
 
 
-			private void doHttpSellingList(int listing) throws JSONException{
+			private void doHttpSellingList(boolean active, boolean sold) throws JSONException{
 				Bundle params = new Bundle();
 				params.putString("url", Server.Orders.POSTSELLLIST);
 				params.putString("method", "POST");
 				
 				JSONObject credentials = new JSONObject();
 				credentials.put("userid", this.activeUser.getGuid());
-				credentials.put("list_req", listing);
+				credentials.put("active", active);
+				credentials.put("sold", sold);
 				
 				HttpRequest request = new HttpRequest(params, credentials, new HttpCallback() {
 					
 					@Override
 					public void onSucess(JSONObject json) {
 						try {
-							int listRequest = json.getInt("list_req");
-							
-							
-							if(listRequest == SELLLIST_ALL){
+							JSONArray activeList = json.getJSONArray("active_list");
+							JSONArray soldList = json.getJSONArray("sold_list");
+							if(activeList.length()>0 && soldList.length()>0){
 								
 								//Sold Var
 								ProgressBar pbSold = (ProgressBar) mainLayout.findViewById(R.id.sell_sold_pb);
 								TextView tvSold = (TextView) mainLayout.findViewById(R.id.sell_sold_load_tv);
 								GridView gvSold = (GridView) mainLayout.findViewById(R.id.sell_sold_loader);
 								ListView lvSold = (ListView) mainLayout.findViewById(R.id.sell_sold_lv);
-								JSONArray soldList = json.getJSONArray("sold_list");
+								
 								
 								if(soldList.length() == 0){
 									pbSold.setVisibility(View.GONE);
@@ -160,7 +155,7 @@ public class SellingListFragment extends Fragment {
 								}
 								else{
 									gvSold.setVisibility(View.GONE);
-									lvSold.setAdapter(new SellingListAdapter(mainActivity, soldList));
+									lvSold.setAdapter(new SellingListAdapter(mainActivity, soldList, ConstantClass.SELLING_SOLD ));
 									lvSold.setOnItemClickListener(new BuySellListListener(mainActivity));
 									lvSold.setVisibility(View.VISIBLE);
 								}
@@ -170,7 +165,7 @@ public class SellingListFragment extends Fragment {
 								TextView tvActive = (TextView) mainLayout.findViewById(R.id.sell_active_load_tv);
 								GridView gvActive = (GridView) mainLayout.findViewById(R.id.sell_active_loader);
 								ListView lvActive = (ListView) mainLayout.findViewById(R.id.sell_active_lv);
-								JSONArray activeList = json.getJSONArray("active_list");
+								
 								
 								if(activeList.length() == 0){
 									pbActive.setVisibility(View.GONE);
@@ -178,15 +173,14 @@ public class SellingListFragment extends Fragment {
 								}
 								else{
 									gvActive.setVisibility(View.GONE);
-									lvActive.setAdapter(new SellingListAdapter(mainActivity, activeList));
+									lvActive.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_ACTIVE));
 									lvActive.setOnItemClickListener(new BuySellListListener(mainActivity));
 									lvActive.setVisibility(View.VISIBLE);
 								}
 								
 								
 							}
-							else if(listRequest == SELLLIST_SOLD){
-								JSONArray soldList = json.getJSONArray("sold_list");
+							else if(soldList.length() > 0){
 								ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 								TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 								ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
@@ -195,7 +189,7 @@ public class SellingListFragment extends Fragment {
 									tvIndividual.setVisibility(View.VISIBLE);
 								}
 								else{
-									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, soldList));
+									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, soldList, ConstantClass.SELLING_SOLD));
 									lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
@@ -203,8 +197,7 @@ public class SellingListFragment extends Fragment {
 								
 
 							}
-							else if(listRequest == SELLLIST_ACTIVE){
-								JSONArray activeList = json.getJSONArray("active_list");
+							else if(activeList.length() > 0){
 								ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 								TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 								ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
@@ -214,7 +207,7 @@ public class SellingListFragment extends Fragment {
 									tvIndividual.setVisibility(View.VISIBLE);
 								}
 								else{
-									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, activeList));
+									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_ACTIVE));
 									lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
