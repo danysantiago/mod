@@ -34,7 +34,7 @@ routes.post("/login", express.bodyParser(), function (req, res) {
                 "created_ts": result[0].created_ts
         };
 
-        res.send(200, user);
+        res.send(200, {"status": "OK", "account": user});
       } else {
         res.send({"status": "BAD CREDENTIALS"});
       }
