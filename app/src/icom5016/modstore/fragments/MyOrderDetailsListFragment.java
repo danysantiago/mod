@@ -1,7 +1,13 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.resources.ConstantClass;
+
+import org.json.JSONObject;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +21,6 @@ import android.widget.TextView;
 public class MyOrderDetailsListFragment extends Fragment {
 	
 	private int orderId;
-	private View view;
 	//Placeholders
 	private ProgressBar pbPlaceHolder;
 	private ImageView ivPlaceHolder;
@@ -49,6 +54,36 @@ public class MyOrderDetailsListFragment extends Fragment {
 
 
 	private void doHttpOrderDetails() {
+		//Make PB Visible
+		this.ivPlaceHolder.setVisibility(View.GONE);
+		this.pbPlaceHolder.setVisibility(View.VISIBLE);
+		//Params
+		Bundle params = new Bundle();
+		params.putString("url", Server.Orders.GETORDERS+"?orderId="+this.orderId);
+		params.putString("method", "GET");
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+
+			@Override
+			public void onSucess(JSONObject json) {
+				
+				llMainContainer.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onFailed() {
+				ivPlaceHolder.setVisibility(View.VISIBLE);
+			}
+			@Override 
+			public void onDone() {
+				pbPlaceHolder.setVisibility(View.GONE);
+			}
+			
+		});
+		
+		request.execute();
+		
+		
 		
 		
 	}

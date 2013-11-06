@@ -66,12 +66,12 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         }
        
         Address addr = this.getItem(position);
-        holder.lblLine1.setText(addr.line1);
-        holder.lblLine2.setText(addr.line2);
+        holder.lblLine1.setText(addr.getLine1());
+        holder.lblLine2.setText(addr.getLine2());
         holder.lblLocation.setText(addr.getLocation());
-        holder.lblCountry.setText(addr.country);
+        holder.lblCountry.setText(addr.getCountry());
         
-        if (addr.isDefault) {
+        if (addr.isDefault()) {
         	holder.imgDefault.setVisibility(View.VISIBLE);
         } else {
         	holder.imgDefault.setVisibility(View.GONE);

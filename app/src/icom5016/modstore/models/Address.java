@@ -4,14 +4,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Address {	
-	public int id;
-	public String line1;
-	public String line2;
-	public String city;
-	public String state;
-	public String country;
-	public String zipcode;
-	public boolean isDefault;
+	private int id;
+	private String line1;
+	private String line2;
+	private String city;
+	private String state;
+	private String country;
+	private String zipcode;
+	private boolean isDefault;
 	
 	public Address() {
 		super();
@@ -65,4 +65,37 @@ public class Address {
 		
 		return out;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public boolean isDefault() {
+		return isDefault;
+	}
+
+	public String getLine1() {
+		return line1;
+	}
+
+	public String getLine2() {
+		return line2;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public String getZipcode() {
+		return zipcode;
+	}
+	
 }
