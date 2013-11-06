@@ -26,7 +26,7 @@ routes.get("/orders", function (req, res, next) {
    	ret = {
    		"orders_list":results
    	}
-    res.send(200, results);
+    res.send(200, ret);
   });
 
 });
