@@ -17,7 +17,7 @@ routes.post("/login", express.bodyParser(), function (req, res) {
       if (err)
         throw err;
 
-      if (results.length > 0) {
+      if (result.length > 0) {
         // user_token = UUID();
         // auth_tokens[user_token] = {"user_id": results[0].user_id, "user_name": results[0].user_name};
 
