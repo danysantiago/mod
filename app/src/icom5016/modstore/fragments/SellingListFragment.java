@@ -223,7 +223,7 @@ public class SellingListFragment extends Fragment {
 					
 					@Override
 					public void onFailed() {
-						Toast.makeText(mainActivity, R.string.errmsg_no_connection, Toast.LENGTH_LONG).show();
+						Toast.makeText(mainActivity, R.string.errmsg_no_connection, Toast.LENGTH_SHORT).show();
 					}
 					
 					@Override

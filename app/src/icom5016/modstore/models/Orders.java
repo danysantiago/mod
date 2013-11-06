@@ -24,7 +24,7 @@ public class Orders {
 	public Orders(JSONObject json) throws JSONException{
 		this.created_ts = json.getString("created_ts");
 		this.order_total = json.getDouble("order_total");
-		this.detail_size = json.getInt("detail_size");
+		this.detail_size = json.getInt("details_size");
 		this.order_id = json.getInt("order_id");
 	}
 

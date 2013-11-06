@@ -170,5 +170,10 @@
     <string name="setting_title_basic_info">Basic Information</string>
     <string name="setting_title_cc">Credit Card</string>
     <string name="setting_title_addr">Addresses</string>
+    
+    <!-- MyOrderDetailActivity -->
+    <string name="title_myorder">Order</string>
+    <string name="title_item">Items</string>
+    <string name="title_ordernum">Order #</string>
 
 </resources>
