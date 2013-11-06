@@ -20,10 +20,11 @@ import android.widget.TextView;
 public class SellingListAdapter extends ArrayAdapter<ProductSelling> {
 
 	private ImageLoader imageloader;
+	private String type;
 
-	public SellingListAdapter(Context context, JSONArray list ) throws JSONException {
+	public SellingListAdapter(Context context, JSONArray list, String type ) throws JSONException {
 		super(context, R.layout.listview_orderdetails_row);
-		
+		this.type = type;
 		imageloader = new ImageLoader(context);
 		
 		for(int i=0; i<list.length(); i++){
@@ -60,11 +61,11 @@ public class SellingListAdapter extends ArrayAdapter<ProductSelling> {
 		//Quantity
 		quantity.setText(product.getQuantity());
 
-		if(product.getSellType().equals(ConstantClass.PRODUCT_ACTIVE))
+		/*if(this.type.equals(ConstantClass.PRODUCT_ACTIVE))
 			date.setText("End Date: "+product.getAuction_ends());
-		else if(product.getSellType().equals(ConstantClass.PRODUCT_SOLD)){
+		else if(this.type.equals(ConstantClass.PRODUCT_SOLD)){
 			date.setText("Sold");
-		}
+		}*/
 		
 		//Tracking
 		tracking.setVisibility(View.GONE);

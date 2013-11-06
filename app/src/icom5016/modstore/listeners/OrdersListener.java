@@ -23,7 +23,7 @@ public class OrdersListener implements OnItemClickListener {
 		Intent orderDetails = new Intent(mainActivity, MyOrderDetailtActivity.class);
 		
 		Bundle bundle = new Bundle();
-		bundle.putInt(ConstantClass.ORDERID_KEY, order.getId());
+		bundle.putInt(ConstantClass.ORDERID_KEY, order.getOrder_id());
 		orderDetails.putExtras(bundle);
 		mainActivity.startActivity(orderDetails);
 		

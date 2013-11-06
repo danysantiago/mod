@@ -39,12 +39,6 @@ public class BuyingListFragment extends Fragment {
 		private View mainLayout;
 		private ScrollView sv_container;
 		
-		//Contantans
-		private final int BUYLIST_ALL = 7;
-		private final int BUYLIST_BID = 1;
-		private final int BUYLIST_PURCHASE = 2;
-		private final int BUYLIST_DIDNOTWIN = 4;
-		
 		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,7 +76,7 @@ public class BuyingListFragment extends Fragment {
 							
 							inflater.inflate(R.layout.buying_all_listing, parent_view);
 							try {
-								doHttpBuyingList(BUYLIST_ALL);
+								doHttpBuyingList(true, true);
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
@@ -91,7 +85,7 @@ public class BuyingListFragment extends Fragment {
 							//Bidding
 							inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
 							try {
-								doHttpBuyingList(BUYLIST_BID);
+								doHttpBuyingList(true, false);
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
@@ -100,7 +94,7 @@ public class BuyingListFragment extends Fragment {
 							//Didn't Win
 							inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
 							try {
-								doHttpBuyingList(BUYLIST_DIDNOTWIN);
+								doHttpBuyingList(false, true);
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
@@ -108,7 +102,7 @@ public class BuyingListFragment extends Fragment {
 						default:
 							inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
 							try {
-								doHttpBuyingList(BUYLIST_BID);
+								doHttpBuyingList(true, true);
 							} catch (JSONException e) {
 								e.printStackTrace();
 							}
@@ -129,31 +123,34 @@ public class BuyingListFragment extends Fragment {
 			return view;
 		}
 		
-		private void doHttpBuyingList(int listing) throws JSONException{
+		private void doHttpBuyingList(boolean bidding, boolean notwin) throws JSONException{
 			Bundle params = new Bundle();
 			params.putString("url", Server.Orders.POSTBUYLIST);
 			params.putString("method", "POST");
 			
 			JSONObject credentials = new JSONObject();
 			credentials.put("userid", this.activeUser.getGuid());
-			credentials.put("list_req", listing);
+			credentials.put("bidding", bidding);
+			credentials.put("notwin", notwin);
+
 			
 			HttpRequest request = new HttpRequest(params, credentials, new HttpCallback() {
 				
 				@Override
 				public void onSucess(JSONObject json) {
 					try {
-						int listRequest = json.getInt("list_req");
 						
 						
-						if(listRequest == BUYLIST_ALL){
+						
+						if(json.has("bidding") && json.has("notWin")){
 							
 							//Bidding Var
+							JSONArray biddingList = json.getJSONArray("bidding");
 							ProgressBar pbBidding = (ProgressBar) mainLayout.findViewById(R.id.buy_bidding_pb);
 							TextView tvBidding = (TextView) mainLayout.findViewById(R.id.buy_bidding_load_tv);
 							GridView gvBidding = (GridView) mainLayout.findViewById(R.id.buy_bidding_loader);
 							ListView lvBidding = (ListView) mainLayout.findViewById(R.id.buy_bidding_lv);
-							JSONArray biddingList = json.getJSONArray("bidding_list");
+							
 							
 							if(biddingList.length() == 0){
 								pbBidding.setVisibility(View.GONE);
@@ -161,18 +158,19 @@ public class BuyingListFragment extends Fragment {
 							}
 							else{
 								gvBidding.setVisibility(View.GONE);
-								lvBidding.setAdapter(new BuyingListAdapter(mainActivity, biddingList));
+								lvBidding.setAdapter(new BuyingListAdapter(mainActivity, biddingList, ConstantClass.BUYING_BIDDING));
 								lvBidding.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvBidding.setVisibility(View.VISIBLE);
 							}
 				
 							
 							//Didn't Win
+							JSONArray notwinList = json.getJSONArray("notWin");
 							ProgressBar pbNotwin = (ProgressBar) mainLayout.findViewById(R.id.buy_nwin_pb);
 							TextView tvNotwin = (TextView) mainLayout.findViewById(R.id.buy_nwin_load_tv);
 							GridView gvNotwin = (GridView) mainLayout.findViewById(R.id.buy_nwin_loader);
 							ListView lvNotwin = (ListView) mainLayout.findViewById(R.id.buy_nwin_lv);
-							JSONArray notwinList = json.getJSONArray("notwin_list");
+							
 							
 							if(notwinList.length() == 0){
 								pbNotwin.setVisibility(View.GONE);
@@ -180,7 +178,7 @@ public class BuyingListFragment extends Fragment {
 							}
 							else{
 								gvNotwin.setVisibility(View.GONE);
-								lvNotwin.setAdapter(new BuyingListAdapter(mainActivity, notwinList));
+								lvNotwin.setAdapter(new BuyingListAdapter(mainActivity, notwinList,  ConstantClass.BUYING_NOTWIN));
 								lvNotwin.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvNotwin.setVisibility(View.VISIBLE);
 							}
@@ -189,8 +187,8 @@ public class BuyingListFragment extends Fragment {
 							
 							
 						}
-						else if(listRequest == BUYLIST_BID){
-							JSONArray biddingList = json.getJSONArray("bidding_list");
+						else if(json.has("bidding")){
+							JSONArray biddingList = json.getJSONArray("bidding");
 							ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 							TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 							ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
@@ -199,7 +197,7 @@ public class BuyingListFragment extends Fragment {
 								tvIndividual.setVisibility(View.VISIBLE);
 							}
 							else{
-								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, biddingList));
+								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, biddingList,  ConstantClass.BUYING_BIDDING));
 								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvIndividual.setVisibility(View.VISIBLE);
 							}
@@ -207,8 +205,8 @@ public class BuyingListFragment extends Fragment {
 							
 
 						}
-						else if(listRequest == BUYLIST_DIDNOTWIN){
-							JSONArray notwinList = json.getJSONArray("notwin_list");
+						else if(json.has("notWin")){
+							JSONArray notwinList = json.getJSONArray("notWin");
 							ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 							TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 							ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
@@ -218,23 +216,7 @@ public class BuyingListFragment extends Fragment {
 								tvIndividual.setVisibility(View.VISIBLE);
 							}
 							else{
-								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, notwinList));
-								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
-								lvIndividual.setVisibility(View.VISIBLE);
-							}
-						}
-						else if(listRequest == BUYLIST_PURCHASE){
-							JSONArray purchaseList = json.getJSONArray("purchase_list");
-							ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
-							TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
-							ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
-							
-							pbIndividual.setVisibility(View.GONE);
-							if(purchaseList.length() == 0){
-								tvIndividual.setVisibility(View.VISIBLE);
-							}
-							else{
-								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, purchaseList));
+								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, notwinList,  ConstantClass.BUYING_NOTWIN));
 								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvIndividual.setVisibility(View.VISIBLE);
 							}
@@ -251,11 +233,6 @@ public class BuyingListFragment extends Fragment {
 				@Override
 				public void onFailed() {
 					Toast.makeText(mainActivity, R.string.errmsg_no_connection, Toast.LENGTH_SHORT).show();
-				}
-				
-				@Override
-				public void onDone() {
-					//No-Op
 				}
 			});
 			request.execute();

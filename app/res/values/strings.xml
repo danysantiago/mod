@@ -135,13 +135,13 @@
     <string name="sec_title_buying">Buying</string>
     <string name="sec_tittle_orders">Orders</string>
 
-    <!-- My Orders Orders Fragment  -->
+    <!-- My Orders Orders Fragment -->
     <string name="orders_title">Orders</string>
     <string name="orders_number">Order # ******</string>
     <string name="orders_total">Total: $0.00</string>
     <string name="orders_quantity">Quantity: 0</string>
     <string name="orders_date">Date: 1/1/1900</string>
-    
+
     <!-- My Orders Buying Fragment -->
     <string name="listbuy_bidding">Bidding</string>
     <string name="listbuysell_no_item">No Items</string>
@@ -150,7 +150,7 @@
     <!-- My Orders Selling Fragment -->
     <string name="listsell_active">Active</string>
     <string name="listsell_sold">Sold</string>
-    
+
     <!-- My Orders Product Adapter -->
     <string name="listbuysellrow_img_desc">Image of Item</string>
     <string name="listbuysellrow_title">No Title</string>
@@ -164,5 +164,11 @@
     <string name="mod_names">Manuel-Omar-Daniel</string>
     <string name="about_img_desc">About Image</string>
     <string name="title_activity_log_in_register">LogInRegisterActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    
+    <!-- Settings Activity -->
+    <string name="setting_title_basic_info">Basic Information</string>
+    <string name="setting_title_cc">Credit Card</string>
+    <string name="setting_title_addr">Addresses</string>
 
 </resources>
