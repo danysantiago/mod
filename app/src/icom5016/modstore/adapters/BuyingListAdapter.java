@@ -3,6 +3,7 @@ package icom5016.modstore.adapters;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
 import icom5016.modstore.models.ProductBuying;
+import icom5016.modstore.resources.ConstantClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,11 +20,13 @@ import android.widget.TextView;
 public class BuyingListAdapter extends ArrayAdapter<ProductBuying> {
 
 	private ImageLoader imageloader;
+	private String type;
 
-	public BuyingListAdapter(Context context, JSONArray list ) throws JSONException {
+	public BuyingListAdapter(Context context, JSONArray list, String type) throws JSONException {
 		super(context, R.layout.listview_orderdetails_row);
 		
 		imageloader = new ImageLoader(context);
+		this.type = type;
 		
 		for(int i=0; i<list.length(); i++){
 			this.add(new ProductBuying(list.getJSONObject(i)));
@@ -59,16 +62,16 @@ public class BuyingListAdapter extends ArrayAdapter<ProductBuying> {
 		status.setVisibility(View.GONE);
 		
 		
-		if(product.getType().equals(ProductBuying.BUYING_NOTWIN)){
+		if(type.equals(ConstantClass.BUYING_NOTWIN)){
 			endDate.setText("Bid Ended");
 		}
-		else if(product.getType().equals(ProductBuying.BUYING_NOTWIN)){
+		else if(type.equals(ConstantClass.BUYING_BIDDING)){
 			endDate.setText("End Date: "+product.getAuction_ends());
 		}
 		
 		//Current Bid/End Price:
-		bidEndCurr.setText(product.getCurrBidPriceString());
-		myBidCurr.setText(product.getMyCurrBidString());
+		//bidEndCurr.setText(product.getCurrBidPriceString());
+		//myBidCurr.setText(product.getMyCurrBidString());
 		
 		
 		

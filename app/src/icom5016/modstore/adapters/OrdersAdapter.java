@@ -43,10 +43,10 @@ public class OrdersAdapter extends ArrayAdapter<Orders> {
 		TextView total = (TextView) row.findViewById(R.id.ordersrow_total);
 		TextView date = (TextView) row.findViewById(R.id.ordersrow_date);
 		
-		num.setText("Order # "+Integer.toString(order.getId()) );
-		quantity.setText("Quantity: "+order.getProductsDetails().size());
-		total.setText("Total "+ order.getTotalPrice());
-		date.setText("Date: "+order.getOrderTS());
+		num.setText("Order # "+Integer.toString(order.getOrder_id()) );
+		quantity.setText("Quantity: "+order.getDetail_size());
+		total.setText("Total "+ order.getOrderTotalString());
+		date.setText("Date: "+order.getCreated_ts());
 				
 		
 		row.setTag(order);
