@@ -5,7 +5,7 @@ var config = require("../config.js"),
 var routes = express();
 
 // Omar Soto
-routes.get("/categories/:parentId", function (req, res) {
+routes.get("/categories/:parentId", function (req, res, next) {
   if (req.params.parentId == -1) {
     query = "SELECT * FROM category WHERE category_id NOT IN (SELECT category_id FROM category_parent);";
   } else {
@@ -17,7 +17,7 @@ routes.get("/categories/:parentId", function (req, res) {
 
   req.db.query(query, function(err, results) {
     if (err)
-      throw err;
+      return next(err);
 
     var childrens = [];
     var parent = {"id" : -1, "parentId": -1, "name": ""};

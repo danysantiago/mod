@@ -15,6 +15,7 @@ var creditcards = require("./lib/routes/creditcards.js");
 var addresses = require("./lib/routes/addresses.js");
 var cart = require("./lib/routes/cart.js")
 var orderdetails = require("./lib/routes/orderdetails.js");
+var orders = require("./lib/routes/orders.js");
 
 app.configure(function() {
 	app.set("name", config.appName);
@@ -22,7 +23,7 @@ app.configure(function() {
 
 /* Request Logger */
 app.use(function (req, res, next) {
-    console.log("%s %s", req.method, req.url);
+    console.log("Request: %s %s", req.method, req.url);
     next();
 });
 
@@ -45,6 +46,13 @@ app.use(creditcards);
 app.use(addresses);
 app.use(orderdetails);
 app.use(cart);
+app.use(orders);
+
+//Error handler middleware
+app.use(function (err, req, res, next) {
+    console.log(err);
+    res.send(500, err);
+});
 
 //DB Connection & port app listening
 sql = dbClient = mysql.createConnection(config.dbAddress);
