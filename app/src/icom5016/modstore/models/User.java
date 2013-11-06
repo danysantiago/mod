@@ -29,6 +29,7 @@ public class User {
 	
 	public User(JSONObject jsonObject) {
 		try {
+			this.guid = jsonObject.getInt("id");
 			this.username = jsonObject.getString("username");
 			this.firstName = jsonObject.getString("firstName");
 			this.middleName = jsonObject.getString("middleName");
@@ -36,7 +37,6 @@ public class User {
 			this.email = jsonObject.getString("email");
 			this.isAdmin = jsonObject.getBoolean("isAdmin");
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
