@@ -61,13 +61,11 @@ public class MyOrdersListFragment extends Fragment {
 	
 	public void doHttpOrdersRequest() throws JSONException{
 		Bundle params = new Bundle();
-		params.putString("url", Server.Orders.GETORDERS);
+		params.putString("url", Server.Orders.GETORDERS+"?userId="+this.activeUser.getGuid());
 		params.putString("method", "GET");
 		
-		JSONObject credentials = new JSONObject();
-		credentials.put("userId", this.activeUser.getGuid());
 		
-		HttpRequest request = new HttpRequest(params, credentials, new HttpCallback() {
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
 
 			@Override
 			public void onSucess(JSONObject json) {
