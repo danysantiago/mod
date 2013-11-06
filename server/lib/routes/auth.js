@@ -18,10 +18,23 @@ routes.post("/login", express.bodyParser(), function (req, res) {
         throw err;
 
       if (results.length > 0) {
-        user_token = UUID();
-        auth_tokens[user_token] = {"user_id": results[0].user_id, "user_name": results[0].user_name};
+        // user_token = UUID();
+        // auth_tokens[user_token] = {"user_id": results[0].user_id, "user_name": results[0].user_name};
 
-        res.send({"status": "OK", "account": results[0].user_name, "token": user_token});
+        // res.send({"status": "OK", "account": results[0].user_name, "token": user_token});
+
+        var user = {
+                "id": result[0].user_id,
+                "username": result[0].user_name,
+                "firstName": result[0].first_name,
+                "middleName": result[0].middle_name,
+                "lastName": result[0].last_name,
+                "email": result[0].email,
+                "isAdmin": (result[0].is_admin == 1),
+                "created_ts": result[0].created_ts
+        };
+
+        res.send(200, user);
       } else {
         res.send({"status": "BAD CREDENTIALS"});
       }
