@@ -1,4 +1,4 @@
-package icom5016.modstore.unused;
+package icom5016.modstore.adapters;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
@@ -39,7 +39,7 @@ public class OrderDetailsListAdapter extends ArrayAdapter<OrderDetail> {
 
 		LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
 		
-		row = inflater.inflate(R.layout.listview_product_row_1, parent, false);
+		row = inflater.inflate(R.layout.listview_ordereddetail_row, parent, false);
 
 		//Layout Vars
 		TextView title = (TextView) row.findViewById(R.id.prodrow_orders_title);

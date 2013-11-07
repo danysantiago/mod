@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 public class Address {	
 	private int id;
+	private int userId;
 	private String line1;
 	private String line2;
 	private String city;
@@ -12,6 +13,7 @@ public class Address {
 	private String country;
 	private String zipcode;
 	private boolean isDefault;
+	private String createdTs;
 	
 	public Address() {
 		super();
@@ -29,20 +31,23 @@ public class Address {
 		this.isDefault = isDefault;
 	}
 
-	public Address(JSONObject json) {
+	public Address(JSONObject json) throws JSONException {
 		super();
-		try {
-			this.id = json.getInt("aid");
+		
+		
+			this.id = json.getInt("address_id");
+			this.userId = json.getInt("user_id");
 			this.line1 = json.getString("line1");
 			this.line2 = json.getString("line2");
 			this.city = json.getString("city");
 			this.state = json.getString("state");
 			this.country = json.getString("country");
 			this.zipcode = json.getString("zipcode");
-			this.isDefault = json.getBoolean("isDefault");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+			
+			int is_default = json.getInt("is_primary");
+			this.isDefault = is_default == 1;
+			this.createdTs = json.getString("created_ts");
+			
 	}
 	
 	public String getLocation() {
@@ -55,6 +60,7 @@ public class Address {
 		return location;
 	}
 	
+	@Override
 	public String toString() {
 		String out = this.line1;
 		

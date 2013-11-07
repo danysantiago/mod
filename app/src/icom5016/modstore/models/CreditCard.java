@@ -27,19 +27,23 @@ public class CreditCard {
 		this.isDefault = isDefault;
 	}
 	
-	public CreditCard(JSONObject json) {
-		try {
-			this.cid = json.getInt("ccid");
-			this.aid = json.getInt("aid");
+	public CreditCard(JSONObject json) throws JSONException {
+		
+			this.cid = json.getInt("creditcard_id");
+			this.aid = json.getInt("address_id");
 			this.type = json.getInt("type");
 			this.number = json.getString("number");
 			this.name = json.getString("name");
-			this.expire = json.getString("expirationDate");
-			this.securityCode = json.getString("scode");
-			this.isDefault = json.getBoolean("isDefault");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+			this.expire = json.getString("expiration_date");
+			this.securityCode = json.getString("security_code");
+			int is_default = json.getInt("is_primary");
+			if(is_default == 1){
+				this.isDefault = true;
+			}
+			else{
+				this.isDefault = false;
+			}
+		
 	}
 
 	public int getCid() {

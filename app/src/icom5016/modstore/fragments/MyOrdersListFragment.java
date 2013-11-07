@@ -6,7 +6,7 @@ import icom5016.modstore.adapters.OrdersAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
-import icom5016.modstore.listeners.OrdersListener;
+import icom5016.modstore.listeners.OrdersDetailsListener;
 import icom5016.modstore.models.User;
 
 import org.json.JSONArray;
@@ -80,7 +80,7 @@ public class MyOrdersListFragment extends Fragment {
 					else{
 						glOrders.setVisibility(View.GONE);
 						lvOrders.setAdapter(new OrdersAdapter(mainActivity, listOrders));
-						lvOrders.setOnItemClickListener(new OrdersListener(mainActivity));
+						lvOrders.setOnItemClickListener(new OrdersDetailsListener(mainActivity));
 						lvOrders.setVisibility(View.VISIBLE);
 					}
 					

@@ -33,11 +33,10 @@ public class OrderDetail {
 
 	}
 
-	public OrderDetail(JSONObject json) {
+	public OrderDetail(JSONObject json) throws JSONException {
 		super();
-		try {
-			this.id = json.getInt("odid");
-			this.orderId = json.getInt("oid");
+			this.id = json.getInt("order_detail_id");
+			this.orderId = json.getInt("order_id");
 			this.shippingAddress = new Address(json.getJSONObject("address"));
 			this.seller = new User(json.getJSONObject("seller"));
 			this.buyer = new User(json.getJSONObject("buyer"));
@@ -45,10 +44,7 @@ public class OrderDetail {
 			this.price = json.getDouble("price");
 			this.trackingNumber = json.getString("tracking_number");
 			this.product = new Product(json.getJSONObject("product"));
-			
-		} catch(JSONException e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	public int getId() {
