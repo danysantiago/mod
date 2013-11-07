@@ -68,9 +68,9 @@ routes.get("/orders/details", function (req, res, next) {
       },
 
       "details": function (done) { //Get details
-        var dQuery= "SELECT *\n" +
-                    "FROM order_detail inner join product on order_detail.product_id=product.product_id\n" +
-                    "WHERE order_id=" + order.order_id;
+        var dQuery= "SELECT *, od.quantity as order_quantity, od.final_price as order_final_price, od.created_ts as order_created_ts, (od.quantity * od.final_price) as order_total_price\n" +
+                    "FROM order_detail od inner join product on od.product_id=product.product_id WHERE order_id=" + order.order_id
+        
         req.db.query(dQuery, done);
       },
 
