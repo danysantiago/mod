@@ -12,7 +12,7 @@ routes.get("/orders", function (req, res, next) {
     return res.send(400, {"error": "No userId provided"});
   }
 
-  var query = "SELECT `order`.order_id, `order`.created_ts, `order`.user_id, `order`.address_id, `order`.credit_card_id, sum(final_price*quantity) as order_total, sum(quantity) as details_size\n" + 
+  var query = "SELECT `order`.order_id, `order`.created_ts, `order`.user_id, `order`.address_id, `order`.credit_card_id, sum(quantity*final_price) as order_total, sum(quantity) as details_size\n" + 
               "FROM `order` inner join order_detail on `order`.order_id=order_detail.order_id\n" +
               "WHERE user_id = " + req.db.escape(userId) + "\n" +
               "GROUP BY `order`.order_id";
@@ -86,19 +86,24 @@ routes.get("/orders/details", function (req, res, next) {
         return next(err);
       }
 
-
       //Find out whats up with the second index thing, arrays inside arrays? How crazy
       //is SQL ???
       order.address = results.address[0][0];
       order.creditcard = results.creditCard[0][0];
       
+      for (i = 0; i < results.details.length; i++) {
+        for (p = 0; p < results.product.length; i++) {
+          if (results.details[i].product_id == results.product[p].product_id) {
+            results.details[i].product = results.product[p];
+          }
+        }
+      }
+      
       ret = {
           "order": order,
           "details": results.details[0],
-      };
+      }
       
-      ret.details.product = results.product[0];
-
       res.send(200, ret);
     });
 
