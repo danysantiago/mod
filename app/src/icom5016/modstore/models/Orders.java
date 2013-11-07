@@ -9,7 +9,6 @@ public class Orders {
 	//Needed
 	private String createdTs;
 	private int orderId;
-	
 	private int addressId;
 	private int userId;
 	private int creditcardId;

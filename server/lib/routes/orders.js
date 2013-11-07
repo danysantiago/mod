@@ -79,13 +79,21 @@ routes.get("/orders/details", function (req, res, next) {
         return next(err);
       }
 
+      ret = {
+        "order"
+      }
+
       //Find out whats up with the second index thing, arrays inside arrays? How crazy
       //is SQL ???
       order.address = results.address[0][0];
-      order.creditCard = results.creditCard[0][0];
-      order.details = results.details[0];
+      order.creditcard = results.creditCard[0][0];
+      
+      ret = {
+          "order": order,
+          "detais": results.details[0],
+      }
 
-      res.send(200, order);
+      res.send(200, ret);
     });
 
   });

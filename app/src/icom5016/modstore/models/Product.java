@@ -8,20 +8,27 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class Product {
-	protected int pid;
-	protected User user; //Seller Cambiar por el user
-	protected Category category; //Category Object
+	protected int product_id;
+	protected int user_id; //Seller
+	protected int category_id;
 	protected String name;
 	protected String description;
 	protected String brand;
 	protected String model;
 	protected String dimensions;
-	protected double buyitnow_price;
+	protected double buyItNowPrice;
 	protected int quantity;
-	protected double starting_bid_price; 
-	protected String auction_ends;
-	protected String image_src;
-	private String created_Ts
+	protected double startingBidPrice; 
+	protected String auctionEndsTs;
+	protected String imageSrcUrl;
+	private String createdTs;
+
+	//Optional
+	protected User user; //Seller
+	protected Category category; //Category Object
+	
+	
+	
 	
 	public Product(int pid, int uid, int cid, String name, String description,
 			String brand, String model, String dimensions, double buyout_price,

@@ -10,11 +10,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class OrdersDetailsListener implements OnItemClickListener {
+public class OrdersListListener implements OnItemClickListener {
 
 	private MainInterfaceActivity mainActivity;
 	
-	public OrdersDetailsListener(MainInterfaceActivity activity){
+	public OrdersListListener(MainInterfaceActivity activity){
 		this.mainActivity = activity;
 	}
 	@Override
@@ -23,7 +23,7 @@ public class OrdersDetailsListener implements OnItemClickListener {
 		Intent orderDetails = new Intent(mainActivity, MyOrderDetailActivity.class);
 		
 		Bundle bundle = new Bundle();
-		bundle.putInt(ConstantClass.ORDERID_KEY, order.getOrder_id());
+		bundle.putInt(ConstantClass.ORDERID_KEY, order.getOrderId());
 		orderDetails.putExtras(bundle);
 		mainActivity.startActivity(orderDetails);
 		

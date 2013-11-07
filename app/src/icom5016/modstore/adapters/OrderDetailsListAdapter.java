@@ -55,7 +55,7 @@ public class OrderDetailsListAdapter extends ArrayAdapter<OrderDetail> {
 	//	if(!orderDetail.getTrackingNumber().equals(""))
 		//	tracking.setText("Tracking Number: "+orderDetail.getTrackingNumber());
 		
-		price.setText(orderDetail.getPrice());
+		price.setText(orderDetail.getFinalSoldPriceString());
 		
 	//	date.setText(orderDetail.getItemTs());
 				
