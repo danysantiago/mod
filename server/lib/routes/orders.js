@@ -12,7 +12,7 @@ routes.get("/orders", function (req, res, next) {
     return res.send(400, {"error": "No userId provided"});
   }
 
-  var query = "SELECT `order`.order_id, `order`.created_ts, `order`.user_id, `order`.address_id, `order`.credit_card_id, sum(quantity*final_price) as order_total, sum(quantity) as details_size\n" + 
+  var query = "SELECT `order`.order_id, `order`.created_ts, `order`.user_id, `order`.address_id, `order`.credit_card_id, sum(final_price*quantity) as order_total, sum(quantity) as details_size\n" + 
               "FROM `order` inner join order_detail on `order`.order_id=order_detail.order_id\n" +
               "WHERE user_id = " + req.db.escape(userId) + "\n" +
               "GROUP BY `order`.order_id";
@@ -68,42 +68,74 @@ routes.get("/orders/details", function (req, res, next) {
       },
 
       "details": function (done) { //Get order details
-        var dQuery= "SELECT *, (quantity * final_price) as total_price\n" +
-                    "FROM order_detail WHERE order_id=" + order.order_id;
+        var dQuery= "SELECT *" +
+                    "FROM modstore.order_detail AS od inner join product AS p" +
+                    "Where p.product_id = od.product_id and order_id =" + order.order_id;
         
         req.db.query(dQuery, done);
       },
-
-      "product": function (done) { //Get product
-        var eQuery= "SELECT *\n" +
-                    "FROM order_detail od inner join product on od.product_id=product.product_id WHERE order_id=" + order.order_id;
-        
-        req.db.query(eQuery, done);
-      }
 
     }, function (err, results) {
       if (err) {
         return next(err);
       }
 
+
       //Find out whats up with the second index thing, arrays inside arrays? How crazy
       //is SQL ???
       order.address = results.address[0][0];
       order.creditcard = results.creditCard[0][0];
-      
-      for (i = 0; i < results.details.length; i++) {
-        for (p = 0; p < results.product.length; i++) {
-          if (results.details[i].product_id == results.product[p].product_id) {
-            results.details[i].product = results.product[p];
-          }
-        }
+
+      //Format Details Result
+      for(int i=0; i<results.details[0]; i++){
+          //Add "Product File"
+          results.details[0][i].product = {
+              "product_id": results.details[0][i].product_id,
+              "user_id": results.details[0][i].user_id,
+              "category_id": results.details[0][i].category_id,
+              "description": results.details[0][i].description,
+              "name": results.details[0][i].name,
+              "brand": results.details[0][i].brand,
+              "model": results.details[0][i].model,
+              "dimensions": results.details[0][i].dimensions,
+              "buy_price": results.details[0][i].buy_price,
+              "quantity": results.details[0][i].quantity,
+              "starting_bid_price": results.details[0][i].starting_bid_price,
+              "auction_end_ts":results.details[0][i].auction_end_ts,
+              "created_ts": results.details[0][i].created_ts,
+          };
+
+          //Update Correct Values of Details
+          results.details[0][i].product_id = results.details[0][i].odpid;
+          results.details[0][i].quantity = results.details[0][i].odquantity;
+          results.details[0][i].created_ts = results.details[0][i].odcreated_ts;
+
+          //Delete Duplicates
+          delete results.details[0][i].product_id;
+          delete results.details[0][i].user_id;
+          delete results.details[0][i].category_id;
+          delete results.details[0][i].description;
+          delete results.details[0][i].name;
+          delete results.details[0][i].brand;
+          delete results.details[0][i].model;
+          delete results.details[0][i].dimensions;
+          delete results.details[0][i].buy_price;
+          delete results.details[0][i].starting_bid_price;
+          delete results.details[0][i].auction_end_ts;
+          delete results.details[0][i].odpid;
+          delete results.details[0][i].odquantity;
+          delete results.details[0][i].odcreated_ts;
+
+
       }
       
       ret = {
           "order": order,
           "details": results.details[0],
-      }
+      };
       
+      ret.details.product = results.product[0];
+
       res.send(200, ret);
     });
 
