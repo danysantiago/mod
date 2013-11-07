@@ -1,10 +1,9 @@
 package icom5016.modstore.activities;
 
 import icom5016.modstore.fragments.MainFragment;
+import icom5016.modstore.fragments.MyItemsFragment;
 import icom5016.modstore.fragments.ProductListFragment;
-import icom5016.modstore.fragments.ProductSellEditFragment;
-import icom5016.modstore.fragments.ProductsForSaleFragment;
-import icom5016.modstore.fragments.ProductsSoldFragment;
+import icom5016.modstore.fragments.SellItemFragment;
 import icom5016.modstore.models.Category;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
@@ -75,25 +74,14 @@ public class MainActivity extends MainInterfaceActivity {
 			 switch(mainActivityCase){
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS:
 				//Case: My Items
-				 this.fragmentStack.push(new ItemWatchFragment());
+				 this.fragmentStack.push(new MyItemsFragment());
 			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 				break;
 			 case ConstantClass.MAINACTIVITY_FRAGMENT_SELL_ITEMS:
-			    ProductSellEditFragment sellEditfragment= new ProductSellEditFragment();
-    	  		this.fragmentStack.push(sellEditfragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-				break;
-			 case ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_FOR_SALE:
-				ProductsForSaleFragment forSalefragment = new ProductsForSaleFragment();
-	    	  	this.fragmentStack.push(forSalefragment);
-	    	  	AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-				break;
-			 case ConstantClass.MAINACTIVITY_FRAGMENT_ITEMS_SOLD:
-				ProductsSoldFragment soldFragment = new ProductsSoldFragment();
-	    	  	this.fragmentStack.push(soldFragment);
-	    	  	AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-				break;
-			
+				 //Case: Sell Items
+				 this.fragmentStack.push(new SellItemFragment());
+			     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+				 break;
 			 default:
 				 //Case: Default Main View
 				 this.fragmentStack.push(new MainFragment());

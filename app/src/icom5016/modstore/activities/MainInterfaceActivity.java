@@ -5,7 +5,6 @@ import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
-import icom5016.modstore.models.Product;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
@@ -48,6 +47,7 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
 					
 					/*Category Vairables */
 	protected List<Category> mainCategoriesList = new ArrayList<Category>(); //If Size is 0 Nothing is Listed
+	
 	
 	//Drawer Variables
 	protected DrawerLayout mainDrawerLayout; //Contains main layout variable
@@ -438,23 +438,9 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
     		this.startActivity(myOrdersIntent);
     		break;
     	case 2:
-
-    		if(this instanceof MainActivity ){
-    			bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, -1);
-    	  		ItemWatchFragment fragment= new ItemWatchFragment();
-    	  		fragment.setArguments(bundle);
-    	  		this.fragmentStack.push(fragment);
-    	  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-    		}
-    		else{
-    			Intent homeIntent = new Intent(this, MainActivity.class);
-    			bundle.putInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY, ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS);
-    			homeIntent.putExtras(bundle);
-    			this.startActivity(homeIntent);
-    		}
     		break;
-    		
     	case 3:
+    		//My Account (Old: Settings) (new Activity)
     		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
     		Intent settingsIntent = new Intent(this, SettingsActivity.class);
     		settingsIntent.putExtras(bundle);
@@ -491,4 +477,7 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
     		this.startActivity(adminIntent);
     	}
     }
+
+	
+    
 }

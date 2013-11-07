@@ -7,7 +7,6 @@ public class Server {
 	public static class User {
 		public static final String LOGIN = BASE_URL+"/login";
 	}
-	
 	public static class Products {
 	  public static final String GET = BASE_URL+"/products/";
 	  public static final String GETCATEGORIES = BASE_URL + "/products/category/";

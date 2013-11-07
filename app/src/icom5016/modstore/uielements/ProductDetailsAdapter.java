@@ -65,7 +65,7 @@ public class ProductDetailsAdapter extends ArrayAdapter<Product> {
         imageloader.DisplayImage("http://files.gamebanana.com/img/ico/sprays/1up_orcaexample.png", holder.imgThumbnail);
         holder.txtName.setText(product.getName());
         holder.txtDescription.setText(product.getDescription());
-        holder.txtPrice.setText(product.getPriceString());
+        holder.txtPrice.setText(product.getPrice());
         holder.txtEndingOn.setText(product.getAuction_ends());
         holder.txtQuantity.setText(String.valueOf(product.getQuantity()));
         

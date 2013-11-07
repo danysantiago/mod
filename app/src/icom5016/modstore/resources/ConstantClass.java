@@ -47,6 +47,8 @@ public class ConstantClass {
 	//Category Constants
 	public final static String CATEGORY_LIST_PARENT_KEY = "categoryListParentKey";
 	
+	
+	
 	//Log-In Register Key
 	public final static String LOGINREGISTER_FLAG = "loginOrRegister";
 	
@@ -57,7 +59,6 @@ public class ConstantClass {
 	public final static int MAINACTIVITY_FRAGMENT_SELL_ITEMS = 2;
 	public final static int MAINACTIVITY_FRAGMENT_ITEMS_FOR_SALE = 3;
 	public final static int MAINACTIVITY_FRAGMENT_ITEMS_SOLD = 4;
-	
 	
 	//ForgotLogIn
 	public final static String 	FORGOT_TAG = "forgotUserNameOrPassword";
