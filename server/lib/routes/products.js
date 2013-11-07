@@ -76,7 +76,7 @@ routes.get("/products/selling", function (req, res, next) {
 
     "sold": function (done) {
       if(req.query.sold === "true") {
-        var sQuery = "SELECT *, (OD.final_price * OD.quantity) AS total_price, OD.quantity as order_quantity, (SELECT user_id FROM `order` O WHERE O.order_id = OD.order_id) as buyer_user_id FROM product P INNER JOIN order_detail OD ON OD.product_id = P.product_id WHERE P.user_id = " + db.req.escape(userId);
+        var sQuery = "SELECT *, (OD.final_price * OD.quantity) AS total_price, OD.quantity as order_quantity, (SELECT user_id FROM `order` O WHERE O.order_id = OD.order_id) as buyer_user_id FROM product P INNER JOIN order_detail OD ON OD.product_id = P.product_id WHERE P.user_id = " + req.db.escape(userId);
         console.log("MySQL Query: " + sQuery);
         req.db.query(sQuery, done);
       } else {
