@@ -40,7 +40,7 @@ routes.get("/orders/details", function (req, res, next) {
 
   var query = "SELECT `order`.order_id, `order`.created_ts, `order`.user_id, `order`.address_id, `order`.credit_card_id, sum(final_price*quantity) as order_total, sum(quantity) as details_size\n" + 
               "FROM `order` inner join order_detail on `order`.order_id=order_detail.order_id\n" +
-              "WHERE user_id = " + req.db.escape(userId) + "\n" +
+              "WHERE `order`.order_id = " + req.db.escape(orderId) + "\n" +
               "GROUP BY `order`.order_id";
 
   console.log("MySQL Query: " + query);
