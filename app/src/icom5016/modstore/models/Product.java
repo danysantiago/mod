@@ -5,8 +5,6 @@ import java.text.NumberFormat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public class Product {
 	protected int id;
 	protected int userId; //Seller
@@ -51,104 +49,172 @@ public class Product {
 		this.category = category;
 	}
 
-	public Product(JSONObject json) {
+	public Product(JSONObject json) throws JSONException {
 		this.id = json.getInt("product_id");
-		this.u
+		this.userId = json.getInt("user_id");
+		this.categoryId = json.getInt("category_id");
+		this.description = json.getString("description");
+		this.name = json.getString("name");
+		this.brand = json.getString("brand");
+		this.model = json.getString("model");
+		this.dimensions = json.getString("dimensions");
+		this.buyItNowPrice = json.getDouble("buy_price");
+		this.quantity = json.getInt("quantity");
+		this.startingBidPrice = json.getDouble("starting_bid_price");
+		this.auctionEndsTs = json.getString("auction_end_ts");
+		this.createdTs = json.getString("created_ts");
+		this.imageSrcUrl = json.getString("image_src");
 		
+		if(json.has("user"))
+			this.user = new User(json.getJSONObject("user"));
+		if(json.has("category"))
+			this.category = new Category(json.getJSONObject("category"));
 	}
 
-//	public int getPid() {
-//		return pid;
-//	}
-//
-//	public String getName() {
-//		return name;
-//	}
-//
-//	public String getDescription() {
-//		return description;
-//	}
-//
-//	public String getPrice() {
-//		NumberFormat nf = NumberFormat.getInstance();
-//		nf.setMinimumFractionDigits(2);
-//		// Some logic must be there to decide what price will be shown. 
-//		return "$" + nf.format(buyout_price);
-//	}
-//	
-//	public double getPriceNumber() {
-//		return buyout_price;
-//	}
-//
-//	public String getBrand() {
-//		return brand;
-//	}
-//
-//	public String getModel() {
-//		return model;
-//	}
-//
-//	public int getUid() {
-//		return uid;
-//	}
-//
-//	public void setUid(int uid) {
-//		this.uid = uid;
-//	}
-//
-//	public int getCid() {
-//		return cid;
-//	}
-//
-//	public void setCid(int cid) {
-//		this.cid = cid;
-//	}
-//
-//	public String getDimensions() {
-//		return dimensions;
-//	}
-//
-//	public void setDimensions(String dimensions) {
-//		this.dimensions = dimensions;
-//	}
-//
-//	public int getQuantity() {
-//		return quantity;
-//	}
-//
-//	public void setQuantity(int quantity) {
-//		this.quantity = quantity;
-//	}
-//
-//	public double getBid_price() {
-//		return bid_price;
-//	}
-//	
-//	public String getBid() {
-//		NumberFormat nf = NumberFormat.getInstance();
-//		nf.setMinimumFractionDigits(2);
-//		// Some logic must be there to decide what price will be shown. 
-//		return "$" + nf.format(bid_price);
-//	}
-//
-//	public void setBid_price(double bid_price) {
-//		this.bid_price = bid_price;
-//	}
-//
-//	public String getAuction_ends() {
-//		return auction_ends;
-//	}
-//
-//	public void setAuction_ends(String auction_ends) {
-//		this.auction_ends = auction_ends;
-//	}
-//
-//	public String getImage_src() {
-//		return image_src;
-//	}
-//
-//	public void setImage_src(String image_src) {
-//		this.image_src = image_src;
-//	}
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public String getDimensions() {
+		return dimensions;
+	}
+
+	public void setDimensions(String dimensions) {
+		this.dimensions = dimensions;
+	}
+
+	public double getBuyItNowPrice() {
+		return buyItNowPrice;
+	}
+
+	public void setBuyItNowPrice(double buyItNowPrice) {
+		this.buyItNowPrice = buyItNowPrice;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public double getStartingBidPrice() {
+		return startingBidPrice;
+	}
+
+	public void setStartingBidPrice(double startingBidPrice) {
+		this.startingBidPrice = startingBidPrice;
+	}
+
+	public String getAuctionEndsTs() {
+		return auctionEndsTs;
+	}
+
+	public void setAuctionEndsTs(String auctionEndsTs) {
+		this.auctionEndsTs = auctionEndsTs;
+	}
+
+	public String getImageSrcUrl() {
+		return imageSrcUrl;
+	}
+
+	public void setImageSrcUrl(String imageSrcUrl) {
+		this.imageSrcUrl = imageSrcUrl;
+	}
+
+	public String getCreatedTs() {
+		return createdTs;
+	}
+
+	public void setCreatedTs(String createdTs) {
+		this.createdTs = createdTs;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	
+
+
+	public String getBuyItNowPriceString() {
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumFractionDigits(2);
+		// Some logic must be there to decide what price will be shown. 
+		return "$" + nf.format(this.buyItNowPrice);
+	}
+	
+
+
+	public String getStartingBidPriceString() {
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumFractionDigits(2);
+		// Some logic must be there to decide what price will be shown. 
+		return "$" + nf.format(this.startingBidPrice);
+	}
 
 }
