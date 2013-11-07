@@ -9,7 +9,7 @@ routes.get("/orders", function (req, res, next) {
   var userId = req.query.userId;
 
   if(!userId) {
-    res.send(400, {"error": "No userId provided"});
+    return res.send(400, {"error": "No userId provided"});
   }
 
   var query = "SELECT `order`.order_id, `order`.created_ts, sum(final_price) as order_total, count(order_detail_id) as details_size\n" + 
@@ -35,7 +35,7 @@ routes.get("/orders/details", function (req, res, next) {
   var orderId = req.query.orderId;
 
   if(!orderId) {
-    res.send(400, {"error": "No orderId provided"});
+    return res.send(400, {"error": "No orderId provided"});
   }
 
   var query = "SELECT *\n" +
@@ -68,11 +68,11 @@ routes.get("/orders/details", function (req, res, next) {
       },
 
       "details": function (done) { //Get details
-        var dQuery= "SELECT *\n" +
-                    "FROM order_detail inner join product on order_detail.product_id=product.product_id\n" +
-                    "WHERE order_id=" + order.order_id;
+        var dQuery= "SELECT *, od.quantity as order_quantity, od.final_price as order_final_price, od.created_ts as order_created_ts, (od.quantity * od.final_price) as order_total_price\n" +
+                    "FROM order_detail od inner join product on od.product_id=product.product_id WHERE order_id=" + order.order_id
+        
         req.db.query(dQuery, done);
-      },
+      }
 
     }, function (err, results) {
       if (err) {

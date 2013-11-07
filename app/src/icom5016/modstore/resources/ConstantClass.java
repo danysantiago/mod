@@ -1,5 +1,6 @@
 package icom5016.modstore.resources;
 
+
 public class ConstantClass {
 	
 	
@@ -89,4 +90,9 @@ public class ConstantClass {
 	public static final String SELLING_SOLD = "soldKey";
 	public static final String BUYING_BIDDING = "biddingKey";
 	public static final String BUYING_NOTWIN = "didNotWinKey";
+	
+	//Credit Card Constant
+	public static final String[] CREDITCARD_LIST = new String[]{
+		"Visa", "MasterCard", "AmericanExpress","Discover", "Ebay", "Google Wallet", "Paypal"
+	};
 }

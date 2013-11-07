@@ -1,5 +1,6 @@
 var config = require("../config.js"),
-    express = require("express");
+    express = require("express"),
+    async = require("async");
 
 var routes = express();
 
@@ -49,6 +50,99 @@ var fakeProducts = [{
   "image_src": "not yet implemented",
   "created_ts": Date.now()
 }];
+
+routes.get("/products/selling", function (req, res, next) {
+  var userId = req.query.userId;
+
+
+
+  if(!userId) {
+    return res.send(400, {"error": "No userId provided"});
+  }
+
+  var result = {};
+
+  async.series({
+
+    "active": function (done) {
+      if(req.query.active === "true") {
+        var aQuery = "SELECT *, (P.quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE OD.product_id = P.product_id GROUP BY OD.product_id),0)) AS stock FROM product P WHERE user_id = " + req.db.escape(userId);
+        console.log("MySQL Query: " + aQuery);
+        req.db.query(aQuery, done);
+      } else {
+        done();
+      }
+    },
+
+    "sold": function (done) {
+      if(req.query.sold === "true") {
+        var sQuery = "SELECT *, (OD.final_price * OD.quantity) AS total_price, OD.quantity as order_quantity, (SELECT user_id FROM `order` O WHERE O.order_id = OD.order_id) as buyer_user_id FROM product P INNER JOIN order_detail OD ON OD.product_id = P.product_id WHERE P.user_id = " + req.db.escape(userId);
+        console.log("MySQL Query: " + sQuery);
+        req.db.query(sQuery, done);
+      } else {
+        done();
+      }
+    }
+
+  }, function (err, results) {
+    if (err) {
+      return next(err);
+    }
+
+    result.active = results.active ? results.active[0] : undefined;
+    result.sold = results.sold ? results.sold[0] : undefined;
+
+    res.send(200, result);
+  });
+
+});
+
+routes.get("/products/bidding", function (req, res, next) {
+  var userId = req.query.userId;
+
+
+  if(!userId) {
+    return res.send(400, {"error": "No userId provided"});
+  }
+
+  var esqUserId = req.db.escape(userId);
+
+  var result = {};
+
+  async.series({
+
+    "bidding": function (done) {
+      if(req.query.bidding === "true") {
+        var bQuery = "SELECT * FROM (SELECT product_id, MAX(bid_amount) as my_last_bid, (SELECT MAX(B2.bid_amount) FROM bid B2 WHERE B2.product_id = B.product_id GROUP BY B2.product_id) as current_bid FROM bid B WHERE B.user_id = " + esqUserId + " GROUP BY product_id) T INNER JOIN product P ON T.product_id = P.product_id WHERE P.auction_end_ts > NOW()";
+        console.log("MySQL Query: " + bQuery);
+        req.db.query(bQuery, done);
+      } else {
+        done();
+      }
+    },
+
+    "not_won": function (done) {
+      if(req.query.not_won === "true") {
+        var nwQuery = "SELECT *, (SELECT MAX(bid_amount) FROM bid B1 WHERE B1.product_id = P.product_id GROUP BY product_id) AS max_bid, (SELECT MAX(bid_amount) FROM bid B2 WHERE B2.product_id = P.product_id AND B2.user_id = " + esqUserId + " GROUP BY product_id) AS my_latest_bid FROM product P WHERE product_id IN (SELECT product_id FROM bid B WHERE B.user_id = " + esqUserId + ") AND product_id IN (SELECT product_id FROM order_detail) AND product_id NOT IN (SELECT product_id FROM `order` O INNER JOIN order_detail OD ON O.order_id = OD.order_id INNER JOIN order_detail_winning_bid WB ON WB.order_detail_id = OD.order_detail_id WHERE O.user_id = " + esqUserId + ")";
+        console.log("MySQL Query: " + nwQuery);
+        req.db.query(nwQuery, done);
+      } else {
+        done();
+      }
+    }
+
+  }, function (err, results) {
+    if (err) {
+      return next(err);
+    }
+
+    result.bidding = results.bidding ? results.bidding[0] : undefined;
+    result.not_won = results.not_won ? results.not_won[0] : undefined;
+
+    res.send(200, result);
+  });
+
+});
 
 routes.get("/products/:pid", function (req, res) {
   for (i = 0; i < fakeProducts.length; i++) {
@@ -130,8 +224,5 @@ routes.get("/products/:pid/reviews", function (req, res) {
 
   res.send(fakeReviews);
 });
-
-
-
 
 module.exports = routes;

@@ -10,18 +10,19 @@ import android.util.Log;
 
 public class Product {
 	protected int pid;
-	protected int uid;
-	protected int cid;
+	protected User user; //Seller Cambiar por el user
+	protected Category category; //Category Object
 	protected String name;
 	protected String description;
 	protected String brand;
 	protected String model;
 	protected String dimensions;
-	protected double buyout_price;
+	protected double buyitnow_price;
 	protected int quantity;
-	protected double bid_price;
+	protected double starting_bid_price; 
 	protected String auction_ends;
 	protected String image_src;
+	private String created_Ts
 	
 	public Product(int pid, int uid, int cid, String name, String description,
 			String brand, String model, String dimensions, double buyout_price,
@@ -45,19 +46,23 @@ public class Product {
 
 	public Product(JSONObject jsonObject) {
 		try {
-			this.pid = jsonObject.getInt("pid");
-			this.uid = jsonObject.getInt("uid");
-			this.cid = jsonObject.getInt("cid");
+			this.pid = jsonObject.getInt("product_id");
+			if(jsonObject.has("user")) {
+				this.user = new User(jsonObject.getJSONObject("user"));
+			}
+			this.cid = jsonObject.getInt("category_id");
+			//category
 			this.name = jsonObject.getString("name");
 			this.description = jsonObject.getString("description");
 			this.brand = jsonObject.getString("brand");
 			this.model = jsonObject.getString("model");
 			this.dimensions = jsonObject.getString("dimensions");
-			this.buyout_price = jsonObject.getDouble("buyout_price");
+			this.buyout_price = jsonObject.getDouble("buy_price");
 			this.quantity = jsonObject.getInt("quantity");
-			this.bid_price = jsonObject.getDouble("bid_price");
-			this.auction_ends = jsonObject.getString("auction_ends");
+			this.bid_price = jsonObject.getDouble("starting_bid_price");
+			this.auction_ends = jsonObject.getString("auction_end_ts");
 			this.image_src = jsonObject.getString("image_src");
+			//created_ts
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

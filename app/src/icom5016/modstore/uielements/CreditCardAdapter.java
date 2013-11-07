@@ -64,13 +64,13 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
         }
        
         CreditCard creditCard = this.getItem(position);
-        holder.txtName.setText(creditCard.name);
-        holder.txtNumber.setText(creditCard.number);
-        holder.txtExpire.setText(creditCard.expire);
-        holder.imgDefault.setVisibility((creditCard.isDefault) ? View.VISIBLE : View.GONE);
+        holder.txtName.setText(creditCard.getName());
+        holder.txtNumber.setText(creditCard.getNumber());
+        holder.txtExpire.setText(creditCard.getExpire());
+        holder.imgDefault.setVisibility((creditCard.isDefault()) ? View.VISIBLE : View.GONE);
 
-        if (creditCard.type < creditCardImages.length) {
-        	holder.imgCreditCard.setImageResource(this.creditCardImages[creditCard.type]);
+        if (creditCard.getType() < creditCardImages.length) {
+        	holder.imgCreditCard.setImageResource(this.creditCardImages[creditCard.getType()]);
         } else {
         	// Set No Recognized Image...
         }

@@ -73,15 +73,15 @@ public class AddressDialog extends DialogFragment {
 	    	SpinnerAdapter tempAdapter = cboCountries.getAdapter();
 	    	int pos = -1;
 	    	
-	    	txtLine1.setText(address.line1);
-	    	txtLine2.setText(address.line2);
-	    	txtCity.setText(address.city);
-	    	txtState.setText(address.state);
-	    	txtZipcode.setText(address.zipcode);
-	    	chkDefault.setChecked(address.isDefault);
+	    	txtLine1.setText(address.getLine1());
+	    	txtLine2.setText(address.getLine2());
+	    	txtCity.setText(address.getCity());
+	    	txtState.setText(address.getState());
+	    	txtZipcode.setText(address.getZipcode());
+	    	chkDefault.setChecked(address.isDefault());
 
 	    	for (int i = 0; i < tempAdapter.getCount(); i++) {
-	    		if (tempAdapter.getItem(i).equals(address.country)) {
+	    		if (tempAdapter.getItem(i).equals(address.getCountry())) {
 	    			pos = i;
 	    		}
 	    	}
