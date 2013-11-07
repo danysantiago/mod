@@ -49,7 +49,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 			description.setText(product.getDescription());
 
 			TextView price = (TextView) row.findViewById(R.id.price_textView2);
-			price.setText(product.getPrice());
+			price.setText(product.getBuyItNowPriceString());
 			
 			ImageView image = (ImageView) row.findViewById(R.id.imageView5);
 			imageloader.DisplayImage("http://files.gamebanana.com/img/ico/sprays/1up_orcaexample.png", image);

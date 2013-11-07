@@ -2,8 +2,7 @@ package icom5016.modstore.adapters;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
-import icom5016.modstore.models.ProductSelling;
-import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.models.Product;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,7 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class SellingListAdapter extends ArrayAdapter<ProductSelling> {
+public class SellingListAdapter extends ArrayAdapter<Product> {
 
 	private ImageLoader imageloader;
 	private String type;
@@ -28,7 +27,7 @@ public class SellingListAdapter extends ArrayAdapter<ProductSelling> {
 		imageloader = new ImageLoader(context);
 		
 		for(int i=0; i<list.length(); i++){
-			this.add(new ProductSelling(list.getJSONObject(i)));
+			this.add(new Product(list.getJSONObject(i)));
 		}
 		
 	}
@@ -37,7 +36,7 @@ public class SellingListAdapter extends ArrayAdapter<ProductSelling> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 
-		ProductSelling product = this.getItem(position);
+		Product product = this.getItem(position);
 
 		LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
 		
@@ -53,7 +52,7 @@ public class SellingListAdapter extends ArrayAdapter<ProductSelling> {
 		TextView type = (TextView) row.findViewById(R.id.prodrow_orders_type);
 		
 		//Type
-		type.setText(product.getSellType());
+	//	type.setText(product.getSellType());
 		
 		//Title
 		title.setText(product.getName());
@@ -70,19 +69,19 @@ public class SellingListAdapter extends ArrayAdapter<ProductSelling> {
 		//Tracking
 		tracking.setVisibility(View.GONE);
 		
-		//Price
-		if(product.getSellType().equals(ProductSelling.BUY_NOW))
-		{
-			price.setText(product.getPrice());
-		}
-		else if(product.getSellType().equals(ProductSelling.BID)){
-			price.setText(product.getBid());
-		}
-		
-		//Images
-		imageloader.DisplayImage(product.getImage_src(), image);
-		
-		row.setTag(product);
+//		//Price
+//		if(product.getSellType().equals(Product.BUY_NOW))
+//		{
+//			price.setText(product.getPrice());
+//		}
+//		else if(product.getSellType().equals(ProductSelling.BID)){
+//			price.setText(product.getBid());
+//		}
+//		
+//		//Images
+//		imageloader.DisplayImage(product.getImage_src(), image);
+//		
+//		row.setTag(product);
 
 		return row;
 	}

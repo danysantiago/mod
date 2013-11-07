@@ -91,8 +91,8 @@ public class MainActivity extends MainInterfaceActivity {
 		 }
 		 else{
 			
-			 this.fragmentStack.push(new MainFragment());
-		     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+//			 this.fragmentStack.push(new MainFragment());
+//		     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 		 }
 		 
 		 

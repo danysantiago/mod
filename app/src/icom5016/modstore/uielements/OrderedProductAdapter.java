@@ -62,7 +62,7 @@ public class OrderedProductAdapter extends ArrayAdapter<OrderDetail> {
         imageloader.DisplayImage("http://files.gamebanana.com/img/ico/sprays/1up_orcaexample.png", holder.imgThumbnail);
         holder.txtName.setText(orderDetail.getProduct().getName());
         holder.txtDescription.setText(orderDetail.getProduct().getDescription());
-        holder.txtPrice.setText(orderDetail.getPrice());
+        holder.txtPrice.setText(orderDetail.getFinalSoldPriceString());
         holder.txtQuantity.setText(String.valueOf(orderDetail.getQuantity()));
         
         if (!orderDetail.getTrackingNumber().isEmpty()) {

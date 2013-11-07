@@ -97,29 +97,6 @@ public class MyOrderDetailsListFragment extends Fragment {
 			@Override
 			public void onSucess(JSONObject json) {
 				try {
-					String date = json.getString("created_ts");
-					Address addr = new Address(json.getJSONObject("address")); 
-					CreditCard cc = new CreditCard(json.getJSONObject("creditCard"));
-					JSONArray detailsList = json.getJSONArray("details");
-					
-					tvDate.setText(tvDate.getText()+" "+date);
-					tvAddress.setText(addr.toString());
-					
-					double total = 0;
-					for(int i=0; i<detailsList.length(); i++){
-						total += detailsList.getJSONObject(i).getDouble("final_price");
-					}
-					NumberFormat nf = NumberFormat.getInstance();
-					nf.setMinimumFractionDigits(2);
-					tvTotal.setText(tvTotal.getText()+" $"+nf.format(total));
-					
-					tvCCNum.setText(ConstantClass.CREDITCARD_LIST[cc.getType()]+" - "+cc.getNumber().substring(cc.getNumber().length()-4));
-					
-					//Size must be bigger than 1
-					lvDetails.setAdapter(new OrderDetailsListAdapter(mainActivity, detailsList));
-					lvDetails.setOnItemClickListener(new OrderDetailsListListener(mainActivity));
-					
-					llMainContainer.setVisibility(View.VISIBLE);
 					
 				} catch (JSONException e) {
 					Toast.makeText(mainActivity, R.string.errmsg_bad_json,
