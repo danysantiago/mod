@@ -12,7 +12,7 @@ routes.get("/orders", function (req, res, next) {
     return res.send(400, {"error": "No userId provided"});
   }
 
-  var query = "SELECT `order`.order_id, `order`.created_ts, sum(final_price) as order_total, count(order_detail_id) as details_size\n" + 
+  var query = "SELECT `order`.order_id, `order`.created_ts, `order`.user_id, `order`.address_id, `order`.credit_card_id, sum(final_price) as order_total, count(order_detail_id) as details_size\n" + 
               "FROM `order` inner join order_detail on `order`.order_id=order_detail.order_id\n" +
               "WHERE user_id = " + req.db.escape(userId) + "\n" +
               "GROUP BY `order`.order_id";

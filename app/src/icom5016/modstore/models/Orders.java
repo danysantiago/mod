@@ -6,48 +6,175 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Orders {
-	private String created_ts;
-	private double order_total;
-	private int order_id;
-	private int detail_size;
+	//Needed
+	private String createdTs;
+	private int orderId;
+	
+	private int addressId;
+	private int userId;
+	private int creditcardId;
 	
 	
-	public Orders(String created_ts, double order_total, int order_id,
-			int detail_size) {
+	//Optional Parameters
+	
+	//Models
+	private User user;
+	private CreditCard creditCard;
+	private Address address;
+	
+	//Optional
+	private int detailSize;
+	private double orderTotal;
+	
+	
+	
+	
+	public Orders(String createdTs, int orderId, int addressId, int userId,
+			int creditcardId, User user, CreditCard creditCard,
+			Address address, int detailSize, double orderTotal) {
 		super();
-		this.created_ts = created_ts;
-		this.order_total = order_total;
-		this.order_id = order_id;
-		this.detail_size = detail_size;
+		this.createdTs = createdTs;
+		this.orderId = orderId;
+		this.addressId = addressId;
+		this.userId = userId;
+		this.creditcardId = creditcardId;
+		this.user = user;
+		this.creditCard = creditCard;
+		this.address = address;
+		this.detailSize = detailSize;
+		this.orderTotal = orderTotal;
 	}
+
 	
 	public Orders(JSONObject json) throws JSONException{
-		this.created_ts = json.getString("created_ts");
-		this.order_total = json.getDouble("order_total");
-		this.detail_size = json.getInt("details_size");
-		this.order_id = json.getInt("order_id");
+		this.createdTs = json.getString("created_ts");
+		this.orderId = json.getInt("order_id");
+		this.addressId = json.getInt("address_id");
+		this.creditcardId = json.getInt("credit_card_id");
+		
+		if(json.has("user"))
+			this.user = new User(json.getJSONObject("user"));
+		if(json.has("creditcard"))
+			this.creditCard = new CreditCard(json.getJSONObject("creditcard"));
+		
+		if(json.has("order_total"))
+			this.orderTotal = json.getDouble("order_total");
+		
+		if(json.has("details_size"))
+			this.detailSize = json.getInt("details_size");
+		
 	}
 
-	public String getCreated_ts() {
-		return created_ts;
+
+	public String getCreatedTs() {
+		return createdTs;
 	}
 
-	public double getOrder_total() {
-		return order_total;
+
+	public void setCreatedTs(String createdTs) {
+		this.createdTs = createdTs;
 	}
 
-	public int getOrder_id() {
-		return order_id;
+
+	public int getOrderId() {
+		return orderId;
 	}
 
-	public int getDetail_size() {
-		return detail_size;
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
 	}
-	
+
+
+	public int getAddressId() {
+		return addressId;
+	}
+
+
+	public void setAddressId(int addressId) {
+		this.addressId = addressId;
+	}
+
+
+	public int getUserId() {
+		return userId;
+	}
+
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+
+	public int getCreditcardId() {
+		return creditcardId;
+	}
+
+
+	public void setCreditcardId(int creditcardId) {
+		this.creditcardId = creditcardId;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	public CreditCard getCreditCard() {
+		return creditCard;
+	}
+
+
+	public void setCreditCard(CreditCard creditCard) {
+		this.creditCard = creditCard;
+	}
+
+
+	public Address getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+
+	public int getDetailSize() {
+		return detailSize;
+	}
+
+
+	public void setDetailSize(int detailSize) {
+		this.detailSize = detailSize;
+	}
+
+
+	public double getOrderTotal() {
+		return orderTotal;
+	}
+
+
+	public void setOrderTotal(double orderTotal) {
+		this.orderTotal = orderTotal;
+	}
+
+
 	public String getOrderTotalString() {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(2);
-		return "$" + nf.format(order_total);
+		return "$" + nf.format(orderTotal);
+	}
+	
+	public String getDateFormatedString(){
+		//TODO: Change
+		return this.createdTs;
 	}
 	
 	
