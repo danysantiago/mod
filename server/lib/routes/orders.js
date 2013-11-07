@@ -87,7 +87,7 @@ routes.get("/orders/details", function (req, res, next) {
       order.creditcard = results.creditCard[0][0];
 
       //Format Details Result
-      for(i=0; i<results.details[0]; i++){
+      for(i=0; i<results.details[0].length; i++){
           //Add "Product File"
           results.details[0][i].product = {
               "product_id": results.details[0][i].product_id,
@@ -111,7 +111,6 @@ routes.get("/orders/details", function (req, res, next) {
           results.details[0][i].created_ts = results.details[0][i].odcreated_ts;
 
           //Delete Duplicates
-          delete results.details[0][i].product_id;
           delete results.details[0][i].user_id;
           delete results.details[0][i].category_id;
           delete results.details[0][i].description;
@@ -125,8 +124,6 @@ routes.get("/orders/details", function (req, res, next) {
           delete results.details[0][i].odpid;
           delete results.details[0][i].odquantity;
           delete results.details[0][i].odcreated_ts;
-
-
       }
       
       ret = {
@@ -134,8 +131,6 @@ routes.get("/orders/details", function (req, res, next) {
           "details": results.details[0],
       };
       
-      ret.details.product = results.product[0];
-
       res.send(200, ret);
     });
 
