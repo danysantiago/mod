@@ -1,5 +1,6 @@
 var config = require("../config.js"),
-    express = require("express");
+    express = require("express"),
+    async = require("async");
 
 var routes = express();
 
@@ -49,6 +50,54 @@ var fakeProducts = [{
   "image_src": "not yet implemented",
   "created_ts": Date.now()
 }];
+
+routes.get("/products/selling", function (req, res, next) {
+  var userId = req.query.userId;
+
+
+
+  if(!userId) {
+    return res.send(400, {"error": "No userId provided"});
+  }
+
+  var result = {};
+
+  async.series({
+
+    "active": function (done) {
+      if(req.query.active === "true") {
+        var aQuery = "SELECT *, (P.quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE OD.product_id = P.product_id GROUP BY OD.product_id),0)) AS stock FROM product P WHERE user_id = " + req.db.escape(userId);
+        console.log("MySQL Query: " + aQuery);
+        req.db.query(aQuery, done);
+      } else {
+        done();
+      }
+    },
+
+    "sold": function (done) {
+      if(req.query.sold === "true") {
+        var sQuery = "SELECT *, (OD.final_price * OD.quantity) AS total_price, OD.quantity as order_quantity, (SELECT user_id FROM `order` O WHERE O.order_id = OD.order_id) as buyer_user_id FROM product P INNER JOIN order_detail OD ON OD.product_id = P.product_id WHERE P.user_id = " + db.req.escape(userId);
+        console.log("MySQL Query: " + sQuery);
+        req.db.query(sQuery, done);
+      } else {
+        done();
+      }
+    }
+
+  }, function (err, results) {
+    if (err) {
+      return next(err);
+    }
+
+    console.log(results.active[0]);
+
+    result.active = results.active ? results.active[0] : undefined;
+    result.sold = results.sold ? results.sold[0] : undefined;
+
+    res.send(200, result);
+  });
+
+});
 
 routes.get("/products/:pid", function (req, res) {
   for (i = 0; i < fakeProducts.length; i++) {
@@ -130,8 +179,5 @@ routes.get("/products/:pid/reviews", function (req, res) {
 
   res.send(fakeReviews);
 });
-
-
-
 
 module.exports = routes;
