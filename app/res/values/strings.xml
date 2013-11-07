@@ -175,5 +175,16 @@
     <string name="title_myorder">Order</string>
     <string name="title_item">Items</string>
     <string name="title_ordernum">Order #</string>
+    <string name="texbox_orderdate">Date: </string>
+    <string name="textbox_ordertotal">Total: </string>
+    <string name="textbox_ordershipto">Ship To:</string>
+    <string name="textbox_orderaddress">*****</string>
+    <string name="textbox_ordertrackingtitle">Tracking #:</string>
+    <string name="textbox_ordertrackingnum">N/A</string>
+    <string name="textbox_orderpaymenttitle">Payment Information:</string>
+    <string name="textbox_orderccnum">*****</string>
+    <string name="textbox_orderbillingaddrtitle">Billing Address:</string>
+    
+    
 
 </resources>

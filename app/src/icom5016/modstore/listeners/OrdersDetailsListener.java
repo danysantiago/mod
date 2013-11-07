@@ -10,11 +10,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class OrdersListener implements OnItemClickListener {
+public class OrdersDetailsListener implements OnItemClickListener {
 
 	private MainInterfaceActivity mainActivity;
 	
-	public OrdersListener(MainInterfaceActivity activity){
+	public OrdersDetailsListener(MainInterfaceActivity activity){
 		this.mainActivity = activity;
 	}
 	@Override
