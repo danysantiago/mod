@@ -87,7 +87,7 @@ routes.get("/orders/details", function (req, res, next) {
       order.creditcard = results.creditCard[0][0];
 
       //Format Details Result
-      for(int i=0; i<results.details[0]; i++){
+      for(i=0; i<results.details[0]; i++){
           //Add "Product File"
           results.details[0][i].product = {
               "product_id": results.details[0][i].product_id,
