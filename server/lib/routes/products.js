@@ -1,6 +1,4 @@
-var config = require("../config.js"),
-    express = require("express"),
-    async = require("async");
+var config = require("../config.js"), express = require("express"), async = require("async");
 
 var routes = express();
 
@@ -82,7 +80,7 @@ routes.get("/products/selling", function (req, res, next) {
       } else {
         done();
       }
-    }
+    },
 
     "notsold": function (done) {
       if(req.query.notsold === "true") {
@@ -101,7 +99,7 @@ routes.get("/products/selling", function (req, res, next) {
 
     result.active = results.active ? results.active[0] : undefined;
     result.sold = results.sold ? results.sold[0] : undefined;
-    result.notsold = results.notsold[0] : undefined;
+    result.notsold = results.notsold ? results.notsold[0] : undefined;
 
     res.send(200, result);
   });
