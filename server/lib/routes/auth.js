@@ -23,7 +23,7 @@ routes.post("/login", express.bodyParser(), function (req, res) {
 
         // res.send({"status": "OK", "account": results[0].user_name, "token": user_token});
 
-        var user = {
+        /*var user = {
                 "id": result[0].user_id,
                 "username": result[0].user_name,
                 "firstName": result[0].first_name,
@@ -32,9 +32,15 @@ routes.post("/login", express.bodyParser(), function (req, res) {
                 "email": result[0].email,
                 "isAdmin": (result[0].is_admin == 1),
                 "created_ts": result[0].created_ts
+        };*/
+
+        //Return
+        var ret = {
+          "status": "OK",
+          "account": result[0],
         };
 
-        res.send(200, user);
+        res.send(200, ret);
       } else {
         res.send({"status": "BAD CREDENTIALS"});
       }
