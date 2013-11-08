@@ -30,9 +30,10 @@ public class DataFetchFactory {
 		//Verify Log-In
 		SharedPreferences preferences = //If Open First Time: Creates File; O.W. Reads it
 				activity.getSharedPreferences(ConstantClass.USER_FILE, Context.MODE_PRIVATE);
+		
 		boolean isUserLogIn = preferences.getBoolean(ConstantClass.USER_IS_LOGIN, false);
 		
-			//If Log-In Create 
+		//If Log-In Create 
 		if(isUserLogIn){
 			//pre: must be log-in thus data will be loaded into preferences
 			String userName = preferences.getString(ConstantClass.USER_USERNAME_KEY, ""); 
@@ -42,6 +43,7 @@ public class DataFetchFactory {
 			String email = preferences.getString(ConstantClass.USER_EMAIL_KEY, "");
 			boolean isAdmin = preferences.getBoolean(ConstantClass.USER_IS_ADMIN_KEY, false);
 			int guid = preferences.getInt(ConstantClass.USER_GUID_KEY, -1);
+			
 			return new User(userName, firstName, middleName, lastName, email, guid ,isAdmin);	
 		}
 		

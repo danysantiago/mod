@@ -26,7 +26,7 @@ public class Server {
 	}
 	
 	public static class Addresses {
-		public static final String GET = BASE_URL + "/addresses/";
+		public static final String GET = BASE_URL + "/addresses";
 		public static final String GETALL = BASE_URL + "/addresses";
 	}
 	

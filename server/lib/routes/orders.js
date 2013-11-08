@@ -70,6 +70,7 @@ routes.get("/orders/details", function (req, res, next) {
 
       "details": function (done) { //Get order details
         var dQuery= "SELECT *, od.product_id AS odpid, od.quantity AS odquantity, od.created_ts AS odcreated_ts\n" +
+                    ", (od.order_detail_id in (SELECT wb.order_detail_id FROM order_detail_winning_bid wb)) as won_by_bid\n" + 
                     "FROM modstore.order_detail AS od INNER JOIN product AS p\n" +
                     "WHERE p.product_id = od.product_id AND order_id =" + order.order_id;
         
@@ -110,6 +111,7 @@ routes.get("/orders/details", function (req, res, next) {
           results.details[0][i].product_id = results.details[0][i].odpid;
           results.details[0][i].quantity = results.details[0][i].odquantity;
           results.details[0][i].created_ts = results.details[0][i].odcreated_ts;
+          results.details[0][i].won_by_bid = (results.details[0][i].won_by_bid == 1);
 
           //Delete Duplicates
           delete results.details[0][i].user_id;
