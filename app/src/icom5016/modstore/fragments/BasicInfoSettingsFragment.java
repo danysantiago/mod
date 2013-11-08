@@ -28,15 +28,18 @@ public class BasicInfoSettingsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_basicsettings, container, false);
-		lstSettingList = (ListView)view.findViewById(R.id.lstSettingList);
+		
+		lstSettingList = (ListView) view.findViewById(R.id.lstSettingList);
+		
 		ArrayList<SettingRow> settingList = new ArrayList<SettingRow>();
+		
 		User u = DataFetchFactory.getUserFromSPref(getActivity());
 		
-		settingList.add(new SettingRow("Username", u.getUsername()));
-		settingList.add(new SettingRow("First Name", u.getFirstName()));
-		settingList.add(new SettingRow("Middle Name", u.getMiddleName()));
-		settingList.add(new SettingRow("Last Name", u.getLastName()));
-		settingList.add(new SettingRow("Email", u.getEmail()));
+		settingList.add(new SettingRow(u.getUsername(), "Username"));
+		settingList.add(new SettingRow(u.getFirstName(), "First Name"));
+		settingList.add(new SettingRow(u.getMiddleName(), "Middle Name"));
+		settingList.add(new SettingRow(u.getLastName(), "Last Name"));
+		settingList.add(new SettingRow(u.getEmail(), "Email"));
 		settingList.add(new SettingRow("Change your password...", null));
 		
 		SettingListAdapter adapter = new SettingListAdapter(getActivity(), R.layout.listview_setting_row, settingList);
@@ -49,9 +52,8 @@ public class BasicInfoSettingsFragment extends Fragment {
 	private class listOnClick implements OnItemClickListener {
 
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-			if (arg2 == 5) {
+		public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+			if (pos == 5) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				LayoutInflater inflater = getActivity().getLayoutInflater();
 				
@@ -73,13 +75,13 @@ public class BasicInfoSettingsFragment extends Fragment {
 				dialog.show();
 			} else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				SettingRow settingRow = (SettingRow)lstSettingList.getAdapter().getItem(arg2);
+				SettingRow settingRow = (SettingRow) lstSettingList.getAdapter().getItem(pos);
 				EditText editText = new EditText(getActivity());
 				
-				editText.setText(settingRow.value);
+				editText.setText(settingRow.title);
 
 				builder.setView(editText);
-				builder.setTitle("Change your " + settingRow.title);
+				builder.setTitle("Change your " + settingRow.value);
 				builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	               public void onClick(DialogInterface dialog, int id) {
 	            	   //Cancel...
@@ -89,6 +91,7 @@ public class BasicInfoSettingsFragment extends Fragment {
 				builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
 	               public void onClick(DialogInterface dialog, int id) {
 	            	   //Change... PUT to NodeJS
+	            	   
 	               }
 				});
 				

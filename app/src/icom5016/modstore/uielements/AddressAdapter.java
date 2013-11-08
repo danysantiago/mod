@@ -32,7 +32,6 @@ public class AddressAdapter extends ArrayAdapter<Address> {
 			}
 		} catch (JSONException e) {
 			Toast.makeText(context, "Couldn't load the Addresses [ERR: 1]", Toast.LENGTH_SHORT).show();
-			//((AddressFragment)context.getF).showError();
 		}
         
         this.layoutResourceId = layoutResourceId;

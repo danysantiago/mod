@@ -37,39 +37,24 @@ routes.get("/cc/:ccid", function (req, res) {
   });
 });
 
-routes.get("/cc", function (req, res) {
+routes.get("/cc", function (req, res, next) {
+  var userId = req.query.userId;
+
+  if(!userId) {
+    return res.send(400, {"error": "No userId provided"});
+  }
+
   query = "SELECT * FROM credit_card WHERE user_id = ?;";
-  query = req.db.format(query, [req.logged_user.user_id])
+  query = req.db.format(query, [userId])
 
   console.log("MySQL QUERY: " + query);
 
-  req.db.query(query, function(err, results) {
-    if (err)
-      throw err;
-
-    var out = [];
-
-    for (i = 0; i < results.length; i++) {
-      tempDate = new Date(results[i].expiration_date.toJSON());
-      expDate = tempDate.getMonth() + "/" + tempDate.getFullYear();
-      expDate = (expDate.length == 6) ? ("0" + expDate) : expDate;
-
-      rec =   {
-                "ccid": results[i].creditcard_id,
-                "aid": results[i].address_id, 
-                "number": results[i].number,
-                "scode": results[i].security_code,
-                "name": results[i].name,
-                "type": results[i].type,
-                "expirationDate": expDate,
-                "isDefault" : (results[i].is_primary == 1),
-                "created_ts": results[i].created_ts
-              };
-
-      out.push(rec);
+  req.db.query(query, function (err, credicards) {
+    if (err) {
+      return next(err);
     }
 
-    res.send({"creditcards":out});
+    res.send({"creditcards": credicards});
   });
 });
 
