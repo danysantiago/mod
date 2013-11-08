@@ -19,11 +19,13 @@ public class Product {
 	protected double startingBidPrice; 
 	protected String auctionEndsTs;
 	protected String imageSrcUrl;
-	private String createdTs;
+	protected String createdTs;
 
 	//Optional Values
 	protected User user; //Seller
 	protected Category category; //Category Object
+	
+	//Optional Values for Buying
 	
 	public Product(int product_id, int user_id, int category_id, String name,
 			String description, String brand, String model, String dimensions,
@@ -216,12 +218,14 @@ public class Product {
 		this.category = category;
 	}
 	
-
+	public String getAuctionEndsTsString(){
+		//TODO:format;
+		return this.auctionEndsTs;
+	}
 
 	public String getBuyItNowPriceString() {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(2);
-		// Some logic must be there to decide what price will be shown. 
 		return "$" + nf.format(this.buyItNowPrice);
 	}
 	
@@ -230,7 +234,6 @@ public class Product {
 	public String getStartingBidPriceString() {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(2);
-		// Some logic must be there to decide what price will be shown. 
 		return "$" + nf.format(this.startingBidPrice);
 	}
 

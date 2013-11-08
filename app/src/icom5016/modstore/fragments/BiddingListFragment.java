@@ -2,13 +2,13 @@ package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
-import icom5016.modstore.adapters.BuyingListAdapter;
+import icom5016.modstore.adapters.BiddingListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
+import icom5016.modstore.listeners.BidSellListListener;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.unused.BuySellListListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -155,8 +155,8 @@ public class BiddingListFragment extends Fragment {
 							}
 							else{
 								gvBidding.setVisibility(View.GONE);
-								lvBidding.setAdapter(new BuyingListAdapter(mainActivity, biddingList, ConstantClass.BUYING_BIDDING));
-								lvBidding.setOnItemClickListener(new BuySellListListener(mainActivity));
+								lvBidding.setAdapter(new BiddingListAdapter(mainActivity, biddingList, ConstantClass.BUYING_BIDDING));
+								lvBidding.setOnItemClickListener(new BidSellListListener(mainActivity, 0));
 								lvBidding.setVisibility(View.VISIBLE);
 							}
 				
@@ -175,8 +175,8 @@ public class BiddingListFragment extends Fragment {
 							}
 							else{
 								gvNotwin.setVisibility(View.GONE);
-								lvNotwin.setAdapter(new BuyingListAdapter(mainActivity, notwinList,  ConstantClass.BUYING_NOTWIN));
-								lvNotwin.setOnItemClickListener(new BuySellListListener(mainActivity));
+								lvNotwin.setAdapter(new BiddingListAdapter(mainActivity, notwinList,  ConstantClass.BUYING_NOTWIN));
+								lvNotwin.setOnItemClickListener(new BidSellListListener(mainActivity, 1));
 								lvNotwin.setVisibility(View.VISIBLE);
 							}
 							
@@ -196,8 +196,8 @@ public class BiddingListFragment extends Fragment {
 							}
 							else{
 								gvBidding.setVisibility(View.GONE);
-								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, biddingList,  ConstantClass.BUYING_BIDDING));
-								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
+								lvIndividual.setAdapter(new BiddingListAdapter(mainActivity, biddingList,  ConstantClass.BUYING_BIDDING));
+								lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity, 0));
 								lvIndividual.setVisibility(View.VISIBLE);
 							}
 							
@@ -216,8 +216,8 @@ public class BiddingListFragment extends Fragment {
 							}
 							else{
 								gvBidding.setVisibility(View.GONE);
-								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, notwinList,  ConstantClass.BUYING_NOTWIN));
-								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
+								lvIndividual.setAdapter(new BiddingListAdapter(mainActivity, notwinList,  ConstantClass.BUYING_NOTWIN));
+								lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity, 1));
 								lvIndividual.setVisibility(View.VISIBLE);
 							}
 						}

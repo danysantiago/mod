@@ -6,9 +6,9 @@ import icom5016.modstore.adapters.SellingListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
+import icom5016.modstore.listeners.BidSellListListener;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.unused.BuySellListListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -154,7 +154,7 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvSold.setVisibility(View.GONE);
 									lvSold.setAdapter(new SellingListAdapter(mainActivity, soldList, ConstantClass.SELLING_SOLD ));
-									lvSold.setOnItemClickListener(new BuySellListListener(mainActivity));
+									lvSold.setOnItemClickListener(new BidSellListListener(mainActivity, 1));
 									lvSold.setVisibility(View.VISIBLE);
 								}
 								
@@ -172,7 +172,7 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvActive.setVisibility(View.GONE);
 									lvActive.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_ACTIVE));
-									lvActive.setOnItemClickListener(new BuySellListListener(mainActivity));
+									lvActive.setOnItemClickListener(new BidSellListListener(mainActivity, 1));
 									lvActive.setVisibility(View.VISIBLE);
 								}
 								
@@ -188,7 +188,7 @@ public class SellingListFragment extends Fragment {
 								}
 								else{
 									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, soldList, ConstantClass.SELLING_SOLD));
-									lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
+									lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity, 1));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 								
@@ -206,7 +206,7 @@ public class SellingListFragment extends Fragment {
 								}
 								else{
 									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_ACTIVE));
-									lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
+									lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity, 0));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 							}

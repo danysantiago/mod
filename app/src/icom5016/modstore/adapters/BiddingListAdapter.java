@@ -3,6 +3,7 @@ package icom5016.modstore.adapters;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
 import icom5016.modstore.models.Product;
+import icom5016.modstore.models.ProductBidding;
 import icom5016.modstore.resources.ConstantClass;
 
 import org.json.JSONArray;
@@ -10,6 +11,7 @@ import org.json.JSONException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,19 +19,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class BuyingListAdapter extends ArrayAdapter<Product> {
+public class BiddingListAdapter extends ArrayAdapter<ProductBidding> {
 
 	private ImageLoader imageloader;
 	private String type;
 
-	public BuyingListAdapter(Context context, JSONArray list, String type) throws JSONException {
+	public BiddingListAdapter(Context context, JSONArray list, String type) throws JSONException {
 		super(context, R.layout.listview_orderdetails_row);
 		
 		imageloader = new ImageLoader(context);
 		this.type = type;
 		
 		for(int i=0; i<list.length(); i++){
-			this.add(new Product(list.getJSONObject(i)));
+			this.add(new ProductBidding(list.getJSONObject(i)));
 		}
 		
 	}
@@ -38,7 +40,7 @@ public class BuyingListAdapter extends ArrayAdapter<Product> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 
-		Product product = this.getItem(position);
+		ProductBidding product = this.getItem(position);
 
 		LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
 		
@@ -59,19 +61,24 @@ public class BuyingListAdapter extends ArrayAdapter<Product> {
 		
 		//Remove Visibility
 		quantity.setVisibility(View.GONE);
-		status.setVisibility(View.GONE);
 		
+		if(product.getMyLastBid() >= product.getCurrentBid())
+			status.setText("Winning");
+		else
+			status.setText("Losing");
+		status.setTypeface(null, Typeface.BOLD);
 		
 		if(type.equals(ConstantClass.BUYING_NOTWIN)){
 			endDate.setText("Bid Ended");
+			
 		}
 		else if(type.equals(ConstantClass.BUYING_BIDDING)){
-		//	endDate.setText("End Date: "+product.getAuction_ends());
+			endDate.setText("End Date: "+product.getAuctionEndsTsString());
 		}
 		
 		//Current Bid/End Price:
-		//bidEndCurr.setText(product.getCurrBidPriceString());
-		//myBidCurr.setText(product.getMyCurrBidString());
+		bidEndCurr.setText("Last Bid: "+product.getCurrentBidString());
+		myBidCurr.setText("My Bid: "+product.getMyLastBidString());
 		
 		
 		

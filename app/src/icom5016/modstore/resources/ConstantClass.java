@@ -96,4 +96,9 @@ public class ConstantClass {
 	public static final String[] CREDITCARD_LIST = new String[]{
 		"Visa", "MasterCard", "AmericanExpress","Discover", "Ebay", "Google Wallet", "Paypal"
 	};
+	
+	
+	//Bidding, Selling, Product Keys
+	public static final String PRODUCT_KEY = "productFragKey";
+	public static final String PRODUCT_NOTIFICATION_KEY = "productNotificationKey";
 }
