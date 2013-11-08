@@ -97,6 +97,137 @@ routes.get("/products/selling", function (req, res, next) {
 
 });
 
+routes.get("/products/search", function (req, res, next) {
+  var searchString = req.query.searchString;
+  var sort = req.query.sort; /* best, price_asc, price_desc, time_asc, time_desc */
+  var category = req.query.category;
+  var sellerRating = req.query.sellerRating;
+  var type = req.query.type; /* all, both, buy, bid */
+  var priceFrom = req.query.priceFrom;
+  var priceTo = req.query.priceTo;
+
+  query = "SELECT *, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as actual_bid, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating FROM product P";
+  wheres = [];
+  havings = [];
+  order = null;
+
+  // Set WHERE by Search String
+  if (searchString != null) {
+    searchString = req.db.escape("%" + searchString + "%");
+    wheres.push("(description LIKE " + searchString + " OR `name` LIKE " + searchString + ")");
+  }
+
+  // Set WHERE by Category
+  if (category != null) {
+    wheres.push("(category_id = " + req.db.escape(category) + ")");
+  }
+
+  // Set HAVING by Seller Rating
+  if (sellerRating != null) {
+    havings.push("(avg_seller_rating = " + req.db.escape(sellerRating) + ")");
+  }
+
+  // Set WHERE for TYPE of the Selling of a Product
+  if (type != null) {
+    if (type == "all") {
+      wheres.push("((starting_bid_price IS null AND buy_price > 0) OR (starting_bid_price > 0 AND buy_price IS NULL))");
+    } else if (type == "both") {
+      wheres.push("(starting_bid_price > 0 AND buy_price > 0)");
+    } else if (type == "buy") {
+      wheres.push("(starting_bid_price IS null AND buy_price > 0)");
+    } else if (type == "bid") {
+      wheres.push("(starting_bid_price > 0 AND buy_price IS NULL)");
+    }
+  }
+
+  // Set WHERE for PRICE FROM
+  if (priceFrom != null) {
+    temp = req.db.escape(priceFrom);
+    if (type != null) {
+      if (type == "all") {
+        havings.push("(actual_bid >= " + temp + " OR buy_price >= " + temp + ")");
+      } else if (type == "both") {
+        havings.push("(actual_bid >= " + temp + " AND buy_price >= " + temp + ")");
+      } else if (type == "buy") {
+        wheres.push("(buy_price >= " + temp + ")");
+      } else if (type == "bid") {
+        havings.push("(actual_bid >= " + temp + ")");
+      }
+    }
+  }
+
+  // Set WHERE for PRICE TO
+  if (priceTo != null) {
+    temp = req.db.escape(priceTo);
+    if (type != null) {
+      if (type == "all") {
+        havings.push("(actual_bid <= " + temp + " OR buy_price <= " + temp + ")");
+      } else if (type == "both") {
+        havings.push("(actual_bid <= " + temp + " AND buy_price <= " + temp + ")");
+      } else if (type == "buy") {
+        wheres.push("(buy_price <= " + temp + ")");
+      } else if (type == "bid") {
+        havings.push("(actual_bid <= " + temp + ")");
+      }
+    }
+  }
+
+  // Set ORDER BY statement
+  if (sort != null) {
+    if (sort == "best") {
+      order = "product_id ASC";
+    } else if (sort == "price_asc" || sort == "price_desc") {
+      temp = (sort == "price_asc") ? "ASC" : "DESC";
+      if (type != null) {
+        if (type == "all") {
+          order = "buy_price " + temp + ", actual_bid " + temp
+        } else if (type == "buy") {
+          order = "buy_price " + temp
+        } else if (type = "bid") {
+          order = "actual_bid " + temp
+        }
+      } else {
+        order = "buy_price " + temp
+      }
+    } else if (sort == "time_asc") {
+      order = "created_ts ASC";
+    } else if (sort = "time_desc") {
+      order = "created_ts DESC";
+    }
+  }
+
+  // Build the FINAL MySQL QUERY
+  if (wheres.length > 0) {
+    query += " WHERE " + wheres.join(" AND ");
+  }
+
+  if (havings.length > 0) {
+    query += " HAVING " + havings.join(" AND ");
+  }
+
+  if (order != null) {
+    query += " ORDER BY " + order;
+  }
+
+  console.log("MySQL QUERY: " + query);
+
+  req.db.query(query, function(err, results) {
+    if (err)
+      throw err;
+
+    if (results.length > 0) {
+      for (i = 0; i < results.length; i++) {
+        delete results[i].actual_bid;
+        delete results[i].avg_seller_rating;
+      }
+
+      res.send({"results" : results});
+    } else {
+      res.send(404);
+    }
+  });
+});
+
 routes.get("/products/bidding", function (req, res, next) {
   var userId = req.query.userId;
 
