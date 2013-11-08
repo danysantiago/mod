@@ -5,6 +5,8 @@ import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Address;
+import icom5016.modstore.models.User;
+import icom5016.modstore.resources.DataFetchFactory;
 import icom5016.modstore.uielements.AddressAdapter;
 import icom5016.modstore.uielements.AddressDialog;
 
@@ -34,11 +36,13 @@ public class AddressesFragment extends SettingListFragment {
     }
 
 	private void requestAddresses() {
+		User u = DataFetchFactory.getUserFromSPref(getActivity());
+		
 		//Perform http request
 		Bundle params = new Bundle();
 		
 		params.putString("method", "GET");
-		params.putString("url", Server.Addresses.GETALL);
+		params.putString("url", Server.Addresses.GET + "?userId=" + u.getGuid());
 		
 		HttpRequest request = new HttpRequest(params, new HttpCallback() {
 			@Override
@@ -62,7 +66,7 @@ public class AddressesFragment extends SettingListFragment {
 		request.execute();
 	}
 	
-	class listOnClick implements OnItemClickListener {
+	public class listOnClick implements OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 	        DialogFragment dialog = new AddressDialog();
@@ -72,7 +76,7 @@ public class AddressesFragment extends SettingListFragment {
 	}
 
 	@Override
-	void addOnClickListener(View v) {
+	public void addOnClickListener(View v) {
         DialogFragment dialog = new AddressDialog();
         dialog.show(getActivity().getSupportFragmentManager(), "AddressDialog");
 	}

@@ -5,6 +5,8 @@ import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.CreditCard;
+import icom5016.modstore.models.User;
+import icom5016.modstore.resources.DataFetchFactory;
 import icom5016.modstore.uielements.CreditCardAdapter;
 import icom5016.modstore.uielements.CreditCardDialog;
 
@@ -35,11 +37,13 @@ public class CreditCardsFragment extends SettingListFragment {
     }
 	
 	private void requestCreditCards() {
+		User u = DataFetchFactory.getUserFromSPref(getActivity());
+		
 		//Perform http request
 		Bundle params = new Bundle();
 		
 		params.putString("method", "GET");
-		params.putString("url", Server.CreditCards.GETALL);
+		params.putString("url", Server.CreditCards.GET + "?userId=" + u.getGuid());
 		
 		HttpRequest request = new HttpRequest(params, new HttpCallback() {
 			@Override
