@@ -4,13 +4,12 @@
     android:orientation="vertical" >
 	<!-- Active -->
     <TextView
-        android:id="@+id/sell_bidding"
+        android:id="@+id/sell_active"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_gray"
         android:text="@string/listsell_active" 
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:textSize="25sp"
+        android:textStyle="bold|italic"
         android:padding="10dp"/>
 
     <ListView
@@ -24,6 +23,11 @@
         android:id="@+id/sell_active_loader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
         android:columnCount="2" >
 
         <TextView
@@ -50,10 +54,9 @@
         android:id="@+id/sell_sold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_gray"
         android:text="@string/listsell_sold" 
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:textSize="25sp"
+        android:textStyle="bold|italic"
         android:padding="10dp"/>
 
     <ListView
@@ -67,6 +70,11 @@
         android:id="@+id/sell_sold_loader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
         android:columnCount="2" >
 
         <TextView
@@ -83,6 +91,54 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:id="@+id/sell_sold_pb"
+            android:layout_column="1"
+            android:layout_gravity="right|top"
+             />
+
+    </GridLayout>
+    
+    <!-- Not Sold -->
+    <TextView
+        android:id="@+id/sell_notsold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/listsell_notsold" 
+        android:textSize="25sp"
+        android:textStyle="bold|italic"
+        android:padding="10dp"/>
+
+    <ListView
+        android:id="@+id/sell_notsold_lv"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+    <GridLayout
+        android:id="@+id/sell_notsold_loader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
+        android:columnCount="2" >
+
+        <TextView
+            android:id="@+id/sell_notsold_load_tv"
+            android:layout_column="0"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/listbuysell_load" />
+
+        <ProgressBar
+            android:paddingRight="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/sell_notsold_pb"
             android:layout_column="1"
             android:layout_gravity="right|top"
              />

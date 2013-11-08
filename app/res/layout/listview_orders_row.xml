@@ -13,8 +13,8 @@
 		android:background="@drawable/bg_card">
 		<!-- Card Contents go here -->
 		<GridLayout
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
 		    android:columnCount="2" >
 		
 		    <TextView
