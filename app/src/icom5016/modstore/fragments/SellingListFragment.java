@@ -125,15 +125,13 @@ public class SellingListFragment extends Fragment {
 
 			private void doHttpSellingList(boolean active, boolean sold) throws JSONException{
 				Bundle params = new Bundle();
-				params.putString("url", Server.Orders.POSTSELLLIST);
-				params.putString("method", "POST");
+				params.putString("url", Server.Products.GETSELLING+"?userId="+this.activeUser.getGuid()+
+						"&active="+ Boolean.toString(active) +"&sold="+Boolean.toString(sold));
+				params.putString("method", "GET");
+				params.putString("method", "GET");
 				
-				JSONObject credentials = new JSONObject();
-				credentials.put("userid", this.activeUser.getGuid());
-				credentials.put("active", active);
-				credentials.put("sold", sold);
 				
-				HttpRequest request = new HttpRequest(params, credentials, new HttpCallback() {
+				HttpRequest request = new HttpRequest(params, new HttpCallback() {
 					
 					@Override
 					public void onSucess(JSONObject json) {

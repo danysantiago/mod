@@ -1,6 +1,6 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.fragments.BuyingListFragment;
+import icom5016.modstore.fragments.BiddingListFragment;
 import icom5016.modstore.fragments.MyOrdersListFragment;
 import icom5016.modstore.fragments.SellingListFragment;
 
@@ -121,7 +121,7 @@ public class MyOrdersActivity extends MainInterfaceActivity implements
 			Fragment fragment = new MyOrdersListFragment();
 			switch(position){
 			case 1:
-				fragment = new BuyingListFragment();
+				fragment = new BiddingListFragment();
 				break;
 			case 2:
 				fragment = new SellingListFragment();

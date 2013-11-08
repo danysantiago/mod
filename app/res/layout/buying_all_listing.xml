@@ -8,10 +8,9 @@
         android:id="@+id/buy_bidding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_gray"
         android:text="@string/listbuy_bidding" 
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:textSize="25sp"
+        android:textStyle="bold|italic"
         android:padding="10dp"/>
 
     <ListView
@@ -25,6 +24,11 @@
         android:id="@+id/buy_bidding_loader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
         android:columnCount="2" >
 
         <TextView
@@ -52,10 +56,9 @@
         android:id="@+id/buy_nwin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_gray"
         android:text="@string/listbuy_nwin" 
-        android:textSize="15sp"
-        android:textStyle="bold"
+       android:textSize="25sp"
+        android:textStyle="bold|italic"
         android:padding="10dp"/>
 
     <ListView
@@ -69,6 +72,11 @@
         android:id="@+id/buy_nwin_loader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
         android:columnCount="2" >
 
         <TextView

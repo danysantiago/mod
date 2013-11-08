@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -31,7 +31,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class BuyingListFragment extends Fragment {
+public class BiddingListFragment extends Fragment {
 		//User Instance Field
 		private User activeUser;
 		private MainInterfaceActivity mainActivity;
@@ -125,16 +125,13 @@ public class BuyingListFragment extends Fragment {
 		
 		private void doHttpBuyingList(boolean bidding, boolean notwin) throws JSONException{
 			Bundle params = new Bundle();
-			params.putString("url", Server.Orders.POSTBUYLIST);
-			params.putString("method", "POST");
+			params.putString("url", Server.Products.GETBIDDING+"?userId="+this.activeUser.getGuid()+
+					"&bidding="+ Boolean.toString(bidding) +"&not_won="+Boolean.toString(notwin));
+			params.putString("method", "GET");
 			
-			JSONObject credentials = new JSONObject();
-			credentials.put("userid", this.activeUser.getGuid());
-			credentials.put("bidding", bidding);
-			credentials.put("notwin", notwin);
 
 			
-			HttpRequest request = new HttpRequest(params, credentials, new HttpCallback() {
+			HttpRequest request = new HttpRequest(params, new HttpCallback() {
 				
 				@Override
 				public void onSucess(JSONObject json) {
@@ -142,13 +139,13 @@ public class BuyingListFragment extends Fragment {
 						
 						
 						
-						if(json.has("bidding") && json.has("notWin")){
+						if(json.has("bidding") && json.has("not_won")){
 							
 							//Bidding Var
 							JSONArray biddingList = json.getJSONArray("bidding");
 							ProgressBar pbBidding = (ProgressBar) mainLayout.findViewById(R.id.buy_bidding_pb);
 							TextView tvBidding = (TextView) mainLayout.findViewById(R.id.buy_bidding_load_tv);
-							GridView gvBidding = (GridView) mainLayout.findViewById(R.id.buy_bidding_loader);
+							GridLayout gvBidding = (GridLayout) mainLayout.findViewById(R.id.buy_bidding_loader);
 							ListView lvBidding = (ListView) mainLayout.findViewById(R.id.buy_bidding_lv);
 							
 							
@@ -165,10 +162,10 @@ public class BuyingListFragment extends Fragment {
 				
 							
 							//Didn't Win
-							JSONArray notwinList = json.getJSONArray("notWin");
+							JSONArray notwinList = json.getJSONArray("not_won");
 							ProgressBar pbNotwin = (ProgressBar) mainLayout.findViewById(R.id.buy_nwin_pb);
 							TextView tvNotwin = (TextView) mainLayout.findViewById(R.id.buy_nwin_load_tv);
-							GridView gvNotwin = (GridView) mainLayout.findViewById(R.id.buy_nwin_loader);
+							GridLayout gvNotwin = (GridLayout) mainLayout.findViewById(R.id.buy_nwin_loader);
 							ListView lvNotwin = (ListView) mainLayout.findViewById(R.id.buy_nwin_lv);
 							
 							
@@ -192,11 +189,13 @@ public class BuyingListFragment extends Fragment {
 							ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 							TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 							ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
+							GridLayout gvBidding = (GridLayout) mainLayout.findViewById(R.id.buy_bidding_loader);
 							pbIndividual.setVisibility(View.GONE);
 							if(biddingList.length() == 0){
 								tvIndividual.setVisibility(View.VISIBLE);
 							}
 							else{
+								gvBidding.setVisibility(View.GONE);
 								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, biddingList,  ConstantClass.BUYING_BIDDING));
 								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvIndividual.setVisibility(View.VISIBLE);
@@ -205,17 +204,18 @@ public class BuyingListFragment extends Fragment {
 							
 
 						}
-						else if(json.has("notWin")){
-							JSONArray notwinList = json.getJSONArray("notWin");
+						else if(json.has("not_won")){
+							JSONArray notwinList = json.getJSONArray("not_won");
 							ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 							TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 							ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
-							
+							GridLayout gvBidding = (GridLayout) mainLayout.findViewById(R.id.buy_bidding_loader);
 							pbIndividual.setVisibility(View.GONE);
 							if(notwinList.length() == 0){
 								tvIndividual.setVisibility(View.VISIBLE);
 							}
 							else{
+								gvBidding.setVisibility(View.GONE);
 								lvIndividual.setAdapter(new BuyingListAdapter(mainActivity, notwinList,  ConstantClass.BUYING_NOTWIN));
 								lvIndividual.setOnItemClickListener(new BuySellListListener(mainActivity));
 								lvIndividual.setVisibility(View.VISIBLE);

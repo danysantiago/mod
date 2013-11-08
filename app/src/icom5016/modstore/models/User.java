@@ -27,9 +27,9 @@ public class User {
 		this.guid = guid;
 	}
 	
-	public User(JSONObject jsonObject) {
-		try {
-			this.guid = jsonObject.getInt("id");
+	public User(JSONObject jsonObject) throws JSONException {
+		
+			this.guid = jsonObject.getInt("user_id");
 			this.username = jsonObject.getString("user_name");
 			this.firstName = jsonObject.getString("first_name");
 			this.middleName = jsonObject.getString("middle_name");
@@ -37,9 +37,7 @@ public class User {
 			this.email = jsonObject.getString("email");
 			int admin = jsonObject.getInt("is_admin");
 			this.isAdmin = admin == 1;
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public String getUsername() {

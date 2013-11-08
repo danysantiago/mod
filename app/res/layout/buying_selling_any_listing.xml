@@ -1,34 +1,51 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-    <ProgressBar
-        android:id="@+id/buysell_any_pb"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
-
-    <TextView
-        android:id="@+id/buysell_any_noitem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/listbuysell_no_item" />
-
-    <ListView
-        android:id="@+id/buysell_any_lv"
-        android:visibility="gone"
+	<GridLayout
+        android:id="@+id/buy_bidding_loader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
+        android:columnCount="1" >
 
+	     <ProgressBar
+		    android:id="@+id/buysell_any_pb"
+		    style="?android:attr/progressBarStyleLarge"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center"/>
+
+	    <RelativeLayout
+	 	    android:layout_width="match_parent"
+	 	    android:layout_height="wrap_content"
+	 	    android:layout_gravity="center" >
+	 	     <TextView
+		        android:id="@+id/buysell_any_noitem"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:textSize="25sp"
+		        android:textStyle="bold"
+		        android:visibility="gone"
+		        android:layout_centerHorizontal="true"
+		        android:layout_centerVertical="true"
+		        android:text="@string/listbuysell_no_item" />
+ 		</RelativeLayout>
+	   
+
+    </GridLayout>
+ 	<ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buysell_any_lv"
+        android:visibility="gone" >
     </ListView>
 
-</RelativeLayout>
+ 	
+
+</LinearLayout>

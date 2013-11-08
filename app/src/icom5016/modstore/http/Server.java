@@ -11,6 +11,8 @@ public class Server {
 	  public static final String GET = BASE_URL+"/products/";
 	  public static final String GETCATEGORIES = BASE_URL + "/products/category/";
 	  public static final String GETALL = BASE_URL+"/products";
+	  public static final String GETBIDDING = BASE_URL+"/products/bidding/";
+	  public static final String GETSELLING = BASE_URL+"/products/selling/";
 	}
 	
 	public static class Categories {
@@ -33,8 +35,6 @@ public class Server {
 	}
 	
 	public static class Orders{
-		public static final String POSTBUYLIST = BASE_URL+"/ordersbuy";
-		public static final String POSTSELLLIST = BASE_URL+"/orderssell";
 		public static final String GETORDERS = BASE_URL+"/orders/";
 		public static final String GETORDERDETAILS = BASE_URL+"/orders/details/";
 	}
