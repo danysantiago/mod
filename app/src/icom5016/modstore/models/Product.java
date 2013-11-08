@@ -2,122 +2,146 @@ package icom5016.modstore.models;
 
 import java.text.NumberFormat;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public class Product {
-	protected int pid;
-	protected User user; //Seller Cambiar por el user
-	protected Category category; //Category Object
+	protected int id;
+	protected int userId; //Seller
+	protected int categoryId;
 	protected String name;
 	protected String description;
 	protected String brand;
 	protected String model;
 	protected String dimensions;
-	protected double buyitnow_price;
+	protected double buyItNowPrice;
 	protected int quantity;
-	protected double starting_bid_price; 
-	protected String auction_ends;
-	protected String image_src;
-	private String created_Ts
+	protected double startingBidPrice; 
+	protected String auctionEndsTs;
+	protected String imageSrcUrl;
+	private String createdTs;
+
+	//Optional Values
+	protected User user; //Seller
+	protected Category category; //Category Object
 	
-	public Product(int pid, int uid, int cid, String name, String description,
-			String brand, String model, String dimensions, double buyout_price,
-			int quantity, double bid_price, String auction_ends,
-			String image_src) {
+	public Product(int product_id, int user_id, int category_id, String name,
+			String description, String brand, String model, String dimensions,
+			double buyItNowPrice, int quantity, double startingBidPrice,
+			String auctionEndsTs, String imageSrcUrl, String createdTs,
+			User user, Category category) {
 		super();
-		this.pid = pid;
-		this.uid = uid;
-		this.cid = cid;
+		this.id = product_id;
+		this.userId = user_id;
+		this.categoryId = category_id;
 		this.name = name;
 		this.description = description;
 		this.brand = brand;
 		this.model = model;
 		this.dimensions = dimensions;
-		this.buyout_price = buyout_price;
+		this.buyItNowPrice = buyItNowPrice;
 		this.quantity = quantity;
-		this.bid_price = bid_price;
-		this.auction_ends = auction_ends;
-		this.image_src = image_src;
+		this.startingBidPrice = startingBidPrice;
+		this.auctionEndsTs = auctionEndsTs;
+		this.imageSrcUrl = imageSrcUrl;
+		this.createdTs = createdTs;
+		this.user = user;
+		this.category = category;
 	}
 
-	public Product(JSONObject jsonObject) {
-		try {
-			this.pid = jsonObject.getInt("product_id");
-			if(jsonObject.has("user")) {
-				this.user = new User(jsonObject.getJSONObject("user"));
-			}
-			this.cid = jsonObject.getInt("category_id");
-			//category
-			this.name = jsonObject.getString("name");
-			this.description = jsonObject.getString("description");
-			this.brand = jsonObject.getString("brand");
-			this.model = jsonObject.getString("model");
-			this.dimensions = jsonObject.getString("dimensions");
-			this.buyout_price = jsonObject.getDouble("buy_price");
-			this.quantity = jsonObject.getInt("quantity");
-			this.bid_price = jsonObject.getDouble("starting_bid_price");
-			this.auction_ends = jsonObject.getString("auction_end_ts");
-			this.image_src = jsonObject.getString("image_src");
-			//created_ts
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Log.d("json", e.getMessage());
+	public Product(JSONObject json) throws JSONException {
+		this.id = json.getInt("product_id");
+		this.userId = json.getInt("user_id");
+		this.categoryId = json.getInt("category_id");
+		this.description = json.getString("description");
+		this.name = json.getString("name");
+		this.brand = json.getString("brand");
+		this.model = json.getString("model");
+		this.dimensions = json.getString("dimensions");
+		
+		if(json.getString("buy_price").equals("null")){
+			this.buyItNowPrice = -1.0;
 		}
+		else{
+			this.buyItNowPrice = json.getDouble("buy_price");
+		}
+		
+		this.quantity = json.getInt("quantity");
+		
+		if(json.getString("starting_bid_price").equals("null")){
+			this.startingBidPrice = -1.0;
+		}
+		else{
+			this.startingBidPrice = json.getDouble("starting_bid_price");
+		}
+		
+		
+		this.auctionEndsTs = json.getString("auction_end_ts");
+		this.createdTs = json.getString("created_ts");
+		
+		if(json.has("image_src"))
+			this.imageSrcUrl = json.getString("image_src");
+		
+		if(json.has("user"))
+			this.user = new User(json.getJSONObject("user"));
+		if(json.has("category"))
+			this.category = new Category(json.getJSONObject("category"));
 	}
 
-	public int getPid() {
-		return pid;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public String getName() {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getDescription() {
 		return description;
 	}
 
-	public double getPrice(){
-		return this.buyout_price;
-	}
-	public String getPriceString() {
-		NumberFormat nf = NumberFormat.getInstance();
-		nf.setMinimumFractionDigits(2);
-		// Some logic must be there to decide what price will be shown. 
-		return "$" + nf.format(buyout_price);
-	}
-	
-	public double getPriceNumber() {
-		return buyout_price;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getBrand() {
 		return brand;
 	}
 
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
 	public String getModel() {
 		return model;
 	}
 
-	public int getUid() {
-		return uid;
-	}
-
-	public void setUid(int uid) {
-		this.uid = uid;
-	}
-
-	public int getCid() {
-		return cid;
-	}
-
-	public void setCid(int cid) {
-		this.cid = cid;
+	public void setModel(String model) {
+		this.model = model;
 	}
 
 	public String getDimensions() {
@@ -128,6 +152,14 @@ public class Product {
 		this.dimensions = dimensions;
 	}
 
+	public double getBuyItNowPrice() {
+		return buyItNowPrice;
+	}
+
+	public void setBuyItNowPrice(double buyItNowPrice) {
+		this.buyItNowPrice = buyItNowPrice;
+	}
+
 	public int getQuantity() {
 		return quantity;
 	}
@@ -136,42 +168,70 @@ public class Product {
 		this.quantity = quantity;
 	}
 
-	public double getBid_price() {
-		return bid_price;
+	public double getStartingBidPrice() {
+		return startingBidPrice;
+	}
+
+	public void setStartingBidPrice(double startingBidPrice) {
+		this.startingBidPrice = startingBidPrice;
+	}
+
+	public String getAuctionEndsTs() {
+		return auctionEndsTs;
+	}
+
+	public void setAuctionEndsTs(String auctionEndsTs) {
+		this.auctionEndsTs = auctionEndsTs;
+	}
+
+	public String getImageSrcUrl() {
+		return imageSrcUrl;
+	}
+
+	public void setImageSrcUrl(String imageSrcUrl) {
+		this.imageSrcUrl = imageSrcUrl;
+	}
+
+	public String getCreatedTs() {
+		return createdTs;
+	}
+
+	public void setCreatedTs(String createdTs) {
+		this.createdTs = createdTs;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 	
-	public String getBid() {
+
+
+	public String getBuyItNowPriceString() {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(2);
 		// Some logic must be there to decide what price will be shown. 
-		return "$" + nf.format(bid_price);
-	}
-
-	public void setBid_price(double bid_price) {
-		this.bid_price = bid_price;
-	}
-
-	public String getAuction_ends() {
-		return auction_ends;
-	}
-
-	public void setAuction_ends(String auction_ends) {
-		this.auction_ends = auction_ends;
-	}
-
-	public String getImage_src() {
-		return image_src;
-	}
-
-	public void setImage_src(String image_src) {
-		this.image_src = image_src;
+		return "$" + nf.format(this.buyItNowPrice);
 	}
 	
-	public static Product[] getaProductArrayFromJSON(JSONArray jsonArr) throws JSONException{
-		Product[] lp = new Product[jsonArr.length()];
-		for(int i = 0; i < jsonArr.length(); i++) {
-			lp[i] = new Product(jsonArr.getJSONObject(i));
-		}
-		return lp;
+
+
+	public String getStartingBidPriceString() {
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumFractionDigits(2);
+		// Some logic must be there to decide what price will be shown. 
+		return "$" + nf.format(this.startingBidPrice);
 	}
+
 }

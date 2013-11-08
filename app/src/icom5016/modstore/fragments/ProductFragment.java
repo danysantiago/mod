@@ -55,17 +55,17 @@ public class ProductFragment extends Fragment {
 		Button buyButton = (Button) view.findViewById(R.id.btnProductAdd);
 		Button bidButton = (Button) view.findViewById(R.id.bidButton);
 		
-		if(product.getAuction_ends().length() > 0) {
-			buyButton.setVisibility(View.GONE);
-			
-			TextView endDate = (TextView) view.findViewById(R.id.endDateTextView);
-			endDate.setText(product.getAuction_ends());
-			priceTV.setText("Highest Bid: " + product.getBid());
-		} else {
-			bidLayout.setVisibility(View.GONE);
-			
-			priceTV.setText("Price: " + product.getPrice());
-		}
+//		if(product.getAuction_ends().length() > 0) {
+//			buyButton.setVisibility(View.GONE);
+//			
+//			TextView endDate = (TextView) view.findViewById(R.id.endDateTextView);
+//			endDate.setText(product.getAuction_ends());
+//			priceTV.setText("Highest Bid: " + product.getBid());
+//		} else {
+//			bidLayout.setVisibility(View.GONE);
+//			
+//			priceTV.setText("Price: " + product.getPrice());
+//		}
 		
 		productNameTV.setText(product.getName());
 		brandTV.setText("Brand: " + product.getBrand());

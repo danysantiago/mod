@@ -6,14 +6,10 @@ import icom5016.modstore.adapters.OrderDetailsListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
-import icom5016.modstore.listeners.OrderDetailsListListener;
-import icom5016.modstore.models.Address;
 import icom5016.modstore.models.CreditCard;
+import icom5016.modstore.models.Orders;
 import icom5016.modstore.resources.ConstantClass;
 
-import java.text.NumberFormat;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,6 +71,7 @@ public class MyOrderDetailsListFragment extends Fragment {
 		this.tvCCNum = (TextView) view.findViewById(R.id.tvOrderCCNum);
 		this.lvDetails = (ListView) view.findViewById(R.id.odListView);
 		
+		
 		this.mainActivity = (MainInterfaceActivity) this.getActivity();
 		
 		doHttpOrderDetails();
@@ -97,34 +94,27 @@ public class MyOrderDetailsListFragment extends Fragment {
 			@Override
 			public void onSucess(JSONObject json) {
 				try {
-					String date = json.getString("created_ts");
-					Address addr = new Address(json.getJSONObject("address")); 
-					CreditCard cc = new CreditCard(json.getJSONObject("creditCard"));
-					JSONArray detailsList = json.getJSONArray("details");
+					Orders order = new Orders(json.getJSONObject("order"));
+					tvTotal.setText(tvTotal.getText()+" "+order.getOrderTotalString());
+					tvDate.setText(tvDate.getText()+" "+order.getDateFormatedString());
+					tvAddress.setText(order.getAddress().toString());
 					
-					tvDate.setText(tvDate.getText()+" "+date);
-					tvAddress.setText(addr.toString());
+					CreditCard cc = order.getCreditCard();
+					tvCCNum.setText(cc.getTypeString()+" - "+
+							cc.getNumber().substring(cc.getNumber().length()-4));
 					
-					double total = 0;
-					for(int i=0; i<detailsList.length(); i++){
-						total += detailsList.getJSONObject(i).getDouble("final_price");
-					}
-					NumberFormat nf = NumberFormat.getInstance();
-					nf.setMinimumFractionDigits(2);
-					tvTotal.setText(tvTotal.getText()+" $"+nf.format(total));
+					lvDetails.setAdapter(new OrderDetailsListAdapter(mainActivity, json.getJSONArray("details")));
 					
-					tvCCNum.setText(ConstantClass.CREDITCARD_LIST[cc.getType()]+" - "+cc.getNumber().substring(cc.getNumber().length()-4));
 					
-					//Size must be bigger than 1
-					lvDetails.setAdapter(new OrderDetailsListAdapter(mainActivity, detailsList));
-					lvDetails.setOnItemClickListener(new OrderDetailsListListener(mainActivity));
 					
+					pbPlaceHolder.setVisibility(View.GONE);
 					llMainContainer.setVisibility(View.VISIBLE);
 					
 				} catch (JSONException e) {
 					Toast.makeText(mainActivity, R.string.errmsg_bad_json,
 							Toast.LENGTH_SHORT).show();
 				}
+				
 			}
 
 			@Override

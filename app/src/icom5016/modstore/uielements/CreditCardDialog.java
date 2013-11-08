@@ -109,7 +109,7 @@ public class CreditCardDialog extends DialogFragment {
 	        
 	    	for (int i = 0; i < tempAdapter.getCount(); i++) {
 	    		addr = (Address)tempAdapter.getItem(i);
-	    		if (addr.getId() == creditCard.getAid()) {
+	    		if (addr.getId() == creditCard.getAddressId()) {
 	    			pos = i;
 	    		}
 	    	}

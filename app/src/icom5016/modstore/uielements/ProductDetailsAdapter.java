@@ -65,15 +65,15 @@ public class ProductDetailsAdapter extends ArrayAdapter<Product> {
         imageloader.DisplayImage("http://files.gamebanana.com/img/ico/sprays/1up_orcaexample.png", holder.imgThumbnail);
         holder.txtName.setText(product.getName());
         holder.txtDescription.setText(product.getDescription());
-        holder.txtPrice.setText(product.getPriceString());
-        holder.txtEndingOn.setText(product.getAuction_ends());
+        holder.txtPrice.setText(product.getBuyItNowPriceString());
+        holder.txtEndingOn.setText(product.getAuctionEndsTs());
         holder.txtQuantity.setText(String.valueOf(product.getQuantity()));
         
-        if (product.getBid_price() != -1) {
+        if (product.getBuyItNowPrice() != -1) {
         	holder.lblBid.setVisibility(View.VISIBLE);
         	holder.txtBid.setVisibility(View.VISIBLE);
         	
-        	holder.txtBid.setText(product.getBid());
+        	holder.txtBid.setText(Double.toString(product.getStartingBidPrice()));
         	
         	if (itemsSold)
         		holder.lblBid.setText(R.string.label_endedon);

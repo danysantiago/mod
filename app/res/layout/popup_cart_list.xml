@@ -32,25 +32,23 @@
             android:textSize="20sp" />
 
         <Button
-            android:layout_marginRight="10dp"
-            android:background="@color/dark_gray"
+            android:layout_marginRight="5dp"
             android:id="@+id/cartCheckoutBtn"
             android:onClick="cartCheckoutBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:text="@string/cart_checkout_btn_text"
-            android:textColor="@color/white" />
+            android:text="@string/cart_checkout_btn_text" />
 
     </RelativeLayout>
 
-   <LinearLayout
-        android:padding="2dp"
+    <LinearLayout
+        android:layout_margin="2dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/darker_white" >
+        android:background="@color/light_gray" >
 
         <ListView
             android:id="@+id/cartListView"

@@ -21,7 +21,6 @@ public class OrderedProductFragment extends Fragment {
 	TextView lblDescription;
 	TextView lblUser;
 	TextView lblAddress;
-	TextView lblTrackingNumLabel;
 	TextView lblTrackingNum;
 	EditText txtTrackingNum;
 	Button btnUpdateTrackingNum;
@@ -42,7 +41,6 @@ public class OrderedProductFragment extends Fragment {
 		lblDescription = (TextView)view.findViewById(R.id.lblOPDescription);
 		lblUser = (TextView)view.findViewById(R.id.lblOPUser);
 		lblAddress = (TextView)view.findViewById(R.id.txtOPAddress);
-		lblTrackingNumLabel = (TextView)view.findViewById(R.id.txtProductTrackingNum);
 		lblTrackingNum = (TextView)view.findViewById(R.id.lblOPTrackingNum);
 		txtTrackingNum = (EditText)view.findViewById(R.id.txtOPTrackingNum);
 		btnUpdateTrackingNum = (Button)view.findViewById(R.id.btnTrackingNumUpdate);
@@ -61,36 +59,31 @@ public class OrderedProductFragment extends Fragment {
 	}
 	
 	private void loadOrderDetail() {
-		if (orderDetail != null) {
-			lblName.setText(orderDetail.getProduct().getName());
-			lblPrice.setText("Price: " + orderDetail.getPrice());
-			lblBrand.setText("Brand: " + orderDetail.getProduct().getBrand());
-			lblModel.setText("Model: " + orderDetail.getProduct().getModel());
-			lblDimensions.setText("Dimensions: " + orderDetail.getProduct().getDimensions());
-			lblQuantity.setText("Quantity: " + orderDetail.getQuantity());
-			lblDescription.setText(orderDetail.getProduct().getDescription());
-			lblAddress.setText(orderDetail.getShippingAddress().toString());
-			
-			if (buyerView) {
-				lblUser.setText("Bougth From: " + orderDetail.getSeller().getUsername());
-				lblTrackingNum.setText(orderDetail.getTrackingNumber());
-				
-				lblTrackingNum.setVisibility(View.VISIBLE);
-				txtTrackingNum.setVisibility(View.GONE);
-				btnUpdateTrackingNum.setVisibility(View.GONE);
-				
-				if (orderDetail.getTrackingNumber().isEmpty()) {
-					lblTrackingNum.setVisibility(View.GONE);
-					lblTrackingNumLabel.setVisibility(View.GONE);
-				}
-			} else {
-				lblUser.setText("Sold To: " + orderDetail.getBuyer().getUsername());
-				txtTrackingNum.setText(orderDetail.getTrackingNumber());
-				
-				lblTrackingNum.setVisibility(View.GONE);
-				txtTrackingNum.setVisibility(View.VISIBLE);
-				btnUpdateTrackingNum.setVisibility(View.VISIBLE);
-			}
-		}
+//		if (orderDetail != null) {
+//			lblName.setText(orderDetail.getProduct().getName());
+//			lblPrice.setText("Price: " + orderDetail.getPrice());
+//			lblBrand.setText("Brand: " + orderDetail.getProduct().getBrand());
+//			lblModel.setText("Model: " + orderDetail.getProduct().getModel());
+//			lblDimensions.setText("Dimensions: " + orderDetail.getProduct().getDimensions());
+//			lblQuantity.setText("Quantity: " + orderDetail.getQuantity());
+//			lblDescription.setText(orderDetail.getProduct().getDescription());
+//			lblAddress.setText(orderDetail.getShippingAddress().toString());
+//			
+//			if (buyerView) {
+//				lblUser.setText("Bougth From: " + orderDetail.getSeller().getUsername());
+//				lblTrackingNum.setText(orderDetail.getTrackingNumber());
+//				
+//				lblTrackingNum.setVisibility(View.VISIBLE);
+//				txtTrackingNum.setVisibility(View.GONE);
+//				btnUpdateTrackingNum.setVisibility(View.GONE);
+//			} else {
+//				lblUser.setText("Sold To: " + orderDetail.getBuyer().getUsername());
+//				txtTrackingNum.setText(orderDetail.getTrackingNumber());
+//				
+//				lblTrackingNum.setVisibility(View.GONE);
+//				txtTrackingNum.setVisibility(View.VISIBLE);
+//				btnUpdateTrackingNum.setVisibility(View.VISIBLE);
+//			}
+//		}
 	}
 }

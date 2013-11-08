@@ -2,7 +2,7 @@ package icom5016.modstore.adapters;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
-import icom5016.modstore.models.ProductBuying;
+import icom5016.modstore.models.Product;
 import icom5016.modstore.resources.ConstantClass;
 
 import org.json.JSONArray;
@@ -17,7 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class BuyingListAdapter extends ArrayAdapter<ProductBuying> {
+public class BuyingListAdapter extends ArrayAdapter<Product> {
 
 	private ImageLoader imageloader;
 	private String type;
@@ -29,7 +29,7 @@ public class BuyingListAdapter extends ArrayAdapter<ProductBuying> {
 		this.type = type;
 		
 		for(int i=0; i<list.length(); i++){
-			this.add(new ProductBuying(list.getJSONObject(i)));
+			this.add(new Product(list.getJSONObject(i)));
 		}
 		
 	}
@@ -38,7 +38,7 @@ public class BuyingListAdapter extends ArrayAdapter<ProductBuying> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 
-		ProductBuying product = this.getItem(position);
+		Product product = this.getItem(position);
 
 		LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
 		
@@ -66,7 +66,7 @@ public class BuyingListAdapter extends ArrayAdapter<ProductBuying> {
 			endDate.setText("Bid Ended");
 		}
 		else if(type.equals(ConstantClass.BUYING_BIDDING)){
-			endDate.setText("End Date: "+product.getAuction_ends());
+		//	endDate.setText("End Date: "+product.getAuction_ends());
 		}
 		
 		//Current Bid/End Price:
@@ -76,7 +76,7 @@ public class BuyingListAdapter extends ArrayAdapter<ProductBuying> {
 		
 		
 		//Images
-		imageloader.DisplayImage(product.getImage_src(), image);
+		//imageloader.DisplayImage(product.getImage_src(), image);
 		
 		row.setTag(product);
 

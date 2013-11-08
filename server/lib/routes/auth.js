@@ -13,7 +13,7 @@ routes.post("/login", express.bodyParser(), function (req, res) {
     query = req.db.format("SELECT * FROM user WHERE user_name = ? AND user_password = MD5(?);", [req.body.user, req.body.pass]);
     console.log("MySQL QUERY: " + query);
 
-    req.db.query(query, function (err, result) {
+    req.db.query(query, function(err, results) {
       if (err)
         throw err;
 
@@ -34,7 +34,7 @@ routes.post("/login", express.bodyParser(), function (req, res) {
                 "created_ts": result[0].created_ts
         };
 
-        res.send(200, {"status": "OK", "account": user});
+        res.send(200, user);
       } else {
         res.send({"status": "BAD CREDENTIALS"});
       }

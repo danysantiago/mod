@@ -144,20 +144,20 @@ public class ProductSellEditFragment extends Fragment {
 			txtModel.setText(product.getModel());
 			txtDimensions.setText(product.getDimensions());
 			txtQuantity.setText(String.valueOf(product.getQuantity()));
-			txtBuyoutPrice.setText(String.valueOf(product.getPriceNumber()));
-			if (product.getBid_price() != -1) {
-				txtBidPrice.setText(String.valueOf(product.getBid_price()));
-			}
-			txtEndAuction.setText(product.getAuction_ends());
-			
+//			txtBuyoutPrice.setText(String.valueOf(product.getPriceNumber()));
+//			if (product.getBid_price() != -1) {
+//				txtBidPrice.setText(String.valueOf(product.getBid_price()));
+//			}
+//			txtEndAuction.setText(product.getAuction_ends());
+//			
 			SpinnerAdapter tempAdapter = cboCategory.getAdapter();
 			
 			for (int i = 0; i < tempAdapter.getCount(); i++) {
 				Category tempCat = (Category)tempAdapter.getItem(i);
-				if (tempCat.getId() == product.getCid()) {
-					cboCategory.setSelection(i);
-					break;
-				}
+//				if (tempCat.getId() == product.getCid()) {
+//					cboCategory.setSelection(i);
+//					break;
+//				}
 			}
 			
 			btnAdd.setText(R.string.product_updateit);

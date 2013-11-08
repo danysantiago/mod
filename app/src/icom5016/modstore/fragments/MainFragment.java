@@ -44,12 +44,12 @@ public class MainFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		
 		Product[] pList = new Product[5];
-		pList[0] = new Product(0, 2, 2, "A Product 1", "Some lazy short description,", "Shiny Inc.", "Star12", "2x3x2", 20.99, 1, -1, "", null);
-		pList[1] = new Product(1, 2, 2, "1993 Useless Rock", "A wonderful and hard rock, dated to 1993.", "Rocky", "1bdg35adc", "2.2x1.2x1.4", 99.99, 1, -1, "", null);
-		pList[2] = new Product(2, 2, 2, "A Cat", "Just a cat, found on the street, please feed it well.", "Da Street", "v1", "Varies", 10.00, 1, -1, "", null);
-		pList[3] = new Product(3, 2, 2, "Another Product", "Some lazy short description for another product", "Awesome P", "A129", "1x1x1", 120.00, 1, -1, "", null);
-		pList[4] = new Product(3, 2, 2, "A Bidding Product", "This product you bid on it, go do it!", "Bid Inc.", "B1010", "1x1x1", -1, 1, 30.50, "12/10/2013 6:00PM", null);
-		
+//		pList[0] = new Product(0, 2, 2, "A Product 1", "Some lazy short description,", "Shiny Inc.", "Star12", "2x3x2", 20.99, 1, -1, "", null);
+//		pList[1] = new Product(1, 2, 2, "1993 Useless Rock", "A wonderful and hard rock, dated to 1993.", "Rocky", "1bdg35adc", "2.2x1.2x1.4", 99.99, 1, -1, "", null);
+//		pList[2] = new Product(2, 2, 2, "A Cat", "Just a cat, found on the street, please feed it well.", "Da Street", "v1", "Varies", 10.00, 1, -1, "", null);
+//		pList[3] = new Product(3, 2, 2, "Another Product", "Some lazy short description for another product", "Awesome P", "A129", "1x1x1", 120.00, 1, -1, "", null);
+//		pList[4] = new Product(3, 2, 2, "A Bidding Product", "This product you bid on it, go do it!", "Bid Inc.", "B1010", "1x1x1", -1, 1, 30.50, "12/10/2013 6:00PM", null);
+//		
 		list1 = (ListView) view.findViewById(R.id.listView1);
 		MainAdapter adapter1 = new MainAdapter(getActivity(), R.layout.listview_home_row_2);
 		for(int i = 0; i < 10; i++) {
@@ -109,8 +109,8 @@ public class MainFragment extends Fragment {
 			Product p = this.getItem(position);
 			
 			productNameTV.setText(p.getName());
-			priceTV.setText(p.getPriceString());
-			imageView.setImageResource(images[p.getPid()]);
+			priceTV.setText(p.getBuyItNowPriceString());
+		//	imageView.setImageResource(images[p.getImageSrcUrl()()]);
 			
 			
 			return view;

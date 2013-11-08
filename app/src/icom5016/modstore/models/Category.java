@@ -9,13 +9,28 @@ public class Category {
 	private int id;
 	private String name;
 	
+	//Optional Category
+	private Category parent;
+	
+	
 	
 	public Category(JSONObject json) throws NumberFormatException, JSONException{
 		this.parentId = json.getInt("parentId");
 		this.id = json.getInt("id");
 		this.name = json.getString("name");
+		
+		if(json.has("parent"))
+			this.parent = new Category(json.getJSONObject("parent"));
 	}
 	
+	public Category getParent() {
+		return parent;
+	}
+
+	public void setParent(Category parent) {
+		this.parent = parent;
+	}
+
 	public Category(int parentId, int id, String name) {
 		super();
 		this.parentId = parentId;
