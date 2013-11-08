@@ -55,6 +55,8 @@ public class Orders {
 			this.user = new User(json.getJSONObject("user"));
 		if(json.has("creditcard"))
 			this.creditCard = new CreditCard(json.getJSONObject("creditcard"));
+		if(json.has("address"))
+			this.address = new Address(json.getJSONObject("address"));
 		
 		if(json.has("order_total"))
 			this.orderTotal = json.getDouble("order_total");

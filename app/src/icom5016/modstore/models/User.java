@@ -30,12 +30,13 @@ public class User {
 	public User(JSONObject jsonObject) {
 		try {
 			this.guid = jsonObject.getInt("id");
-			this.username = jsonObject.getString("username");
-			this.firstName = jsonObject.getString("firstName");
-			this.middleName = jsonObject.getString("middleName");
-			this.lastName = jsonObject.getString("lastName");
+			this.username = jsonObject.getString("user_name");
+			this.firstName = jsonObject.getString("first_name");
+			this.middleName = jsonObject.getString("middle_name");
+			this.lastName = jsonObject.getString("last_name");
 			this.email = jsonObject.getString("email");
-			this.isAdmin = jsonObject.getBoolean("isAdmin");
+			int admin = jsonObject.getInt("is_admin");
+			this.isAdmin = admin == 1;
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

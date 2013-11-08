@@ -3,6 +3,7 @@ package icom5016.modstore.adapters;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
 import icom5016.modstore.models.OrderDetail;
+import icom5016.modstore.models.Product;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,33 +37,49 @@ public class OrderDetailsListAdapter extends ArrayAdapter<OrderDetail> {
 		View row = convertView;
 
 		OrderDetail orderDetail = this.getItem(position);
+		Product product = orderDetail.getProduct();
 
 		LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
 		
-		row = inflater.inflate(R.layout.listview_ordereddetail_row, parent, false);
+		row = inflater.inflate(R.layout.listview_orderdetails_row, parent, false);
 
 		//Layout Vars
 		TextView title = (TextView) row.findViewById(R.id.prodrow_orders_title);
-	//	ImageView image = (ImageView) row.findViewById(R.id.prodrow_orders_image);
+		ImageView image = (ImageView) row.findViewById(R.id.prodrow_orders_image);
 		TextView quantity = (TextView) row.findViewById(R.id.prodrow_orders_quantity);
-	//	TextView tracking = (TextView) row.findViewById(R.id.prodrow_orders_tracking);
+		TextView tracking = (TextView) row.findViewById(R.id.prodrow_orders_tracking);
 		TextView price = (TextView) row.findViewById(R.id.prodrow_orders_price);
-		//TextView date = (TextView) row.findViewById(R.id.prodrow_orders_type);
+		TextView date = (TextView) row.findViewById(R.id.prodrow_orders_date);
+		TextView type = (TextView) row.findViewById(R.id.prodrow_orders_type);
 		
-		title.setText(orderDetail.getProduct().getName());
-		quantity.setText("Quantity: "+orderDetail.getQuantity());
 		
-	//	if(!orderDetail.getTrackingNumber().equals(""))
-		//	tracking.setText("Tracking Number: "+orderDetail.getTrackingNumber());
+		date.setVisibility(View.GONE);
+		
+		if(product.getStartingBidPrice() <= -1.0){
+			type.setText("Auction");
+		}else{
+			type.setText("Bought");
+		}
+		
+		
+		title.setText(product.getName());
+		if(!orderDetail.getTrackingNumber().equals("null"))
+			tracking.setText(orderDetail.getTrackingNumber());
 		
 		price.setText(orderDetail.getFinalSoldPriceString());
-		
-	//	date.setText(orderDetail.getItemTs());
-				
+		quantity.setText("Quantity: "+orderDetail.getQuantity());
 		
 		row.setTag(orderDetail);
-
+		
+		//TODO: Uncoment when fix
+		//imageloader.DisplayImage(product.getImageSrcUrl(), image);
+		
 		return row;
 	}
+	
+	 @Override
+     public boolean isEnabled(int position) {
+        return false;
+	 }
 
 }

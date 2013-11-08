@@ -58,12 +58,29 @@ public class Product {
 		this.brand = json.getString("brand");
 		this.model = json.getString("model");
 		this.dimensions = json.getString("dimensions");
-		this.buyItNowPrice = json.getDouble("buy_price");
+		
+		if(json.getString("buy_price").equals("null")){
+			this.buyItNowPrice = -1.0;
+		}
+		else{
+			this.buyItNowPrice = json.getDouble("buy_price");
+		}
+		
 		this.quantity = json.getInt("quantity");
-		this.startingBidPrice = json.getDouble("starting_bid_price");
+		
+		if(json.getString("starting_bid_price").equals("null")){
+			this.startingBidPrice = -1.0;
+		}
+		else{
+			this.startingBidPrice = json.getDouble("starting_bid_price");
+		}
+		
+		
 		this.auctionEndsTs = json.getString("auction_end_ts");
 		this.createdTs = json.getString("created_ts");
-		this.imageSrcUrl = json.getString("image_src");
+		
+		if(json.has("image_src"))
+			this.imageSrcUrl = json.getString("image_src");
 		
 		if(json.has("user"))
 			this.user = new User(json.getJSONObject("user"));
