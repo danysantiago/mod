@@ -10,11 +10,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class BidSellListListener implements OnItemClickListener {
+public class BidddingListListener implements OnItemClickListener {
 
 	private MainInterfaceActivity mainActivity;
 
-	public BidSellListListener(MainInterfaceActivity activity ){
+	public BidddingListListener(MainInterfaceActivity activity ){
 		this.mainActivity = activity;
 	}
 	

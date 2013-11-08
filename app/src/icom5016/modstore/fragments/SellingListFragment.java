@@ -6,7 +6,7 @@ import icom5016.modstore.adapters.SellingListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
-import icom5016.modstore.listeners.BidSellListListener;
+import icom5016.modstore.listeners.SellingListListener;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
 
@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -151,7 +151,7 @@ public class SellingListFragment extends Fragment {
 								JSONArray soldList = json.getJSONArray("sold");
 								ProgressBar pbSold = (ProgressBar) mainLayout.findViewById(R.id.sell_sold_pb);
 								TextView tvSold = (TextView) mainLayout.findViewById(R.id.sell_sold_load_tv);
-								GridView gvSold = (GridView) mainLayout.findViewById(R.id.sell_sold_loader);
+								GridLayout gvSold = (GridLayout) mainLayout.findViewById(R.id.sell_sold_loader);
 								ListView lvSold = (ListView) mainLayout.findViewById(R.id.sell_sold_lv);
 								
 								
@@ -162,7 +162,7 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvSold.setVisibility(View.GONE);
 									lvSold.setAdapter(new SellingListAdapter(mainActivity, soldList, ConstantClass.SELLING_SOLD ));
-									lvSold.setOnItemClickListener(new BidSellListListener(mainActivity));
+									lvSold.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_SOLD));
 									lvSold.setVisibility(View.VISIBLE);
 								}
 								
@@ -170,7 +170,7 @@ public class SellingListFragment extends Fragment {
 								JSONArray activeList = json.getJSONArray("active");
 								ProgressBar pbActive = (ProgressBar) mainLayout.findViewById(R.id.sell_active_pb);
 								TextView tvActive = (TextView) mainLayout.findViewById(R.id.sell_active_load_tv);
-								GridView gvActive = (GridView) mainLayout.findViewById(R.id.sell_active_loader);
+								GridLayout gvActive = (GridLayout) mainLayout.findViewById(R.id.sell_active_loader);
 								ListView lvActive = (ListView) mainLayout.findViewById(R.id.sell_active_lv);
 								
 								
@@ -181,7 +181,7 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvActive.setVisibility(View.GONE);
 									lvActive.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_ACTIVE));
-									lvActive.setOnItemClickListener(new BidSellListListener(mainActivity));
+									lvActive.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_ACTIVE));
 									lvActive.setVisibility(View.VISIBLE);
 								}
 								
@@ -189,18 +189,18 @@ public class SellingListFragment extends Fragment {
 								JSONArray notsoldList = json.getJSONArray("notsold");
 								ProgressBar pbNotSold = (ProgressBar) mainLayout.findViewById(R.id.sell_notsold_pb);
 								TextView tvNotSold = (TextView) mainLayout.findViewById(R.id.sell_notsold_load_tv);
-								GridView gvNotSold = (GridView) mainLayout.findViewById(R.id.sell_notsold_loader);
+								GridLayout gvNotSold = (GridLayout) mainLayout.findViewById(R.id.sell_notsold_loader);
 								ListView lvNotSold = (ListView) mainLayout.findViewById(R.id.sell_notsold_lv);
 								
 								
-								if(activeList.length() == 0){
+								if(notsoldList.length() == 0){
 									pbNotSold.setVisibility(View.GONE);
 									tvNotSold.setText(R.string.listbuysell_no_item);
 								}
 								else{
 									gvNotSold.setVisibility(View.GONE);
-									lvNotSold.setAdapter(new SellingListAdapter(mainActivity, notsoldList, ConstantClass.SELLING_ACTIVE));
-									lvNotSold.setOnItemClickListener(new BidSellListListener(mainActivity));
+									lvNotSold.setAdapter(new SellingListAdapter(mainActivity, notsoldList, ConstantClass.SELLING_NOTSOLD));
+									lvNotSold.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_NOTSOLD));
 									lvNotSold.setVisibility(View.VISIBLE);
 								}
 								
@@ -213,13 +213,15 @@ public class SellingListFragment extends Fragment {
 								ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 								TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 								ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
+								GridLayout gvIndividual = (GridLayout) mainLayout.findViewById(R.id.buy_bidding_loader);
 								pbIndividual.setVisibility(View.GONE);
 								if(soldList.length() == 0){
 									tvIndividual.setVisibility(View.VISIBLE);
 								}
 								else{
+									gvIndividual.setVisibility(View.GONE);
 									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, soldList, ConstantClass.SELLING_SOLD));
-									lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity));
+									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_SOLD));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 								
@@ -231,14 +233,16 @@ public class SellingListFragment extends Fragment {
 								ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 								TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 								ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
+								GridLayout gvIndividual = (GridLayout) mainLayout.findViewById(R.id.buy_bidding_loader);
 								
 								pbIndividual.setVisibility(View.GONE);
 								if(activeList.length() == 0){
 									tvIndividual.setVisibility(View.VISIBLE);
 								}
 								else{
+									gvIndividual.setVisibility(View.GONE);
 									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_ACTIVE));
-									lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity));
+									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_ACTIVE));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 							}
@@ -247,14 +251,16 @@ public class SellingListFragment extends Fragment {
 								ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 								TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 								ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
+								GridLayout gvIndividual = (GridLayout) mainLayout.findViewById(R.id.buy_bidding_loader);
 								
 								pbIndividual.setVisibility(View.GONE);
 								if(activeList.length() == 0){
 									tvIndividual.setVisibility(View.VISIBLE);
 								}
 								else{
+									gvIndividual.setVisibility(View.GONE);
 									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_NOTSOLD));
-									lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity));
+									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_NOTSOLD ));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 							}

@@ -90,6 +90,7 @@ public class ConstantClass {
 	public static final String SELLING_ACTIVE = "activeKey";
 	public static final String SELLING_SOLD = "soldKey";
 	public static final String SELLING_NOTSOLD = "notSoldKey";
+	public static final String SELLING_TYPE_VIEW_KEY = "sellingTypeViewKey";
 	public static final String BUYING_BIDDING = "biddingKey";
 	public static final String BUYING_NOTWIN = "didNotWinKey";
 	
@@ -102,5 +103,6 @@ public class ConstantClass {
 	//Bidding, Selling, Product Keys
 	public static final String PRODUCT_KEY = "productFragKey";
 	public static final String PRODUCT_NOTIFICATION_KEY = "productNotificationKey";
+	
 	
 }

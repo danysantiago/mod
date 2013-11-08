@@ -1,12 +1,10 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.fragments.ProductFragment;
-import icom5016.modstore.resources.AndroidResourceFactory;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public class ProductViewerActivity extends MainInterfaceActivity {
+public class SellingViewerActivity extends MainInterfaceActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +23,7 @@ public class ProductViewerActivity extends MainInterfaceActivity {
 		ActionBarVar.setHomeButtonEnabled(true);
 		
 		//Set Fragment
-//		ProductFragment pf = new ProductFragment();
-//		pf.setArguments(bundle);
-//		AndroidResourceFactory.setNewFragment(this, pf , MainInterfaceActivity.getContentFragmentId());
+		
 
 		
 	}
