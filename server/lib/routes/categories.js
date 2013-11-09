@@ -36,4 +36,17 @@ routes.get("/categories/:parentId", function (req, res, next) {
   });
 });
 
+routes.get("/categories", function (req, res, next) {
+  var query = "SELECT C.category_id, `name`, IFNULL(parent_category_id, -1) as parent_category_id FROM category C LEFT JOIN category_parent CP ON CP.category_id = C.category_id;";
+
+  console.log("MySQL QUERY: " + query);
+
+  req.db.query(query, function(err, results) {
+    if (err)
+      return next(err);
+
+    res.send({"categories" : ((results.length > 0) ? results : [])});
+  });
+});
+
 module.exports = routes;

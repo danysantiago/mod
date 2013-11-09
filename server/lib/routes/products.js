@@ -244,7 +244,7 @@ function endProductsSearch(req, res, query, wheres, havings, order) {
 
       res.send({"results" : results});
     } else {
-      res.send({"results" : []]});
+      res.send({"results" : []});
     }
   });
 }
