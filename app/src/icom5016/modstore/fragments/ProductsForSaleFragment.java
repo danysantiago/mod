@@ -47,7 +47,7 @@ public class ProductsForSaleFragment extends Fragment {
 		Bundle params = new Bundle();
 		
 		params.putString("method", "GET");
-		params.putString("url", Server.Products.GETALL);
+		params.putString("url", Server.Products.GETSEARCH);
 		
 		HttpRequest request = new HttpRequest(params, new HttpCallback() {
 			@Override

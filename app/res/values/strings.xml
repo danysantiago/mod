@@ -120,6 +120,7 @@
     <!-- Error Messages -->
     <string name="errmsg_no_connection">No Connection</string>
     <string name="errmsg_bad_json">Bad JSON parsing&#8230;</string>
+    <string name="errmsg_cat_notloaded"></string>
 
     <!-- Main Activity -->
     <string name="pd_mactivity">Loading App</string>

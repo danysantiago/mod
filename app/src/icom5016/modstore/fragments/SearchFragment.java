@@ -66,18 +66,9 @@ public class SearchFragment extends Fragment {
 	}
 	
 	private void doHttpSearch(Bundle args){
+
 		//Perform http request
-		
-		Uri.Builder urlB = Uri.parse(Server.Products.GETALL).buildUpon();
-		urlB.appendQueryParameter("query", args.getString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY));
-		urlB.appendQueryParameter("sort", ""+args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY));
-		urlB.appendQueryParameter("category", ""+args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY));
-		urlB.appendQueryParameter("rating", ""+args.getInt(ConstantClass.SEARCH_DIALOG_RATING_KEY));
-		urlB.appendQueryParameter("condition", ""+args.getInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY));
-		urlB.appendQueryParameter("startprice", ""+args.getDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY));
-		urlB.appendQueryParameter("endprice", ""+args.getDouble(ConstantClass.SEARCH_DIALOG_END_PRICE_KEY));
-		
-		String searchUrl = urlB.toString();
+		String searchUrl = this.parseUrl(args); 
 
 		Bundle params = new Bundle();
 		params.putString("method", "GET");
@@ -89,7 +80,7 @@ public class SearchFragment extends Fragment {
 			public void onSucess(JSONObject json) {
 				try {
 					//Get array of products
-					JSONArray jsonArr = json.getJSONArray("products");
+					JSONArray jsonArr = json.getJSONArray("results");
 
 					//Pass it to adapter and to List View
 					ProductAdapter adapter = new ProductAdapter(getActivity(), jsonArr);
@@ -117,4 +108,41 @@ public class SearchFragment extends Fragment {
 		});
 		request.execute();
 	}
+	
+	private String parseUrl(Bundle args){
+		
+		Uri.Builder urlB = Uri.parse(Server.Products.GETSEARCH).buildUpon();
+		
+		String query = args.getString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY);
+		int sort = args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY);
+		int category = args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY);
+		int rating = args.getInt(ConstantClass.SEARCH_DIALOG_RATING_KEY);
+		int condition = args.getInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY);
+		double start_price = args.getDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY);
+		double end_price = args.getDouble(ConstantClass.SEARCH_DIALOG_END_PRICE_KEY);
+		
+		
+		if(start_price >= 0)
+			urlB.appendQueryParameter("priceFrom", Double.toString(start_price));
+		if(end_price >= 0)
+			urlB.appendQueryParameter("priceTo", Double.toString(end_price));
+		
+		if(!query.isEmpty()){
+			urlB.appendQueryParameter("searchString", query);
+		}
+		
+		urlB.appendQueryParameter("sort", ConstantClass.SEARCH_FILTER_SORT_URL_PARMS[sort]);
+		
+		urlB.appendQueryParameter("category", Integer.toString(category));
+		urlB.appendQueryParameter("type", ConstantClass.SEARCH_FILTER_CONDITION_URL_PARMS[condition]);
+		
+		if(rating != 0){
+			urlB.appendQueryParameter("sellerRating", Integer.toString(6-rating));
+		}
+		
+		
+		return urlB.toString();
+		
+	}
+	
 }

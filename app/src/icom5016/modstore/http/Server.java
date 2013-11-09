@@ -10,7 +10,7 @@ public class Server {
 	public static class Products {
 	  public static final String GET = BASE_URL+"/products/";
 	  public static final String GETCATEGORIES = BASE_URL + "/products/category/";
-	  public static final String GETALL = BASE_URL+"/products";
+	  public static final String GETSEARCH = BASE_URL+"/products/search/";
 	  public static final String GETBIDDING = BASE_URL+"/products/bidding/";
 	  public static final String GETSELLING = BASE_URL+"/products/selling/";
 	}

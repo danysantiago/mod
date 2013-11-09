@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 
 /*
@@ -22,6 +23,7 @@ import android.view.View;
 public class MainActivity extends MainInterfaceActivity {
 
 	private ActionBarDrawerToggle mainDrawerToggle;
+	
 	
 	
 					/* Set Ups */
@@ -89,27 +91,18 @@ public class MainActivity extends MainInterfaceActivity {
 //		     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 		 }
 		 
+		 //Load Categories 
+		 this.loadAllCategories();
+		 
 		 
 	}
 	
 	
 	
 						/* Menu Related Methods */
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		//Calls Super
-		super.onCreateOptionsMenu(menu);
-			
-		/* 			Populated Categories Menu 		*/
-		 if(this.mainCategoriesList.size() <= 0)
-			 this.loadMainCategoriesList(menu);
-		 else
-			 updateSubMenuCategories(menu);
-		 
-		return true;
-	}
-	
+
+
+
 						/*	Listeners */
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -172,6 +165,17 @@ public class MainActivity extends MainInterfaceActivity {
         // Pass any configuration change to the drawer toggles
         this.mainDrawerToggle.onConfigurationChanged(newConfig);
     }
+    
+    protected boolean areMainCategoriesListLoaded(){
+		return this.mainCategoriesList.size() <= 0;
+	}
+    protected void updateSubMenuCategories(Menu menu){
+		SubMenu categoriesMenu = (SubMenu) menu.findItem(R.id.item_categories).getSubMenu();
+		for(Category e : this.mainCategoriesList)
+		{
+			categoriesMenu.add(R.id.item_categories, R.string.id_btn_maincategory , Menu.NONE, e.getName());
+		}
+	}
 
  
     @Override
@@ -191,6 +195,10 @@ public class MainActivity extends MainInterfaceActivity {
         menu.findItem(R.id.item_categories).setVisible(!drawerOpen);
         menu.findItem(R.id.btn_cart).setVisible(!drawerOpen);
         menu.findItem(R.id.btn_search).setVisible(!drawerOpen);
+        
+        //Make sure it loads
+        if(!this.areMainCategoriesListLoaded())
+			this.updateSubMenuCategories(menu);
     	
     	return super.onPrepareOptionsMenu(menu);
 		

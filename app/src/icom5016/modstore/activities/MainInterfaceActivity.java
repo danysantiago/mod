@@ -30,7 +30,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -46,7 +45,7 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
 					/* Instance variables */
 					
 					/*Category Vairables */
-	protected List<Category> mainCategoriesList = new ArrayList<Category>(); //If Size is 0 Nothing is Listed
+	
 	
 	
 	//Drawer Variables
@@ -66,8 +65,11 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
 	//Progress Dialog
 	protected ProgressDialog processDialog;
 	
-	//Menu
-	private Menu categoriesMenu;
+	
+	//MainCategoryList
+	protected List<Category> mainCategoriesList = new ArrayList<Category>(); //If Size is 0 Nothing is Listed
+	
+	
 	
 	
 	
@@ -124,66 +126,54 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
 				/*Since ALl Methods in this section are treated as Asyncronous 
 				 * it must be verify with a verificationMethod */
 	
-	protected void loadMainCategoriesList(Menu menu) { 		
-		this.categoriesMenu = menu;
-		boolean loaded = getMainCategoriesFromSPref();
-		if(!loaded){ //Shared Preferences not Loaded or Refresh Rate Exided
-			processDialog.setMessage(this.getResources().getText(R.string.pd_mactivity));
-			processDialog.show();
-			getMainCategoriesFromHTTP();
-			return;
+	public List<Category> loadCategoriesById(int parentId) { 		
+		SharedPreferences spf = this.getSharedPreferences(ConstantClass.CATEGORIES_FILE, Context.MODE_PRIVATE);
+		
+		List<Category> result = new ArrayList<Category>();
+		
+		if(!spf.getBoolean(ConstantClass.CategoriesFile.LOAD_BOOLEAN_KEY, false)){
+			Toast.makeText(this, R.string.errmsg_cat_notloaded, Toast.LENGTH_SHORT).show();
+			return result;
 		}
 		
-		updateSubMenuCategories(this.categoriesMenu);
-		processDialog.dismiss();
-	}
-	
-	private boolean getMainCategoriesFromSPref() {
-		//First Load Categories
-				SharedPreferences categoriesPref = getSharedPreferences(ConstantClass.CATEGORIES_FILE, Context.MODE_PRIVATE);
-				
-				//Get Size of Categories
-				int catSize = categoriesPref.getInt(ConstantClass.CategoriesFile.CATEGORIES_ARRAY_SIZE_KEY, 0);
-				int refreshSize = categoriesPref.getInt(ConstantClass.CategoriesFile.CATEGORIES_REFRESH_COUNT_KEY, ConstantClass.CategoriesFile.CATEGORIES_REFRESH_VALUE);
-				
-				if(refreshSize >= ConstantClass.CategoriesFile.CATEGORIES_REFRESH_VALUE || catSize == 0) //Must Reset Values
-					return false;
-					
-				
-				List<Category> retList = new ArrayList<Category>();
-				
-				for(int i=0; i<catSize; i++)
-				{
-					int id = categoriesPref.getInt(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_ID_KEY+Integer.toString(i), 
-							ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_INT);
-					int parentId = categoriesPref.getInt(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_PARENTID_KEY+Integer.toString(i), 
-							ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_INT);
-					String name = categoriesPref.getString(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_NAME_KEY+Integer.toString(i), 
-								ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_STRING);
-					
-					//Fail Safe
-					if(id == ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_INT ||
-					   parentId == ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_INT ||
-					   name.equals(ConstantClass.CategoriesFile.CATEGORIES_FAIL_VALUE_STRING))
-						return false;
-					
-					retList.add(new Category(parentId, id, name));
-				}
-				//Update Refresh Value
-				categoriesPref.edit().putInt(ConstantClass.CategoriesFile.CATEGORIES_REFRESH_COUNT_KEY, refreshSize+1).commit();
-				
-				//Set Values
-				this.mainCategoriesList = retList;
+		List<Category> categories = new ArrayList<Category>();
+		String strJson = spf.getString(ConstantClass.CategoriesFile.ALL_CAT_JSON_KEY, "ERRORKey");
+		if(strJson != null && !strJson.equals("ERRORKey")){
+			try {
+				JSONObject jsonCat = new JSONObject(strJson);
+				JSONArray array = jsonCat.getJSONArray("categories");
+				for(int i=0; i<array.length(); i++)
+					categories.add(new Category(array.getJSONObject(i)));
+			} catch (JSONException e) {
+				Toast.makeText(this, R.string.errmsg_bad_json, Toast.LENGTH_SHORT).show();
+			}
+		}
 		
-		return true;
+		for(Category e: categories){
+			if(e.getParentId() == parentId){
+				result.add(e);
+			}
+		}
+		return result;
+		
 	}
 	
-	private void getMainCategoriesFromHTTP() {
+	
+	
+	
+	protected void loadAllCategories(){
+		processDialog.setMessage(this.getResources().getText(R.string.pd_mactivity));
+		processDialog.show();
+		getAllCategoriesFromHTTP();
+	}
+	
+	
+	private void getAllCategoriesFromHTTP() {
 
 		//Perform http request
 		Bundle params = new Bundle();
 		params.putString("method", "GET");
-		params.putString("url", Server.Categories.GET+Integer.toString(-1)); //Get Parent which is -1
+		params.putString("url", Server.Categories.GETALL); //Get All Category
 		
 		
 		HttpRequest request = new HttpRequest(params, new HttpCallback() {
@@ -192,43 +182,15 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
 			public void onSucess(JSONObject json) {
 				//Also add to editor;
 				Editor catFileEditor = getSharedPreferences(ConstantClass.CATEGORIES_FILE, Context.MODE_PRIVATE).edit();
+			
+				catFileEditor.putString(ConstantClass.CategoriesFile.ALL_CAT_JSON_KEY, json.toString());
+				catFileEditor.putBoolean(ConstantClass.CategoriesFile.LOAD_BOOLEAN_KEY, true);
+				catFileEditor.commit();
 				
-				//New Generate List
-				try {
-					JSONArray categoryList = json.getJSONArray("list");
+				mainCategoriesList = loadCategoriesById(-1);
+				invalidateOptionsMenu();
+				processDialog.dismiss();
 					
-					List<Category> retList = new ArrayList<Category>();
-					
-					//Put Size
-					catFileEditor.putInt(ConstantClass.CategoriesFile.CATEGORIES_ARRAY_SIZE_KEY, categoryList.length());
-					catFileEditor.putInt(ConstantClass.CategoriesFile.CATEGORIES_REFRESH_COUNT_KEY, 0);
-					
-					for(int i=0; i<categoryList.length(); i++){
-						
-						Category tempCat = new Category(categoryList.getJSONObject(i));
-						
-						catFileEditor.putInt(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_ID_KEY+Integer.toString(i), tempCat.getId());
-						catFileEditor.putInt(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_PARENTID_KEY+Integer.toString(i), tempCat.getParentId());
-						catFileEditor.putString(ConstantClass.CategoriesFile.CATEGORIES_GENERIC_NAME_KEY+Integer.toString(i), tempCat.getName());
-						
-						//Add to List
-						retList.add(tempCat);
-						
-						
-					}
-					
-					//Set List
-					mainCategoriesList = retList;
-					
-					//Commit Changes
-					catFileEditor.commit();
-					
-					updateSubMenuCategories(categoriesMenu);
-					
-				} catch (JSONException e) {
-					Toast.makeText(thisActivity, R.string.errmsg_bad_json,
-							Toast.LENGTH_SHORT).show();
-				}
 			}
 
 			@Override
@@ -246,13 +208,7 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
 		request.execute();
 	}
 	
-	protected void updateSubMenuCategories(Menu menu){
-		SubMenu categoriesMenu = (SubMenu) menu.findItem(R.id.item_categories).getSubMenu();
-		for(Category e : this.mainCategoriesList)
-		{
-			categoriesMenu.add(R.id.item_categories, R.string.id_btn_maincategory , Menu.NONE, e.getName());
-		}
-	}
+	
 
 	protected void loadActiveUser(){
 		this.activeUser = DataFetchFactory.getUserFromSPref(this);
@@ -262,9 +218,7 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
 									/*Verification Methods
 									 * They work on pares with Load Methods for Async Verification*/
 	
-	protected boolean areMainCategoriesListLoaded(){
-		return this.mainCategoriesList.size() <= 0;
-	}
+	
 	
 	protected boolean isUserLogin(boolean sendToLogInFlag){ //Starts New Activity Based on Flag
 		if(sendToLogInFlag){

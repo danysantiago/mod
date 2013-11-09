@@ -3,6 +3,7 @@ package icom5016.modstore.uielements;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
 import icom5016.modstore.models.Product;
+import icom5016.modstore.models.ProductSearching;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +27,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 			imageloader = new ImageLoader(context);
 			
 			for(int i = 0; i < jsonArr.length(); i++) {
-				this.add(new Product(jsonArr.getJSONObject(i)));
+				this.add(new ProductSearching(jsonArr.getJSONObject(i)));
 			}
 			
 		}

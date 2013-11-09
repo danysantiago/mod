@@ -12,16 +12,8 @@ public class ConstantClass {
 	//Categories File Variable Keys
 	public static class CategoriesFile
 	{
-		public final static String CATEGORIES_REFRESH_COUNT_KEY = "refreshCountKey";
-		public final static int CATEGORIES_REFRESH_VALUE = 500;
-		public final static String CATEGORIES_ARRAY_SIZE_KEY = "categoriesArraySizeKey";
-		
-		//Use as CATEGORIES_GENERIC_****_KEY + i utilizing shared preferences as array
-		public final static String CATEGORIES_GENERIC_ID_KEY = "categoriesGenericIdKey";
-		public final static String CATEGORIES_GENERIC_NAME_KEY = "categoriesGenericNameKey";
-		public final static String CATEGORIES_GENERIC_PARENTID_KEY = "categoriesGenericParentIdKey";
-		public final static String CATEGORIES_FAIL_VALUE_STRING = "-1339";
-		public final static int CATEGORIES_FAIL_VALUE_INT = -1339;
+		public final static String ALL_CAT_JSON_KEY = "allCatJsonKey";
+		public final static String LOAD_BOOLEAN_KEY = "loadBooleanKey";
 	}
 	
 	//Drawer Lists
@@ -69,7 +61,10 @@ public class ConstantClass {
 	public final static String SEARCH_FILTER_DIALOG_TAG = "searchFilterDialogTag";
 	public final static String[] SEARCH_FILTER_SORT = new String[]{"Best Match","Price: Low to High", "Price: High to Low", "Time: ending soonest", "Time: newly listed"};
 	public static final String[] SEARCH_FILTER_RATING = new String[]{"Any", "5 Stars or More", "4 Stars or More", "3 Stars or More", "2 Stars or More", "1 Stars or More" };
-	public static final String[] SEARCH_FILTER_CONDITION = new String[]{"Any", "Buy It Now", "Bid Only"};
+	public static final String[] SEARCH_FILTER_CONDITION = new String[]{"Any", "Both", "Buy It Now", "Bid Only"};
+	
+	public static final String[] SEARCH_FILTER_SORT_URL_PARMS = new String[]{"best", "price_asc", "price_desc", "time_asc", "time_desc"};
+	public static final String[] SEARCH_FILTER_CONDITION_URL_PARMS = new String[]{"all", "both", "buy", "bid"};
 	
 	//Dialog Keys
 	public static final String SEARCH_DIALOG_SORT_KEY = "dialogSortKey";
