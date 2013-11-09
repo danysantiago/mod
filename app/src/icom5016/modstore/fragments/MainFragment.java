@@ -4,6 +4,7 @@ import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.Product;
 import icom5016.modstore.resources.AndroidResourceFactory;
+import icom5016.modstore.resources.ConstantClass;
 
 import java.util.Random;
 
@@ -62,7 +63,8 @@ public class MainFragment extends Fragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				MainInterfaceActivity activity = (MainInterfaceActivity) getActivity();
 				Product product = (Product) list1.getAdapter().getItem(position);
-				ProductFragment pf = ProductFragment.getInstance(product);
+				getActivity().getIntent().getExtras().putInt(ConstantClass.PRODUCT_KEY, product.getId());
+				ProductFragment pf = new ProductFragment();
 				activity.fragmentStack.push(pf);
 				AndroidResourceFactory.setNewFragment(activity, activity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 			}
@@ -80,7 +82,8 @@ public class MainFragment extends Fragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				MainInterfaceActivity activity = (MainInterfaceActivity) getActivity();
 				Product product = (Product) list2.getAdapter().getItem(position);
-				ProductFragment pf = ProductFragment.getInstance(product);
+				getActivity().getIntent().getExtras().putInt(ConstantClass.PRODUCT_KEY, product.getId());
+				ProductFragment pf = new ProductFragment();
 				activity.fragmentStack.push(pf);
 				AndroidResourceFactory.setNewFragment(activity, activity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());				
 			}

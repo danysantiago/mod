@@ -2,53 +2,6 @@ var config = require("../config.js"), express = require("express"), async = requ
 
 var routes = express();
 
-var fakeProducts = [{
-  "pid": 0,
-  "uid": 0,
-  "cid": 3,
-  "description": "Some fake description",
-  "name": "FakeAwesomeProduct",
-  "brand": "Pier Brand",
-  "model": "ES-132",
-  "dimensions": "3'x3'x3'",
-  "buyout_price": 99.99,
-  "quantity": 4,
-  "bid_price": -1,
-  "auction_ends": "11/15/2013",
-  "image_src": "not yet implemented",
-  "created_ts": Date.now()
-},{
-  "pid": 1,
-  "uid": 0,
-  "cid": 9,
-  "description": "Some other fake description",
-  "name": "FakeAwesomeProduct Plus",
-  "brand": "Sony",
-  "model": "T3i",
-  "dimensions": "3'x3'x3'",
-  "buyout_price": 600.00,
-  "quantity": 1,
-  "bid_price": 200.00,
-  "auction_ends": "12/15/2013",
-  "image_src": "not yet implemented",
-  "created_ts": Date.now()
-},{
-  "pid": 2,
-  "uid": 0,
-  "cid": 13,
-  "description": "The Super Mega Pro Laptop ASUS!",
-  "name": "ASUS U46E",
-  "brand": "ASUS",
-  "model": "U46E",
-  "dimensions": "3'x3'x3'",
-  "buyout_price": 800.00,
-  "quantity": 10,
-  "bid_price": -1,
-  "auction_ends": "12/15/2013",
-  "image_src": "not yet implemented",
-  "created_ts": Date.now()
-}];
-
 routes.get("/products/selling", function (req, res, next) {
   var userId = req.query.userId;
 
@@ -119,18 +72,18 @@ routes.get("/products/search", function (req, res, next) {
   var order = null;
 
   // Set WHERE by Search String
-  if (searchString != null) {
+  if (searchString) {
     searchString = req.db.escape("%" + searchString + "%");
     wheres.push("(description LIKE " + searchString + " OR `name` LIKE " + searchString + ")");
   }
 
   // Set HAVING by Seller Rating
-  if (sellerRating != null) {
+  if (sellerRating) {
     havings.push("(avg_seller_rating = " + req.db.escape(sellerRating) + ")");
   }
 
   // Set WHERE for TYPE of the Selling of a Product
-  if (type != null) {
+  if (type) {
     if (type == "all") {
       wheres.push("(starting_bid_price > 0 OR buy_price > 0)");
     } else if (type == "both") {
@@ -143,9 +96,9 @@ routes.get("/products/search", function (req, res, next) {
   }
 
   // Set WHERE for PRICE FROM
-  if (priceFrom != null) {
+  if (priceFrom) {
     temp = req.db.escape(priceFrom);
-    if (type != null) {
+    if (type) {
       if (type == "all") {
         havings.push("(actual_bid >= " + temp + " OR buy_price >= " + temp + ")");
       } else if (type == "both") {
@@ -159,9 +112,9 @@ routes.get("/products/search", function (req, res, next) {
   }
 
   // Set WHERE for PRICE TO
-  if (priceTo != null) {
+  if (priceTo) {
     temp = req.db.escape(priceTo);
-    if (type != null) {
+    if (type) {
       if (type == "all") {
         havings.push("(actual_bid <= " + temp + " OR buy_price <= " + temp + ")");
       } else if (type == "both") {
@@ -175,30 +128,30 @@ routes.get("/products/search", function (req, res, next) {
   }
 
   // Set ORDER BY statement
-  if (sort != null) {
+  if (sort) {
     if (sort == "best") {
       order = "product_id ASC";
     } else if (sort == "price_asc" || sort == "price_desc") {
       temp = (sort == "price_asc") ? "ASC" : "DESC";
-      if (type != null) {
+      if (type) {
         if (type == "all") {
-          order = "buy_price " + temp + ", actual_bid " + temp
+          order = "buy_price " + temp + ", actual_bid " + temp;
         } else if (type == "buy") {
-          order = "buy_price " + temp
-        } else if (type = "bid") {
-          order = "actual_bid " + temp
+          order = "buy_price " + temp;
+        } else if (type == "bid") {
+          order = "actual_bid " + temp;
         }
       } else {
-        order = "buy_price " + temp
+        order = "buy_price " + temp;
       }
     } else if (sort == "time_asc") {
       order = "created_ts ASC";
-    } else if (sort = "time_desc") {
+    } else if (sort == "time_desc") {
       order = "created_ts DESC";
     }
   }
 
-  if (category != null) {
+  if (category) {
     if (!isNaN(category)) {
       getAllCategoriesUnder(category, req, function(cats) {
         // Set WHERE by Category
@@ -223,7 +176,7 @@ function endProductsSearch(req, res, query, wheres, havings, order) {
     query += " HAVING " + havings.join(" AND ");
   }
 
-  if (order != null) {
+  if (order) {
     query += " ORDER BY " + order;
   }
 
@@ -256,9 +209,10 @@ function getAllCategoriesUnder(parent, req, cback) {
     if (err) {
       return [parent];
     } else {
+      var result;
       if (parent == -1) {
         var i = 0;
-        var result = [];
+        result = [];
 
         for (i = 0; i < results.length; i++) {
           result.push(results[i].category_id);
@@ -335,15 +289,40 @@ routes.get("/products/bidding", function (req, res, next) {
 
 });
 
-routes.get("/products/:pid", function (req, res) {
-  for (i = 0; i < fakeProducts.length; i++) {
-    if (fakeProducts[i].pid == req.params.pid) {
-      res.send(fakeProducts[i]);
-      return;
-    }
+routes.get("/products", function (req, res, nex) {
+  var productId = req.query.productId;
+  var userId = req.query.userId;
+
+  if(!productId) {
+    return res.send(400, {"error": "No productId provided"});
   }
 
-  res.send(404);
+  var result = {};
+
+  var pQuery = "SELECT *, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as actual_bid, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P WHERE P.product_id=" + req.db.escape(productId);
+  req.db.query(pQuery, function (err, product) {
+    if (err) {
+      return next(err);
+    }
+
+    if(product.length === 0) {
+      res.send(200, {});
+    }
+
+    result.product = product[0];
+
+    uQuery = "SELECT * FROM user WHERE user_id=" + req.db.escape(result.product.user_id);
+    req.db.query(uQuery, function (err, user) {
+      if(user.length === 0) {
+        res.send(200, result);
+      }
+
+      result.seller = user[0];
+
+      res.send(200, result);
+    })
+  })
+
 });
 
 /*
