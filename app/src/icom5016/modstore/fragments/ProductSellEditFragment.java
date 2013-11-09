@@ -72,7 +72,7 @@ public class ProductSellEditFragment extends Fragment {
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		if (savedInstanceState != null) Log.d("productStatus", savedInstanceState.toString());
-		View view = inflater.inflate(R.layout.fragment_productedit, container, false);
+		View view = inflater.inflate(R.layout.fragment_sellproduct, container, false);
 		
 		txtName = (EditText)view.findViewById(R.id.txtProductName);
 		txtDescription = (EditText)view.findViewById(R.id.txtProductDescription);

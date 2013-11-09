@@ -13,29 +13,24 @@
 		android:background="@drawable/bg_card">
 		<!-- Card Contents go here -->
 		<GridLayout
-		    android:layout_width="fill_parent"
+		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:columnCount="3" >
 		
 		    <ImageView
 		        android:id="@+id/prodrow_orders_image"
 		        android:contentDescription="@string/listbuysellrow_img_desc"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginTop="10dp"
-		        android:layout_marginBottom="10dp"
 		        android:layout_width="50dp"
 		        android:layout_height="50dp"
 		        android:layout_column="0"
-		        android:layout_gravity="left|top"
+		        android:layout_gravity="left|center"
 		        android:layout_row="0"
 		        android:src="@drawable/no_image" />
 		
 		    <TextView
 		        android:id="@+id/prodrow_orders_title"
 		        android:layout_column="1"
-				android:layout_marginLeft="15dp"
-		        android:layout_marginTop="10dp"
-		        android:layout_marginBottom="10dp"
+		        
 		        android:layout_gravity="center"
 		        android:layout_row="0"
 		        android:text="@string/listbuysellrow_title"
@@ -46,20 +41,20 @@
 		        android:layout_column="2"
 		        android:layout_gravity="right|top"
 		        android:layout_row="0"
-		        android:layout_margin="10dp"
+		        android:padding="10dp"
 		        android:orientation="vertical" >
 		
 		        <TextView
 		            android:id="@+id/prodrow_orders_price"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:layout_marginBottom="2dp"
+		            android:paddingBottom="2dp"
 		            android:text="@string/listbuysellrow_price" />
 		
 		        <TextView
 		            android:id="@+id/prodrow_orders_type"
 		            android:layout_width="wrap_content"
-		            android:layout_marginBottom="2dp"
+		            android:paddingBottom="2dp"
 		            android:layout_height="wrap_content"
 		            android:text="@string/listbuysellrow_type" />
 		
@@ -67,7 +62,7 @@
 		            android:id="@+id/prodrow_orders_date"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:layout_marginBottom="2dp"
+		            android:paddingBottom="2dp"
 		            android:text="@string/listbuysellrow_date" />
 		
 		    </LinearLayout>
@@ -75,9 +70,7 @@
 		    <TextView
 		        android:id="@+id/prodrow_orders_quantity"
 		        android:layout_column="0"
-				android:layout_marginLeft="10dp"
-		        android:layout_marginTop="10dp"
-		        android:layout_marginBottom="10dp"
+		        android:paddingLeft="10dp"
 		        android:layout_gravity="left|top"
 		        android:layout_row="1"
 		        android:text="@string/listbuysellrow_quantity" />
@@ -85,7 +78,7 @@
 		    <TextView
 		        android:id="@+id/prodrow_orders_tracking"
 		        android:layout_column="2"
-				android:layout_margin="10dp"
+				android:paddingRight="10dp"
 		        android:layout_gravity="right|top"
 		        android:text="@string/listbuysellrow_tracking" />
 		

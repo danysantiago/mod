@@ -56,7 +56,6 @@ public class ConstantClass {
 	public final static String MAINACTIVITY_FRAGMENT_KEY = "mainActivityKey";
 	public final static int MAINACTIVITY_FRAGMENT_CATEGORY = 0;
 	public final static int MAINACTIVITY_FRAGMENT_MY_ITEMS = 1;
-	public final static int MAINACTIVITY_FRAGMENT_SELL_ITEMS = 2;
 	public final static int MAINACTIVITY_FRAGMENT_ITEMS_FOR_SALE = 3;
 	public final static int MAINACTIVITY_FRAGMENT_ITEMS_SOLD = 4;
 	
@@ -104,5 +103,8 @@ public class ConstantClass {
 	public static final String PRODUCT_KEY = "productFragKey";
 	public static final String PRODUCT_NOTIFICATION_KEY = "productNotificationKey";
 	
+	//Selling Viewer Activity
+	public static final String SELLINGVIEWERACTIVITY_ITEM_KEY = "sellingViwerActivityKey";
+	public final static int SELLINGVIEWERACTIVITY_FRAGMENT_SELL_ITEMS = 2;
 	
 }

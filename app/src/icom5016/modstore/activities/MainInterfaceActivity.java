@@ -438,6 +438,11 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
     		this.startActivity(myOrdersIntent);
     		break;
     	case 2:
+    		//Sell Item (new Activity)
+    		bundle.putInt(ConstantClass.SELLINGVIEWERACTIVITY_ITEM_KEY, ConstantClass.SELLINGVIEWERACTIVITY_FRAGMENT_SELL_ITEMS);
+    		Intent sellingIntent = new Intent(this, SellingViewerActivity.class);
+    		sellingIntent.putExtras(bundle);
+    		this.startActivity(sellingIntent);
     		break;
     	case 3:
     		//My Account (Old: Settings) (new Activity)

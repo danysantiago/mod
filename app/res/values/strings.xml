@@ -187,6 +187,8 @@
     <string name="textbox_orderbillingaddrtitle">Billing Address:</string>
     <string name="title_activity_product_viewer">ProductViewerActivity</string>
     <string name="hello_world">Hello world!</string>
-    
+   
+	<!-- SellingViewerActivty -->
+	<string name="title_sellitem">Sell Item</string>
 
 </resources>
