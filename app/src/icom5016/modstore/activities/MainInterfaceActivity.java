@@ -149,6 +149,10 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
 			}
 		}
 		
+		
+		if(parentId == ConstantClass.CategoriesFile.ALL_CATEGORIES)
+			return categories;
+		
 		for(Category e: categories){
 			if(e.getParentId() == parentId){
 				result.add(e);

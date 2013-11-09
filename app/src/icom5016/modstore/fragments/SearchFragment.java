@@ -115,7 +115,7 @@ public class SearchFragment extends Fragment {
 		
 		String query = args.getString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY);
 		int sort = args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY);
-		int category = args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY);
+		//int category = args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY);
 		int rating = args.getInt(ConstantClass.SEARCH_DIALOG_RATING_KEY);
 		int condition = args.getInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY);
 		double start_price = args.getDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY);
@@ -133,7 +133,7 @@ public class SearchFragment extends Fragment {
 		
 		urlB.appendQueryParameter("sort", ConstantClass.SEARCH_FILTER_SORT_URL_PARMS[sort]);
 		
-		urlB.appendQueryParameter("category", Integer.toString(category));
+		//urlB.appendQueryParameter("category", Integer.toString(category));
 		urlB.appendQueryParameter("type", ConstantClass.SEARCH_FILTER_CONDITION_URL_PARMS[condition]);
 		
 		if(rating != 0){

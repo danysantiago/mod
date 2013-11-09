@@ -97,11 +97,7 @@ public class MainActivity extends MainInterfaceActivity {
 		 
 	}
 	
-	
-	
 						/* Menu Related Methods */
-
-
 
 						/*	Listeners */
 	@Override
