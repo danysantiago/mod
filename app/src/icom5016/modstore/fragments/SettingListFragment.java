@@ -7,14 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public abstract class SettingListFragment extends Fragment {
 	protected ListView lstListView;
-	protected ImageButton btnAdd;
+	protected Button btnAdd;
 	protected TextView txtTitle;
 	protected ProgressBar listProgressBar;
 	protected TextView txtError;
@@ -28,18 +28,18 @@ public abstract class SettingListFragment extends Fragment {
 		
 		// Load all the fragment elements.
         lstListView = (ListView)view.findViewById(R.id.lstListView);       
-    	btnAdd = (ImageButton)view.findViewById(R.id.btnListAdd);
-        txtTitle = (TextView)view.findViewById(R.id.txtListTitle);
+    	//btnAdd = (Button)view.findViewById(R.id.btnListAdd);
+        //txtTitle = (TextView)view.findViewById(R.id.txtListTitle);
         listProgressBar = (ProgressBar)view.findViewById(R.id.listProgressBar);
         txtError = (TextView)view.findViewById(R.id.txtListErrorMessage);
         actionBar = this.getActivity().getActionBar();
         
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				addOnClickListener(v);
-			}
-        });
+//        btnAdd.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				addOnClickListener(v);
+//			}
+//        });
         
         showLoading();
         
@@ -47,14 +47,14 @@ public abstract class SettingListFragment extends Fragment {
     }
 	
 	protected void setTitle(String title) {
-		txtTitle.setText(title);
+		//btnAdd.setText("Add " + title);
 	}
 	
 	protected void showLoading() {
 		listProgressBar.setVisibility(View.VISIBLE);
 		lstListView.setVisibility(View.GONE);
-		btnAdd.setVisibility(View.GONE);
-		txtTitle.setVisibility(View.GONE);
+		//btnAdd.setVisibility(View.GONE);
+		//txtTitle.setVisibility(View.GONE);
 		listProgressBar.setVisibility(View.GONE);
 		txtError.setVisibility(View.GONE);
 	}
@@ -62,8 +62,8 @@ public abstract class SettingListFragment extends Fragment {
 	protected void showList() {
 		listProgressBar.setVisibility(View.GONE);
 		lstListView.setVisibility(View.VISIBLE);
-		btnAdd.setVisibility(View.VISIBLE);
-		txtTitle.setVisibility(View.VISIBLE);
+		//btnAdd.setVisibility(View.VISIBLE);
+		//txtTitle.setVisibility(View.VISIBLE);
 		listProgressBar.setVisibility(View.GONE);
 		txtError.setVisibility(View.GONE);
 	}
@@ -71,11 +71,11 @@ public abstract class SettingListFragment extends Fragment {
 	protected void showError() {
 		listProgressBar.setVisibility(View.GONE);
 		lstListView.setVisibility(View.GONE);
-		btnAdd.setVisibility(View.GONE);
-		txtTitle.setVisibility(View.GONE);
+		//btnAdd.setVisibility(View.GONE);
+		//txtTitle.setVisibility(View.GONE);
 		listProgressBar.setVisibility(View.GONE);
 		txtError.setVisibility(View.VISIBLE);
 	}
-	
-	abstract void addOnClickListener(View v);
+
+	public abstract void addClick();
 }
