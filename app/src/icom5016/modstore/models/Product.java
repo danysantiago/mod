@@ -1,6 +1,9 @@
 package icom5016.modstore.models;
 
+import icom5016.modstore.resources.AndroidResourceFactory;
+
 import java.text.NumberFormat;
+import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +23,9 @@ public class Product {
 	protected String auctionEndsTs;
 	protected String imageSrcUrl;
 	protected String createdTs;
+	
+	private Date createdTsDate;
+	private Date auctionEndsTsDate;
 
 	//Optional Values
 	protected User user; //Seller
@@ -49,6 +55,9 @@ public class Product {
 		this.createdTs = createdTs;
 		this.user = user;
 		this.category = category;
+		
+		this.createdTsDate = AndroidResourceFactory.ISODateToDate(createdTs);
+		this.auctionEndsTsDate = AndroidResourceFactory.ISODateToDate(auctionEndsTs);
 	}
 
 	public Product(JSONObject json) throws JSONException {
@@ -80,6 +89,9 @@ public class Product {
 		
 		this.auctionEndsTs = json.getString("auction_end_ts");
 		this.createdTs = json.getString("created_ts");
+		
+		this.createdTsDate = AndroidResourceFactory.ISODateToDate(createdTs);
+		this.auctionEndsTsDate = AndroidResourceFactory.ISODateToDate(auctionEndsTs);
 		
 		if(json.has("image_src"))
 			this.imageSrcUrl = json.getString("image_src");
@@ -219,8 +231,11 @@ public class Product {
 	}
 	
 	public String getAuctionEndsTsString(){
-		//TODO:format;
-		return this.auctionEndsTs;
+		return (this.auctionEndsTsDate == null) ? "" : AndroidResourceFactory.dateToString(this.auctionEndsTsDate);
+	}
+	
+	public String getDateFormatedString(){
+		return AndroidResourceFactory.dateToString(this.createdTsDate);
 	}
 
 	public String getBuyItNowPriceString() {
@@ -229,8 +244,6 @@ public class Product {
 		return "$" + nf.format(this.buyItNowPrice);
 	}
 	
-
-
 	public String getStartingBidPriceString() {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(2);

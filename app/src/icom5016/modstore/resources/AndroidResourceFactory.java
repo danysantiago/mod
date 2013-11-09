@@ -1,5 +1,10 @@
 package icom5016.modstore.resources;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -16,5 +21,25 @@ public class AndroidResourceFactory {
 		//TODO: Validate
 		return true;
 	}
+	
+	public static Date ISODateToDate(String date) {
+		Date d;
+		TimeZone tz = TimeZone.getTimeZone("UTC");
+	    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'.000Z'");
+	    df.setTimeZone(tz);
+	    
+		try {
+			d = df.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			d = null;
+		}
 
+	    return d;
+	}
+	
+	public static String dateToString(Date date) {
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy KK:mma");
+		return df.format(date);
+	}
 }
