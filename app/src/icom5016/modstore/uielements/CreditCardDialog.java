@@ -84,20 +84,20 @@ public class CreditCardDialog extends DialogFragment {
 	private void loadCreditCard() {
 	    if (creditCard != null) {
 	    	SpinnerAdapter tempAdapter = cboYears.getAdapter();
-	    	String temp[] = creditCard.getExpire().split("/");
+	    	//String temp[] = creditCard.getExpire().split("/");
 	    	int pos = -1;
 	    	
 	    	txtFullname.setText(creditCard.getName());
 	    	txtNumber.setText(creditCard.getNumber());
 	    	txtSecurityCode.setText(creditCard.getSecurityCode());
-	    	txtExpireMonth.setText(temp[0]);
+	    	//txtExpireMonth.setText(temp[0]);
 	    	cboTypes.setSelection(creditCard.getType());
 	    	chkDefault.setChecked(creditCard.isDefault());
 	    	
 	    	for (int i = 0; i < tempAdapter.getCount(); i++) {
-	    		if (tempAdapter.getItem(i).equals(temp[1])) {
-	    			pos = i;
-	    		}
+//	    		if (tempAdapter.getItem(i).equals(temp[1])) {
+//	    			pos = i;
+//	    		}
 	    	}
 
 	    	if (pos != -1)
@@ -113,8 +113,9 @@ public class CreditCardDialog extends DialogFragment {
 	    			pos = i;
 	    		}
 	    	}
-	    	if (pos != -1)
+	    	if (pos != -1) {
 	    		cboAddresses.setSelection(pos);
+	    	}
 	    }
 	}
 }
