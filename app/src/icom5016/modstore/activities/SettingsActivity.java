@@ -7,6 +7,7 @@ import icom5016.modstore.fragments.SettingListFragment;
 
 import java.util.Locale;
 
+import android.R.anim;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -100,23 +101,17 @@ public class SettingsActivity extends MainInterfaceActivity implements
 	
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		if(item.getItemId() == R.id.addActionBtn) {
-			SettingListFragment fragment = (SettingListFragment) mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
-			fragment.addClick();
+		switch(item.getItemId()) {
+			case R.id.addActionBtn:
+				SettingListFragment fragment = (SettingListFragment) mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
+				fragment.addClick();
+				return true;
+			case android.R.id.home:
+				finish();
+				return true;
 		}
 		
 		return false;
-	}
-
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
