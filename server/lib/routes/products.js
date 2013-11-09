@@ -63,7 +63,6 @@ routes.get("/products/selling", function (req, res, next) {
   var result = {};
 
   async.series({
-
     "active": function (done) {
       if(req.query.active === "true") {
         var aQuery = "SELECT *, (P.quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE OD.product_id = P.product_id GROUP BY OD.product_id),0)) AS stock FROM product P WHERE user_id = " + req.db.escape(userId);
@@ -82,6 +81,17 @@ routes.get("/products/selling", function (req, res, next) {
       } else {
         done();
       }
+    },
+
+    "not_won": function (done) {
+      if(req.query.not_sold === "true") {
+        u = req.db.escape(userId);
+        var wQuery = "SELECT *, (SELECT MAX(bid_amount) FROM bid B1 WHERE B1.product_id = P.product_id GROUP BY product_id) AS max_bid, (SELECT MAX(bid_amount) FROM bid B2 WHERE B2.product_id = P.product_id AND B2.user_id = " + u + " GROUP BY product_id) AS my_latest_bid FROM product P WHERE product_id IN (SELECT product_id FROM bid B WHERE B.user_id = " + u + ") AND product_id IN (SELECT product_id FROM order_detail) AND product_id NOT IN (SELECT product_id FROM `order` O INNER JOIN order_detail OD ON O.order_id = OD.order_id INNER JOIN order_detail_winning_bid WB ON WB.order_detail_id = OD.order_detail_id WHERE O.user_id = " + u + ");";
+        console.log("MySQL Query: " + wQuery);
+        req.db.query(wQuery, done);
+      } else {
+        done();
+      }
     }
 
   }, function (err, results) {
@@ -91,6 +101,7 @@ routes.get("/products/selling", function (req, res, next) {
 
     result.active = results.active ? results.active[0] : undefined;
     result.sold = results.sold ? results.sold[0] : undefined;
+    result.not_won = results.not_won ? results.not_won[0] : undefined;
 
     res.send(200, result);
   });
@@ -106,20 +117,15 @@ routes.get("/products/search", function (req, res, next) {
   var priceFrom = req.query.priceFrom;
   var priceTo = req.query.priceTo;
 
-  query = "SELECT *, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as actual_bid, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating FROM product P";
-  wheres = [];
-  havings = [];
-  order = null;
+  var query = "SELECT *, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as actual_bid, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P";
+  var wheres = ["(IFNULL(auction_end_ts, NOW() + 1) > NOW())"]; // To show the items that are within the ending time of the auction, in case it exists.
+  var havings = ["(stock > 0)"]; // A stock need to be available in order to be shown.
+  var order = null;
 
   // Set WHERE by Search String
   if (searchString != null) {
     searchString = req.db.escape("%" + searchString + "%");
     wheres.push("(description LIKE " + searchString + " OR `name` LIKE " + searchString + ")");
-  }
-
-  // Set WHERE by Category
-  if (category != null) {
-    wheres.push("(category_id = " + req.db.escape(category) + ")");
   }
 
   // Set HAVING by Seller Rating
@@ -130,7 +136,7 @@ routes.get("/products/search", function (req, res, next) {
   // Set WHERE for TYPE of the Selling of a Product
   if (type != null) {
     if (type == "all") {
-      wheres.push("((starting_bid_price IS null AND buy_price > 0) OR (starting_bid_price > 0 AND buy_price IS NULL))");
+      wheres.push("(starting_bid_price > 0 OR buy_price > 0)");
     } else if (type == "both") {
       wheres.push("(starting_bid_price > 0 AND buy_price > 0)");
     } else if (type == "buy") {
@@ -196,6 +202,22 @@ routes.get("/products/search", function (req, res, next) {
     }
   }
 
+  if (category != null) {
+    if (!isNaN(category)) {
+      getAllCategoriesUnder(category, req, function(cats) {
+        // Set WHERE by Category
+        wheres.push("(category_id IN (" + cats.join(",") + "))");
+        endProductsSearch(req, res, query, wheres, havings, order);
+      });
+    } else {
+      res.send(400, {"error": "The category must be a number."});
+    }
+  } else {
+    endProductsSearch(req, res, query, wheres, havings, order);
+  }
+});
+
+function endProductsSearch(req, res, query, wheres, havings, order) {
   // Build the FINAL MySQL QUERY
   if (wheres.length > 0) {
     query += " WHERE " + wheres.join(" AND ");
@@ -217,8 +239,11 @@ routes.get("/products/search", function (req, res, next) {
 
     if (results.length > 0) {
       for (i = 0; i < results.length; i++) {
-        delete results[i].actual_bid;
+        //delete results[i].actual_bid;
         delete results[i].avg_seller_rating;
+
+        results[i].quantity = results[i].stock;
+        delete results[i].stock;
       }
 
       res.send({"results" : results});
@@ -226,7 +251,46 @@ routes.get("/products/search", function (req, res, next) {
       res.send(404);
     }
   });
-});
+}
+
+function getAllCategoriesUnder(parent, req, cback) {
+  var query = "SELECT * FROM category_parent";
+
+  req.db.query(query, function(err, results) {
+    if (err) {
+      return [parent];
+    } else {
+      if (parent == -1) {
+        var i = 0;
+        var result = [];
+
+        for (i = 0; i < results.length; i++) {
+          result.push(results[i].category_id);
+        }
+      } else {
+        result = getAllCategoriesUnder2(parent, results);
+      }
+
+      if (cback) {
+        cback(result);
+      }
+    }
+  });
+}
+
+function getAllCategoriesUnder2(parent, cats) {
+  var ret = [parent];
+  var i = 0;
+
+
+  for (i = 0; i < cats.length; i++) {
+    if (cats[i].parent_category_id == parent) {
+      ret = ret.concat(getAllCategoriesUnder2(cats[i].category_id, cats));
+    }
+  }
+
+  return ret;
+}
 
 routes.get("/products/bidding", function (req, res, next) {
   var userId = req.query.userId;
