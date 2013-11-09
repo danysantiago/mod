@@ -57,7 +57,8 @@ public class CreditCard {
 	public String getTypeString(){
 		return ConstantClass.CREDITCARD_LIST[this.type];
 	}
-	
+
+	// Product, Order, Details, Credit Card
 	public String getExpirationDateFormated(){
 		//TODO: Format
 		return this.expire;

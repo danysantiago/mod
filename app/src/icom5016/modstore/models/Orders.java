@@ -1,6 +1,9 @@
 package icom5016.modstore.models;
 
+import icom5016.modstore.resources.AndroidResourceFactory;
+
 import java.text.NumberFormat;
+import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,14 +28,14 @@ public class Orders {
 	private int detailSize;
 	private double orderTotal;
 	
-	
-	
+	private Date createdTsDate;
 	
 	public Orders(String createdTs, int orderId, int addressId, int userId,
 			int creditcardId, User user, CreditCard creditCard,
 			Address address, int detailSize, double orderTotal) {
 		super();
 		this.createdTs = createdTs;
+		this.createdTsDate = AndroidResourceFactory.ISODateToDate(createdTs);
 		this.orderId = orderId;
 		this.addressId = addressId;
 		this.userId = userId;
@@ -47,6 +50,7 @@ public class Orders {
 	
 	public Orders(JSONObject json) throws JSONException{
 		this.createdTs = json.getString("created_ts");
+		this.createdTsDate = AndroidResourceFactory.ISODateToDate(createdTs);
 		this.orderId = json.getInt("order_id");
 		this.addressId = json.getInt("address_id");
 		this.creditcardId = json.getInt("credit_card_id");
@@ -174,11 +178,7 @@ public class Orders {
 	}
 	
 	public String getDateFormatedString(){
-		//TODO: Change
-		return this.createdTs;
+		return AndroidResourceFactory.dateToString(this.createdTsDate);
 	}
-	
-	
-	
 	
 }
