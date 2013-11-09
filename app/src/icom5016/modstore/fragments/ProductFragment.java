@@ -1,8 +1,5 @@
 package icom5016.modstore.fragments;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
@@ -11,6 +8,12 @@ import icom5016.modstore.models.Product;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
+
+import java.util.Date;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,6 +44,7 @@ public class ProductFragment extends Fragment {
 	private boolean isOwner;
 	private boolean isEnded;
 	private boolean isSold;
+	private boolean isBidProduct;
 	
 	private RelativeLayout progressContainer;
 	private ScrollView productContainer;
@@ -56,6 +60,7 @@ public class ProductFragment extends Fragment {
 	private TextView dimensionsTV;
 	private TextView descriptionTV;
 	private TextView sellerTV;
+	private TextView endDateTV;
 	private RatingBar ratingBar;
 	private LinearLayout ratingLayout;
 	private LinearLayout bidLayout;
@@ -75,6 +80,7 @@ public class ProductFragment extends Fragment {
 		dimensionsTV = (TextView) view.findViewById(R.id.dimensionsTextView);
 		descriptionTV = (TextView) view.findViewById(R.id.descriptionTextView);
 		sellerTV = (TextView) view.findViewById(R.id.sellerTextView);
+		endDateTV = (TextView) view.findViewById(R.id.endDateTextView);
 		
 		ratingBar = (RatingBar) view.findViewById(R.id.ratingBar); 
 		
@@ -173,9 +179,14 @@ public class ProductFragment extends Fragment {
 						isOwner = true;
 					}
 					
-					avgSellerRating = (float) json.getDouble("avg_seller_rating");
-					stock = json.getInt("stock");
-					currentBid = (float) json.getDouble("actual_bid");
+					JSONObject jsonProduct = json.getJSONObject("product");
+					
+					avgSellerRating = (float) jsonProduct.getInt("avg_seller_rating");
+					stock = jsonProduct.getInt("stock");
+					if(!jsonProduct.getString("actual_bid").equals("null")) {
+						currentBid = (float) jsonProduct.getDouble("actual_bid");
+						isBidProduct = true;
+					}
 					
 					if(stock == 0) {
 						isSold = true;
@@ -188,19 +199,49 @@ public class ProductFragment extends Fragment {
 					}
 					
 					//TODO: Check if product bidding has expired
+					if(isBidProduct && product.getAuctionEndDate().before(new Date())) {
+						isEnded = true;
+						if(!isSold) {
+							auctionEndedView.setVisibility(View.VISIBLE);
+						}
+					}
 					
-					productContainer.setVisibility(View.GONE);
+					progressContainer.setVisibility(View.GONE);
 					productContainer.setVisibility(View.VISIBLE);
+					
+					if(isBidProduct) {
+						buyButton.setVisibility(View.GONE);
+						if(isEnded) {
+							bidButton.setVisibility(View.GONE);
+							endDateTV.setText("Auction ended: " + product.getAuctionEndsTsString());
+							priceTV.setText("Won for: $" + currentBid);
+						} else {
+							bidButton.setVisibility(View.VISIBLE);
+							endDateTV.setText("Auction ends: " + product.getAuctionEndsTsString());
+							priceTV.setText("Current Highest Bid: $" + currentBid);
+						}
+					} else {
+						bidButton.setVisibility(View.GONE);
+						endDateTV.setVisibility(View.GONE);
+						if(isEnded) {
+							buyButton.setVisibility(View.GONE);
+							endDateTV.setText("Auction ended: " + product.getAuctionEndsTsString());
+							priceTV.setText("Bought for: $" + product.getBuyItNowPrice());
+						} else {
+							buyButton.setVisibility(View.VISIBLE);
+							priceTV.setText("Price: $" + product.getBuyItNowPrice());
+						}
+					}
 					
 					productNameTV.setText(product.getName());
 					brandTV.setText("Brand: " + product.getBrand());
 					modelTV.setText("Model: " + product.getModel());
 					dimensionsTV.setText("Dimensions: " + product.getDimensions());
 					descriptionTV.setText(product.getDescription());
-					sellerTV.setText("Seller: " + "Juan Del Pueblo (8)");
+					sellerTV.setText("Seller: " + seller.getUsername());
+					ratingBar.setRating(avgSellerRating);
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Toast.makeText(getActivity(), "Error parsing.", Toast.LENGTH_LONG).show();
 				}
 			}
 			

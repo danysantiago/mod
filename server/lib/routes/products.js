@@ -367,7 +367,7 @@ routes.get("/products", function (req, res) {
   res.send({"products": fakeProducts});
 });
 
-routes.get("/products/:pid/reviews", function (req, res) {
+routes.get("/products/reviews", function (req, res) {
   var fakeReviews = {
     "pid": req.params.pid,
     "reviews": [

@@ -91,7 +91,9 @@ public class Product {
 		this.createdTs = json.getString("created_ts");
 		
 		this.createdTsDate = AndroidResourceFactory.ISODateToDate(createdTs);
-		this.auctionEndsTsDate = AndroidResourceFactory.ISODateToDate(auctionEndsTs);
+		if(!auctionEndsTs.equals("null")) {
+			this.auctionEndsTsDate = AndroidResourceFactory.ISODateToDate(auctionEndsTs);
+		}
 		
 		if(json.has("image_src"))
 			this.imageSrcUrl = json.getString("image_src");
@@ -248,6 +250,10 @@ public class Product {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(2);
 		return "$" + nf.format(this.startingBidPrice);
+	}
+	
+	public Date getAuctionEndDate() {
+		return auctionEndsTsDate;
 	}
 
 }
