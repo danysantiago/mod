@@ -2,7 +2,6 @@ package icom5016.modstore.adapters;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
-import icom5016.modstore.models.Product;
 import icom5016.modstore.models.ProductBidding;
 import icom5016.modstore.resources.ConstantClass;
 

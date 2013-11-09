@@ -1,6 +1,4 @@
-var config = require("../config.js"),
-    express = require("express"),
-    async = require("async");
+var config = require("../config.js"), express = require("express"), async = require("async");
 
 var routes = express();
 
@@ -82,6 +80,16 @@ routes.get("/products/selling", function (req, res, next) {
       } else {
         done();
       }
+    },
+
+    "notsold": function (done) {
+      if(req.query.notsold === "true") {
+        var sQuery = "SELECT *, (OD.final_price * OD.quantity) AS total_price, OD.quantity as order_quantity, (SELECT user_id FROM `order` O WHERE O.order_id = OD.order_id) as buyer_user_id FROM product P INNER JOIN order_detail OD ON OD.product_id = P.product_id WHERE P.user_id = " + req.db.escape(userId);
+        console.log("MySQL Query: " + sQuery);
+        req.db.query(sQuery, done);
+      } else {
+        done();
+      }
     }
 
   }, function (err, results) {
@@ -91,6 +99,7 @@ routes.get("/products/selling", function (req, res, next) {
 
     result.active = results.active ? results.active[0] : undefined;
     result.sold = results.sold ? results.sold[0] : undefined;
+    result.notsold = results.notsold ? results.notsold[0] : undefined;
 
     res.send(200, result);
   });

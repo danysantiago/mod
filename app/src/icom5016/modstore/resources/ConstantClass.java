@@ -85,10 +85,12 @@ public class ConstantClass {
 	
 	//My Orders Constants
 	public static final String[] BUYING_SPINNER = new String[]{"All Lists", "Bidding", "Didn't Win"};
-	public static final String[] SELLING_SPINNER = new String[]{"All Lists", "Active","Sold"};
+	public static final String[] SELLING_SPINNER = new String[]{"All Lists", "Active","Sold", "Not Sold"};
 	public static final String ORDERID_KEY = "orderIdKey";
 	public static final String SELLING_ACTIVE = "activeKey";
 	public static final String SELLING_SOLD = "soldKey";
+	public static final String SELLING_NOTSOLD = "notSoldKey";
+	public static final String SELLING_TYPE_VIEW_KEY = "sellingTypeViewKey";
 	public static final String BUYING_BIDDING = "biddingKey";
 	public static final String BUYING_NOTWIN = "didNotWinKey";
 	
@@ -101,4 +103,6 @@ public class ConstantClass {
 	//Bidding, Selling, Product Keys
 	public static final String PRODUCT_KEY = "productFragKey";
 	public static final String PRODUCT_NOTIFICATION_KEY = "productNotificationKey";
+	
+	
 }

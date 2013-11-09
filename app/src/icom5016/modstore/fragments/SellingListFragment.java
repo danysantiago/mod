@@ -6,7 +6,7 @@ import icom5016.modstore.adapters.SellingListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
-import icom5016.modstore.listeners.BidSellListListener;
+import icom5016.modstore.listeners.SellingListListener;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
 
@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -76,7 +76,7 @@ public class SellingListFragment extends Fragment {
 							case 0:
 								inflater.inflate(R.layout.selling_all_listing, parent_view);
 								try {
-									doHttpSellingList(true, true);
+									doHttpSellingList(true, true, true);
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -84,7 +84,7 @@ public class SellingListFragment extends Fragment {
 							case 1:
 								inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
 								try {
-									doHttpSellingList(true, false);
+									doHttpSellingList(true, false, false);
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -92,7 +92,15 @@ public class SellingListFragment extends Fragment {
 							case 2:
 								inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
 								try {
-									doHttpSellingList(false, true);
+									doHttpSellingList(false, true, false);
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+								break;
+							case 3:
+								inflater.inflate(R.layout.buying_selling_any_listing, parent_view);
+								try {
+									doHttpSellingList(false, false, true);
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -100,7 +108,7 @@ public class SellingListFragment extends Fragment {
 							default:
 								inflater.inflate(R.layout.buying_all_listing, parent_view);
 								try {
-									doHttpSellingList(true, true);
+									doHttpSellingList(true, true, true);
 								} catch (JSONException e) {
 									e.printStackTrace();
 								}
@@ -123,11 +131,11 @@ public class SellingListFragment extends Fragment {
 			}
 
 
-			private void doHttpSellingList(boolean active, boolean sold) throws JSONException{
+			private void doHttpSellingList(boolean active, boolean sold, boolean notsold) throws JSONException{
 				Bundle params = new Bundle();
 				params.putString("url", Server.Products.GETSELLING+"?userId="+this.activeUser.getGuid()+
-						"&active="+ Boolean.toString(active) +"&sold="+Boolean.toString(sold));
-				params.putString("method", "GET");
+						"&active="+ Boolean.toString(active) +"&sold="+Boolean.toString(sold)+
+						 "&notsold="+Boolean.toString(notsold));
 				params.putString("method", "GET");
 				
 				
@@ -136,14 +144,14 @@ public class SellingListFragment extends Fragment {
 					@Override
 					public void onSucess(JSONObject json) {
 						try {
-							JSONArray activeList = json.getJSONArray("active_list");
-							JSONArray soldList = json.getJSONArray("sold_list");
-							if(activeList.length()>0 && soldList.length()>0){
+							
+							if(json.has("sold") && json.has("notsold") && json.has("active")){
 								
 								//Sold Var
+								JSONArray soldList = json.getJSONArray("sold");
 								ProgressBar pbSold = (ProgressBar) mainLayout.findViewById(R.id.sell_sold_pb);
 								TextView tvSold = (TextView) mainLayout.findViewById(R.id.sell_sold_load_tv);
-								GridView gvSold = (GridView) mainLayout.findViewById(R.id.sell_sold_loader);
+								GridLayout gvSold = (GridLayout) mainLayout.findViewById(R.id.sell_sold_loader);
 								ListView lvSold = (ListView) mainLayout.findViewById(R.id.sell_sold_lv);
 								
 								
@@ -154,14 +162,15 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvSold.setVisibility(View.GONE);
 									lvSold.setAdapter(new SellingListAdapter(mainActivity, soldList, ConstantClass.SELLING_SOLD ));
-									lvSold.setOnItemClickListener(new BidSellListListener(mainActivity, 1));
+									lvSold.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_SOLD));
 									lvSold.setVisibility(View.VISIBLE);
 								}
 								
 								//Active Var
+								JSONArray activeList = json.getJSONArray("active");
 								ProgressBar pbActive = (ProgressBar) mainLayout.findViewById(R.id.sell_active_pb);
 								TextView tvActive = (TextView) mainLayout.findViewById(R.id.sell_active_load_tv);
-								GridView gvActive = (GridView) mainLayout.findViewById(R.id.sell_active_loader);
+								GridLayout gvActive = (GridLayout) mainLayout.findViewById(R.id.sell_active_loader);
 								ListView lvActive = (ListView) mainLayout.findViewById(R.id.sell_active_lv);
 								
 								
@@ -172,41 +181,86 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvActive.setVisibility(View.GONE);
 									lvActive.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_ACTIVE));
-									lvActive.setOnItemClickListener(new BidSellListListener(mainActivity, 1));
+									lvActive.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_ACTIVE));
 									lvActive.setVisibility(View.VISIBLE);
 								}
 								
+								//Not Sold List
+								JSONArray notsoldList = json.getJSONArray("notsold");
+								ProgressBar pbNotSold = (ProgressBar) mainLayout.findViewById(R.id.sell_notsold_pb);
+								TextView tvNotSold = (TextView) mainLayout.findViewById(R.id.sell_notsold_load_tv);
+								GridLayout gvNotSold = (GridLayout) mainLayout.findViewById(R.id.sell_notsold_loader);
+								ListView lvNotSold = (ListView) mainLayout.findViewById(R.id.sell_notsold_lv);
+								
+								
+								if(notsoldList.length() == 0){
+									pbNotSold.setVisibility(View.GONE);
+									tvNotSold.setText(R.string.listbuysell_no_item);
+								}
+								else{
+									gvNotSold.setVisibility(View.GONE);
+									lvNotSold.setAdapter(new SellingListAdapter(mainActivity, notsoldList, ConstantClass.SELLING_NOTSOLD));
+									lvNotSold.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_NOTSOLD));
+									lvNotSold.setVisibility(View.VISIBLE);
+								}
+								
+								
 								
 							}
-							else if(soldList.length() > 0){
+							else if(json.has("sold")){
+								
+								JSONArray soldList = json.getJSONArray("sold");
 								ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 								TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 								ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
+								GridLayout gvIndividual = (GridLayout) mainLayout.findViewById(R.id.buy_bidding_loader);
 								pbIndividual.setVisibility(View.GONE);
 								if(soldList.length() == 0){
 									tvIndividual.setVisibility(View.VISIBLE);
 								}
 								else{
+									gvIndividual.setVisibility(View.GONE);
 									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, soldList, ConstantClass.SELLING_SOLD));
-									lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity, 1));
+									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_SOLD));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 								
 								
 
 							}
-							else if(activeList.length() > 0){
+							else if(json.has("active")){
+								JSONArray activeList = json.getJSONArray("active");
 								ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 								TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 								ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
+								GridLayout gvIndividual = (GridLayout) mainLayout.findViewById(R.id.buy_bidding_loader);
 								
 								pbIndividual.setVisibility(View.GONE);
 								if(activeList.length() == 0){
 									tvIndividual.setVisibility(View.VISIBLE);
 								}
 								else{
+									gvIndividual.setVisibility(View.GONE);
 									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_ACTIVE));
-									lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity, 0));
+									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_ACTIVE));
+									lvIndividual.setVisibility(View.VISIBLE);
+								}
+							}
+							else if(json.has("notsold")){
+								JSONArray activeList = json.getJSONArray("notsold");
+								ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
+								TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
+								ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);
+								GridLayout gvIndividual = (GridLayout) mainLayout.findViewById(R.id.buy_bidding_loader);
+								
+								pbIndividual.setVisibility(View.GONE);
+								if(activeList.length() == 0){
+									tvIndividual.setVisibility(View.VISIBLE);
+								}
+								else{
+									gvIndividual.setVisibility(View.GONE);
+									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_NOTSOLD));
+									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_NOTSOLD ));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 							}
