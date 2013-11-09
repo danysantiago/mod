@@ -76,7 +76,7 @@ public class AddressesFragment extends SettingListFragment {
 	}
 
 	@Override
-	public void addOnClickListener(View v) {
+	public void addClick() {
         DialogFragment dialog = new AddressDialog();
         dialog.show(getActivity().getSupportFragmentManager(), "AddressDialog");
 	}

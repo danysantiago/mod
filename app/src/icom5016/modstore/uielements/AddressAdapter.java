@@ -61,7 +61,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
            
             row.setTag(holder);
         } else {
-            holder = (AddressHolder)row.getTag();
+            holder = (AddressHolder) row.getTag();
         }
        
         Address addr = this.getItem(position);
@@ -79,7 +79,7 @@ public class AddressAdapter extends ArrayAdapter<Address> {
         return row;
     }
    
-    static class AddressHolder {
+    public static class AddressHolder {
         TextView lblLine1;
         TextView lblLine2;
         TextView lblLocation;

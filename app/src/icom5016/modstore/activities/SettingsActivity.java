@@ -3,9 +3,11 @@ package icom5016.modstore.activities;
 import icom5016.modstore.fragments.AddressesFragment;
 import icom5016.modstore.fragments.BasicInfoSettingsFragment;
 import icom5016.modstore.fragments.CreditCardsFragment;
+import icom5016.modstore.fragments.SettingListFragment;
 
 import java.util.Locale;
 
+import android.R.anim;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class SettingsActivity extends MainInterfaceActivity implements
@@ -46,8 +50,7 @@ public class SettingsActivity extends MainInterfaceActivity implements
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -56,13 +59,13 @@ public class SettingsActivity extends MainInterfaceActivity implements
 		// When swiping between different sections, select the corresponding
 		// tab. We can also use ActionBar.Tab#select() to do this if we have
 		// a reference to the Tab.
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
+		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				actionBar.setSelectedNavigationItem(position);
+				invalidateOptionsMenu();
+			}
+		});
 
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -76,16 +79,39 @@ public class SettingsActivity extends MainInterfaceActivity implements
 		}
 		
 	}
-
-
+	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
+	public boolean onCreateOptionsMenu(Menu menu) {
+		int currPos = mViewPager.getCurrentItem();
+		
+		MenuInflater inflater = getMenuInflater();
+		
+		switch (currPos) {
+		case 1:
+		case 2:
+		    inflater.inflate(R.menu.settings_menu, menu);
+			break;
+
+		default:
+			return false;
 		}
-		return super.onOptionsItemSelected(item);
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.addActionBtn:
+				SettingListFragment fragment = (SettingListFragment) mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
+				fragment.addClick();
+				return true;
+			case android.R.id.home:
+				finish();
+				return true;
+		}
+		
+		return false;
 	}
 
 	@Override
@@ -112,22 +138,20 @@ public class SettingsActivity extends MainInterfaceActivity implements
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+		Fragment[] fragments;
+		
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
+			
+			fragments = new Fragment[3];
+			fragments[0] = new BasicInfoSettingsFragment();
+			fragments[1] = new AddressesFragment();
+			fragments[2] = new CreditCardsFragment();
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-			Fragment fragment = new BasicInfoSettingsFragment();
-			switch(position){
-			case 1:
-				fragment = new AddressesFragment();
-				break;
-			case 2:
-				fragment = new CreditCardsFragment();
-				break;
-			}
-			return fragment;
+			return fragments[position];
 		}
 
 		@Override
@@ -149,6 +173,7 @@ public class SettingsActivity extends MainInterfaceActivity implements
 			}
 			return null;
 		}
+		
 	}
 
 }

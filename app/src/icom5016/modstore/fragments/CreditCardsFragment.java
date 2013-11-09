@@ -79,11 +79,13 @@ public class CreditCardsFragment extends SettingListFragment {
 	}
 	
 	private void requestAddresses() {
+		User u = DataFetchFactory.getUserFromSPref(getActivity());
+		
 		//Perform http request
 		Bundle params = new Bundle();
 		
 		params.putString("method", "GET");
-		params.putString("url", Server.Addresses.GETALL);
+		params.putString("url", Server.Addresses.GET + "?userId=" + u.getGuid());
 		
 		HttpRequest request = new HttpRequest(params, new HttpCallback() {
 			@Override
@@ -91,8 +93,9 @@ public class CreditCardsFragment extends SettingListFragment {
 		        DialogFragment dialog = new CreditCardDialog();
 		        
 		        if (pos != -1) {
-		        	((CreditCardDialog)dialog).creditCard = (CreditCard)lstListView.getAdapter().getItem(pos);
+		        	((CreditCardDialog)dialog).creditCard = (CreditCard) lstListView.getAdapter().getItem(pos);
 		        }
+		        
 		        ((CreditCardDialog)dialog).addressesJson = json;
 		        
 		        dialog.show(getActivity().getSupportFragmentManager(), "NewCreditCardDialog");
@@ -109,7 +112,7 @@ public class CreditCardsFragment extends SettingListFragment {
 	}
 
 	@Override
-	void addOnClickListener(View v) {
+	public void addClick() {
 		pos = -1;
         requestAddresses();
         //DialogFragment dialog = new CreditCardDialog();

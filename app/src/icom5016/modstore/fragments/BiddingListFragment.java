@@ -6,7 +6,7 @@ import icom5016.modstore.adapters.BiddingListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
-import icom5016.modstore.listeners.BidSellListListener;
+import icom5016.modstore.listeners.BidddingListListener;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
 
@@ -156,7 +156,7 @@ public class BiddingListFragment extends Fragment {
 							else{
 								gvBidding.setVisibility(View.GONE);
 								lvBidding.setAdapter(new BiddingListAdapter(mainActivity, biddingList, ConstantClass.BUYING_BIDDING));
-								lvBidding.setOnItemClickListener(new BidSellListListener(mainActivity));
+								lvBidding.setOnItemClickListener(new BidddingListListener(mainActivity));
 								lvBidding.setVisibility(View.VISIBLE);
 							}
 				
@@ -176,7 +176,7 @@ public class BiddingListFragment extends Fragment {
 							else{
 								gvNotwin.setVisibility(View.GONE);
 								lvNotwin.setAdapter(new BiddingListAdapter(mainActivity, notwinList,  ConstantClass.BUYING_NOTWIN));
-								lvNotwin.setOnItemClickListener(new BidSellListListener(mainActivity));
+								lvNotwin.setOnItemClickListener(new BidddingListListener(mainActivity));
 								lvNotwin.setVisibility(View.VISIBLE);
 							}
 							
@@ -197,7 +197,7 @@ public class BiddingListFragment extends Fragment {
 							else{
 								gvBidding.setVisibility(View.GONE);
 								lvIndividual.setAdapter(new BiddingListAdapter(mainActivity, biddingList,  ConstantClass.BUYING_BIDDING));
-								lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity));
+								lvIndividual.setOnItemClickListener(new BidddingListListener(mainActivity));
 								lvIndividual.setVisibility(View.VISIBLE);
 							}
 							
@@ -217,7 +217,7 @@ public class BiddingListFragment extends Fragment {
 							else{
 								gvBidding.setVisibility(View.GONE);
 								lvIndividual.setAdapter(new BiddingListAdapter(mainActivity, notwinList,  ConstantClass.BUYING_NOTWIN));
-								lvIndividual.setOnItemClickListener(new BidSellListListener(mainActivity));
+								lvIndividual.setOnItemClickListener(new BidddingListListener(mainActivity));
 								lvIndividual.setVisibility(View.VISIBLE);
 							}
 						}

@@ -21,7 +21,6 @@
 		        android:id="@+id/ordersrow_num"
 		        android:textStyle="bold"
 		        android:textSize="25sp"
-		        android:layout_margin="10dp"
 		        android:layout_column="0"
 		        android:layout_gravity="left|top"
 		        android:layout_row="0"
@@ -30,7 +29,6 @@
 		
 		    <TextView
 		        android:id="@+id/ordersrow_total"
-		        android:layout_margin="10dp"
 		        android:textSize="20sp"
 		        android:layout_column="1"
 		        android:layout_gravity="right|top"
@@ -51,7 +49,6 @@
 		        android:layout_column="1"
 		        android:textSize="15sp"
 		        android:layout_gravity="right|top"
-		        android:layout_margin="10dp"
 		        android:text="@string/orders_quantity" />
 		
 		</GridLayout>

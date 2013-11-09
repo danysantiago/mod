@@ -55,10 +55,10 @@ public class SellingListAdapter extends ArrayAdapter<Product> {
 	//	type.setText(product.getSellType());
 		
 		//Title
-		title.setText(product.getName());
+	//	title.setText(product.getName());
 		
 		//Quantity
-		quantity.setText(product.getQuantity());
+	//	quantity.setText(product.getQuantity());
 
 		/*if(this.type.equals(ConstantClass.PRODUCT_ACTIVE))
 			date.setText("End Date: "+product.getAuction_ends());
@@ -67,7 +67,7 @@ public class SellingListAdapter extends ArrayAdapter<Product> {
 		}*/
 		
 		//Tracking
-		tracking.setVisibility(View.GONE);
+	//	tracking.setVisibility(View.GONE);
 		
 //		//Price
 //		if(product.getSellType().equals(Product.BUY_NOW))

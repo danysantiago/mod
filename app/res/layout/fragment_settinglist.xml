@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ImageButton
+    <Button
         android:id="@+id/btnListAdd"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:src="@android:drawable/ic_menu_add"
-        android:background="@android:color/transparent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="10dp"
+        android:text="Add"
         android:visibility="gone" />
 
     <ListView
@@ -23,16 +24,6 @@
         android:visibility="gone" >
     </ListView>
 
-    <TextView
-        android:id="@+id/txtListTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnListAdd"
-        android:layout_centerHorizontal="true"
-        android:textSize="18sp"
-        android:textStyle="bold|italic"
-        android:visibility="gone" />
- 
     <TextView
          android:id="@+id/txtListErrorMessage"
          android:layout_width="wrap_content"
