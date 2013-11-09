@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,25 +67,23 @@ public class SearchFragment extends Fragment {
 	
 	private void doHttpSearch(Bundle args){
 		//Perform http request
+		
+		Uri.Builder urlB = Uri.parse(Server.Products.GETALL).buildUpon();
+		urlB.appendQueryParameter("query", args.getString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY));
+		urlB.appendQueryParameter("sort", ""+args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY));
+		urlB.appendQueryParameter("category", ""+args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY));
+		urlB.appendQueryParameter("rating", ""+args.getInt(ConstantClass.SEARCH_DIALOG_RATING_KEY));
+		urlB.appendQueryParameter("condition", ""+args.getInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY));
+		urlB.appendQueryParameter("startprice", ""+args.getDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY));
+		urlB.appendQueryParameter("endprice", ""+args.getDouble(ConstantClass.SEARCH_DIALOG_END_PRICE_KEY));
+		
+		String searchUrl = urlB.toString();
+
 		Bundle params = new Bundle();
 		params.putString("method", "GET");
-		params.putString("url", Server.Products.GETALL);		
-		//Must Change
-		JSONObject filter_params = new JSONObject();
-		try{
-			filter_params.put("query", args.getString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY));
-			filter_params.put("sort", args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY));
-			filter_params.put("category", args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY));
-			filter_params.put("rating", args.getInt(ConstantClass.SEARCH_DIALOG_RATING_KEY));
-			filter_params.put("condition", args.getInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY));
-			filter_params.put("startprice", args.getDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY));
-			filter_params.put("endprice", args.getDouble(ConstantClass.SEARCH_DIALOG_END_PRICE_KEY));
-		}catch(JSONException e){
-			e.printStackTrace();
-		}
+		params.putString("url", searchUrl);	
 		
-		
-		HttpRequest request = new HttpRequest(params, filter_params ,new HttpCallback() {
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
 			
 			@Override
 			public void onSucess(JSONObject json) {
