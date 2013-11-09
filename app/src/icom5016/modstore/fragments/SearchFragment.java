@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,6 +72,7 @@ public class SearchFragment extends Fragment {
 		params.putString("url", Server.Products.GETALL);		
 		//Must Change
 		JSONObject filter_params = new JSONObject();
+		
 		try{
 			filter_params.put("query", args.getString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY));
 			filter_params.put("sort", args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY));
@@ -102,7 +104,7 @@ public class SearchFragment extends Fragment {
 					list.setVisibility(View.VISIBLE);
 
 				} catch (JSONException e) {
-					Toast.makeText(getActivity(), "Bad JSON parsing...", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), R.string.errmsg_bad_json , Toast.LENGTH_SHORT).show();
 				}
 			}
 			
