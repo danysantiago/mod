@@ -234,17 +234,17 @@ function endProductsSearch(req, res, query, wheres, havings, order) {
       throw err;
 
     if (results.length > 0) {
-      for (i = 0; i < results.length; i++) {
+      /*for (i = 0; i < results.length; i++) {
         //delete results[i].actual_bid;
         delete results[i].avg_seller_rating;
 
-        results[i].quantity = results[i].stock;
-        delete results[i].stock;
-      }
+        //results[i].quantity = results[i].stock;
+        //delete results[i].stock;
+      }*/
 
       res.send({"results" : results});
     } else {
-      res.send(404);
+      res.send({"results" : []]});
     }
   });
 }
