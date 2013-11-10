@@ -2,16 +2,13 @@ package icom5016.modstore.resources;
 
 import icom5016.modstore.models.Category;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -81,4 +78,11 @@ public class AndroidResourceFactory {
 		return out;
 	}
 	
+	public static String stringEncode(String text) {
+		try {
+			return new String(text.getBytes("ISO-8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return text;
+		}
+	}
 }
