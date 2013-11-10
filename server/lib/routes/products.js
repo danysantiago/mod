@@ -299,14 +299,15 @@ routes.get("/products", function (req, res, nex) {
 
   var result = {};
 
-  var pQuery = "SELECT *, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as actual_bid, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P WHERE P.product_id=" + req.db.escape(productId);
+  //var pQuery = "SELECT *, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as actual_bid, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P WHERE P.product_id=" + req.db.escape(productId);
+  var pQuery = "SELECT *, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P LEFT JOIN (SELECT B.product_id as bpid, MAX(bid_amount) as actual_bid, B.user_id as winning_user_id FROM bid B WHERE B.product_id = " + req.db.escape(productId) + ") AS T ON T.bpid = P.product_id WHERE P.product_id = "  + req.db.escape(productId);
   req.db.query(pQuery, function (err, product) {
     if (err) {
       return next(err);
     }
 
     if(product.length === 0) {
-      res.send(200, {});
+      return res.send(200, {});
     }
 
     result.product = product[0];
