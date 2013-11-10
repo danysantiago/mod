@@ -40,11 +40,13 @@ public class ProductFragment extends Fragment {
 	private int stock;
 	private float avgSellerRating;
 	private float currentBid;
+	private int winnerId;
 	
 	private boolean isOwner;
 	private boolean isEnded;
 	private boolean isSold;
 	private boolean isBidProduct;
+	private boolean isWinner;
 	
 	private RelativeLayout progressContainer;
 	private ScrollView productContainer;
@@ -52,6 +54,7 @@ public class ProductFragment extends Fragment {
 	private LinearLayout soldItemView;
 	private LinearLayout auctionEndedView;
 	private LinearLayout outOfStockView;
+	private LinearLayout wonItemView;
 	
 	private TextView productNameTV;
 	private TextView priceTV;
@@ -94,6 +97,7 @@ public class ProductFragment extends Fragment {
 		soldItemView = (LinearLayout) view.findViewById(R.id.soldItemView);
 		auctionEndedView = (LinearLayout) view.findViewById(R.id.auctionEndedView);
 		outOfStockView = (LinearLayout) view.findViewById(R.id.outOfStockView);
+		wonItemView = (LinearLayout) view.findViewById(R.id.wonItemView);
 		
 		progressContainer = (RelativeLayout) view.findViewById(R.id.progressBarContainer);
 		productContainer = (ScrollView) view.findViewById(R.id.productContainer);
@@ -173,18 +177,23 @@ public class ProductFragment extends Fragment {
 				try {
 					product = new Product(json.getJSONObject("product"));
 					seller = new User(json.getJSONObject("seller"));
+						
+					JSONObject jsonProduct = json.getJSONObject("product");
+					
+					avgSellerRating = (float) jsonProduct.getInt("avg_seller_rating");
+					stock = jsonProduct.getInt("stock");
+					winnerId = jsonProduct.getInt("winner_user_id");
+					if(!jsonProduct.getString("actual_bid").equals("null")) {
+						currentBid = (float) jsonProduct.getDouble("actual_bid");
+						isBidProduct = true;
+					}
 					
 					if(user.getGuid() == (seller.getGuid())) {
 						isOwner = true;
 					}
 					
-					JSONObject jsonProduct = json.getJSONObject("product");
-					
-					avgSellerRating = (float) jsonProduct.getInt("avg_seller_rating");
-					stock = jsonProduct.getInt("stock");
-					if(!jsonProduct.getString("actual_bid").equals("null")) {
-						currentBid = (float) jsonProduct.getDouble("actual_bid");
-						isBidProduct = true;
+					if(user.getGuid() == winnerId) {
+						isWinner = true;
 					}
 					
 					if(stock == 0) {
@@ -197,12 +206,14 @@ public class ProductFragment extends Fragment {
 						}
 					}
 					
-					//TODO: Check if product bidding has expired
 					if(isBidProduct && product.getAuctionEndDate().before(new Date())) {
-						isEnded = true;
-						if(!isSold) {
+						outOfStockView.setVisibility(View.GONE);
+						if(isWinner) {
+							wonItemView.setVisibility(View.VISIBLE);
+						} else {
 							auctionEndedView.setVisibility(View.VISIBLE);
 						}
+						isEnded = true;
 					}
 					
 					progressContainer.setVisibility(View.GONE);
