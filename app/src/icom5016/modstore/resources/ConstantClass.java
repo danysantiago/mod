@@ -14,7 +14,7 @@ public class ConstantClass {
 	{
 		public final static String ALL_CAT_JSON_KEY = "allCatJsonKey";
 		public final static String LOAD_BOOLEAN_KEY = "loadBooleanKey";
-		public final static double ALL_CATEGORIES = -2.0;
+		public final static int ALL_CATEGORIES = -2;
 	}
 	
 	//Drawer Lists

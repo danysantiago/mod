@@ -1,7 +1,14 @@
 package icom5016.modstore.uielements;
 
+import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
+import icom5016.modstore.adapters.CategoryDialogAdapter;
+import icom5016.modstore.models.Category;
+import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
+
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -137,8 +144,12 @@ public class SearchFilterDialog extends DialogFragment {
 	private void initDialogAdapters() {
 		this.sortSpinner.setAdapter(
 					new ArrayAdapter<String>(this.getActivity(), R.layout.listview_filter_spinner, ConstantClass.SEARCH_FILTER_SORT));
-		//this.categoriesSpinner.setAdapter(
-			//		new ArrayAdapter<String>(this.getActivity(), R.layout.listview_filter_spinner, DataFetchFactory.fetchAllCategories()));
+		
+		List<Category> allCategories = ((MainInterfaceActivity) this.getActivity()).loadCategoriesById(ConstantClass.CategoriesFile.ALL_CATEGORIES);
+		List<Category> sortedCategories = AndroidResourceFactory.sortCategories(allCategories);
+		sortedCategories.add(0, new Category(ConstantClass.CategoriesFile.ALL_CATEGORIES, ConstantClass.CategoriesFile.ALL_CATEGORIES, "All"));
+		this.categoriesSpinner.setAdapter(
+					new CategoryDialogAdapter(this.getActivity(), R.layout.listview_filter_spinner, sortedCategories));
 		this.ratingSpinner.setAdapter(
 				new ArrayAdapter<String>(this.getActivity(), R.layout.listview_filter_spinner, ConstantClass.SEARCH_FILTER_RATING));
 		this.conditionSpinner.setAdapter(
