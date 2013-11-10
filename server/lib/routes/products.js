@@ -299,30 +299,59 @@ routes.get("/products", function (req, res, nex) {
 
   var result = {};
 
-  //var pQuery = "SELECT *, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as actual_bid, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P WHERE P.product_id=" + req.db.escape(productId);
-  var pQuery = "SELECT *, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P LEFT JOIN (SELECT B.product_id as bpid, MAX(bid_amount) as actual_bid, B.user_id as winning_user_id FROM bid B WHERE B.product_id = " + req.db.escape(productId) + " AND bid_amount = (SELECT MAX(bid_amount) FROM bid WHERE bid.product_id = " + req.db.escape(productId) + ")) AS T ON T.bpid = P.product_id WHERE P.product_id = "  + req.db.escape(productId);
-  req.db.query(pQuery, function (err, product) {
+  async.waterfall([
+    function (done) {
+      //var pQuery = "SELECT *, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as actual_bid, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P WHERE P.product_id=" + req.db.escape(productId);
+      var pQuery = "SELECT *, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P LEFT JOIN (SELECT B.product_id as bpid, MAX(bid_amount) as actual_bid, B.user_id as winning_user_id FROM bid B WHERE B.product_id = " + req.db.escape(productId) + " AND bid_amount = (SELECT MAX(bid_amount) FROM bid WHERE bid.product_id = " + req.db.escape(productId) + ")) AS T ON T.bpid = P.product_id WHERE P.product_id = "  + req.db.escape(productId);
+      console.log("MySQL Query: " + pQuery);
+      req.db.query(pQuery, function (err, product) {
+        if (err) {
+          return done(err);
+        }
+
+        if(product.length === 0) {
+          return res.send(404, {"error": "Product not found."});
+        }
+
+        result.product = product[0];
+        done();
+      });
+    },
+
+    function (done) {
+
+      uQuery = "SELECT * FROM user WHERE user_id=" + req.db.escape(result.product.user_id);
+      console.log("MySQL Query: " + uQuery);
+      req.db.query(uQuery, function (err, seller) {
+        if (err) {
+          return done(err);
+        }
+
+        result.seller = seller[0];
+        done();
+      });
+    },
+
+    function (done) {
+      iQUery = "SELECT * FROM product_image WHERE product_id=" + req.db.escape(result.product.product_id);
+      console.log("MySQL Query: " + iQUery);
+      req.db.query(iQUery, function (err, images) {
+        if (err) {
+          return done(err);
+        }
+
+        result.images = images;
+        done();
+      });
+    }
+
+  ], function (err, results) {
     if (err) {
       return next(err);
     }
 
-    if(product.length === 0) {
-      return res.send(200, {});
-    }
-
-    result.product = product[0];
-
-    uQuery = "SELECT * FROM user WHERE user_id=" + req.db.escape(result.product.user_id);
-    req.db.query(uQuery, function (err, user) {
-      if(user.length === 0) {
-        res.send(200, result);
-      }
-
-      result.seller = user[0];
-
-      res.send(200, result);
-    })
-  })
+    res.send(200, result);
+  });
 
 });
 
