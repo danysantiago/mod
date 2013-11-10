@@ -76,7 +76,7 @@ public class BiddingListAdapter extends ArrayAdapter<ProductBidding> {
 		}
 		
 		//Current Bid/End Price:
-		bidEndCurr.setText("Last Bid: "+product.getCurrentBidString());
+		bidEndCurr.setText("Last Bid: "+product.getCurrentMaxBidString());
 		myBidCurr.setText("My Bid: "+product.getMyLastBidString());
 		
 		
