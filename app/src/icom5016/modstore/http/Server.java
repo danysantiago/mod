@@ -38,4 +38,8 @@ public class Server {
 		public static final String GETORDERS = BASE_URL+"/orders/";
 		public static final String GETORDERDETAILS = BASE_URL+"/orders/details/";
 	}
+	
+	public static class Images {
+		public static final String GET = BASE_URL+"/images/";
+	}
 }
