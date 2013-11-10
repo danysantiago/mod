@@ -85,7 +85,6 @@ public class ProductFragment extends Fragment {
 		ratingBar = (RatingBar) view.findViewById(R.id.ratingBar); 
 		
 		ratingLayout = (LinearLayout) view.findViewById(R.id.ratingLayout);
-		bidLayout = (LinearLayout) view.findViewById(R.id.bidLinearLayout);
 		
 		buyButton = (Button) view.findViewById(R.id.btnProductAdd);
 		bidButton = (Button) view.findViewById(R.id.bidButton);

@@ -25,9 +25,9 @@ public class ProductViewerActivity extends MainInterfaceActivity {
 		ActionBarVar.setHomeButtonEnabled(true);
 		
 		//Set Fragment
-//		ProductFragment pf = new ProductFragment();
-//		pf.setArguments(bundle);
-//		AndroidResourceFactory.setNewFragment(this, pf , MainInterfaceActivity.getContentFragmentId());
+		ProductFragment pf = new ProductFragment();
+		pf.setArguments(bundle);
+		AndroidResourceFactory.setNewFragment(this, pf , MainInterfaceActivity.getContentFragmentId());
 
 		
 	}
