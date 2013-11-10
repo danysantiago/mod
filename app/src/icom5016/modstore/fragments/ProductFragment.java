@@ -182,7 +182,9 @@ public class ProductFragment extends Fragment {
 					
 					avgSellerRating = (float) jsonProduct.getInt("avg_seller_rating");
 					stock = jsonProduct.getInt("stock");
-					winnerId = jsonProduct.getInt("winner_user_id");
+					if(!jsonProduct.getString("winning_user_id").equals("null")) {
+						winnerId = jsonProduct.getInt("winning_user_id");
+					}
 					if(!jsonProduct.getString("actual_bid").equals("null")) {
 						currentBid = (float) jsonProduct.getDouble("actual_bid");
 						isBidProduct = true;
