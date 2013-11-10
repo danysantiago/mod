@@ -33,7 +33,8 @@ public class SearchFilterDialog extends DialogFragment {
 	
     			/*Dialog Values*/
     private int sortSpinnerValue;
-    private int categoriesSpinnerValue;
+    private int categoriesSpinnerIndexValue;
+    private int categoriesSpinnerIdValue;
     private int ratingSpinnerValue;
     private int conditionSpinnerValue;
     private double startPriceValue;
@@ -44,7 +45,7 @@ public class SearchFilterDialog extends DialogFragment {
     
     
     
-	public static SearchFilterDialog newInstance(int sortSpinnerValue, int categoriesSpinnerValue,
+	public static SearchFilterDialog newInstance(int sortSpinnerValue, int categoriesSpinnerIndexValue, int categoriesSpinnerIdValue,
 			int ratingSpinnerValue, int conditionSpinnerValue,
 			double startPriceValue, double endPriceValue) {
 
@@ -52,7 +53,8 @@ public class SearchFilterDialog extends DialogFragment {
         Bundle args = new Bundle();
         //Set Args Here
         args.putInt(ConstantClass.SEARCH_DIALOG_SORT_KEY, sortSpinnerValue);
-        args.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY, categoriesSpinnerValue);
+        args.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_INDEX_KEY, categoriesSpinnerIndexValue);
+        args.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_ID_KEY, categoriesSpinnerIdValue);
         args.putInt(ConstantClass.SEARCH_DIALOG_RATING_KEY, ratingSpinnerValue);
         args.putInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY, conditionSpinnerValue);
         args.putDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY, startPriceValue);
@@ -140,7 +142,8 @@ public class SearchFilterDialog extends DialogFragment {
 	
 	private void updateValuesFromDialog(){
 		   this.sortSpinnerValue = this.sortSpinner.getSelectedItemPosition();
-	       this.categoriesSpinnerValue = this.categoryList.get(this.categoriesSpinner.getSelectedItemPosition()).getId();
+		   this.categoriesSpinnerIndexValue = this.categoriesSpinner.getSelectedItemPosition();
+	       this.categoriesSpinnerIdValue = this.categoryList.get(this.categoriesSpinner.getSelectedItemPosition()).getId();
 	       this.ratingSpinnerValue = this.ratingSpinner.getSelectedItemPosition();
 	       this.conditionSpinnerValue = this.conditionSpinner.getSelectedItemPosition();
 	       if(!this.startPrice.getText().toString().trim().isEmpty())
@@ -166,7 +169,7 @@ public class SearchFilterDialog extends DialogFragment {
 	   //Obtain Values
 	   Bundle args = this.getArguments();
        this.sortSpinnerValue = args.getInt(ConstantClass.SEARCH_DIALOG_SORT_KEY);
-       this.categoriesSpinnerValue = args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY);
+       this.categoriesSpinnerIndexValue = args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_INDEX_KEY);
        this.ratingSpinnerValue = args.getInt(ConstantClass.SEARCH_DIALOG_RATING_KEY);
        this.conditionSpinnerValue = args.getInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY);
        this.startPriceValue = args.getDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY);
@@ -174,7 +177,7 @@ public class SearchFilterDialog extends DialogFragment {
        
        //Set Values
        this.sortSpinner.setSelection(this.sortSpinnerValue);
-       this.categoriesSpinner.setSelection(this.categoriesSpinnerValue);
+       this.categoriesSpinner.setSelection(this.categoriesSpinnerIndexValue);
        this.ratingSpinner.setSelection(this.ratingSpinnerValue);
        this.conditionSpinner.setSelection(this.conditionSpinnerValue);
        
@@ -187,10 +190,6 @@ public class SearchFilterDialog extends DialogFragment {
        if(this.endPriceValue > 0 ){
     	   this.endPrice.setText(Double.toString(endPriceValue));
        }
-	}
-
-	public int getCategoriesSpinnerValue() {
-		return categoriesSpinnerValue;
 	}
 
 	public int getRatingSpinnerValue() {
@@ -211,5 +210,17 @@ public class SearchFilterDialog extends DialogFragment {
 
 	public double getStartPriceValue() {
 		return this.startPriceValue;
+	}
+
+
+
+	public int getCategoriesSpinnerIndexValue() {
+		return this.categoriesSpinnerIndexValue;
+	}
+
+
+
+	public int getCategoriesSpinnerIdValue() {
+		return this.categoriesSpinnerIdValue;
 	}
 }

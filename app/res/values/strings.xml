@@ -191,5 +191,8 @@
    
 	<!-- SellingViewerActivty -->
 	<string name="title_sellitem">Sell Item</string>
+	
+	<!-- Search Part -->
+	<string name="noitem_found">No Item Found</string>
 
 </resources>
