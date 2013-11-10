@@ -69,7 +69,8 @@ public class ConstantClass {
 	
 	//Dialog Keys
 	public static final String SEARCH_DIALOG_SORT_KEY = "dialogSortKey";
-	public static final String SEARCH_DIALOG_CATEGORIES_KEY = "dialogCategoriesKey";
+	public static final String SEARCH_DIALOG_CATEGORIES_INDEX_KEY = "dialogCategoriesKey";
+	public static final String SEARCH_DIALOG_CATEGORIES_ID_KEY = "dialogCategoriesIdKey";
 	public static final String SEARCH_DIALOG_RATING_KEY = "dialogRatingKey";
 	public static final String SEARCH_DIALOG_CONDITION_KEY = "dialogConditionKey";
 	public static final String SEARCH_DIALOG_START_PRICE_KEY = "dialogStartPriceKey";

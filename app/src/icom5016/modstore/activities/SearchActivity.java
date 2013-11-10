@@ -17,7 +17,8 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 	
 				/*Filter Values*/
     private int sortSpinnerValue;
-    private int categoriesSpinnerValue;
+    private int categoriesSpinnerIndexValue;
+    private int categoriesSpinnerIdValue;
     private int ratingSpinnerValue;
     private int conditionSpinnerValue;
     private double startPriceValue;
@@ -45,7 +46,8 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 				bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY, "");
 				bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_KEY, false);
 				bundle.putInt(ConstantClass.SEARCH_DIALOG_SORT_KEY, sortSpinnerValue);
-				bundle.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY, categoriesSpinnerValue);
+				bundle.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_INDEX_KEY, categoriesSpinnerIndexValue);
+				bundle.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_ID_KEY, categoriesSpinnerIdValue);
 				bundle.putInt(ConstantClass.SEARCH_DIALOG_RATING_KEY, ratingSpinnerValue);
 				bundle.putInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY, conditionSpinnerValue);
 				bundle.putDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY, startPriceValue);
@@ -74,7 +76,7 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 				finish();
 				break;
 			case R.id.btn_search_filter:
-				SearchFilterDialog.newInstance(sortSpinnerValue, categoriesSpinnerValue, ratingSpinnerValue, conditionSpinnerValue, startPriceValue, endPriceValue)
+				SearchFilterDialog.newInstance(sortSpinnerValue, categoriesSpinnerIndexValue, categoriesSpinnerIdValue ,ratingSpinnerValue, conditionSpinnerValue, startPriceValue, endPriceValue)
 				.show(this.getFragmentManager(), ConstantClass.SEARCH_FILTER_DIALOG_TAG);
 				break;	
 			}
@@ -140,7 +142,8 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 			bundle.putString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY, query);
 			bundle.putBoolean(ConstantClass.SEARCH_FRAGMENT_BOOL_KEY, true);
 			bundle.putInt(ConstantClass.SEARCH_DIALOG_SORT_KEY, sortSpinnerValue);
-			bundle.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY, categoriesSpinnerValue);
+			bundle.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_INDEX_KEY, categoriesSpinnerIndexValue);
+			bundle.putInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_ID_KEY, categoriesSpinnerIdValue);
 			bundle.putInt(ConstantClass.SEARCH_DIALOG_RATING_KEY, ratingSpinnerValue);
 			bundle.putInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY, conditionSpinnerValue);
 			bundle.putDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY, startPriceValue);
@@ -159,7 +162,8 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 			SearchFilterDialog sfDialog = (SearchFilterDialog) dialog;
 			
 			sortSpinnerValue = sfDialog.getSortSpinnerValue();
-		    categoriesSpinnerValue = sfDialog.getCategoriesSpinnerValue();
+		    categoriesSpinnerIndexValue = sfDialog.getCategoriesSpinnerIndexValue();
+		    categoriesSpinnerIdValue = sfDialog.getCategoriesSpinnerIdValue();
 		    ratingSpinnerValue = sfDialog.getRatingSpinnerValue();
 		    conditionSpinnerValue = sfDialog.getConditionSpinnerValue();
 		    startPriceValue = sfDialog.getStartPriceValue();
@@ -172,7 +176,8 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 						/*Set Default Values*/
 		private void setDefaultFilterParams() {
 			sortSpinnerValue = 0;
-		    categoriesSpinnerValue = 0;
+		    categoriesSpinnerIndexValue = 0;
+		    categoriesSpinnerIdValue = ConstantClass.CategoriesFile.ALL_CATEGORIES;
 		    ratingSpinnerValue = 0;
 		    conditionSpinnerValue = 0;
 		    startPriceValue = -1;

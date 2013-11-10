@@ -2,11 +2,11 @@ package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
+import icom5016.modstore.adapters.ProductAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.uielements.ProductAdapter;
 import icom5016.modstore.uielements.ProductListener;
 
 import org.json.JSONArray;
@@ -82,14 +82,20 @@ public class SearchFragment extends Fragment {
 					//Get array of products
 					JSONArray jsonArr = json.getJSONArray("results");
 
-					//Pass it to adapter and to List View
-					ProductAdapter adapter = new ProductAdapter(getActivity(), jsonArr);
-					list.setAdapter(adapter);
+					if(jsonArr.length() == 0){
+						Toast.makeText(getActivity(), R.string.noitem_found, Toast.LENGTH_SHORT).show();
+					}
+					else{
+						//Pass it to adapter and to List View
+						ProductAdapter adapter = new ProductAdapter(getActivity(), jsonArr);
+						list.setAdapter(adapter);
+						
+						//Change View Visibility
+						placeHolderImage.setVisibility(View.GONE);
+						list.setOnItemClickListener(new ProductListener((MainInterfaceActivity) getActivity()));
+						list.setVisibility(View.VISIBLE);
+					}
 					
-					//Change View Visibility
-					placeHolderImage.setVisibility(View.GONE);
-					list.setOnItemClickListener(new ProductListener((MainInterfaceActivity) getActivity()));
-					list.setVisibility(View.VISIBLE);
 
 				} catch (JSONException e) {
 					Toast.makeText(getActivity(), R.string.errmsg_bad_json , Toast.LENGTH_SHORT).show();
@@ -114,8 +120,8 @@ public class SearchFragment extends Fragment {
 		Uri.Builder urlB = Uri.parse(Server.Products.GETSEARCH).buildUpon();
 		
 		String query = args.getString(ConstantClass.SEARCH_FRAGMENT_QUERY_KEY);
-		int sort = args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY);
-		int category = args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_KEY);
+		int sort = args.getInt(ConstantClass.SEARCH_DIALOG_SORT_KEY);
+		int category = args.getInt(ConstantClass.SEARCH_DIALOG_CATEGORIES_ID_KEY);
 		int rating = args.getInt(ConstantClass.SEARCH_DIALOG_RATING_KEY);
 		int condition = args.getInt(ConstantClass.SEARCH_DIALOG_CONDITION_KEY);
 		double start_price = args.getDouble(ConstantClass.SEARCH_DIALOG_START_PRICE_KEY);
@@ -132,8 +138,9 @@ public class SearchFragment extends Fragment {
 		}
 		
 		urlB.appendQueryParameter("sort", ConstantClass.SEARCH_FILTER_SORT_URL_PARMS[sort]);
+		if(category != ConstantClass.CategoriesFile.ALL_CATEGORIES)
+			urlB.appendQueryParameter("category", Integer.toString(category));
 		
-		urlB.appendQueryParameter("category", Integer.toString(category));
 		urlB.appendQueryParameter("type", ConstantClass.SEARCH_FILTER_CONDITION_URL_PARMS[condition]);
 		
 		if(rating != 0){
