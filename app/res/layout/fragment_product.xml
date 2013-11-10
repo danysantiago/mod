@@ -29,6 +29,23 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:orientation="vertical" >
+            
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/wonItemView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="You Won this Product."
+                    android:gravity="center"
+                    android:background="#99CC00"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:visibility="gone"

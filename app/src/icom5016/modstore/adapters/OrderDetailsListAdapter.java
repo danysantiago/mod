@@ -76,10 +76,5 @@ public class OrderDetailsListAdapter extends ArrayAdapter<OrderDetail> {
 		
 		return row;
 	}
-	
-	 @Override
-     public boolean isEnabled(int position) {
-        return false;
-	 }
 
 }
