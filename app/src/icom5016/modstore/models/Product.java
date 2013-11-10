@@ -127,7 +127,7 @@ public class Product {
 	}
 
 	public String getName() {
-		return name;
+		return AndroidResourceFactory.stringEncode(name);
 	}
 
 	public void setName(String name) {
@@ -135,7 +135,7 @@ public class Product {
 	}
 
 	public String getDescription() {
-		return description;
+		return AndroidResourceFactory.stringEncode(description);
 	}
 
 	public void setDescription(String description) {

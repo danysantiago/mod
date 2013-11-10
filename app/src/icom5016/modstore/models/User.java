@@ -1,5 +1,7 @@
 package icom5016.modstore.models;
 
+import icom5016.modstore.resources.AndroidResourceFactory;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,15 +51,15 @@ public class User {
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return AndroidResourceFactory.stringEncode(firstName);
 	}
 
 	public String getMiddleName() {
-		return middleName;
+		return AndroidResourceFactory.stringEncode(middleName);
 	}
 
 	public String getLastName() {
-		return lastName;
+		return AndroidResourceFactory.stringEncode(lastName);
 	}
 
 	public String getEmail() {

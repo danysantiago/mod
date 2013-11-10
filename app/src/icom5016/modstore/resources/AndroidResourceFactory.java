@@ -1,5 +1,6 @@
 package icom5016.modstore.resources;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,5 +42,13 @@ public class AndroidResourceFactory {
 	public static String dateToString(Date date) {
 		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy KK:mma");
 		return df.format(date);
+	}
+	
+	public static String stringEncode(String text) {
+		try {
+			return new String(text.getBytes("ISO-8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return text;
+		}
 	}
 }

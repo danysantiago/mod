@@ -1,5 +1,6 @@
 package icom5016.modstore.models;
 
+import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 
 import org.json.JSONException;
@@ -105,7 +106,7 @@ public class CreditCard {
 	}
 
 	public String getName() {
-		return name;
+		return AndroidResourceFactory.stringEncode(name);
 	}
 
 	public void setName(String name) {
