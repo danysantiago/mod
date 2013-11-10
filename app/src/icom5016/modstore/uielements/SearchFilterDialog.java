@@ -39,6 +39,9 @@ public class SearchFilterDialog extends DialogFragment {
     private double startPriceValue;
     private double endPriceValue;
     
+    /* Super Array */
+    private List<Category> categoryList;
+    
     
     
 	public static SearchFilterDialog newInstance(int sortSpinnerValue, int categoriesSpinnerValue,
@@ -121,9 +124,14 @@ public class SearchFilterDialog extends DialogFragment {
 	    this.startPrice = (EditText) sfView.findViewById(R.id.filterStartText);
 	    this.endPrice = (EditText) sfView.findViewById(R.id.filterEndText);
 	    
+	    List<Category> allCategories = ((MainInterfaceActivity) this.getActivity()).loadCategoriesById(ConstantClass.CategoriesFile.ALL_CATEGORIES);
+		List<Category> sortedCategories = AndroidResourceFactory.sortCategories(allCategories);
+		sortedCategories.add(0, new Category(ConstantClass.CategoriesFile.ALL_CATEGORIES, ConstantClass.CategoriesFile.ALL_CATEGORIES, "All"));
+		this.categoryList = sortedCategories;
 	    
 	    initDialogAdapters();
 	    setDialogValuesFromActivity();
+	    
 	    
 		return builder.create();
 
@@ -132,7 +140,7 @@ public class SearchFilterDialog extends DialogFragment {
 	
 	private void updateValuesFromDialog(){
 		   this.sortSpinnerValue = this.sortSpinner.getSelectedItemPosition();
-	       this.categoriesSpinnerValue = this.categoriesSpinner.getSelectedItemPosition();
+	       this.categoriesSpinnerValue = this.categoryList.get(this.categoriesSpinner.getSelectedItemPosition()).getId();
 	       this.ratingSpinnerValue = this.ratingSpinner.getSelectedItemPosition();
 	       this.conditionSpinnerValue = this.conditionSpinner.getSelectedItemPosition();
 	       if(!this.startPrice.getText().toString().trim().isEmpty())
@@ -144,12 +152,8 @@ public class SearchFilterDialog extends DialogFragment {
 	private void initDialogAdapters() {
 		this.sortSpinner.setAdapter(
 					new ArrayAdapter<String>(this.getActivity(), R.layout.listview_filter_spinner, ConstantClass.SEARCH_FILTER_SORT));
-		
-		List<Category> allCategories = ((MainInterfaceActivity) this.getActivity()).loadCategoriesById(ConstantClass.CategoriesFile.ALL_CATEGORIES);
-		List<Category> sortedCategories = AndroidResourceFactory.sortCategories(allCategories);
-		sortedCategories.add(0, new Category(ConstantClass.CategoriesFile.ALL_CATEGORIES, ConstantClass.CategoriesFile.ALL_CATEGORIES, "All"));
 		this.categoriesSpinner.setAdapter(
-					new CategoryDialogAdapter(this.getActivity(), R.layout.listview_filter_spinner, sortedCategories));
+					new CategoryDialogAdapter(this.getActivity(), R.layout.listview_filter_spinner, this.categoryList));
 		this.ratingSpinner.setAdapter(
 				new ArrayAdapter<String>(this.getActivity(), R.layout.listview_filter_spinner, ConstantClass.SEARCH_FILTER_RATING));
 		this.conditionSpinner.setAdapter(
