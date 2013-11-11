@@ -6,8 +6,8 @@ import icom5016.modstore.adapters.ProductAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
+import icom5016.modstore.listeners.ProductListener;
 import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.uielements.ProductListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -134,7 +134,7 @@ public class SearchFragment extends Fragment {
 			urlB.appendQueryParameter("priceTo", Double.toString(end_price));
 		
 		if(!query.isEmpty()){
-			urlB.appendQueryParameter("searchString", query);
+			urlB.appendQueryParameter("searchString", query.trim());
 		}
 		
 		urlB.appendQueryParameter("sort", ConstantClass.SEARCH_FILTER_SORT_URL_PARMS[sort]);

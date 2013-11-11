@@ -7,7 +7,6 @@ import icom5016.modstore.fragments.SettingListFragment;
 
 import java.util.Locale;
 
-import android.R.anim;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;

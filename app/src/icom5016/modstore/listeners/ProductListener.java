@@ -1,4 +1,4 @@
-package icom5016.modstore.uielements;
+package icom5016.modstore.listeners;
 
 import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.fragments.ProductFragment;

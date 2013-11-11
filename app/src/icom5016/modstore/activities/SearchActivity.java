@@ -54,7 +54,6 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 				bundle.putDouble(ConstantClass.SEARCH_DIALOG_END_PRICE_KEY, endPriceValue);
 				SearchFragment fragment = new SearchFragment();
 				fragment.setArguments(bundle);
-				
 				AndroidResourceFactory.setNewFragment(this, fragment, MainInterfaceActivity.getContentFragmentId());
 			}
 			
@@ -73,7 +72,14 @@ public class SearchActivity extends MainInterfaceActivity implements SearchFilte
 		public boolean onOptionsItemSelected(MenuItem item){
 			switch(item.getItemId()){
 			case android.R.id.home:
-				finish();
+				if(this.fragmentStack.size() <= 1){
+					finish();
+				}
+				else{
+					this.fragmentStack.pop();
+					AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+					return true;
+				}		
 				break;
 			case R.id.btn_search_filter:
 				SearchFilterDialog.newInstance(sortSpinnerValue, categoriesSpinnerIndexValue, categoriesSpinnerIdValue ,ratingSpinnerValue, conditionSpinnerValue, startPriceValue, endPriceValue)

@@ -59,20 +59,27 @@ public class BiddingListAdapter extends ArrayAdapter<ProductBidding> {
 		title.setText(product.getName());
 		
 		//Remove Visibility
-		quantity.setVisibility(View.GONE);
+		quantity.setVisibility(View.INVISIBLE);
+		if(!type.equals(ConstantClass.BUYING_NOTWIN)){
+			if(product.getMyLastBid() >= product.getCurrentBid())
+				status.setText("Winning");
+			else
+				status.setText("Losing");
+			status.setTypeface(null, Typeface.BOLD);
+			
+		}
+		else{
+			status.setVisibility(View.GONE);
+		}
 		
-		if(product.getMyLastBid() >= product.getCurrentBid())
-			status.setText("Winning");
-		else
-			status.setText("Losing");
-		status.setTypeface(null, Typeface.BOLD);
 		
 		if(type.equals(ConstantClass.BUYING_NOTWIN)){
+			row.findViewById(R.id.prodrow_orders_date_tittle).setVisibility(View.GONE);
 			endDate.setText("Bid Ended");
 			
 		}
 		else if(type.equals(ConstantClass.BUYING_BIDDING)){
-			endDate.setText("End Date: "+product.getAuctionEndsTsString());
+			endDate.setText(product.getAuctionEndsTsString());
 		}
 		
 		//Current Bid/End Price:

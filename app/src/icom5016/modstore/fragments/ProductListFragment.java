@@ -6,11 +6,11 @@ import icom5016.modstore.adapters.ProductAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
+import icom5016.modstore.listeners.ProductListener;
 import icom5016.modstore.models.Category;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.uielements.ProductListSpinnerAdapter;
-import icom5016.modstore.uielements.ProductListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;

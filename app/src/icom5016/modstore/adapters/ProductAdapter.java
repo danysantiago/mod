@@ -1,8 +1,6 @@
 package icom5016.modstore.adapters;
 
 import icom5016.modstore.activities.R;
-import icom5016.modstore.activities.R.id;
-import icom5016.modstore.activities.R.layout;
 import icom5016.modstore.http.ImageLoader;
 import icom5016.modstore.models.Product;
 import icom5016.modstore.models.ProductSearching;
@@ -24,7 +22,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 		private ImageLoader imageloader;
 
 		public ProductAdapter(Context context, JSONArray jsonArr) throws JSONException {
-			super(context, R.layout.listview_product_row_1);
+			super(context, R.layout.listview_product);
 			
 			imageloader = new ImageLoader(context);
 			
@@ -39,23 +37,40 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View row = convertView;
 
-			Product product = this.getItem(position);
+			ProductSearching product = (ProductSearching) this.getItem(position);
 
 			LayoutInflater inflater = ((Activity) this.getContext()).getLayoutInflater();
 			
-			row = inflater.inflate(R.layout.listview_product_row_1, parent, false);
-
-			TextView name = (TextView) row.findViewById(R.id.name_textView2);
-			name.setText(product.getName());
-
-			TextView description = (TextView) row.findViewById(R.id.description_textView2);
-			description.setText(product.getDescription());
-
-			TextView price = (TextView) row.findViewById(R.id.price_textView2);
-			price.setText(product.getBuyItNowPriceString());
+			row = inflater.inflate(R.layout.listview_product, parent, false);
 			
-			ImageView image = (ImageView) row.findViewById(R.id.imageView5);
-			imageloader.DisplayImage("http://files.gamebanana.com/img/ico/sprays/1up_orcaexample.png", image);
+			//Layout Vars
+			TextView title = (TextView) row.findViewById(R.id.prodrow_title);
+			ImageView image = (ImageView) row.findViewById(R.id.prodrow_image);
+			TextView price = (TextView) row.findViewById(R.id.prodrow_price);
+			TextView date = (TextView) row.findViewById(R.id.prodrow_date);
+			TextView type = (TextView) row.findViewById(R.id.prodrow_type);
+			
+			if(product.getStartingBidPrice() != -1.0){
+				type.setText("Bid Now");
+				price.setText(product.getActualBidString());
+				date.setText(product.getAuctionEndsTsString());
+			}
+			else{
+				type.setText("Buy It Now");
+				price.setText(product.getBuyItNowPriceString());
+				date.setVisibility(View.INVISIBLE);
+				row.findViewById(R.id.prodrow_date_tittle).setVisibility(View.GONE);
+			}
+			
+			
+			
+			title.setText(product.getName());
+			
+			
+			
+			
+			//imageloader.DisplayImage(product.getImageSrcUrl(), image);
+
 			
 			row.setTag(product);
 

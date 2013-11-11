@@ -159,6 +159,7 @@
     <string name="listbuysellrow_price">$0.00</string>
     <string name="listbuysellrow_type">Trans. Type</string>
     <string name="listbuysellrow_date">1/1/1900</string>
+    <string name="listbuysellrow_date_title">End Date:</string>
     <string name="listbuysellrow_quantity">Quantity: 0</string>
     <string name="listbuysellrow_tracking">N/A</string>
 
