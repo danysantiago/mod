@@ -1,10 +1,12 @@
-package icom5016.modstore.uielements;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+package icom5016.modstore.adapters;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.Category;
+
+import java.util.List;
+
+import org.json.JSONException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,13 +17,9 @@ import android.widget.TextView;
 
 public class ProductListSpinnerAdapter extends ArrayAdapter<Category> {
 	
-	public ProductListSpinnerAdapter(Context context, JSONArray jsonArr) throws JSONException {
+	public ProductListSpinnerAdapter(Context context, List<Category> list) throws JSONException {
 		super(context, R.layout.listview_product_list_spinner);
-		
-		//Add Rows
-		for(int i = 0; i < jsonArr.length(); i++) {
-			this.add(new Category(jsonArr.getJSONObject(i)));
-		}
+		this.addAll(list);
 	}
 	
 	  @Override

@@ -3,6 +3,7 @@ package icom5016.modstore.fragments;
 import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.adapters.ProductAdapter;
+import icom5016.modstore.adapters.ProductListSpinnerAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
@@ -10,13 +11,15 @@ import icom5016.modstore.listeners.ProductListener;
 import icom5016.modstore.models.Category;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
-import icom5016.modstore.uielements.ProductListSpinnerAdapter;
+
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +72,7 @@ public class ProductListFragment extends Fragment {
 		return view;
 	}
 
-	private void doHttpProducsList(int categoryId) {
+	private void doHttpProducsList(final int categoryId) {
 				
 				//Hide Icon Make Visible ProgressBar
 				this.plPlaceHolder.setVisibility(View.GONE);
@@ -78,7 +81,7 @@ public class ProductListFragment extends Fragment {
 				//Perform http request
 				Bundle params = new Bundle();
 				params.putString("method", "GET");
-				params.putString("url", Server.Products.GETCATEGORIES+categoryId); //Remember make a special route
+				params.putString("url", this.parseUrl(categoryId)); //Remember make a special route
 				
 				
 				HttpRequest request = new HttpRequest(params, new HttpCallback() {
@@ -89,26 +92,33 @@ public class ProductListFragment extends Fragment {
 						//Get Info with Json
 						
 						try {
-							//Get category
-							JSONObject categoryJson = json.getJSONObject("category");
-							//Get Sub category
-							JSONArray subCategoryJson = json.getJSONArray("subcategory");
 							//Get Products
-							JSONArray productsJson = json.getJSONArray("products");
-						
-							Category mCategory = new Category(categoryJson);
+							JSONArray productsJson = json.getJSONArray("results");
+							List<Category> allCategories = ((MainInterfaceActivity) getActivity()).loadCategoriesById(ConstantClass.CategoriesFile.ALL_CATEGORIES);
+							
+							//Get category
+							Category mCategory = null;
+							for(Category e: allCategories){
+								if(e.getId() == categoryId){
+									mCategory = e;
+									break;
+								}
+							}
+							//Get Sub category
+							List<Category> subCategoriesList = ((MainInterfaceActivity) getActivity()).loadCategoriesById(categoryId);
 							
 							if(mCategory.getParentId() >= 0){
 								plTextView.setText(mCategory.getName());
 							}
 							
-							if(subCategoryJson.length() == 0){
+							if(subCategoriesList.size() == 0){
 								plSpinner.setVisibility(View.INVISIBLE);
 							}
 							else
 							{
 								//Set the Adapter
-								ProductListSpinnerAdapter spinnerAdapter = new ProductListSpinnerAdapter(getActivity(), subCategoryJson);
+								ProductListSpinnerAdapter spinnerAdapter = new ProductListSpinnerAdapter(getActivity(), subCategoriesList );
+								spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 								plSpinner.setAdapter(spinnerAdapter);
 								
 								
@@ -139,7 +149,8 @@ public class ProductListFragment extends Fragment {
 							//Load Products
 							if(productsJson.length() == 0){
 								plPlaceHolder.setVisibility(View.VISIBLE);
-								Toast.makeText(getActivity(), "Empty", Toast.LENGTH_LONG).show();
+								plSpinner.setVisibility(View.GONE);
+								Toast.makeText(getActivity(), "No Product Found", Toast.LENGTH_LONG).show();
 							}
 							else{
 								//Pass it to adapter and to List View
@@ -180,6 +191,12 @@ public class ProductListFragment extends Fragment {
 	public void onResume() {
 		this.spinnerChange = false;
 		super.onResume();
+	}
+	
+	private String parseUrl(int id){
+		Uri.Builder urlB = Uri.parse(Server.Products.GETSEARCH).buildUpon();
+		urlB.appendQueryParameter("category", Integer.toString(id));
+		return urlB.toString();
 	}
 	
 }

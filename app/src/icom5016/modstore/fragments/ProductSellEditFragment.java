@@ -6,6 +6,7 @@ import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
 import icom5016.modstore.models.Product;
+import icom5016.modstore.uielements.DateTimePicker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -21,10 +22,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -42,9 +44,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
+import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TimePicker;
+import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 
 public class ProductSellEditFragment extends Fragment {
@@ -63,7 +68,9 @@ public class ProductSellEditFragment extends Fragment {
 	CheckBox chkAuctionEnabled;
 	
 	Calendar myCalendar = Calendar.getInstance();
-	OnDateSetListener dateSetListener;
+	OnDateChangedListener dateChangedListener;
+	OnTimeChangedListener timeSetListener;
+	DialogInterface.OnClickListener onDialogClose;
 	
 	Uri selectedPhoto;
 	byte selectedPhotoBytes[];
@@ -92,21 +99,45 @@ public class ProductSellEditFragment extends Fragment {
 		btnAdd = (Button)view.findViewById(R.id.btnProductAdd);
 		chkAuctionEnabled = (CheckBox)view.findViewById(R.id.chkAuctionEnabled);
 		
-		dateSetListener = new DatePickerDialog.OnDateSetListener() {
-		    @Override
-		    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-		        myCalendar.set(Calendar.YEAR, year);
-		        myCalendar.set(Calendar.MONTH, monthOfYear);
-		        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-		        updateLabel();
-		    }
+		dateChangedListener = new OnDateChangedListener() {
+			@Override
+			public void onDateChanged(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				myCalendar.set(Calendar.YEAR, year);
+				myCalendar.set(Calendar.MONTH, monthOfYear);
+				myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+			}
+		};
+		
+		timeSetListener = new OnTimeChangedListener() {
+			@Override
+			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+				myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+				myCalendar.set(Calendar.MINUTE, minute);
+			}
+		};
+		
+		onDialogClose = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+					txtName.requestFocus();
+					updateLabel();
+			}
 		};
 		
 		txtEndAuction.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus)
-					new DatePickerDialog(getActivity(), dateSetListener, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+				if (hasFocus) {
+					DialogFragment d = new DateTimePicker();
+					((DateTimePicker)d).setOnTimeListener(timeSetListener);
+					((DateTimePicker)d).setOnDateListener(dateChangedListener);
+					((DateTimePicker)d).setOnSet(onDialogClose);
+					((DateTimePicker)d).setOnCancel(onDialogClose);
+					((DateTimePicker)d).setCalendar(myCalendar);
+					
+					d.show(getActivity().getFragmentManager(), "NewDateTimePicker");
+				}
 			}
 			
 		});
@@ -198,7 +229,7 @@ public class ProductSellEditFragment extends Fragment {
 	}
 	
 	private void updateLabel() {
-		String myFormat = "MM/dd/yyyy";
+		String myFormat = "MM/dd/yyyy hh:mma";
 		SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
 		txtEndAuction.setText(sdf.format(myCalendar.getTime()));
