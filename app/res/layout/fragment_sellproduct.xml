@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/txtProductDescription"
-        android:ems="7"
+        android:ems="8"
         android:hint="@string/hint_productbrand" />
 
     <EditText
@@ -49,7 +49,7 @@
         android:layout_alignBaseline="@+id/txtProductBrand"
         android:layout_alignBottom="@+id/txtProductBrand"
         android:layout_alignParentRight="true"
-        android:ems="7"
+        android:ems="8"
         android:hint="@string/hint_productmodel" />
 
     <EditText
@@ -57,9 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/txtProductBrand"
         android:layout_below="@+id/txtProductBrand"
-        android:ems="7"
+        android:ems="8"
         android:hint="@string/hint_productdimensions" />
 
     <EditText
@@ -68,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/txtProductModel"
         android:layout_below="@+id/txtProductBrand"
-        android:ems="7"
+        android:ems="8"
         android:hint="@string/hint_productquantity"
         android:inputType="numberSigned" />
 
@@ -78,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txtProductDimensions"
         android:layout_below="@+id/txtProductDimensions"
-        android:ems="7"
+        android:ems="8"
         android:hint="@string/hint_productbuyoutprice"
         android:inputType="numberDecimal" />
 
@@ -114,17 +113,17 @@
         android:id="@+id/chkAuctionEnabled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/txtProductQuantity"
-        android:layout_below="@+id/txtProductQuantity"
+        android:layout_alignLeft="@+id/txtProductBuyoutPrice"
+        android:layout_below="@+id/txtProductBuyoutPrice"
         android:text="@string/will_have_auction" />
 
     <EditText
         android:id="@+id/txtProductBidPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/chkAuctionEnabled"
-        android:ems="7"
+        android:layout_alignBottom="@+id/chkAuctionEnabled"
+        android:layout_alignParentRight="true"
+        android:ems="8"
         android:hint="@string/hint_productbidprice"
         android:inputType="numberDecimal" />
 
@@ -132,10 +131,10 @@
         android:id="@+id/txtProductEndAuction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/txtProductBidPrice"
-        android:layout_alignBottom="@+id/txtProductBidPrice"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:ems="7"
+        android:layout_below="@+id/txtProductBidPrice"
+       
         android:hint="@string/hint_productendauction" />
 
 </RelativeLayout>
