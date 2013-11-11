@@ -228,7 +228,11 @@ public class ProductFragment extends Fragment {
 						if(isEnded) {
 							bidButton.setVisibility(View.GONE);
 							endDateTV.setText("Auction ended: " + product.getAuctionEndsTsString());
-							priceTV.setText("Won for: $" + currentBid);
+							if (currentBid == product.getStartingBidPrice()) {
+								priceTV.setText("Initial Bid Price: $" + currentBid);
+							} else {
+								priceTV.setText("Won for: $" + currentBid);
+							}
 						} else {
 							bidButton.setVisibility(View.VISIBLE);
 							endDateTV.setText("Auction ends: " + product.getAuctionEndsTsString());
