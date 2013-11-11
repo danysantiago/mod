@@ -195,5 +195,6 @@
 	
 	<!-- Search Part -->
 	<string name="noitem_found">No Item Found</string>
+	<string name="will_have_auction">Is an Auction?</string>
 
 </resources>

@@ -38,6 +38,9 @@ import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -57,6 +60,7 @@ public class ProductSellEditFragment extends Fragment {
 	Spinner cboCategory;
 	Button btnSelectPhoto;
 	Button btnAdd;
+	CheckBox chkAuctionEnabled;
 	
 	Calendar myCalendar = Calendar.getInstance();
 	OnDateSetListener dateSetListener;
@@ -86,6 +90,7 @@ public class ProductSellEditFragment extends Fragment {
 		cboCategory = (Spinner)view.findViewById(R.id.cboProductCategory);
 		btnSelectPhoto = (Button)view.findViewById(R.id.btnProductSelectPhoto);
 		btnAdd = (Button)view.findViewById(R.id.btnProductAdd);
+		chkAuctionEnabled = (CheckBox)view.findViewById(R.id.chkAuctionEnabled);
 		
 		dateSetListener = new DatePickerDialog.OnDateSetListener() {
 		    @Override
@@ -102,6 +107,28 @@ public class ProductSellEditFragment extends Fragment {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus)
 					new DatePickerDialog(getActivity(), dateSetListener, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+			}
+			
+		});
+		
+		chkAuctionEnabled.setOnCheckedChangeListener( new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				if (isChecked) {
+					txtQuantity.setEnabled(false);
+					txtQuantity.setText("1");
+					txtEndAuction.setEnabled(true);
+					txtBidPrice.setEnabled(true);
+					txtBidPrice.requestFocus();
+				} else {
+					txtQuantity.setEnabled(true);
+					txtBidPrice.setText("");
+					txtEndAuction.setText("");
+					txtEndAuction.setEnabled(false);
+					txtBidPrice.setEnabled(false);
+				}
 			}
 			
 		});
@@ -124,6 +151,8 @@ public class ProductSellEditFragment extends Fragment {
 		});
 		
 		cboCategory.setVisibility(View.GONE);
+		txtEndAuction.setEnabled(false);
+		txtBidPrice.setEnabled(false);
 		
 		pd = ProgressDialog.show(getActivity(), "Loading", "Loading Categories...", true, false);
 
@@ -244,36 +273,36 @@ public class ProductSellEditFragment extends Fragment {
 	
 	private List<Category> getCategories(JSONObject json) {
 		List<Category> cats = new ArrayList<Category>();
-		getCategoriesRecurv(json, cats, 0, -1);
-		return cats;
-	}
-	
-	private void getCategoriesRecurv(JSONObject json, List<Category> cats, int level, int lookId) {
+		List<Category> outCats = new ArrayList<Category>();
 		JSONArray jsonArr;
-		JSONObject obj;
-		String name;
-		int parentId, id;
-
+		
 		try {
 			jsonArr = json.getJSONArray("categories");
 			
 			for (int i = 0; i < jsonArr.length(); i++) {
-				obj = jsonArr.getJSONObject(i);
-				parentId = obj.getInt("parentId");
-				
-				if (parentId == lookId) {
-					name = obj.getString("name");
-					id = obj.getInt("id");
-					
-					name = repeat("   ", level) + name;
-					
-					cats.add(new Category(parentId, id, name));
-					
-					getCategoriesRecurv(json, cats, level + 1, id);
-				}
+				cats.add(new Category(jsonArr.getJSONObject(i)));
 			}
+			
+			getCategoriesRecurv(cats, outCats, 0, -1);
+			return outCats;
 		} catch (JSONException e) {
 			e.printStackTrace();
+			
+			return new ArrayList<Category>();
+		}
+	}
+	
+	private void getCategoriesRecurv(List<Category> inCats, List<Category> cats, int level, int lookId) {
+		String name;
+
+		for (Category c : inCats) {
+			if (c.getParentId() == lookId) {
+				name = repeat("   ", level) + c.getName();
+				
+				cats.add(new Category(c.getParentId(), c.getId(), name));
+				
+				getCategoriesRecurv(inCats, cats, level + 1, c.getId());
+			}
 		}
 	}
 	
