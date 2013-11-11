@@ -10,6 +10,7 @@ import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
 
+import java.text.NumberFormat;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -92,7 +93,7 @@ public class ProductFragment extends Fragment {
 	private ProgressBar pd;
 
 	private ImageLoader imageLoader;
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_product, container,false);
@@ -229,14 +230,14 @@ public class ProductFragment extends Fragment {
 							bidButton.setVisibility(View.GONE);
 							endDateTV.setText("Auction ended: " + product.getAuctionEndsTsString());
 							if (currentBid == product.getStartingBidPrice()) {
-								priceTV.setText("Initial Bid Price: $" + currentBid);
+								priceTV.setText("Initial Bid Price: " + product.getStartingBidPriceString());
 							} else {
-								priceTV.setText("Won for: $" + currentBid);
+								priceTV.setText("Won for: " + num_format(currentBid));
 							}
 						} else {
 							bidButton.setVisibility(View.VISIBLE);
 							endDateTV.setText("Auction ends: " + product.getAuctionEndsTsString());
-							priceTV.setText("Current Highest Bid: $" + currentBid);
+							priceTV.setText("Current Highest Bid: " + num_format(currentBid));
 						}
 					} else {
 						bidButton.setVisibility(View.GONE);
@@ -244,10 +245,10 @@ public class ProductFragment extends Fragment {
 						if(isEnded) {
 							buyNowButtonsContainer.setVisibility(View.GONE);
 							endDateTV.setText("Auction ended: " + product.getAuctionEndsTsString());
-							priceTV.setText("Bought for: $" + product.getBuyItNowPrice());
+							priceTV.setText("Bought for: " + product.getBuyItNowPriceString());
 						} else {
 							buyNowButtonsContainer.setVisibility(View.VISIBLE);
-							priceTV.setText("Price: $" + product.getBuyItNowPrice());
+							priceTV.setText("Price: " + product.getBuyItNowPriceString());
 						}
 					}
 					
@@ -407,6 +408,12 @@ public class ProductFragment extends Fragment {
 			
 		}
 		
+	}
+	
+	private String num_format(float num) {
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumFractionDigits(2);
+		return "$" + nf.format(num);
 	}
 
 }

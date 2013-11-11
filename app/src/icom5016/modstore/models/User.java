@@ -32,10 +32,10 @@ public class User {
 	public User(JSONObject jsonObject) throws JSONException {
 		
 			this.guid = jsonObject.getInt("user_id");
-			this.username = jsonObject.getString("user_name");
-			this.firstName = jsonObject.getString("first_name");
-			this.middleName = jsonObject.getString("middle_name");
-			this.lastName = jsonObject.getString("last_name");
+			this.username = AndroidResourceFactory.stringEncode(jsonObject.getString("user_name"));
+			this.firstName = AndroidResourceFactory.stringEncode(jsonObject.getString("first_name"));
+			this.middleName = AndroidResourceFactory.stringEncode(jsonObject.getString("middle_name"));
+			this.lastName = AndroidResourceFactory.stringEncode(jsonObject.getString("last_name"));
 			this.email = jsonObject.getString("email");
 			int admin = jsonObject.getInt("is_admin");
 			this.isAdmin = admin == 1;
@@ -51,15 +51,15 @@ public class User {
 	}
 
 	public String getFirstName() {
-		return AndroidResourceFactory.stringEncode(firstName);
+		return firstName;
 	}
 
 	public String getMiddleName() {
-		return AndroidResourceFactory.stringEncode(middleName);
+		return middleName;
 	}
 
 	public String getLastName() {
-		return AndroidResourceFactory.stringEncode(lastName);
+		return lastName;
 	}
 
 	public String getEmail() {

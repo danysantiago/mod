@@ -69,7 +69,7 @@ public class Product implements Serializable {
 		this.name = json.getString("name");
 		this.brand = json.getString("brand");
 		this.model = json.getString("model");
-		this.dimensions = json.getString("dimensions");
+		this.dimensions = json.isNull("dimensions") ? "" : json.getString("dimensions");
 		
 		if(json.getString("buy_price").equals("null")){
 			this.buyItNowPrice = -1.0;

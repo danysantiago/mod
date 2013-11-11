@@ -13,6 +13,7 @@ import java.util.TimeZone;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.util.Log;
 
 public class AndroidResourceFactory {
 
@@ -80,8 +81,10 @@ public class AndroidResourceFactory {
 	
 	public static String stringEncode(String text) {
 		try {
-			return new String(text.getBytes("ISO-8859-1"), "UTF-8");
+			String s = new String(text.getBytes("ISO-8859-1"), "UTF-8");
+			return s;
 		} catch (UnsupportedEncodingException e) {
+			Log.e("encode", e.getMessage());
 			return text;
 		}
 	}

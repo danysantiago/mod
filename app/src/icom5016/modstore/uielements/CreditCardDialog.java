@@ -5,6 +5,8 @@ import icom5016.modstore.models.Address;
 import icom5016.modstore.models.CreditCard;
 import icom5016.modstore.resources.DataFetchFactory;
 
+import java.text.SimpleDateFormat;
+
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -84,20 +86,25 @@ public class CreditCardDialog extends DialogFragment {
 	private void loadCreditCard() {
 	    if (creditCard != null) {
 	    	SpinnerAdapter tempAdapter = cboYears.getAdapter();
-	    	//String temp[] = creditCard.getExpire().split("/");
 	    	int pos = -1;
+	    	
+	    	SimpleDateFormat yearF = new SimpleDateFormat("yyyy");
+	    	SimpleDateFormat monthF = new SimpleDateFormat("MM");
+	    	
+	    	String year = yearF.format(creditCard.getExpireDate());
+	    	String month = monthF.format(creditCard.getExpireDate());
 	    	
 	    	txtFullname.setText(creditCard.getName());
 	    	txtNumber.setText(creditCard.getNumber());
 	    	txtSecurityCode.setText(creditCard.getSecurityCode());
-	    	//txtExpireMonth.setText(temp[0]);
+	    	txtExpireMonth.setText(month);
 	    	cboTypes.setSelection(creditCard.getType());
 	    	chkDefault.setChecked(creditCard.isDefault());
 	    	
 	    	for (int i = 0; i < tempAdapter.getCount(); i++) {
-//	    		if (tempAdapter.getItem(i).equals(temp[1])) {
-//	    			pos = i;
-//	    		}
+	    		if (tempAdapter.getItem(i).equals(year)) {
+	    			pos = i;
+	    		}
 	    	}
 
 	    	if (pos != -1)

@@ -1,6 +1,5 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import android.app.ActionBar;
 import android.os.Bundle;

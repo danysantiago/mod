@@ -3,6 +3,8 @@ package icom5016.modstore.models;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +15,7 @@ public class CreditCard {
 	private String number;
 	private String name;
 	private String expire;
+	private Date expireDate;
 	private String securityCode;
 	private boolean isDefault;
 	private String createdTs;
@@ -32,27 +35,27 @@ public class CreditCard {
 		this.number = number;
 		this.name = name;
 		this.expire = expire;
+		this.expireDate = AndroidResourceFactory.ISODateToDate(expire);
 		this.securityCode = securityCode;
 		this.isDefault = isDefault;
 	}
 	
 	public CreditCard(JSONObject json) throws JSONException {
+		this.creditcardId = json.getInt("creditcard_id");
+		this.addressId = json.getInt("address_id");
+		this.type = json.getInt("type");
+		this.number = json.getString("number");
+		this.name = json.getString("name");
+		this.expire = json.getString("expiration_date");
+		this.expireDate = AndroidResourceFactory.ISODateToDate(expire);
+		this.securityCode = json.getString("security_code");
+		int is_default = json.getInt("is_primary");
+		this.isDefault = is_default == 1;
+		this.createdTs = json.getString("created_ts");
 		
-			this.creditcardId = json.getInt("creditcard_id");
-			this.addressId = json.getInt("address_id");
-			this.type = json.getInt("type");
-			this.number = json.getString("number");
-			this.name = json.getString("name");
-			this.expire = json.getString("expiration_date");
-			this.securityCode = json.getString("security_code");
-			int is_default = json.getInt("is_primary");
-			this.isDefault = is_default == 1;
-			this.createdTs = json.getString("created_ts");
-			
-			if(json.has("address")){
-				this.address = new Address(json.getJSONObject("address"));
-			}
-			
+		if(json.has("address")){
+			this.address = new Address(json.getJSONObject("address"));
+		}
 	}
 
 	public String getTypeString(){
@@ -145,7 +148,8 @@ public class CreditCard {
 		this.address = address;
 	}
 	
-	
-	
+	public Date getExpireDate() {
+		return this.expireDate;
+	}
 	
 }

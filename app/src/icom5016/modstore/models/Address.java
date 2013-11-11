@@ -35,18 +35,18 @@ public class Address {
 		super();
 		
 		
-			this.id = json.getInt("address_id");
-			this.userId = json.getInt("user_id");
-			this.line1 = json.getString("line1");
-			this.line2 = json.getString("line2");
-			this.city = json.getString("city");
-			this.state = json.getString("state");
-			this.country = json.getString("country");
-			this.zipcode = json.getString("zipcode");
-			
-			int is_default = json.getInt("is_primary");
-			this.isDefault = is_default == 1;
-			this.createdTs = json.getString("created_ts");
+		this.id = json.getInt("address_id");
+		this.userId = json.getInt("user_id");
+		this.line1 = json.getString("line1");
+		this.line2 = (json.isNull("line2")) ? "" : json.getString("line2");
+		this.city = json.getString("city");
+		this.state = (json.isNull("state")) ? "" : json.getString("state");
+		this.country = json.getString("country");
+		this.zipcode = json.getString("zipcode");
+		
+		int is_default = json.getInt("is_primary");
+		this.isDefault = is_default == 1;
+		this.createdTs = json.getString("created_ts");
 			
 	}
 	
