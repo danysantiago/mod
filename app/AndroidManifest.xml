@@ -70,7 +70,7 @@
         </activity>
         <activity
             android:name="icom5016.modstore.activities.ProductViewerActivity"
-            android:label="@string/title_activity_product_viewer" >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="icom5016.modstore.activities.SellingViewerActivity"

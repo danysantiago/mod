@@ -27,10 +27,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -66,10 +68,12 @@ public class ProductFragment extends Fragment {
 	private LinearLayout auctionEndedView;
 	private LinearLayout outOfStockView;
 	private LinearLayout wonItemView;
+	private LinearLayout buyNowButtonsContainer;
 
 	
 	private TextView productNameTV;
 	private TextView priceTV;
+	private TextView quantityTV;
 	private TextView brandTV;
 	private TextView modelTV;
 	private TextView dimensionsTV;
@@ -79,6 +83,7 @@ public class ProductFragment extends Fragment {
 	private RatingBar ratingBar;
 	private LinearLayout ratingLayout;
 	private LinearLayout bidLayout;
+	private Button addButton;
 	private Button buyButton;
 	private Button bidButton;
 	private RelativeLayout noImageTextView;
@@ -91,6 +96,7 @@ public class ProductFragment extends Fragment {
 		
 		productNameTV = (TextView) view.findViewById(R.id.productNameTextView);
 		priceTV = (TextView) view.findViewById(R.id.priceTextView);
+		quantityTV = (TextView) view.findViewById(R.id.quantityTextView);
 		brandTV = (TextView) view.findViewById(R.id.brandTextView);
 		modelTV = (TextView) view.findViewById(R.id.modelTextView);
 		dimensionsTV = (TextView) view.findViewById(R.id.dimensionsTextView);
@@ -103,7 +109,10 @@ public class ProductFragment extends Fragment {
 		
 		ratingLayout = (LinearLayout) view.findViewById(R.id.ratingLayout);
 		
-		buyButton = (Button) view.findViewById(R.id.btnProductAdd);
+		buyNowButtonsContainer = (LinearLayout) view.findViewById(R.id.buyNowButtonsContainer);
+		addButton = (Button) view.findViewById(R.id.btnProductAdd);
+		addButton.setOnClickListener(new AddButtonListener());
+		buyButton = (Button) view.findViewById(R.id.btnProductBuyNow);
 		buyButton.setOnClickListener(new BuyButtonListener());
 		bidButton = (Button) view.findViewById(R.id.bidButton);
 		bidButton.setOnClickListener(new BidButtonListener());
@@ -156,12 +165,19 @@ public class ProductFragment extends Fragment {
 					JSONArray images = json.getJSONArray("images");
 					avgSellerRating = (float) jsonProduct.getInt("avg_seller_rating");
 					stock = jsonProduct.getInt("stock");
+					
+					if (!product.getAuctionEndsTs().equals("null")) {
+						isBidProduct = true;
+					}
+					
 					if(!jsonProduct.getString("winning_user_id").equals("null")) {
 						winnerId = jsonProduct.getInt("winning_user_id");
 					}
+					
 					if(!jsonProduct.getString("actual_bid").equals("null")) {
 						currentBid = (float) jsonProduct.getDouble("actual_bid");
-						isBidProduct = true;
+					} else {
+						currentBid = (float) product.getStartingBidPrice();
 					}
 					
 					if(user.getGuid() == (seller.getGuid())) {
@@ -196,7 +212,7 @@ public class ProductFragment extends Fragment {
 					productContainer.setVisibility(View.VISIBLE);
 					
 					if(isBidProduct) {
-						buyButton.setVisibility(View.GONE);
+						buyNowButtonsContainer.setVisibility(View.GONE);
 						if(isEnded) {
 							bidButton.setVisibility(View.GONE);
 							endDateTV.setText("Auction ended: " + product.getAuctionEndsTsString());
@@ -210,11 +226,11 @@ public class ProductFragment extends Fragment {
 						bidButton.setVisibility(View.GONE);
 						endDateTV.setVisibility(View.GONE);
 						if(isEnded) {
-							buyButton.setVisibility(View.GONE);
+							buyNowButtonsContainer.setVisibility(View.GONE);
 							endDateTV.setText("Auction ended: " + product.getAuctionEndsTsString());
 							priceTV.setText("Bought for: $" + product.getBuyItNowPrice());
 						} else {
-							buyButton.setVisibility(View.VISIBLE);
+							buyNowButtonsContainer.setVisibility(View.VISIBLE);
 							priceTV.setText("Price: $" + product.getBuyItNowPrice());
 						}
 					}
@@ -224,11 +240,12 @@ public class ProductFragment extends Fragment {
 					}
 					
 					productNameTV.setText(product.getName());
-					brandTV.setText("Brand: " + product.getBrand());
-					modelTV.setText("Model: " + product.getModel());
-					dimensionsTV.setText("Dimensions: " + product.getDimensions());
+					quantityTV.setText(""+product.getQuantity());
+					brandTV.setText(product.getBrand());
+					modelTV.setText(product.getModel());
+					dimensionsTV.setText(product.getDimensions());
 					descriptionTV.setText(product.getDescription());
-					sellerTV.setText("Seller: " + seller.getUsername());
+					sellerTV.setText(seller.getUsername());
 					ratingBar.setRating(avgSellerRating);
 					
 					if(images.length() > 0) {
@@ -239,6 +256,12 @@ public class ProductFragment extends Fragment {
 						
 						for(int i = 0; i < images.length(); i++) {
 							ImageView imageView = new ImageView(getActivity());
+							LayoutParams params = new LayoutParams(
+							        LayoutParams.WRAP_CONTENT,      
+							        LayoutParams.WRAP_CONTENT
+							);
+							params.setMargins(5, 0, 5, 0);
+							imageView.setLayoutParams(params);
 							imageView.setScaleType(ScaleType.CENTER_INSIDE);
 							imageView.setBackgroundResource(R.drawable.image_view_bg);
 							String url = Server.Images.GET + images.getJSONObject(i).getString("image_src");
@@ -294,17 +317,64 @@ public class ProductFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	        builder.setTitle("Buy Now");
+	        builder.setMessage("Buy " + product.getName() + " now?");
+	        builder.setPositiveButton("Procced to Checkout", new DialogInterface.OnClickListener() {
+			   public void onClick(DialogInterface dialog, int id) {
+		       }
+		    });
+			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			   public void onClick(DialogInterface dialog, int id) {
+		       }
+		    });
+	        builder.create().show();
+		}
+		
+	}
+	
+	public class AddButtonListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	        builder.setTitle("Add to Cart");
+	        builder.setMessage("Add " + product.getName() + " to cart?");
+	        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			   public void onClick(DialogInterface dialog, int id) {
+		       }
+		    });
+			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			   public void onClick(DialogInterface dialog, int id) {
+		       }
+		    });
+	        builder.create().show();
 		}
 		
 	}
 	
 	public class BidButtonListener implements OnClickListener {
+		
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			View bidDialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_bid_layout, null);
+			EditText amountBox = (EditText) bidDialogView.findViewById(R.id.amountEditText);
+			amountBox.setHint(""+(currentBid + 1));
+			
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	        builder.setTitle("Bid");
+	        builder.setView(bidDialogView);
+	        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+			   public void onClick(DialogInterface dialog, int id) {
+		       }
+		    });
+			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			   public void onClick(DialogInterface dialog, int id) {
+		       }
+		    });
+	        builder.create().show();
 			
 		}
 		
