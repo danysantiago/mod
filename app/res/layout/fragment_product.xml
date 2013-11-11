@@ -30,6 +30,22 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:orientation="vertical" >
+            
+                        <LinearLayout
+                android:id="@+id/highBidView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#99CC00"
+                    android:gravity="center"
+                    android:text="Currently Winning."
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/wonItemView"
@@ -114,6 +130,7 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="Product Name"
+                    android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <TextView
@@ -247,6 +264,7 @@
                         android:layout_weight="1"
                         android:gravity="right"
                         android:text="Quantity: "
+                        android:textColor="@color/dark_gray"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView
@@ -273,6 +291,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
+                        android:textColor="@color/dark_gray"
                         android:text="Brand: "
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -300,6 +319,7 @@
                         android:layout_weight="1"
                         android:gravity="right"
                         android:text="Model: "
+                        android:textColor="@color/dark_gray"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView
@@ -326,6 +346,7 @@
                         android:layout_weight="1"
                         android:gravity="right"
                         android:text="Dimensions: "
+                        android:textColor="@color/dark_gray"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                     <TextView

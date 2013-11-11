@@ -68,6 +68,7 @@ public class ProductFragment extends Fragment {
 	private LinearLayout auctionEndedView;
 	private LinearLayout outOfStockView;
 	private LinearLayout wonItemView;
+	private LinearLayout highBidView;
 	private LinearLayout buyNowButtonsContainer;
 
 	
@@ -90,9 +91,13 @@ public class ProductFragment extends Fragment {
 	
 	private ProgressBar pd;
 
+	private ImageLoader imageLoader;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_product, container,false);
+		
+		imageLoader = new ImageLoader(getActivity());
 		
 		productNameTV = (TextView) view.findViewById(R.id.productNameTextView);
 		priceTV = (TextView) view.findViewById(R.id.priceTextView);
@@ -123,6 +128,7 @@ public class ProductFragment extends Fragment {
 		auctionEndedView = (LinearLayout) view.findViewById(R.id.auctionEndedView);
 		outOfStockView = (LinearLayout) view.findViewById(R.id.outOfStockView);
 		wonItemView = (LinearLayout) view.findViewById(R.id.wonItemView);
+		highBidView = (LinearLayout) view.findViewById(R.id.highBidView);
 		
 		progressContainer = (RelativeLayout) view.findViewById(R.id.progressBarContainer);
 		productContainer = (ScrollView) view.findViewById(R.id.productContainer);
@@ -196,6 +202,10 @@ public class ProductFragment extends Fragment {
 						} else {
 							outOfStockView.setVisibility(View.VISIBLE);
 						}
+					} else {
+						if(isOwner) {
+							
+						}
 					}
 					
 					if(isBidProduct && product.getAuctionEndDate().before(new Date())) {
@@ -206,6 +216,8 @@ public class ProductFragment extends Fragment {
 							auctionEndedView.setVisibility(View.VISIBLE);
 						}
 						isEnded = true;
+					} else if (isBidProduct && isWinner) {
+						highBidView.setVisibility(View.VISIBLE);
 					}
 					
 					progressContainer.setVisibility(View.GONE);
@@ -252,8 +264,6 @@ public class ProductFragment extends Fragment {
 						imagesScrollContainer.setVisibility(View.VISIBLE);
 						noImageTextView.setVisibility(View.GONE);
 						
-						ImageLoader imageLoader = new ImageLoader(getActivity());
-						
 						for(int i = 0; i < images.length(); i++) {
 							ImageView imageView = new ImageView(getActivity());
 							LayoutParams params = new LayoutParams(
@@ -266,6 +276,21 @@ public class ProductFragment extends Fragment {
 							imageView.setBackgroundResource(R.drawable.image_view_bg);
 							String url = Server.Images.GET + images.getJSONObject(i).getString("image_src");
 							imageLoader.DisplayImage(url, imageView);
+							imageView.setTag(url);
+							
+							imageView.setOnClickListener(new OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									ImageView imgV = new ImageView(getActivity());
+									imageLoader.DisplayImage(v.getTag().toString(), imgV);
+									
+									AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+									builder.setView(imgV);
+							        builder.create().show();
+								}
+							});
+							
 							imagesContainer.addView(imageView);
 						}
 					} else {
