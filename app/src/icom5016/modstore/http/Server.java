@@ -42,4 +42,8 @@ public class Server {
 	public static class Images {
 		public static final String GET = BASE_URL+"/images/";
 	}
+	
+	public static class Charts {
+		public static final String SALES_BY_MONTH = BASE_URL+"/charts/sales/months";
+	}
 }

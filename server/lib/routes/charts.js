@@ -128,7 +128,7 @@ routes.get("/charts/sales/months", function (req, res) {
       }
 
       var monthsString = _.reduce(months, function (memo, monthNum) {
-        return memo + monthMap[monthNum] + "|";
+        return memo + monthMap[monthNum-1] + "|";
       }, "|");
 
       var chartUrlObj = {
