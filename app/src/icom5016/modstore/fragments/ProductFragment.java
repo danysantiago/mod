@@ -3,6 +3,7 @@ package icom5016.modstore.fragments;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.ImageLoader;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Product;
 import icom5016.modstore.models.User;
@@ -11,16 +12,24 @@ import icom5016.modstore.resources.DataFetchFactory;
 
 import java.util.Date;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -50,11 +59,14 @@ public class ProductFragment extends Fragment {
 	
 	private RelativeLayout progressContainer;
 	private ScrollView productContainer;
+	private HorizontalScrollView imagesScrollContainer;
+	private LinearLayout imagesContainer;
 	
 	private LinearLayout soldItemView;
 	private LinearLayout auctionEndedView;
 	private LinearLayout outOfStockView;
 	private LinearLayout wonItemView;
+
 	
 	private TextView productNameTV;
 	private TextView priceTV;
@@ -69,6 +81,7 @@ public class ProductFragment extends Fragment {
 	private LinearLayout bidLayout;
 	private Button buyButton;
 	private Button bidButton;
+	private RelativeLayout noImageTextView;
 	
 	private ProgressBar pd;
 
@@ -84,13 +97,16 @@ public class ProductFragment extends Fragment {
 		descriptionTV = (TextView) view.findViewById(R.id.descriptionTextView);
 		sellerTV = (TextView) view.findViewById(R.id.sellerTextView);
 		endDateTV = (TextView) view.findViewById(R.id.endDateTextView);
+		noImageTextView = (RelativeLayout) view.findViewById(R.id.noImageTextView);
 		
 		ratingBar = (RatingBar) view.findViewById(R.id.ratingBar); 
 		
 		ratingLayout = (LinearLayout) view.findViewById(R.id.ratingLayout);
 		
 		buyButton = (Button) view.findViewById(R.id.btnProductAdd);
+		buyButton.setOnClickListener(new BuyButtonListener());
 		bidButton = (Button) view.findViewById(R.id.bidButton);
+		bidButton.setOnClickListener(new BidButtonListener());
 		
 		pd = (ProgressBar) view.findViewById(R.id.progressBar);
 		
@@ -101,57 +117,14 @@ public class ProductFragment extends Fragment {
 		
 		progressContainer = (RelativeLayout) view.findViewById(R.id.progressBarContainer);
 		productContainer = (ScrollView) view.findViewById(R.id.productContainer);
+		imagesScrollContainer = (HorizontalScrollView) view.findViewById(R.id.imagesScrollContainer);
+		imagesContainer = (LinearLayout) view.findViewById(R.id.imagesContainer);
 		
 		progressContainer.setVisibility(View.VISIBLE);
 		productContainer.setVisibility(View.GONE);
 		
 		productId = getArguments().getInt(ConstantClass.PRODUCT_KEY);
-//		
-//		if(product.getAuction_ends().length() > 0) {
-//			buyButton.setVisibility(View.GONE);
-//			
-//			TextView endDate = (TextView) view.findViewById(R.id.endDateTextView);
-//			endDate.setText(product.getAuction_ends());
-//			priceTV.setText("Highest Bid: " + product.getBid());
-//		} else {
-//			bidLayout.setVisibility(View.GONE);
-//			
-//			priceTV.setText("Price: " + product.getPrice());
-//		}
 		
-//		productNameTV.setText(product.getName());
-//		brandTV.setText("Brand: " + product.getBrand());
-//		modelTV.setText("Model: " + product.getModel());
-//		dimensionsTV.setText("Dimensions: " + product.getDimensions());
-//		descriptionTV.setText(product.getDescription());
-//		sellerTV.setText("Seller: " + "Juan Del Pueblo (8)");
-		
-//		ratingLayout.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				LinearLayout ll = new LinearLayout(getActivity());
-//				RatingBar rb = new RatingBar(getActivity());
-//				rb.setNumStars(5);
-//				
-//				ll.addView(rb);
-//				
-//				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//		        builder.setTitle("Rate Seller")
-//		           .setView(ll)
-//				   .setPositiveButton("Rate", new DialogInterface.OnClickListener() {
-//					   public void onClick(DialogInterface dialog, int id) {
-//				       }
-//				   })
-//				   .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//					   public void onClick(DialogInterface dialog, int id) {
-//				       }
-//				   });
-//		        builder.create().show();
-//
-//			}
-//		});
-//		
 		return view;
 	}
 	
@@ -180,6 +153,7 @@ public class ProductFragment extends Fragment {
 						
 					JSONObject jsonProduct = json.getJSONObject("product");
 					
+					JSONArray images = json.getJSONArray("images");
 					avgSellerRating = (float) jsonProduct.getInt("avg_seller_rating");
 					stock = jsonProduct.getInt("stock");
 					if(!jsonProduct.getString("winning_user_id").equals("null")) {
@@ -245,6 +219,10 @@ public class ProductFragment extends Fragment {
 						}
 					}
 					
+					if(isWinner) {
+						ratingBar.setOnClickListener(new RatingListener());
+					}
+					
 					productNameTV.setText(product.getName());
 					brandTV.setText("Brand: " + product.getBrand());
 					modelTV.setText("Model: " + product.getModel());
@@ -252,6 +230,25 @@ public class ProductFragment extends Fragment {
 					descriptionTV.setText(product.getDescription());
 					sellerTV.setText("Seller: " + seller.getUsername());
 					ratingBar.setRating(avgSellerRating);
+					
+					if(images.length() > 0) {
+						imagesScrollContainer.setVisibility(View.VISIBLE);
+						noImageTextView.setVisibility(View.GONE);
+						
+						ImageLoader imageLoader = new ImageLoader(getActivity());
+						
+						for(int i = 0; i < images.length(); i++) {
+							ImageView imageView = new ImageView(getActivity());
+							imageView.setScaleType(ScaleType.CENTER_INSIDE);
+							imageView.setBackgroundResource(R.drawable.image_view_bg);
+							String url = Server.Images.GET + images.getJSONObject(i).getString("image_src");
+							imageLoader.DisplayImage(url, imageView);
+							imagesContainer.addView(imageView);
+						}
+					} else {
+						imagesScrollContainer.setVisibility(View.GONE);
+						noImageTextView.setVisibility(View.VISIBLE);
+					}
 				} catch (JSONException e) {
 					Toast.makeText(getActivity(), "Error parsing.", Toast.LENGTH_LONG).show();
 				}
@@ -264,6 +261,53 @@ public class ProductFragment extends Fragment {
 			}
 		});
 		request.execute();
+	}
+	
+	public class RatingListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			LinearLayout ll = new LinearLayout(getActivity());
+			RatingBar rb = new RatingBar(getActivity());
+			rb.setNumStars(5);
+			
+			ll.addView(rb);
+			ll.setGravity(Gravity.CENTER);
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	        builder.setTitle("Rate Seller")
+	           .setView(ll)
+			   .setPositiveButton("Rate", new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog, int id) {
+			       }
+			   })
+			   .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				   public void onClick(DialogInterface dialog, int id) {
+			       }
+			   });
+	        builder.create().show();
+		}
+		
+	}
+	
+	public class BuyButtonListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	public class BidButtonListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 
 }
