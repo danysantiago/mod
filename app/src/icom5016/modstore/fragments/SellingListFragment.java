@@ -135,7 +135,7 @@ public class SellingListFragment extends Fragment {
 				Bundle params = new Bundle();
 				params.putString("url", Server.Products.GETSELLING+"?userId="+this.activeUser.getGuid()+
 						"&active="+ Boolean.toString(active) +"&sold="+Boolean.toString(sold)+
-						 "&not_won="+Boolean.toString(notsold));
+						 "&not_sold="+Boolean.toString(notsold));
 				params.putString("method", "GET");
 				
 				
@@ -145,7 +145,7 @@ public class SellingListFragment extends Fragment {
 					public void onSucess(JSONObject json) {
 						try {
 							
-							if(json.has("sold") && json.has("not_won") && json.has("active")){
+							if(json.has("sold") && json.has("not_sold") && json.has("active")){
 								
 								//Sold Var
 								JSONArray soldList = json.getJSONArray("sold");
@@ -186,7 +186,7 @@ public class SellingListFragment extends Fragment {
 								}
 								
 								//Not Sold List
-								JSONArray notsoldList = json.getJSONArray("not_won");
+								JSONArray notsoldList = json.getJSONArray("not_sold");
 								ProgressBar pbNotSold = (ProgressBar) mainLayout.findViewById(R.id.sell_notsold_pb);
 								TextView tvNotSold = (TextView) mainLayout.findViewById(R.id.sell_notsold_load_tv);
 								GridLayout gvNotSold = (GridLayout) mainLayout.findViewById(R.id.sell_notsold_loader);
@@ -246,8 +246,8 @@ public class SellingListFragment extends Fragment {
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 							}
-							else if(json.has("not_won")){
-								JSONArray activeList = json.getJSONArray("not_won");
+							else if(json.has("not_sold")){
+								JSONArray activeList = json.getJSONArray("not_sold");
 								ProgressBar pbIndividual = (ProgressBar) mainLayout.findViewById(R.id.buysell_any_pb);
 								TextView tvIndividual = (TextView) mainLayout.findViewById(R.id.buysell_any_noitem);
 								ListView lvIndividual = (ListView) mainLayout.findViewById(R.id.buysell_any_lv);

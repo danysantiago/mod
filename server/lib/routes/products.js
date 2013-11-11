@@ -32,10 +32,10 @@ routes.get("/products/selling", function (req, res, next) {
       }
     },
 
-    "not_won": function (done) {
-      if(req.query.not_won === "true") {
+    "not_sold": function (done) {
+      if(req.query.not_sold === "true") {
         u = req.db.escape(userId);
-        var wQuery = "SELECT *, (SELECT MAX(bid_amount) FROM bid B1 WHERE B1.product_id = P.product_id GROUP BY product_id) AS max_bid, (SELECT MAX(bid_amount) FROM bid B2 WHERE B2.product_id = P.product_id AND B2.user_id = " + u + " GROUP BY product_id) AS my_latest_bid FROM product P WHERE product_id IN (SELECT product_id FROM bid B WHERE B.user_id = " + u + ") AND product_id IN (SELECT product_id FROM order_detail) AND product_id NOT IN (SELECT product_id FROM `order` O INNER JOIN order_detail OD ON O.order_id = OD.order_id INNER JOIN order_detail_winning_bid WB ON WB.order_detail_id = OD.order_detail_id WHERE O.user_id = " + u + ");";
+        var wQuery = "SELECT * FROM product P WHERE P.auction_end_ts < NOW() AND P.product_id NOT IN (SELECT OD.product_id FROM order_detail OD) AND P.user_id = " + u;
         console.log("MySQL Query: " + wQuery);
         req.db.query(wQuery, done);
       } else {
@@ -50,7 +50,7 @@ routes.get("/products/selling", function (req, res, next) {
 
     result.active = results.active ? results.active[0] : undefined;
     result.sold = results.sold ? results.sold[0] : undefined;
-    result.not_won = results.not_won ? results.not_won[0] : undefined;
+    result.not_sold = results.not_sold ? results.not_sold[0] : undefined;
 
     res.send(200, result);
   });
