@@ -15,6 +15,7 @@ var creditcards = require("./lib/routes/creditcards.js");
 var addresses = require("./lib/routes/addresses.js");
 var cart = require("./lib/routes/cart.js")
 var orders = require("./lib/routes/orders.js");
+var charts = require("./lib/routes/charts.js");
 
 app.configure(function() {
 	app.set("name", config.appName);
@@ -45,6 +46,7 @@ app.use(creditcards);
 app.use(addresses);
 app.use(cart);
 app.use(orders);
+app.use(charts)
 
 //Error handler middleware
 app.use(function (err, req, res, next) {
