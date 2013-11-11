@@ -76,6 +76,10 @@
             android:name="icom5016.modstore.activities.SellingViewerActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="icom5016.modstore.activities.ProductSellEditActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

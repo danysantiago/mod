@@ -1,6 +1,5 @@
 package icom5016.modstore.activities;
 
-import icom5016.modstore.fragments.ProductSellEditFragment;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
 import android.app.ActionBar;
@@ -26,13 +25,13 @@ public class SellingViewerActivity extends MainInterfaceActivity {
 		
 		//Set Fragment
 		int fragId = bundle.getInt(ConstantClass.SELLINGVIEWERACTIVITY_ITEM_KEY);
-		switch(fragId){
+		/*switch(fragId){
 		case ConstantClass.SELLINGVIEWERACTIVITY_FRAGMENT_SELL_ITEMS:
 			ActionBarVar.setTitle(this.getResources().getString(R.string.title_sellitem));
 			 this.fragmentStack.push(new ProductSellEditFragment());
 			 AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
 			break;
-		}
+		}*/
 				
 		
 

@@ -2,13 +2,14 @@ package icom5016.modstore.models;
 
 import icom5016.modstore.resources.AndroidResourceFactory;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Product {
+public class Product implements Serializable {
 	protected int id;
 	protected int userId; //Seller
 	protected int categoryId;

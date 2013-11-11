@@ -87,10 +87,10 @@ public class ProductsForSaleFragment extends Fragment {
 		
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-			ProductSellEditFragment f = new ProductSellEditFragment();
+			/*ProductSellEditFragment f = new ProductSellEditFragment();
 			f.setProduct((Product)lstList.getAdapter().getItem(arg2));
 			activity.fragmentStack.push(f);
-			AndroidResourceFactory.setNewFragment(activity, this.activity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+			AndroidResourceFactory.setNewFragment(activity, this.activity.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());*/
 		}
 	}
 }

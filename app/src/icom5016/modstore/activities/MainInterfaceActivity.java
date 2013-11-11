@@ -397,9 +397,9 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
     		break;
     	case 2:
     		//Sell Item (new Activity)
-    		bundle.putInt(ConstantClass.SELLINGVIEWERACTIVITY_ITEM_KEY, ConstantClass.SELLINGVIEWERACTIVITY_FRAGMENT_SELL_ITEMS);
-    		Intent sellingIntent = new Intent(this, SellingViewerActivity.class);
-    		sellingIntent.putExtras(bundle);
+    		//bundle.putInt(ConstantClass.SELLINGVIEWERACTIVITY_ITEM_KEY, ConstantClass.SELLINGVIEWERACTIVITY_FRAGMENT_SELL_ITEMS);
+    		Intent sellingIntent = new Intent(this, ProductSellEditActivity.class);
+    		//sellingIntent.putExtras(bundle);
     		this.startActivity(sellingIntent);
     		break;
     	case 3:

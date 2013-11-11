@@ -1,4 +1,4 @@
-package icom5016.modstore.fragments;
+package icom5016.modstore.activities;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
@@ -21,10 +21,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.app.Activity;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,11 +32,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -52,7 +50,7 @@ import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 
-public class ProductSellEditFragment extends Fragment {
+public class ProductSellEditActivity extends MainInterfaceActivity  {
 	EditText txtName;
 	EditText txtDescription;
 	EditText txtBrand;
@@ -70,7 +68,7 @@ public class ProductSellEditFragment extends Fragment {
 	Calendar myCalendar = Calendar.getInstance();
 	OnDateChangedListener dateChangedListener;
 	OnTimeChangedListener timeSetListener;
-	DialogInterface.OnClickListener onDialogClose;
+	DialogInterface.OnClickListener onDialogSet, onDialogCancel;
 	
 	Uri selectedPhoto;
 	byte selectedPhotoBytes[];
@@ -79,25 +77,44 @@ public class ProductSellEditFragment extends Fragment {
 	
 	Product product;
 	
+	Activity myActivity;
+	
 	private static final int SELECT_PICTURE = 1;
 	
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		if (savedInstanceState != null) Log.d("productStatus", savedInstanceState.toString());
-		View view = inflater.inflate(R.layout.fragment_sellproduct, container, false);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		
-		txtName = (EditText)view.findViewById(R.id.txtProductName);
-		txtDescription = (EditText)view.findViewById(R.id.txtProductDescription);
-		txtBrand = (EditText)view.findViewById(R.id.txtProductBrand);
-		txtModel = (EditText)view.findViewById(R.id.txtProductModel);
-		txtDimensions = (EditText)view.findViewById(R.id.txtProductDimensions);
-		txtQuantity = (EditText)view.findViewById(R.id.txtProductQuantity);
-		txtBuyoutPrice = (EditText)view.findViewById(R.id.txtProductBuyoutPrice);
-		txtBidPrice = (EditText)view.findViewById(R.id.txtProductBidPrice);
-		txtEndAuction = (EditText)view.findViewById(R.id.txtProductEndAuction);
-		cboCategory = (Spinner)view.findViewById(R.id.cboProductCategory);
-		btnSelectPhoto = (Button)view.findViewById(R.id.btnProductSelectPhoto);
-		btnAdd = (Button)view.findViewById(R.id.btnProductAdd);
-		chkAuctionEnabled = (CheckBox)view.findViewById(R.id.chkAuctionEnabled);
+		if (savedInstanceState != null) Log.d("productStatus", savedInstanceState.toString());
+
+		setContentView(R.layout.fragment_sellproduct);
+		
+		Bundle b = getIntent().getExtras();
+		if (b != null && b.containsKey("productObj")) { 
+			product = (Product)b.getSerializable("productObj");
+		}
+		
+		final ActionBar ActionBarVar = this.getActionBar();
+		
+		//SetActionBar to Home/Up
+		ActionBarVar.setDisplayHomeAsUpEnabled(true);
+		ActionBarVar.setHomeButtonEnabled(true);
+		ActionBarVar.setTitle(this.getResources().getString(R.string.title_sellitem));
+		
+		myActivity = this;
+		
+		txtName = (EditText)findViewById(R.id.txtProductName);
+		txtDescription = (EditText)findViewById(R.id.txtProductDescription);
+		txtBrand = (EditText)findViewById(R.id.txtProductBrand);
+		txtModel = (EditText)findViewById(R.id.txtProductModel);
+		txtDimensions = (EditText)findViewById(R.id.txtProductDimensions);
+		txtQuantity = (EditText)findViewById(R.id.txtProductQuantity);
+		txtBuyoutPrice = (EditText)findViewById(R.id.txtProductBuyoutPrice);
+		txtBidPrice = (EditText)findViewById(R.id.txtProductBidPrice);
+		txtEndAuction = (EditText)findViewById(R.id.txtProductEndAuction);
+		cboCategory = (Spinner)findViewById(R.id.cboProductCategory);
+		btnSelectPhoto = (Button)findViewById(R.id.btnProductSelectPhoto);
+		btnAdd = (Button)findViewById(R.id.btnProductAdd);
+		chkAuctionEnabled = (CheckBox)findViewById(R.id.chkAuctionEnabled);
 		
 		dateChangedListener = new OnDateChangedListener() {
 			@Override
@@ -117,11 +134,18 @@ public class ProductSellEditFragment extends Fragment {
 			}
 		};
 		
-		onDialogClose = new DialogInterface.OnClickListener() {
+		onDialogSet = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 					txtName.requestFocus();
 					updateLabel();
+			}
+		};
+		
+		onDialogCancel = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+					txtName.requestFocus();
 			}
 		};
 		
@@ -132,11 +156,11 @@ public class ProductSellEditFragment extends Fragment {
 					DialogFragment d = new DateTimePicker();
 					((DateTimePicker)d).setOnTimeListener(timeSetListener);
 					((DateTimePicker)d).setOnDateListener(dateChangedListener);
-					((DateTimePicker)d).setOnSet(onDialogClose);
-					((DateTimePicker)d).setOnCancel(onDialogClose);
+					((DateTimePicker)d).setOnSet(onDialogSet);
+					((DateTimePicker)d).setOnCancel(onDialogCancel);
 					((DateTimePicker)d).setCalendar(myCalendar);
 					
-					d.show(getActivity().getFragmentManager(), "NewDateTimePicker");
+					d.show(myActivity.getFragmentManager(), "NewDateTimePicker");
 				}
 			}
 			
@@ -185,67 +209,21 @@ public class ProductSellEditFragment extends Fragment {
 		txtEndAuction.setEnabled(false);
 		txtBidPrice.setEnabled(false);
 		
-		pd = ProgressDialog.show(getActivity(), "Loading", "Loading Categories...", true, false);
+		pd = ProgressDialog.show(this, "Loading", "Loading Categories...", true, false);
 
 		requestCategories();
-		
-		return view;
-	}
-	
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-	
-	private void loadProduct() {
-		if (product != null) {
-			txtName.setText(product.getName());
-			txtDescription.setText(product.getDescription());
-			txtBrand.setText(product.getBrand());
-			txtModel.setText(product.getModel());
-			txtDimensions.setText(product.getDimensions());
-			txtQuantity.setText(String.valueOf(product.getQuantity()));
-//			txtBuyoutPrice.setText(String.valueOf(product.getPriceNumber()));
-//			if (product.getBid_price() != -1) {
-//				txtBidPrice.setText(String.valueOf(product.getBid_price()));
-//			}
-//			txtEndAuction.setText(product.getAuction_ends());
-//			
-			SpinnerAdapter tempAdapter = cboCategory.getAdapter();
-			
-			for (int i = 0; i < tempAdapter.getCount(); i++) {
-				Category tempCat = (Category)tempAdapter.getItem(i);
-//				if (tempCat.getId() == product.getCid()) {
-//					cboCategory.setSelection(i);
-//					break;
-//				}
-			}
-			
-			btnAdd.setText(R.string.product_updateit);
-			
-			// Disable things that cant be edited. 
-			txtQuantity.setEnabled(false);
-			txtBidPrice.setEnabled(false);
-		}
-	}
-	
-	private void updateLabel() {
-		String myFormat = "MM/dd/yyyy hh:mma";
-		SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-		txtEndAuction.setText(sdf.format(myCalendar.getTime()));
-		txtName.requestFocus();
 	}
 	
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_PICTURE) {
                 selectedPhoto = data.getData();
-                (Toast.makeText(getActivity(), "Image location: " + selectedPhoto.toString(), Toast.LENGTH_LONG)).show();
+                (Toast.makeText(this, "Image location: " + selectedPhoto.toString(), Toast.LENGTH_LONG)).show();
                 
                 // FOR THE FUTURE: How to convert this image Uri to Byte Array (to Upload it to server)
 
 				try {
-					Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedPhoto);
+					Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedPhoto);
 	                ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 	                selectedPhotoBytes= stream.toByteArray();
@@ -259,6 +237,18 @@ public class ProductSellEditFragment extends Fragment {
             }
         }
     }
+    
+	/*Navigate Up the Stack*/
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+		case android.R.id.home:
+			finish();
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
 
 	private void requestCategories() {
 		//Perform http request
@@ -273,29 +263,30 @@ public class ProductSellEditFragment extends Fragment {
 				List<Category> cats = getCategories(json);
 				
 				if (cats.size() > 0) {
-					if (getActivity() != null) {
+					if (myActivity != null) {
 						//Pass JSON to Adapter
-						ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_list_item_1, cats);
+						ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(myActivity, android.R.layout.simple_list_item_1, cats);
 					    cboCategory.setAdapter(adapter);
 		
 						//Show list view
 						cboCategory.setVisibility(View.VISIBLE);
 						
-						pd.dismiss();
+						loadProduct();
+
 					} else {
 						pd.dismiss();
 						//Toast.makeText(this, "There was a problem loading the Categories. [ERR: 1]", Toast.LENGTH_SHORT).show();
 					}
 				} else {
 					pd.dismiss();
-					Toast.makeText(getActivity(), "No Categories were found.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(myActivity, "No Categories were found.", Toast.LENGTH_SHORT).show();
 				}
 			}
 
 			@Override
 			public void onFailed() {
 				pd.dismiss();
-				Toast.makeText(getActivity(), "Couldn't load the Categories [ERR: 1]", Toast.LENGTH_SHORT).show();
+				Toast.makeText(myActivity, "Couldn't load the Categories [ERR: 1]", Toast.LENGTH_SHORT).show();
 			}
 		});
 		
@@ -345,5 +336,54 @@ public class ProductSellEditFragment extends Fragment {
 		}
 		
 		return out;
+	}
+	
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	private void loadProduct() {
+		if (product != null) {
+			txtName.setText(product.getName());
+			txtDescription.setText(product.getDescription());
+			txtBrand.setText(product.getBrand());
+			txtModel.setText(product.getModel());
+			txtDimensions.setText(product.getDimensions());
+			txtQuantity.setText(String.valueOf(product.getQuantity()));
+			txtBuyoutPrice.setText(String.valueOf(product.getBuyItNowPrice()));
+			if (product.getStartingBidPrice() != -1) {
+				chkAuctionEnabled.setChecked(true);
+				txtBidPrice.setText(String.valueOf(product.getStartingBidPrice()));
+				myCalendar.setTime(product.getAuctionEndDate());
+				updateLabel();
+			}
+			
+			SpinnerAdapter tempAdapter = cboCategory.getAdapter();
+			
+			for (int i = 0; i < tempAdapter.getCount(); i++) {
+				Category tempCat = (Category)tempAdapter.getItem(i);
+				if (tempCat.getId() == product.getCategoryId()) {
+					cboCategory.setSelection(i);
+					break;
+				}
+			}
+			
+			btnAdd.setText(R.string.product_updateit);
+			
+			// Disable things that cant be edited. 
+			txtQuantity.setEnabled(false);
+			txtBidPrice.setEnabled(false);
+			chkAuctionEnabled.setEnabled(false);
+		}
+		
+		pd.dismiss();
+	}
+	
+	private void updateLabel() {
+		String myFormat = "MM/dd/yyyy hh:mma";
+		SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+		txtEndAuction.setText(sdf.format(myCalendar.getTime()));
+		txtName.requestFocus();
 	}
 }
