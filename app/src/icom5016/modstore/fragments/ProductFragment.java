@@ -151,7 +151,9 @@ public class ProductFragment extends Fragment {
 		user = DataFetchFactory.getUserFromSPref(getActivity());
 		
 		Uri.Builder url = Uri.parse(Server.Products.GET).buildUpon();
-		url.appendQueryParameter("userId", ""+user.getGuid());
+		if(user != null) {
+			url.appendQueryParameter("userId", ""+user.getGuid());
+		}
 		url.appendQueryParameter("productId",""+productId);
 		
 		Bundle params = new Bundle();
@@ -187,11 +189,11 @@ public class ProductFragment extends Fragment {
 						currentBid = (float) product.getStartingBidPrice();
 					}
 					
-					if(user.getGuid() == (seller.getGuid())) {
+					if(user != null && user.getGuid() == (seller.getGuid())) {
 						isOwner = true;
 					}
 					
-					if(user.getGuid() == winnerId) {
+					if(user != null && user.getGuid() == winnerId) {
 						isWinner = true;
 					}
 					
