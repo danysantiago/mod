@@ -3,6 +3,7 @@ package icom5016.modstore.http;
 
 
 import icom5016.modstore.resources.FileCache;
+import icom5016.modstore.views.TouchImageView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,8 +41,15 @@ public class ImageLoader {
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void DisplayImage(String url, ImageView imageView) {
+		this.DisplayImage(url, imageView, true);
+	}
+
+	public void DisplayImage(String url, ImageView imageView, boolean cacheEnabled) {
 		// Try to get bitmap from cache
-		Bitmap bitmap = fileCache.get(url);
+		Bitmap bitmap = null;
+		if(cacheEnabled) {
+			bitmap = fileCache.get(url);
+		}
 		if (bitmap != null) {
 			//Load it if found
 			imageView.setImageBitmap(bitmap);
@@ -56,7 +64,7 @@ public class ImageLoader {
 			}
 		}
 	}
-
+	
 	//ASyncTask that does the actual downloading and saving of file, if new
 	private class ImageGet extends AsyncTask<Void, Void, Void> {
 
@@ -122,5 +130,6 @@ public class ImageLoader {
 		}
 
 	}
+
 
 }
