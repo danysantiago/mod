@@ -52,12 +52,15 @@ public class AdminActivity extends MainInterfaceActivity {
 				case 1:
 					showSalesByTimeDialog();
 					break;
-
+				case 2:
+					showSalesByProductDialog();
+					break;
 				default:
 					break;
 				}
 				
 			}
+
 
 		});
 	}
@@ -79,6 +82,28 @@ public class AdminActivity extends MainInterfaceActivity {
 		builder.setNegativeButton("By Days", new DialogInterface.OnClickListener() {
 		   public void onClick(DialogInterface dialog, int id) {
 			   showZoomImageActivity(Server.Charts.SALES_BY_DAY);
+	       }
+	    });
+		builder.show();
+	}
+	
+	private void showSalesByProductDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setTitle("Sales by Products");
+	    builder.setPositiveButton("Last 6 Months", new DialogInterface.OnClickListener() {
+		   public void onClick(DialogInterface dialog, int id) {
+			   showZoomImageActivity(Server.Charts.PRODUCTS_BY_MONTH);
+	       }
+	
+	    });
+	    builder.setNeutralButton("Last 7 Weeks", new DialogInterface.OnClickListener() {
+		   public void onClick(DialogInterface dialog, int id) {
+			   showZoomImageActivity(Server.Charts.PRODUCTS_BY_WEEK);
+	       }
+	    });
+		builder.setNegativeButton("Last 14 Days", new DialogInterface.OnClickListener() {
+		   public void onClick(DialogInterface dialog, int id) {
+			   showZoomImageActivity(Server.Charts.PRODUCTS_BY_DAY);
 	       }
 	    });
 		builder.show();

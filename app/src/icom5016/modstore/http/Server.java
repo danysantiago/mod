@@ -47,5 +47,8 @@ public class Server {
 		public static final String SALES_BY_MONTH = BASE_URL+"/charts/sales/months";
 		public static final String SALES_BY_WEEK = BASE_URL+"/charts/sales/weeks";
 		public static final String SALES_BY_DAY = BASE_URL+"/charts/sales/days";
+		public static final String PRODUCTS_BY_MONTH = BASE_URL+"/charts/sales/products/months";
+		public static final String PRODUCTS_BY_WEEK = BASE_URL+"/charts/sales/products/weeks";
+		public static final String PRODUCTS_BY_DAY = BASE_URL+"/charts/sales/products/days";
 	}
 }
