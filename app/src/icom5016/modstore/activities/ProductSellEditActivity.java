@@ -350,12 +350,16 @@ public class ProductSellEditActivity extends MainInterfaceActivity  {
 			txtModel.setText(product.getModel());
 			txtDimensions.setText(product.getDimensions());
 			txtQuantity.setText(String.valueOf(product.getQuantity()));
-			txtBuyoutPrice.setText(String.valueOf(product.getBuyItNowPrice()));
+			txtBuyoutPrice.setText((product.getBuyItNowPrice() != -1) ? String.valueOf(product.getBuyItNowPrice()) : "");
+			
 			if (product.getStartingBidPrice() != -1) {
 				chkAuctionEnabled.setChecked(true);
 				txtBidPrice.setText(String.valueOf(product.getStartingBidPrice()));
 				myCalendar.setTime(product.getAuctionEndDate());
 				updateLabel();
+				txtEndAuction.setEnabled(true);
+			} else {
+				txtEndAuction.setEnabled(false);
 			}
 			
 			SpinnerAdapter tempAdapter = cboCategory.getAdapter();
