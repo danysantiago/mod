@@ -373,4 +373,90 @@ routes.get("/charts/sales/days", function (req, res) {
 
 });
 
+routes.get("/charts/sales/products/:time", function (req, res) {
+
+  var limit = 14;
+
+  async.waterfall([
+    function (callback) {
+      var query;
+
+      console.log(req.params.time);
+      if(req.params.time === 'months') {
+        query = "SELECT product_id, SUM(quantity*final_price) as total_sales FROM order_detail WHERE created_ts BETWEEN DATE_SUB(NOW(), INTERVAL 6 MONTH) AND NOW() GROUP BY product_id ORDER BY total_sales DESC";
+      } else if (req.params.time === 'weeks') {
+        query = "SELECT product_id, SUM(quantity*final_price) as total_sales FROM order_detail WHERE created_ts BETWEEN DATE_SUB(NOW(), INTERVAL 7 WEEK) AND NOW() GROUP BY product_id ORDER BY total_sales DESC";
+      } else if (req.params.time === 'days') {
+        query = "SELECT product_id, SUM(quantity*final_price) as total_sales FROM order_detail WHERE created_ts BETWEEN DATE_SUB(NOW(), INTERVAL 14 DAY) AND NOW() GROUP BY product_id ORDER BY total_sales DESC";
+      } else {
+        return res.send(400, {'error': 'Invalid time parameter'});
+      }
+
+      req.db.query(query, callback);
+    },
+
+    function (results, something, callback) {
+
+      console.log(results);
+
+      var maxVal = 0;
+      var halfMaxVal;
+
+      productsIds = [];
+      sales = [];
+
+      var i = 0;
+      for (i = 0; i < results.length; i++) {
+        productsIds.push(results[i].product_id);
+        sales.push(results[i].total_sales);
+
+        if(maxVal < results[i].total_sales) {
+          maxVal = results[i].total_sales;
+        }
+      }
+
+      halfMaxVal = Math.round(maxVal/2);
+
+      var productsIdsString = productsIds.join('|');
+
+      var chartTitle;
+      if(req.params.time === 'months') {
+        chartTitle = "Product Sales, Last 6 Months";
+      } else if (req.params.time === 'weeks') {
+        chartTitle = "Product Sales, Last 7 Weeks";
+      } else if (req.params.time === 'days') {
+        chartTitle = "Product Sales, Last 14 Days";
+      }
+
+      var chartUrlObj = {
+        "protocol": "http",
+        "host": "chart.googleapis.com",
+        "pathname": "/chart",
+        "query": {
+          "chxl": "0:|" + productsIdsString + '|1:|0|' + halfMaxVal + '|' + maxVal,
+          "chxt": "x,y",
+          "chs": "600x300",
+          "cht": "bvg",
+          "chco": "0000FF",
+          "chds": '0,' + maxVal,
+          "chg": "20,0",
+          "chd": extendedEncode(sales, Math.round(maxVal)),
+          "chtt": chartTitle,
+        }
+      };
+
+      console.log(productsIds);
+      console.log(sales);
+
+      callback(null, url.format(chartUrlObj));
+    },
+
+  ], function (err, chartUrl) {
+    console.log(chartUrl);
+    request(chartUrl).pipe(res);
+  });
+
+});
+
 module.exports = routes;
+
