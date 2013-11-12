@@ -106,16 +106,12 @@ public class SellingListAdapter extends ArrayAdapter<ProductSelling> {
 			}
 		}
 		
-		
-	
-		
-//		if (product.getImageSrcUrl() != null) {
-//			String url = Server.Images.GET + product.getImageSrcUrl();
-//
-//			imageloader.DisplayImage(url, image);
-//			image.setTag(url);
-//		}
-		
+		if (product.getImageSrcUrl() != null) {
+			String url = Server.Images.GET + product.getImageSrcUrl();
+
+			imageloader.DisplayImage(url, image);
+			image.setTag(url);
+		}
 		
 		return row;
 	}
