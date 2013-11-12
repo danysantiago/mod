@@ -10,6 +10,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Product implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected int id;
 	protected int userId; //Seller
 	protected int categoryId;

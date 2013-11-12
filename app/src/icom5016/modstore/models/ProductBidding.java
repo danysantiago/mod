@@ -7,6 +7,10 @@ import org.json.JSONObject;
 
 public class ProductBidding extends Product {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double myLastBid;
 	private double currentBid;
 	

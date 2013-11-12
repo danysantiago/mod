@@ -7,6 +7,10 @@ import org.json.JSONObject;
 
 public class ProductSearching extends Product {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected double actualBid;
 	protected int stock;
 	protected double aveSellerRating;
