@@ -96,8 +96,9 @@ public class Product implements Serializable {
 			this.auctionEndsTsDate = AndroidResourceFactory.ISODateToDate(auctionEndsTs);
 		}
 		
-		if(json.has("image_src"))
-			this.imageSrcUrl = json.getString("image_src");
+		if(json.has("image_src")) {
+			//this.imageSrcUrl = json.getString("image_src");
+		}
 		
 		if(json.has("user"))
 			this.user = new User(json.getJSONObject("user"));

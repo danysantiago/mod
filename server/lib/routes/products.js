@@ -14,7 +14,7 @@ routes.get("/products/selling", function (req, res, next) {
   async.series({
     "active": function (done) {
       if(req.query.active === "true") {
-        var aQuery = "SELECT *, (P.quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE OD.product_id = P.product_id GROUP BY OD.product_id),0)) AS stock FROM product P  LEFT JOIN (SELECT product_id, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON PI.product_id = P.product_id WHERE user_id = " + req.db.escape(userId);
+        var aQuery = "SELECT *, (P.quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE OD.product_id = P.product_id GROUP BY OD.product_id),0)) AS stock FROM product P  LEFT JOIN (SELECT product_id as pipd, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON pipd = P.product_id WHERE user_id = " + req.db.escape(userId);
         console.log("MySQL Query: " + aQuery);
         req.db.query(aQuery, done);
       } else {
@@ -24,7 +24,7 @@ routes.get("/products/selling", function (req, res, next) {
 
     "sold": function (done) {
       if(req.query.sold === "true") {
-        var sQuery = "SELECT *, (OD.final_price * OD.quantity) AS total_price, OD.quantity as order_quantity, (SELECT user_id FROM `order` O WHERE O.order_id = OD.order_id) as buyer_user_id FROM product P INNER JOIN order_detail OD ON OD.product_id = P.product_id LEFT JOIN (SELECT product_id, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON PI.product_id = P.product_id WHERE P.user_id = " + req.db.escape(userId);
+        var sQuery = "SELECT *, (OD.final_price * OD.quantity) AS total_price, OD.quantity as order_quantity, (SELECT user_id FROM `order` O WHERE O.order_id = OD.order_id) as buyer_user_id FROM product P INNER JOIN order_detail OD ON OD.product_id = P.product_id LEFT JOIN (SELECT product_id as pipd, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON pipd = P.product_id WHERE P.user_id = " + req.db.escape(userId);
         console.log("MySQL Query: " + sQuery);
         req.db.query(sQuery, done);
       } else {
@@ -35,7 +35,7 @@ routes.get("/products/selling", function (req, res, next) {
     "not_sold": function (done) {
       if(req.query.not_sold === "true") {
         u = req.db.escape(userId);
-        var wQuery = "SELECT * FROM product P  LEFT JOIN (SELECT product_id, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON PI.product_id = P.product_id WHERE P.auction_end_ts < NOW() AND P.product_id NOT IN (SELECT OD.product_id FROM order_detail OD) AND P.user_id = " + u;
+        var wQuery = "SELECT * FROM product P  LEFT JOIN (SELECT product_id as pipd, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON pipd = P.product_id WHERE P.auction_end_ts < NOW() AND P.product_id NOT IN (SELECT OD.product_id FROM order_detail OD) AND P.user_id = " + u;
         console.log("MySQL Query: " + wQuery);
         req.db.query(wQuery, done);
       } else {
@@ -66,7 +66,7 @@ routes.get("/products/search", function (req, res, next) {
   var priceFrom = req.query.priceFrom;
   var priceTo = req.query.priceTo;
 
-  var query = "SELECT *, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as actual_bid, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P LEFT JOIN (SELECT product_id, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON PI.product_id = P.product_id";
+  var query = "SELECT *, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as actual_bid, IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = P.user_id), 0) as avg_seller_rating, (quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE P.product_id = OD.product_id), 0)) as stock FROM product P LEFT JOIN (SELECT product_id as pipd, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON pipd = P.product_id";
   var wheres = ["(IFNULL(auction_end_ts, NOW() + 1) > NOW())"]; // To show the items that are within the ending time of the auction, in case it exists.
   var havings = ["(stock > 0)"]; // A stock need to be available in order to be shown.
   var order = null;
@@ -258,7 +258,7 @@ routes.get("/products/bidding", function (req, res, next) {
 
     "bidding": function (done) {
       if(req.query.bidding === "true") {
-        var bQuery = "SELECT * FROM (SELECT product_id, MAX(bid_amount) as my_last_bid, (SELECT MAX(B2.bid_amount) FROM bid B2 WHERE B2.product_id = B.product_id GROUP BY B2.product_id) as current_bid FROM bid B WHERE B.user_id = " + esqUserId + " GROUP BY product_id) T INNER JOIN product P ON T.product_id = P.product_id LEFT JOIN (SELECT product_id, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON PI.product_id = P.product_id WHERE P.auction_end_ts > NOW()";
+        var bQuery = "SELECT * FROM (SELECT product_id, MAX(bid_amount) as my_last_bid, (SELECT MAX(B2.bid_amount) FROM bid B2 WHERE B2.product_id = B.product_id GROUP BY B2.product_id) as current_bid FROM bid B WHERE B.user_id = " + esqUserId + " GROUP BY product_id) T INNER JOIN product P ON T.product_id = P.product_id LEFT JOIN (SELECT product_id as pipd, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON pipd = P.product_id WHERE P.auction_end_ts > NOW()";
         console.log("MySQL Query: " + bQuery);
         req.db.query(bQuery, done);
       } else {
@@ -268,7 +268,7 @@ routes.get("/products/bidding", function (req, res, next) {
 
     "not_won": function (done) {
       if(req.query.not_won === "true") {
-        var nwQuery = "SELECT *, (SELECT MAX(bid_amount) FROM bid B1 WHERE B1.product_id = P.product_id GROUP BY product_id) AS max_bid, (SELECT MAX(bid_amount) FROM bid B2 WHERE B2.product_id = P.product_id AND B2.user_id = " + esqUserId + " GROUP BY product_id) AS my_last_bid FROM product P LEFT JOIN (SELECT I.product_id, min(I.product_image_id) as product_image_id, I.image_src FROM product_image I GROUP BY I.product_id) PI ON PI.product_id = P.product_id WHERE P.product_id IN (SELECT product_id FROM bid B WHERE B.user_id = " + esqUserId + ") AND P.product_id IN (SELECT product_id FROM order_detail) AND P.product_id NOT IN (SELECT product_id FROM `order` O INNER JOIN order_detail OD ON O.order_id = OD.order_id INNER JOIN order_detail_winning_bid WB ON WB.order_detail_id = OD.order_detail_id WHERE O.user_id = " + esqUserId + ")";
+        var nwQuery = "SELECT *, (SELECT MAX(bid_amount) FROM bid B1 WHERE B1.product_id = P.product_id GROUP BY product_id) AS max_bid, (SELECT MAX(bid_amount) FROM bid B2 WHERE B2.product_id = P.product_id AND B2.user_id = " + esqUserId + " GROUP BY product_id) AS my_last_bid FROM product P LEFT JOIN (SELECT I.product_id as pipd, min(I.product_image_id) as product_image_id, I.image_src FROM product_image I GROUP BY I.product_id) PI ON pipd = P.product_id WHERE P.product_id IN (SELECT product_id FROM bid B WHERE B.user_id = " + esqUserId + ") AND P.product_id IN (SELECT product_id FROM order_detail) AND P.product_id NOT IN (SELECT product_id FROM `order` O INNER JOIN order_detail OD ON O.order_id = OD.order_id INNER JOIN order_detail_winning_bid WB ON WB.order_detail_id = OD.order_detail_id WHERE O.user_id = " + esqUserId + ")";
         console.log("MySQL Query: " + nwQuery);
         req.db.query(nwQuery, done);
       } else {

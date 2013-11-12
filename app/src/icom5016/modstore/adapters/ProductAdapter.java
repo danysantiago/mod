@@ -2,6 +2,7 @@ package icom5016.modstore.adapters;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Product;
 import icom5016.modstore.models.ProductSearching;
 
@@ -16,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout.LayoutParams;
 
 public class ProductAdapter extends ArrayAdapter<Product> {
 		
@@ -68,8 +71,21 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 			
 			
 			
-			
-			//imageloader.DisplayImage(product.getImageSrcUrl(), image);
+			if (product.getImageSrcUrl() != null) {
+				String url = Server.Images.GET + product.getImageSrcUrl();
+				title.setText(url);
+				LayoutParams params = new LayoutParams(
+				        LayoutParams.WRAP_CONTENT,      
+				        LayoutParams.WRAP_CONTENT
+				);
+				params.setMargins(5, 0, 5, 0);
+				image.setLayoutParams(params);
+				image.setScaleType(ScaleType.CENTER_INSIDE);
+				image.setBackgroundResource(R.drawable.image_view_bg);
+				
+				imageloader.DisplayImage(url, image);
+				image.setTag(url);
+			}
 
 			
 			row.setTag(product);
