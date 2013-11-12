@@ -41,7 +41,7 @@
     </GridLayout>
  	<ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:id="@+id/buysell_any_lv"
         android:visibility="gone" >
     </ListView>
