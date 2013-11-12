@@ -15,6 +15,7 @@ public class OrderDetail {
 	private double finalPrice;
 	private String trackingNumber;
 	private String createdTs;
+	private boolean wonByBid;
 	
 	//Optional
 	private Product product;
@@ -50,6 +51,8 @@ public class OrderDetail {
 			//Optional
 			if(json.has("product"))
 				this.product = new Product(json.getJSONObject("product"));
+			
+			this.wonByBid = json.getBoolean("won_by_bid");
 		
 	}
 
@@ -173,6 +176,13 @@ public class OrderDetail {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(2);
 		return "$" + nf.format(tp);
+	}
+
+
+
+
+	public boolean isWonByBid() {
+		return wonByBid;
 	}
 	
 	
