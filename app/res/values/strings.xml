@@ -194,7 +194,7 @@
 	<string name="title_sellitem">Sell Item</string>
 	
 	<!-- Search Part -->
-	<string name="noitem_found">No Item Found</string>
+	<string name="noitem_found">No Product Found</string>
 	<string name="will_have_auction">Is an Auction?</string>
 
 </resources>

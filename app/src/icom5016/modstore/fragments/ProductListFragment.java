@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -42,6 +43,7 @@ public class ProductListFragment extends Fragment {
 	private TextView plTextView;
 	private ListView plListView;
 	private int categoryId;
+	private GridLayout plGridLayout;
 	private boolean spinnerChange = false;
 	
 	@Override
@@ -55,6 +57,7 @@ public class ProductListFragment extends Fragment {
 		this.plLinearLayout = (LinearLayout) view.findViewById(R.id.plLinearLayout);
 		this.plListView = (ListView) view.findViewById(R.id.plListView);
 		this.plTextView = (TextView) view.findViewById(R.id.plTextView);
+		this.plGridLayout = (GridLayout) view.findViewById(R.id.plNoneFound);
 		
 		Bundle bundle = this.getArguments();
 		
@@ -107,16 +110,18 @@ public class ProductListFragment extends Fragment {
 							//Get Sub category
 							List<Category> subCategoriesList = ((MainInterfaceActivity) getActivity()).loadCategoriesById(categoryId);
 							
-							if(mCategory.getParentId() >= 0){
-								plTextView.setText(mCategory.getName());
-							}
-							
 							if(subCategoriesList.size() == 0){
+								plTextView.setText(mCategory.getName());
 								plSpinner.setVisibility(View.INVISIBLE);
 							}
 							else
 							{
+								plTextView.setVisibility(View.GONE);
 								//Set the Adapter
+								for(Category e: subCategoriesList)
+									e.setName("    " + e.getName());
+								subCategoriesList.add(0, mCategory);
+								
 								ProductListSpinnerAdapter spinnerAdapter = new ProductListSpinnerAdapter(getActivity(), subCategoriesList );
 								spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 								plSpinner.setAdapter(spinnerAdapter);
@@ -148,9 +153,9 @@ public class ProductListFragment extends Fragment {
 							
 							//Load Products
 							if(productsJson.length() == 0){
-								plPlaceHolder.setVisibility(View.VISIBLE);
-								plSpinner.setVisibility(View.GONE);
-								Toast.makeText(getActivity(), "No Product Found", Toast.LENGTH_LONG).show();
+								plPlaceHolder.setVisibility(View.GONE);
+								plGridLayout.setVisibility(View.VISIBLE);
+								
 							}
 							else{
 								//Pass it to adapter and to List View

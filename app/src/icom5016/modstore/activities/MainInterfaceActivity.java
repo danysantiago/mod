@@ -152,26 +152,14 @@ public abstract class MainInterfaceActivity extends FragmentActivity {
 		
 		if(parentId == ConstantClass.CategoriesFile.ALL_CATEGORIES)
 			return categories;
-
-		// Add parent category 
-		for(Category e: categories){
-			if(e.getId() == parentId){
-				result.add(e);
-				break;
-			}
-		}
 		
-		// Add his only childrens with spaces to better visibility. 
 		for(Category e: categories){
 			if(e.getParentId() == parentId){
-				Category tempCat = (parentId == -1) ? e : new Category (e.getParentId(), e.getId(), "    " + e.getName());
-				result.add(tempCat);
+				result.add(e);
 			}
 		}
 		
-		// If just has the parent, we will return an empty list
-		return (result.size() == 1) ? new ArrayList<Category>() : result;
-		
+		return result;
 	}
 	
 	
