@@ -65,29 +65,15 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 				row.findViewById(R.id.prodrow_date_tittle).setVisibility(View.GONE);
 			}
 			
-			
-			
 			title.setText(product.getName());
-			
-			
 			
 			if (product.getImageSrcUrl() != null) {
 				String url = Server.Images.GET + product.getImageSrcUrl();
-				title.setText(url);
-				LayoutParams params = new LayoutParams(
-				        LayoutParams.WRAP_CONTENT,      
-				        LayoutParams.WRAP_CONTENT
-				);
-				params.setMargins(5, 0, 5, 0);
-				image.setLayoutParams(params);
-				image.setScaleType(ScaleType.CENTER_INSIDE);
-				image.setBackgroundResource(R.drawable.image_view_bg);
-				
+
 				imageloader.DisplayImage(url, image);
 				image.setTag(url);
 			}
 
-			
 			row.setTag(product);
 
 			return row;

@@ -71,7 +71,7 @@ routes.get("/orders/details", function (req, res, next) {
       "details": function (done) { //Get order details
         var dQuery= "SELECT *, od.product_id AS odpid, od.quantity AS odquantity, od.created_ts AS odcreated_ts\n" +
                     ", (od.order_detail_id in (SELECT wb.order_detail_id FROM order_detail_winning_bid wb)) as won_by_bid\n" + 
-                    "FROM modstore.order_detail AS od INNER JOIN product AS p\n" +
+                    "FROM modstore.order_detail AS od INNER JOIN product AS p LEFT JOIN (SELECT product_id as pipd, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON pipd = p.product_id\n" +
                     "WHERE p.product_id = od.product_id AND order_id =" + order.order_id;
         
         req.db.query(dQuery, done);
@@ -105,6 +105,7 @@ routes.get("/orders/details", function (req, res, next) {
               "starting_bid_price": results.details[0][i].starting_bid_price,
               "auction_end_ts":results.details[0][i].auction_end_ts,
               "created_ts": results.details[0][i].created_ts,
+              "image_src": results.details[0][i].image_src,
           };
 
           //Update Correct Values of Details

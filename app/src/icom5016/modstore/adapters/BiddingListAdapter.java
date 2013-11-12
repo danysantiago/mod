@@ -2,6 +2,7 @@ package icom5016.modstore.adapters;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.models.ProductBidding;
 import icom5016.modstore.resources.ConstantClass;
 
@@ -86,10 +87,12 @@ public class BiddingListAdapter extends ArrayAdapter<ProductBidding> {
 		bidEndCurr.setText("Last Bid: "+product.getCurrentMaxBidString());
 		myBidCurr.setText("My Bid: "+product.getMyLastBidString());
 		
-		
-		
-		//Images
-		//imageloader.DisplayImage(product.getImage_src(), image);
+		if (product.getImageSrcUrl() != null) {
+			String url = Server.Images.GET + product.getImageSrcUrl();
+
+			imageloader.DisplayImage(url, image);
+			image.setTag(url);
+		}
 		
 		row.setTag(product);
 

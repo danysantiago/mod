@@ -2,6 +2,7 @@ package icom5016.modstore.adapters;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.ImageLoader;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.models.OrderDetail;
 import icom5016.modstore.models.Product;
 
@@ -72,7 +73,12 @@ public class OrderDetailsListAdapter extends ArrayAdapter<OrderDetail> {
 		row.setTag(orderDetail);
 		
 		//TODO: Uncoment when fix
-		//imageloader.DisplayImage(product.getImageSrcUrl(), image);
+		if (product.getImageSrcUrl() != null) {
+			String url = Server.Images.GET + product.getImageSrcUrl();
+
+			imageloader.DisplayImage(url, image);
+			image.setTag(url);
+		}
 		
 		return row;
 	}
