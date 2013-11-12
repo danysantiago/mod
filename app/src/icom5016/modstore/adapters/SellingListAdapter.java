@@ -94,6 +94,16 @@ public class SellingListAdapter extends ArrayAdapter<ProductSelling> {
 				tracking.setText("Tracking Number:"+product.getTrackingNumber());
 			else
 				tracking.setText("Tracking Number: N/A");
+			
+			if(product.getStartingBidPrice() != -1.0){
+				typeView.setText("Bidding");
+				price.setText(product.getStartingBidPriceString());
+			}
+			else{
+				typeView.setText("Buy It Now");
+				price.setText(product.getBuyItNowPriceString());
+				
+			}
 		}
 		
 		
