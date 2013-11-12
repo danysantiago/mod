@@ -55,25 +55,50 @@ function extendedEncode(arrVals, maxVal) {
   return chartData;
 }
 
+/* For a given date, get the ISO week number
+ *
+ * Based on information at:
+ *
+ *    http://www.merlyn.demon.co.uk/weekcalc.htm#WNR
+ *
+ * Algorithm is to find nearest thursday, it's year
+ * is the year of the week number. Then get weeks
+ * between that date and the first day of that year.
+ *
+ * Note that dates in one year can be weeks of previous
+ * or next year, overlap is up to 3 days.
+ *
+ * e.g. 2014/12/29 is Monday in week  1 of 2015
+ *      2012/1/1   is Sunday in week 52 of 2011
+ */
+function getWeekNumber(d) {
+    // Copy date so don't modify original
+    d = new Date(d);
+    d.setHours(0,0,0);
+    // Set to nearest Thursday: current date + 4 - current day number
+    // Make Sunday's day number 7
+    d.setDate(d.getDate() + 4 - (d.getDay()||7));
+    // Get first day of year
+    var yearStart = new Date(d.getFullYear(),0,1);
+    // Calculate full weeks to nearest Thursday
+    var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7)
+    // Return array of year and week number
+    return weekNo;
+}
+
+function dayOfYear() {
+  var now = new Date();
+  var start = new Date(now.getFullYear(), 0, 0);
+  var diff = now - start;
+  var oneDay = 1000 * 60 * 60 * 24;
+  var day = Math.floor(diff / oneDay);
+  return day;
+}
+
 var monthMap = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
 var routes = express();
 
-/**
-http://chart.googleapis.com/chart
-  ?chxl=0:|Jan|Feb|Mar|Jun|Jul|Aug
-  &chxr=0,0,5
-  &chxs=0,676767,14,0.5,l,676767
-  &chxt=x,y
-  &chs=600x300
-  &cht=lc
-  &chco=0000FF
-  &chd=s:GMSYflrx39
-  &chg=20,0
-  &chls=2
-  &chtt=Sales+by+Month
-  &chts=000000,15
-**/
 routes.get("/charts/sales/months", function (req, res) {
 
   var limit = 6;
@@ -146,7 +171,7 @@ routes.get("/charts/sales/months", function (req, res) {
           "chd": extendedEncode(sales, Math.round(maxVal)),
           "chg": "20,0",
           "chls": "2",
-          "chtt": "Sales+by+Month",
+          "chtt": "Sales by Month",
           "chts": "000000,15"
         }
       };
@@ -164,10 +189,188 @@ routes.get("/charts/sales/months", function (req, res) {
 
 });
 
-//Sales by weeks:
-//SELECT YEAR(created_ts) as `year`, WEEK(created_ts) as `week`, SUM(quantity*final_price) as total_sales FROM order_detail GROUP BY `year`, `week` ORDER BY `year` DESC, `week` DESC LIMIT 7;
+routes.get("/charts/sales/weeks", function (req, res) {
 
-//Sales by days
-//SELECT YEAR(created_ts) as `year`, DAYOFYEAR(created_ts) as `year_days`, SUM(quantity*final_price) as total_sales FROM order_detail GROUP BY `year`, `year_days` ORDER BY `year` DESC, `year_days` DESC LIMIT 14;
+  var limit = 7;
+
+  async.waterfall([
+    function (callback) {
+      var query = "SELECT YEAR(created_ts) as `year`, WEEK(created_ts) as `week`, SUM(quantity*final_price) as total_sales FROM order_detail GROUP BY `year`, `week` ORDER BY `year` DESC, `week` DESC LIMIT 7";
+      req.db.query(query, callback);
+    },
+
+    function (results, something, callback) {
+
+      console.log(results);
+
+      var date = new Date();
+      var currWeek = getWeekNumber(new Date());
+
+      var weeks = [];
+      var sales = [];
+
+      var i = 0;
+      var week = currWeek;
+      var maxVal = 0;
+
+      while(i < limit) {
+        if(week === 0) {
+          week = 52;
+        }
+
+        console.log(week);
+
+        weeks.unshift(week);
+
+        var found = false;
+        for(var j = 0; j < results.length; j++) {
+          if(results[j].week === week) {
+            sales.unshift(results[j].total_sales);
+            found = true;
+
+            if(maxVal < results[j].total_sales) {
+              maxVal = results[j].total_sales;
+            }
+
+            break;
+          }
+        }
+
+        if(!found) {
+          sales.unshift(0);
+        }
+
+        week--;
+        i++;
+      }
+
+      weeks[weeks.length-1] = 'Curr Week';
+      var weeksString = weeks.join('|');
+
+      var chartUrlObj = {
+        "protocol": "http",
+        "host": "chart.googleapis.com",
+        "pathname": "/chart",
+        "query": {
+          "chxl": "0:|" + weeksString,
+          "chxr": "0,0,5|1,0,"+ Math.round(maxVal),
+          "chxs": "0,000000,14,0.5,l,676767|1,000000,11.5,0,lt,676767",
+          "chxt": "x,y",
+          "chs": "600x300",
+          "cht": "lc",
+          "chco": "0000FF",
+          "chd": extendedEncode(sales, Math.round(maxVal)),
+          "chg": "20,0",
+          "chls": "2",
+          "chtt": "Sales by Weeks",
+          "chts": "000000,15"
+        }
+      };
+
+      console.log(sales);
+      console.log(weeks);
+      console.log(chartUrlObj)
+
+      callback(null, url.format(chartUrlObj));
+    },
+
+  ], function (err, chartUrl) {
+    console.log(chartUrl);
+    request(chartUrl).pipe(res);
+  });
+
+});
+
+routes.get("/charts/sales/days", function (req, res) {
+
+  var limit = 14;
+
+  async.waterfall([
+    function (callback) {
+      var query = "SELECT YEAR(created_ts) as `year`, DAYOFYEAR(created_ts) as `year_days`, SUM(quantity*final_price) as total_sales FROM order_detail GROUP BY `year`, `year_days` ORDER BY `year` DESC, `year_days` DESC LIMIT 14";
+      req.db.query(query, callback);
+    },
+
+    function (results, something, callback) {
+
+      console.log(results);
+
+      var date = new Date();
+      var currDay = dayOfYear()
+
+      var days = [];
+      var sales = [];
+
+      var i = 0;
+      var day = currDay;
+      var maxVal = 0;
+
+      while(i < limit) {
+        if(day === 0) {
+          day = 52;
+        }
+
+        console.log(day);
+
+        days.unshift(day);
+
+        var found = false;
+        for(var j = 0; j < results.length; j++) {
+          if(results[j].year_days === day) {
+            sales.unshift(results[j].total_sales);
+            found = true;
+
+            if(maxVal < results[j].total_sales) {
+              maxVal = results[j].total_sales;
+            }
+
+            break;
+          }
+        }
+
+        if(!found) {
+          sales.unshift(0);
+        }
+
+        day--;
+        i++;
+      }
+
+      days[days.length-1] = 'Today';
+      var daysString = days.join('|');
+
+      var chartUrlObj = {
+        "protocol": "http",
+        "host": "chart.googleapis.com",
+        "pathname": "/chart",
+        "query": {
+          "chxl": "0:|" + daysString,
+          "chxr": "0,0,5|1,0,"+ Math.round(maxVal),
+          "chxs": "0,000000,14,0.5,l,676767|1,000000,11.5,0,lt,676767",
+          "chxt": "x,y",
+          "chs": "600x300",
+          "cht": "lc",
+          "chco": "0000FF",
+          "chd": extendedEncode(sales, Math.round(maxVal)),
+          "chg": "20,0",
+          "chls": "2",
+          "chtt": "Sales by Days",
+          "chts": "000000,15"
+        }
+      };
+
+      console.log(sales);
+      console.log(days);
+      console.log(chartUrlObj)
+
+      callback(null, url.format(chartUrlObj));
+    },
+
+  ], function (err, chartUrl) {
+    console.log(chartUrl);
+    request(chartUrl).pipe(res);
+  });
+
+});
 
 module.exports = routes;

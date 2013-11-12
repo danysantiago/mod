@@ -73,10 +73,12 @@ public class AdminActivity extends MainInterfaceActivity {
 	    });
         builder.setNeutralButton("By Weeks", new DialogInterface.OnClickListener() {
 		   public void onClick(DialogInterface dialog, int id) {
+			   showZoomImageActivity(Server.Charts.SALES_BY_WEEK);
 	       }
 	    });
 		builder.setNegativeButton("By Days", new DialogInterface.OnClickListener() {
 		   public void onClick(DialogInterface dialog, int id) {
+			   showZoomImageActivity(Server.Charts.SALES_BY_DAY);
 	       }
 	    });
 		builder.show();
