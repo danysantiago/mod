@@ -51,28 +51,25 @@ public class OrderDetailsListAdapter extends ArrayAdapter<OrderDetail> {
 		TextView tracking = (TextView) row.findViewById(R.id.prodrow_orders_tracking);
 		TextView price = (TextView) row.findViewById(R.id.prodrow_orders_price);
 		TextView date = (TextView) row.findViewById(R.id.prodrow_orders_date);
+		TextView dateTitle = (TextView)row.findViewById(R.id.prodrow_orders_date_tittle);
 		TextView type = (TextView) row.findViewById(R.id.prodrow_orders_type);
 		
-		
+		dateTitle.setVisibility(View.GONE);
 		date.setVisibility(View.GONE);
 		
-		if(product.getStartingBidPrice() <= -1.0){
-			type.setText("Auction");
-		}else{
-			type.setText("Bought");
-		}
-		
+		type.setText(orderDetail.isWonByBid() ? "Auction" : "Bought");
 		
 		title.setText(product.getName());
 		if(!orderDetail.getTrackingNumber().equals("null"))
 			tracking.setText(orderDetail.getTrackingNumber());
+		else
+			tracking.setText("Not yet shipped");
 		
 		price.setText(orderDetail.getFinalSoldPriceString());
 		quantity.setText("Quantity: "+orderDetail.getQuantity());
 		
 		row.setTag(orderDetail);
 		
-		//TODO: Uncoment when fix
 		if (product.getImageSrcUrl() != null) {
 			String url = Server.Images.GET + product.getImageSrcUrl();
 
