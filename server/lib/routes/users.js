@@ -118,4 +118,24 @@ routes.get("/myuser", function (req, res) {
   });
 });
 
+routes.get("/rating", function (req, res, next) {
+  var userId = req.query.userId;
+
+  if(!userId) {
+    return res.send(400, {"error": "No userId provided"});
+  }
+
+  var query = "SELECT IFNULL((SELECT SUM(rate)/COUNT(*) FROM seller_review WHERE reviewee_user_id = " + req.db.escape(userId) + "), 0) as avg_seller_rating;";
+  console.log("MySQL Query: " + query);
+
+  req.db.query(query, function (err, results) {
+    if(err) {
+      return next(err);
+    }
+    ret = results[0];
+    res.send(200, ret);
+  });
+
+});
+
 module.exports = routes;

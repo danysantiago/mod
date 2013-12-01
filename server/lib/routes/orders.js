@@ -142,4 +142,26 @@ routes.get("/orders/details", function (req, res, next) {
 
 });
 
+routes.get("/bids", function (req, res, next) {
+  var productId = req.query.productId;
+
+  if(!productId) {
+    return res.send(400, {"error": "No productId provided"});
+  }
+
+  var query = "SELECT *, (SELECT user_name FROM user U WHERE B.user_id = U.user_id) as username FROM bid B WHERE B.product_id = " + req.db.escape(productId) + ";";
+  console.log("MySQL Query: " + query);
+
+  req.db.query(query, function (err, results) {
+    if(err) {
+      return next(err);
+    }
+    ret = {
+      "bids_list" : results
+    };
+    res.send(200, ret);
+  });
+
+});
+
 module.exports = routes;
