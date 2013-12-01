@@ -19,8 +19,17 @@ routes.get("/cart", function (req, res, next) {
     if(err) {
       return next(err);
     }
+
+    var total = 0;
+    var i = 0;
+
+    for (i = 0; i < results.length; i++) {
+      total += results[i].buy_price * results[i].cart_quantity;
+    }
+
     ret = {
-      "results":results
+      "results":results,
+      "total":total
     }
     res.send(200, ret);
   });
