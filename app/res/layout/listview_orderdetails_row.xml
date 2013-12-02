@@ -1,103 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   	android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="4dp"
-	android:layout_marginRight="4dp"
-	android:background="@drawable/bg_card"
-    android:orientation="vertical">
-    <LinearLayout 
-	    android:layout_width="fill_parent"
-	    android:orientation="horizontal"
-	    android:layout_height="wrap_content" >
-	    <FrameLayout 
-	     android:layout_height="fill_parent"
-	     android:layout_width="0dp"
-	     android:layout_weight="1">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+<!--  AUNQUE DIGA QUE NO EL EFECTO DE CARD SE LOGRA ASI -->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" 
+		android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card">
+		<!-- Card Contents go here -->
+
+		<TableLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:stretchColumns="1" >
+
+		    <TableRow
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" >
 		        <ImageView
 			        android:id="@+id/prodrow_orders_image"
 			        android:contentDescription="@string/listbuysellrow_img_desc"
 			        android:layout_width="50dp"
 			        android:layout_height="50dp"
-			       
-			        android:layout_gravity="center"
+			        android:layout_column="0"
+			        android:layout_gravity="left|center"
 			        android:src="@drawable/no_image" />
-		    </FrameLayout>
-	     <TextView
-	         android:id="@+id/prodrow_orders_title"
-	         android:layout_width="0dp"
-	         android:layout_height="fill_parent"
-	         android:layout_weight="2"
-	         android:gravity="left|center_vertical"
-	         android:lines="3"
-	         android:text="@string/listbuysellrow_title"
-	         android:textSize="15sp"
-	         android:textStyle="bold" />
-	
-	      <LinearLayout
-	          android:layout_width="0dp"
-	          android:layout_weight="2"
-	          android:layout_height="fill_parent"
-	          android:layout_gravity="left"
-	          android:orientation="vertical"
-	          android:paddingLeft="5dp"
-	          android:paddingRight="5dp" >
-		
 		        <TextView
-		            android:id="@+id/prodrow_orders_price"
-		           	android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/listbuysellrow_price" />
-		
-		        <TextView
-		            android:id="@+id/prodrow_orders_type"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/listbuysellrow_type" />
-		
-		        <TextView
-		            android:id="@+id/prodrow_orders_date_tittle"
-		            android:textStyle="bold"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/listbuysellrow_date_title" />
-		        <TextView
-		            android:id="@+id/prodrow_orders_date"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="@string/listbuysellrow_date" />
-		
-		    </LinearLayout>
-	</LinearLayout>
-
-	<LinearLayout
-	    
-	    android:layout_width="match_parent"
-	    android:orientation="horizontal"
-	    android:layout_height="wrap_content" >
-
-	    <TextView
-	        android:id="@+id/prodrow_orders_quantity"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="2"
-	        android:text="@string/listbuysellrow_quantity" />
-
-	    <Space android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="1" />
-
-	    <TextView
-	        android:paddingLeft="5dp"
-	        android:id="@+id/prodrow_orders_tracking"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dp"
-	        android:layout_weight="2"
-	        android:text="@string/listbuysellrow_tracking" />
-
-	</LinearLayout>
-</LinearLayout>
-
-			       
+			         android:id="@+id/prodrow_orders_title"
+			         android:gravity="fill_horizontal"
+			         android:layout_weight="1"
+			         android:lines="3"
+			         android:layout_width="0dp"
+			         android:text="@string/listbuysellrow_title"
+			         android:textSize="15sp"
+			         android:textStyle="bold" />
+		        <LinearLayout
+			        android:layout_column="2"
+			        android:layout_gravity="right|top"
+			        android:padding="5dp"
+			        android:orientation="vertical" >
 			
+			        <TextView
+			            android:id="@+id/prodrow_orders_price"
+			           	android:layout_width="wrap_content"
+			            android:layout_weight="1"
+			            android:layout_height="wrap_content"
+			            android:paddingBottom="2dp"
+			            android:text="@string/listbuysellrow_price" />
+			
+			        <TextView
+			            android:id="@+id/prodrow_orders_type"
+			            android:layout_width="wrap_content"
+			            android:layout_weight="1"
+			            android:paddingBottom="2dp"
+			            android:layout_height="wrap_content"
+			            android:text="@string/listbuysellrow_type" />
+			
+			        <TextView
+			            android:id="@+id/prodrow_orders_date_tittle"
+			            android:layout_width="wrap_content"
+			            android:layout_weight="1"
+			            android:layout_height="wrap_content"
+			            android:paddingBottom="2dp"
+			            android:text="@string/listbuysellrow_date_title" />
+			        <TextView
+			            android:id="@+id/prodrow_orders_date"
+			            android:layout_width="wrap_content"
+			            android:layout_weight="1"
+			            android:layout_height="wrap_content"
+			            android:paddingBottom="2dp"
+			            android:text="@string/listbuysellrow_date" />
+			
+			    </LinearLayout>
+		    </TableRow>
 
+		    <TableRow
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" >
+		         <TextView
+			        android:id="@+id/prodrow_orders_quantity"
+			        android:layout_column="0"
+			        android:layout_gravity="left|top"
+			        android:text="@string/listbuysellrow_quantity" />
+			    <Space />
+			    <TextView
+			        android:id="@+id/prodrow_orders_tracking"
+			        android:layout_column="2"
+			        android:layout_gravity="right|top"
+			        android:text="@string/listbuysellrow_tracking" />
+		    </TableRow>
+		</TableLayout>
+		
+	</LinearLayout>
+
+</FrameLayout>

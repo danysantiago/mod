@@ -1,8 +1,8 @@
 package icom5016.modstore.fragments;
 
-import icom5016.modstore.activities.MainActivity;
+import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
-import icom5016.modstore.adapter.SellingListAdapter;
+import icom5016.modstore.adapters.SellingListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
@@ -24,9 +24,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,10 +35,10 @@ import android.widget.Toast;
 public class SellingListFragment extends Fragment {
 	//User Instance Field
 			private User activeUser;
-			private MainActivity mainActivity;
+			private MainInterfaceActivity mainActivity;
 			private Spinner spinner;
 			private View mainLayout;
-			private LinearLayout sv_container;
+			private ScrollView sv_container;
 			
 			
 			
@@ -47,11 +48,11 @@ public class SellingListFragment extends Fragment {
 				View view = inflater.inflate(R.layout.fragment_spinner_listing, container,false);
 				
 				//Instance Vars
-				this.mainActivity = (MainActivity) this.getActivity();
+				this.mainActivity = (MainInterfaceActivity) this.getActivity();
 				this.activeUser = this.mainActivity.getActiveUser();
 				this.spinner = (Spinner) view.findViewById(R.id.spinner_buysell_frag);
 				this.mainLayout = view;
-				this.sv_container = (LinearLayout) view.findViewById(R.id.buysell_container);
+				this.sv_container = (ScrollView) view.findViewById(R.id.buysell_container);
 				
 				//Setup Spinner
 				ArrayAdapter<String> adapter = new ArrayAdapter<String>(mainActivity, R.layout.spinner_buysell_list, ConstantClass.SELLING_SPINNER);
@@ -162,7 +163,7 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvSold.setVisibility(View.GONE);
 									lvSold.setAdapter(new SellingListAdapter(mainActivity, soldList, ConstantClass.SELLING_SOLD ));
-									lvSold.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_SOLD, activeUser.getGuid()));
+									lvSold.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_SOLD));
 									lvSold.setVisibility(View.VISIBLE);
 								}
 								
@@ -181,7 +182,7 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvActive.setVisibility(View.GONE);
 									lvActive.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_ACTIVE));
-									lvActive.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_ACTIVE, activeUser.getGuid()));
+									lvActive.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_ACTIVE));
 									lvActive.setVisibility(View.VISIBLE);
 								}
 								
@@ -200,7 +201,7 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvNotSold.setVisibility(View.GONE);
 									lvNotSold.setAdapter(new SellingListAdapter(mainActivity, notsoldList, ConstantClass.SELLING_NOTSOLD));
-									lvNotSold.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_NOTSOLD, activeUser.getGuid()));
+									lvNotSold.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_NOTSOLD));
 									lvNotSold.setVisibility(View.VISIBLE);
 								}
 								
@@ -221,7 +222,7 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvIndividual.setVisibility(View.GONE);
 									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, soldList, ConstantClass.SELLING_SOLD));
-									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_SOLD, activeUser.getGuid()));
+									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_SOLD));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 								
@@ -242,7 +243,7 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvIndividual.setVisibility(View.GONE);
 									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_ACTIVE));
-									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_ACTIVE, activeUser.getGuid()));
+									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_ACTIVE));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 							}
@@ -260,7 +261,7 @@ public class SellingListFragment extends Fragment {
 								else{
 									gvIndividual.setVisibility(View.GONE);
 									lvIndividual.setAdapter(new SellingListAdapter(mainActivity, activeList, ConstantClass.SELLING_NOTSOLD));
-									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_NOTSOLD, activeUser.getGuid() ));
+									lvIndividual.setOnItemClickListener(new SellingListListener(mainActivity, ConstantClass.SELLING_NOTSOLD ));
 									lvIndividual.setVisibility(View.VISIBLE);
 								}
 							}

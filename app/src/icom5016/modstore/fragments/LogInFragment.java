@@ -1,14 +1,13 @@
 package icom5016.modstore.fragments;
 
-import icom5016.modstore.activities.MainActivity;
 import icom5016.modstore.activities.R;
-import icom5016.modstore.dialog.ForgotDialog;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.ConstantClass;
 import icom5016.modstore.resources.DataFetchFactory;
+import icom5016.modstore.uielements.ForgotDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,9 +49,6 @@ public class LogInFragment extends Fragment implements OnClickListener{
 		
 		Button btn = (Button) view.findViewById(R.id.login_btn);
 		btn.setOnClickListener(this);
-		Button btnRegister = (Button) view.findViewById(R.id.login_register);
-		btnRegister.setOnClickListener(this);
-		
 		this.thisActivity = this.getActivity();
 		
 		return view;
@@ -69,11 +65,6 @@ public class LogInFragment extends Fragment implements OnClickListener{
         	break;
         case R.id.login_btn:
         	this.loginButtonListener((Button)v);
-        	break;
-        case R.id.login_register:
-        	this.btnRegisterListener(v);
-        	break;
-        	
         }
     }
 	
@@ -126,11 +117,7 @@ public class LogInFragment extends Fragment implements OnClickListener{
 					if(json.getString("status").equals("OK")) {
 						User user = new User(json.getJSONObject("account"));
 						DataFetchFactory.setUserInSharedPreferences(user, thisActivity);
-						MainActivity ma = (MainActivity) getActivity();
-						ma.reloadActionBarAndUser(ma.getActionBar());
-						ma.fragmentStack.pop();
-						ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), ma.fragmentStack.peek());
-						
+						getActivity().finish();
 					} else {
 						Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();;
 					}
@@ -142,7 +129,7 @@ public class LogInFragment extends Fragment implements OnClickListener{
 			
 			@Override
 			public void onFailed() {
-				Toast.makeText(getActivity(), R.string.errmsg_no_connection, Toast.LENGTH_LONG).show();;
+				Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();;
 			}
 			
 			@Override
@@ -154,10 +141,6 @@ public class LogInFragment extends Fragment implements OnClickListener{
 	    
     }
 
-	private void btnRegisterListener(View view){
-		MainActivity ma = (MainActivity) this.getActivity();
-		ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), new RegisterFragment());
-	}
 	
 	
 }

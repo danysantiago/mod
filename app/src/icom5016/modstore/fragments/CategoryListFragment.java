@@ -1,77 +1,153 @@
 package icom5016.modstore.fragments;
 
-import icom5016.modstore.activities.MainActivity;
+import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
-import icom5016.modstore.adapter.CategoryListingAdapter;
-import icom5016.modstore.listeners.CategoryListingListener;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
+import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.uielements.CategoryListAdapter;
+import icom5016.modstore.uielements.CategoryListListener;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CategoryListFragment extends Fragment {
 	
-	private ListView catlistLv;
-	private MainActivity ma;
-	private Bundle params;
-	private List<Category> listingCat;
-	private TextView catlistTv;
+	private ListView categoriesList;
+	private ProgressBar categoryListProgressBar;
+	private ImageView categoryListImageView;
+	private LinearLayout categoriesListLayout;
+	private TextView categoryListTextView;
+	
+	public CategoryListFragment(){
+	};
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.fragment_catlist, container,false);
+		//Inflate Layout
+		View view = inflater.inflate(R.layout.fragment_category_list, container,false);
 		
-		this.catlistLv = (ListView) view.findViewById(R.id.catlist_lv);
-		this.catlistTv = (TextView) view.findViewById(R.id.catlist_tv);
-		this.ma = (MainActivity) this.getActivity();
-		this.params = this.getArguments();
-	
-		this.loadCategories(this.params);
+		
+		//Instance Views
+		this.categoriesListLayout = (LinearLayout) view.findViewById(R.id.productLinearLayout);
+		this.categoriesList = (ListView) view.findViewById(R.id.categoryListView);
+		this.categoryListProgressBar = (ProgressBar) view.findViewById(R.id.productListProgressBar);
+		this.categoryListImageView = (ImageView) view.findViewById(R.id.placehoderProductList);
+		this.categoryListTextView = (TextView) view.findViewById(R.id.categoryListText);
+		
+		Bundle bundle = this.getArguments();
+		int parent = -1; //If -1 Default
+		
+		
+		if(bundle != null){
+			parent = bundle.getInt(ConstantClass.CATEGORY_LIST_PARENT_KEY);
+		}	
+		
+		this.doHttpCategoryList(parent);
+		
 		return view;
 	}
 	
-	
-	private void loadCategories(Bundle bundle){
-		//Http Load
-		ma.loadAllCategories();
-		
-		int parentId = bundle.getInt(ConstantClass.CATEGORY_LIST_PARENT_KEY);
-		
-		this.listingCat = ma.loadCategoriesById(parentId);
-		
-		if(parentId != -1){
-			Category parent = ma.loadCategoryById(parentId);
-			catlistTv.setText("Subcategories in "+parent.getName()+":");
-		}
-		if(this.listingCat.size() == 0){ //Mean No SubCategories Enter Listing Fragment
-			ProductListingFragment plf = new ProductListingFragment();
-			plf.setArguments(this.getProductParams(parentId));
-			this.ma.fragmentStack.pop();
-			this.ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), plf);
-			return;
-		}
-		
-		this.catlistLv.setAdapter(new CategoryListingAdapter(ma, listingCat));
-		this.catlistLv.setOnItemClickListener(new CategoryListingListener(ma));
-		this.catlistLv.setVisibility(View.VISIBLE);
+	private void doHttpCategoryList(int parent){
+		//Hide Icon Make Visible ProgressBar
+		this.categoryListImageView.setVisibility(View.GONE);
+		this.categoryListProgressBar.setVisibility(View.VISIBLE);
 		
 		
+		//Perform http request
+		Bundle params = new Bundle();
+		params.putString("method", "GET");
+		params.putString("url", Server.Categories.GET+Integer.toString(parent));
 		
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+			
+			@Override
+			public void onSucess(JSONObject json) {
+				
+				//Get Info with Json
+				
+				try {
+					//Get Parent
+					JSONObject parentJson = json.getJSONObject("parent");
+					//Get List
+					JSONArray listJson = json.getJSONArray("list");
+					
+					Category parentCategory = new Category(parentJson);
+					
+					if(listJson.length() == 0){
+						//Open ProductListFragment
+						Bundle bundle = new Bundle();
+						bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, parentCategory.getId());
+						ProductListFragment plf = new ProductListFragment();
+						plf.setArguments(bundle);
+						MainInterfaceActivity mia = (MainInterfaceActivity) getActivity();
+						mia.fragmentStack.pop();
+						mia.fragmentStack.push(plf);
+						AndroidResourceFactory.setNewFragment(mia, mia.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
+					}
+					else{
+						//Populate stuff
+						
+						
+						if(parentCategory.getId() >= 0)
+							categoryListTextView.setText(parentCategory.getName());
+						else
+							categoryListTextView.setText(R.string.category_list_title);
+						
+						
+						
+						//Pass it to adapter and to listview
+						CategoryListAdapter adapter = new CategoryListAdapter(getActivity(), listJson);
+						categoriesList.setAdapter(adapter);
+						categoriesList.setOnItemClickListener(new CategoryListListener((MainInterfaceActivity) getActivity()));
+						//Set Visibility
+						categoriesListLayout.setVisibility(View.VISIBLE);
+					}
+					
+					
+				} catch (JSONException e) {
+					Toast.makeText(getActivity(), "Bad JSON parsing...",
+							Toast.LENGTH_SHORT).show();
+					categoryListImageView.setVisibility(View.VISIBLE);
+				}
+				
+				
+				
+				
+			}
+			
+			@Override
+			public void onFailed() {
+				
+				
+				categoryListImageView.setVisibility(View.VISIBLE);
+				Toast.makeText(getActivity(), R.string.category_list_error, Toast.LENGTH_LONG).show();
+			}
+			
+			@Override
+			public void onDone() {
+				categoryListProgressBar.setVisibility(View.GONE);
+			}
+		});
+		request.execute();
 	}
 
-
-	private Bundle getProductParams(int parentId) {
-		Bundle ret = new Bundle();
-		ret.putString(ConstantClass.SEARCH_DIALOG_CATEGORIES_ID_KEY, Integer.toString(parentId));
-		return ret;
-	}
 }

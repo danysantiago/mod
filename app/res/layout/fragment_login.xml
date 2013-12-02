@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:padding="10dp"
     android:layout_height="match_parent" >
 
     <EditText
@@ -14,7 +13,7 @@
         android:ems="10"
         android:inputType="text"
         android:hint="@string/login_username_hint" >
-			<requestFocus />
+
     </EditText>
 
     <EditText
@@ -56,14 +55,5 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="15sp"
         android:textColor="@color/dark_blue" />
-
-    <Button
-        android:id="@+id/login_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/login_btn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
-        android:text="@string/btn_created_account" />
 
 </RelativeLayout>

@@ -1,0 +1,47 @@
+<!-- Utilizes de a Range from 0-1000 where 0 is the most-left and 1000 most-right (android:orderInCategory) -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- Cart Button -->
+    <item android:id="@+id/btn_cart" 
+        android:showAsAction="always" 
+        android:orderInCategory="1000" 
+        android:title="@string/btn_cart_desc"
+        android:icon="@drawable/btn_cart"
+       android:visible="false">
+    </item>
+    
+    <!-- Search Button -->
+    <item android:id="@+id/btn_search" 
+        android:showAsAction="always" 
+        android:orderInCategory="600" 
+        android:title="@string/btn_search_desc"
+        android:icon="@drawable/btn_search" android:visible="false">
+    </item>
+
+     <!-- Search Bar Use only in SearchActivity.class -->
+     <item android:id="@+id/searchbar"
+          android:title="@string/searchbar_title"
+          android:orderInCategory="500" 
+          android:icon="@drawable/btn_search"
+          android:showAsAction="always"
+          android:actionViewClass="android.widget.SearchView"  android:visible="false"/>
+    
+    <!-- Category Submenu (Dynamicly Populated in Java) -->
+    
+	    <item
+	        android:title="@string/btn_category_str"
+	        android:id="@+id/item_categories"
+	        android:showAsAction="always|withText" 
+	        android:orderInCategory="0" android:icon="@drawable/navigation_expand" android:visible="false">
+	        <menu android:id="@+id/subgroup_categories">
+	           <!-- Dynamicly Filled -->
+	        </menu>
+	    </item>
+	    
+	    <item 
+	        android:id="@+id/btn_search_filter" 
+	        android:orderInCategory="900"
+	        android:showAsAction="always" 
+	        android:icon="@drawable/btn_filter" android:title="@string/btn_filters" android:visible="false">
+	    </item>
+</menu>
+                  

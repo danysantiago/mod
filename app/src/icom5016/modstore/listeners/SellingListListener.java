@@ -1,128 +1,49 @@
 package icom5016.modstore.listeners;
 
-import icom5016.modstore.activities.MainActivity;
-import icom5016.modstore.activities.R;
-import icom5016.modstore.fragments.BidsFragment;
-import icom5016.modstore.fragments.ProductFragment;
-import icom5016.modstore.fragments.SellProductFragment;
+import icom5016.modstore.activities.MainInterfaceActivity;
+import icom5016.modstore.activities.ProductSellEditActivity;
+import icom5016.modstore.activities.ProductViewerActivity;
 import icom5016.modstore.models.Product;
 import icom5016.modstore.resources.ConstantClass;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 public class SellingListListener implements OnItemClickListener {
 
-	private MainActivity mainActivity;
+	private MainInterfaceActivity mainActivity;
 	private String type;
-	private Dialog dialog;
-	private int sellerId;
 
-	public SellingListListener(MainActivity activity, String type, int sellerId ){
+	public SellingListListener(MainInterfaceActivity activity, String type ){
 		this.mainActivity = activity;
 		this.type = type;
-		this.sellerId = sellerId;
 	}
 	
 	@Override
 	public void onItemClick(AdapterView<?> listViewAdapter, View view, int pos, long arg3) {
-		final Product product = (Product) listViewAdapter.getAdapter().getItem(pos);
-		LayoutInflater inflater = this.mainActivity.getLayoutInflater();
-        View sfView = inflater.inflate(R.layout.dialog_selling_list, null, false);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.mainActivity);
-        builder.setTitle(R.string.selling_dialog_title);
-        builder.setView(sfView);
-        
-        ListView lv = (ListView) sfView.findViewById(R.id.lvSellingListDialog);
-        List<String> list;
-        
-        if(type.equals(ConstantClass.SELLING_ACTIVE)){
-        	list = new ArrayList<String>(Arrays.asList(new String[]{"Listing", "Edit"}));
-        	if(product.getStartingBidPrice() != -1.0){
-        		list.add("Bids");
-			}
-        }
-        	
-        else if(type.equals(ConstantClass.SELLING_SOLD)){
-        	list = new ArrayList<String>(Arrays.asList(new String[]{"Listing", "Order Details"}));
-        	if(product.getStartingBidPrice() != -1.0){
-        		list.add("Bids");
-			}
-        }
-        else if(type.equals(ConstantClass.SELLING_NOTSOLD)){
-        	list = new ArrayList<String>(Arrays.asList(new String[]{"Listing"}));
-        }
-        else
-        	list = new ArrayList<String>(Arrays.asList(new String[]{"Listing"}));
-        
-        lv.setAdapter(new ArrayAdapter<String>(mainActivity, android.R.layout.simple_list_item_1, list));
-        lv.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				
-				switch (arg2) {
-				case 0:
-					loadListingFragment(product.getId());
-					break;
-				case 1:
-					 if(type.equals(ConstantClass.SELLING_ACTIVE)){
-				        	loadEditFragment(product, type);
-				        }
-				        else if(type.equals(ConstantClass.SELLING_SOLD)){
-				        	loadOrderDetails(product.getId());
-				        }
-					break;
-				case 2:
-					loadBidsFragment(product.getId());
-					break;
-				}
-				dialog.dismiss();
-			}
-		});
-        
-        this.dialog = builder.create();
-        this.dialog.show();
+		Product product = (Product) listViewAdapter.getAdapter().getItem(pos);
 		
-	}
-	
-	protected void loadOrderDetails(int id) {
+		if (type == ConstantClass.SELLING_ACTIVE) {
+			Intent sellingActivity = new Intent(mainActivity, ProductSellEditActivity.class);
+			
+			Bundle bundle = new Bundle();
+			bundle.putSerializable("productObj", product);
+			sellingActivity.putExtras(bundle);
+			
+			this.mainActivity.startActivity(sellingActivity);
+		} else if (type == ConstantClass.SELLING_SOLD) {
+			// View que tiene información del producto y a quien enviarselo, tracking y todo eso.
+		} else if (type == ConstantClass.SELLING_NOTSOLD) {
+			Intent sellingActivity = new Intent(mainActivity, ProductViewerActivity.class);
+			
+			Bundle bundle = new Bundle();
+			bundle.putInt(ConstantClass.PRODUCT_KEY, product.getId());
+			bundle.putString(ConstantClass.SELLING_TYPE_VIEW_KEY, this.type);
+			sellingActivity.putExtras(bundle);
+			this.mainActivity.startActivity(sellingActivity);
+		}
 	}
 
-	protected void loadEditFragment(Product product, String type) {
-		Bundle bundle = new Bundle();
-		bundle.putSerializable(ConstantClass.PRODUCT_SELL_PROD_KEY, product);
-		SellProductFragment spf = new SellProductFragment();
-		spf.setArguments(bundle);
-		mainActivity.loadFragmentInMainActivityStack(MainActivity.getContainerId(), spf);
-	}
-
-	private void loadBidsFragment(int id) {
-		Bundle bundle = new Bundle();
-		bundle.putInt(ConstantClass.PRODUCT_KEY,id);
-		bundle.putInt(ConstantClass.SELLER_KEY, sellerId);
-		BidsFragment bf = new BidsFragment();
-		bf.setArguments(bundle);
-		mainActivity.loadFragmentInMainActivityStack(MainActivity.getContainerId(), bf);
-	}
-
-	private void loadListingFragment(int id){
-		Bundle bundle = new Bundle();
-		bundle.putInt(ConstantClass.PRODUCT_KEY,id);
-		ProductFragment pf = new ProductFragment();
-		pf.setArguments(bundle);
-		mainActivity.loadFragmentInMainActivityStack(MainActivity.getContainerId(), pf);
-	}
 }

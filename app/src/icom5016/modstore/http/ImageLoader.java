@@ -3,6 +3,7 @@ package icom5016.modstore.http;
 
 
 import icom5016.modstore.resources.FileCache;
+import icom5016.modstore.views.TouchImageView;
 
 import java.io.File;
 import java.io.FileOutputStream;

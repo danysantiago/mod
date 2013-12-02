@@ -1,7 +1,6 @@
 package icom5016.modstore.resources;
 
 
-
 public class ConstantClass {
 	
 	
@@ -19,10 +18,10 @@ public class ConstantClass {
 	}
 	
 	//Drawer Lists
-	public final static String[] DRAWER_GUEST_LIST = new String[]{"Home","Shop By Category" ,"About", "Log in","Register",}; 
-	public final static String[] DRAWER_USER_LIST = new String[]{"Home", "Shop By Category", "My Store", "Sell Product", "My Account", "About", "Log Out"};
-	public final static String[] DRAWER_ADMIN_LIST = new String[]{"Home", "Shop By Category", "My Store", "Sell Product", "My Account", "About", "Log Out", "Admin Menu"};
-	public static final String[] DRAWER_MYORDERS = new String[]{"Orders", "Bidding", "Selling"}; 
+	public final static String[] DRAWER_GUEST_LIST = new String[]{"Home", "About", "Log in","Register",}; 
+	public final static String[] DRAWER_USER_LIST = new String[]{"Home", "My Orders", "Sell Item", "My Account", "About", "Log Out"};
+	public final static String[] DRAWER_ADMIN_LIST = new String[]{"Home", "My Orders", "Sell Item", "My Account", "About", "Log Out", "Admin Menu"};
+	
 	
 	//LogIn/Out Constant
 	public final static String USER_IS_LOGIN = "userLogStatus";
@@ -104,11 +103,5 @@ public class ConstantClass {
 	//Selling Viewer Activity
 	public static final String SELLINGVIEWERACTIVITY_ITEM_KEY = "sellingViwerActivityKey";
 	public final static int SELLINGVIEWERACTIVITY_FRAGMENT_SELL_ITEMS = 2;
-	
-	//Sell Product Fragment
-	public static final String PRODUCT_SELL_PROD_KEY = "productObj";
-	public static final String SELLER_KEY = "sellerId";
-	public static final String[] CART_DIALOG_OPTIONS = new String[]{"View", "Change Quantity", "Remove"};
-	
 	
 }

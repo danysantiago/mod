@@ -10,16 +10,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.util.Log;
 
 public class AndroidResourceFactory {
 
 	//Fragment Manager
-	public static void setNewFragment(FragmentActivity activeActivity, Fragment fragment, int id){
-		FragmentManager fragmentManager = activeActivity.getSupportFragmentManager();
+	public static void setNewFragment(Activity activeActivity, Fragment fragment, int id){
+		FragmentManager fragmentManager = activeActivity.getFragmentManager();
         fragmentManager.beginTransaction().replace(id, fragment).commit();
 	}
 	

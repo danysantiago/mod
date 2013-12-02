@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+	<ImageView
+        android:id="@+id/placehoderProductList"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/placeholder_search_desc"
+        android:src="@drawable/placeholder_product_list_black" />
+ 	<ProgressBar
+ 	    android:id="@+id/productListProgressBar"
+ 	    style="?android:attr/progressBarStyleLarge"
+ 	    android:layout_width="wrap_content"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_centerHorizontal="true"
+ 	    android:visibility="gone"
+ 	    android:layout_centerVertical="true" />
+ 	<LinearLayout
+ 	    android:id="@+id/productLinearLayout"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    android:visibility="gone" >
+
+ 		<LinearLayout
+ 		    android:layout_width="match_parent"
+ 		    android:layout_height="wrap_content"
+ 		    android:orientation="vertical" >
+
+ 		  <TextView
+	        android:id="@+id/categoryListText"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="left"
+	        android:padding="10dp"
+	        android:textSize="16sp"
+	        android:textStyle="bold"
+	        android:background="@color/gray"
+	        android:text="@string/category_list_title" />
+	    <Spinner
+          android:id="@+id/productListSubcategoriesSpinner"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" />
+	   
+ 		</LinearLayout>
+		
+		
+	
+	    <ListView
+	        android:id="@+id/categoryListView"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_margin="5dp" >
+	    </ListView>
+	    
+	    
+	</LinearLayout>
+    
+</RelativeLayout>

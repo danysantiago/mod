@@ -1,8 +1,8 @@
 package icom5016.modstore.fragments;
 
-import icom5016.modstore.activities.MainActivity;
+import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
-import icom5016.modstore.adapter.OrdersAdapter;
+import icom5016.modstore.adapters.OrdersAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
@@ -27,7 +27,7 @@ import android.widget.Toast;
 public class MyOrdersListFragment extends Fragment {
 	//User Instance Field
 	private User activeUser;
-	private MainActivity mainActivity;
+	private MainInterfaceActivity mainActivity;
 	private ListView lvOrders;
 	private TextView tvOrders;
 	private ProgressBar pbOrders;
@@ -39,7 +39,7 @@ public class MyOrdersListFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_myorders_list, container,false);
 		
 		//Instance Vars
-		this.mainActivity = (MainActivity) this.getActivity();
+		this.mainActivity = (MainInterfaceActivity) this.getActivity();
 		this.activeUser = this.mainActivity.getActiveUser();
 		
 		//Instance Views

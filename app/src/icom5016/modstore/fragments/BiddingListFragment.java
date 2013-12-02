@@ -1,8 +1,8 @@
 package icom5016.modstore.fragments;
 
-import icom5016.modstore.activities.MainActivity;
+import icom5016.modstore.activities.MainInterfaceActivity;
 import icom5016.modstore.activities.R;
-import icom5016.modstore.adapter.BiddingListAdapter;
+import icom5016.modstore.adapters.BiddingListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
@@ -26,7 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,10 +34,10 @@ import android.widget.Toast;
 public class BiddingListFragment extends Fragment {
 		//User Instance Field
 		private User activeUser;
-		private MainActivity mainActivity;
+		private MainInterfaceActivity mainActivity;
 		private Spinner spinner;
 		private View mainLayout;
-		private LinearLayout sv_container;
+		private ScrollView sv_container;
 		
 		
 		@Override
@@ -46,11 +46,11 @@ public class BiddingListFragment extends Fragment {
 			View view = inflater.inflate(R.layout.fragment_spinner_listing, container,false);
 			
 			//Instance Vars
-			this.mainActivity = (MainActivity) this.getActivity();
+			this.mainActivity = (MainInterfaceActivity) this.getActivity();
 			this.activeUser = this.mainActivity.getActiveUser();
 			this.spinner = (Spinner) view.findViewById(R.id.spinner_buysell_frag);
 			this.mainLayout = view;
-			this.sv_container = (LinearLayout) view.findViewById(R.id.buysell_container);
+			this.sv_container = (ScrollView) view.findViewById(R.id.buysell_container);
 			
 			
 			//Setup Spinner

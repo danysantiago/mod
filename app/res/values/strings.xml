@@ -2,51 +2,8 @@
 <resources>
 
     <string name="app_name">Mod Store</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    
-    <!-- Menu -->
-    <string name="btn_cart_desc">Cart</string>
     <string name="btn_search_desc">Search</string>
-    
-    <!-- About -->
-    <string name="about_names">Manuel - Omar - Daniel</string>
-    
-    <!-- LogIn Register -->
-    <string name="title_login">Log In</string>
-    <string name="title_register">Register</string>
-    <string name="btn_created_account">Create acocunt</string>
-    
-    <!-- Cart Fragment -->
-    <string name="error_cart">Must Be Log In to Access Cart</string>
-    <string name="cart_tv">My Cart</string>
-    <string name="cart_btn">Proceed to Checkout</string>
-    <string name="cart_empty">Your Cart is Empty</string>
-    <!-- Search Fragment -->
-    <string name="error_search">To Value is Smaller than From Value</string>
-    <string name="error_empty_search">Search Field is Empty</string>
-    <string name="cart_pd">Fetching Cart</string>
-    
-    <!--Product Listing Fragment -->
-    <string name="prodlist_tv">Results:</string>
-	<string name="prodlist_pd">Fetching Products</string>
-    
-    <!-- Category Listing Fragment -->
-    <string name="catlist_tv">Main Categories:</string>
-    <string name="nocat_found">No Categories Where Loaded</string>
-    <string name="catlist_pd_msg">Loading Categories&#8230;</string>
-    <string name="catrow_desc">Left Arrow</string>
-    
-    <!-- Main Fragment -->
-    <string name="mainfrag_welcome">Welcome, Guest</string>
-    <string name="mainfrag_sbd">Shop By\nDepartment</string>
-    <string name="mainfrag_search">Search</string>
-    <string name="mainfrag_whathot">What\'s Hot</string>
-    <string name="whrow_index">0.</string>
-    
-    
+    <string name="btn_cart_desc">Cart</string>
     <string name="drawer_open_desc">Main menu opened</string>
     <string name="drawer_close_desc">Main menu closed</string>
     <string name="btn_category_str">Categories</string>
@@ -168,14 +125,16 @@
     <!-- Main Activity -->
     <string name="pd_mactivity">Loading App</string>
     <string name="title_activity_my_orders">MyOrdersActivity</string>
-
+    <string name="action_settings">Settings</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
     <!-- MyOrders Acitivity -->
     <string name="title_myorders">My Orders</string>
     <string name="sec_title_selling">Selling</string>
     <string name="sec_title_buying">Bidding</string>
     <string name="sec_tittle_orders">Orders</string>
-    <string name="sec_title_rating">Rating</string>
 
     <!-- My Orders Orders Fragment -->
     <string name="orders_title">Orders</string>
@@ -230,61 +189,12 @@
     <string name="textbox_orderbillingaddrtitle">Billing Address:</string>
     <string name="title_activity_product_viewer">ProductViewerActivity</string>
     <string name="hello_world">Hello world!</string>
+   
+	<!-- SellingViewerActivty -->
+	<string name="title_sellitem">Sell Item</string>
+	
+	<!-- Search Part -->
+	<string name="noitem_found">No Product Found</string>
+	<string name="will_have_auction">Is an Auction?</string>
 
-    <!-- SellingViewerActivty -->
-    <string name="title_sellitem">Sell Item</string>
-
-    <!-- Search Part -->
-    <string name="noitem_found">No Product Found</string>
-    <string name="will_have_auction">Is an Auction?</string>
-    <string name="title_activity_selling_viewer_acitivity">Selling</string>
-    
-    
-    <!-- Selling Viewer Activity -->
-    <string name="sellview_product">Product</string>
-    <string name="sellview_history">History</string>
-    <string name="sellview_edit">Edit</string>
-    
-    <string name="title_mystore">My Store</string>
-    <string name="title_myacc">My Account</string>
-    <string name="mystore_myrating">My Rating</string>
-    <string name="close">Close</string>
-    
-    <!-- Cart -->
-    <string name="cart_total">Total:</string>
-    <string name="cart_total_placeholder">$#.##</string>
-    <string name="cart_checkout_payment">Payment Option:</string>
-    <string name="cart_checkout_address">Shipping Address:</string>
-    <string name="cart_checkout_buy">Commit to Buy</string>
-    <string name="cart_checkout_cancel">Cancel</string>
-    <string name="cart_checkout_title">Checkout</string>
-    <string name="cart_checkout_finish">Comete to Buy</string>
-    <string name="cart_checkout_complete_order">Completing Order&#8230;</string>
-    <string name="cart_checkout_no_address">Add Shipping Address</string>
-    <string name="cart_checkout_no_payment">Add Payment Method</string>
-
-    <!-- Invoice -->
-    <string name="cart_invoice_title">Order Completed</string>
-    <string name="cart_invoice_order">Order Number:</string>
-    <string name="cart_invoice_placeholder">####</string>
-    <string name="cart_invoice_total_price">Total Price:</string>
-    <string name="cart_invoice_price_placeholder">$#.##</string>
-    <string name="cart_invoice_ship_to">Ship To:</string>
-    <string name="cart_invoice_pay_with">Pay With:</string>
-    <string name="cart_invoice_view_details">View Details</string>
-    <string name="empty_str"></string>
-    
-    <!-- Admin -->
-    <string name="admin_title">Administrator Options</string>
-    
-    <!-- Selling -->
-    <string name="selling_dialog_title">Product Option</string>
-    <string name="add">Add</string>
-    
-    <string name="bids_title">Bids</string>
-    <string name="no_bids">No Bids Found</string>
-    <string name="cart_dialog_title">Product Options</string>
-    <string name="change">Change</string>
-    <string name="cart_change_quantity_dialog_title">Change Product Quantity</string>
-    <string name="cart_change_quantity">Quantity:</string>
 </resources>

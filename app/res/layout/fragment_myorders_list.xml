@@ -8,15 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/orders_title" 
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:textSize="25sp"
+        android:textStyle="bold|italic"
         android:padding="10dp"/>
 
     <ListView
         android:id="@+id/orders_lv"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content" >
     </ListView>
 
     <GridLayout

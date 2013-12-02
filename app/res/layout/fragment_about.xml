@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
-         <ImageView
-        android:contentDescription="@string/about_logo_description"
+
+    <ImageView
+        android:contentDescription="@string/about_description"
         android:id="@+id/imageView1"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/icon_about" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/logo_about" />
 
- 
-
-</LinearLayout>
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="67dp"
+        android:textSize="45sp"
+        android:text="@string/mod_names"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+</RelativeLayout>

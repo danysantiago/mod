@@ -9,16 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/listbuy_bidding" 
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:textSize="25sp"
+        android:textStyle="bold|italic"
         android:padding="10dp"/>
 
     <ListView
         android:id="@+id/buy_bidding_lv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:visibility="gone"
-        android:layout_weight="5" >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
     </ListView>
 
     <GridLayout
@@ -58,45 +57,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/listbuy_nwin" 
-       android:textSize="15sp"
-        android:textStyle="bold"
+       android:textSize="25sp"
+        android:textStyle="bold|italic"
         android:padding="10dp"/>
 
     <ListView
         android:id="@+id/buy_nwin_lv"
-       android:layout_height="0dp"
-       android:visibility="gone"
-       android:layout_weight="5"
-        android:layout_width="match_parent" >
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
     </ListView>
-	<GridLayout
-	        android:id="@+id/buy_nwin_loader"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="6dp"
-			android:layout_marginRight="6dp"
-			android:layout_marginTop="4dp"
-			android:layout_marginBottom="4dp"
-			android:background="@drawable/bg_card"
-	        android:columnCount="2" >
-	
-	        <TextView
-	            android:id="@+id/buy_nwin_load_tv"
-	            android:layout_column="0"
-	            android:paddingLeft="15dp"
-	            android:paddingTop="10dp"
-	            android:paddingBottom="10dp"
-	            android:layout_gravity="left|center_vertical"
-	            android:text="@string/listbuysell_load" />
-	
-	        <ProgressBar
-	            android:paddingRight="15dp"
-	            android:paddingTop="10dp"
-	            android:paddingBottom="10dp"
-	            android:id="@+id/buy_nwin_pb"
-	            android:layout_column="1"
-	            android:layout_gravity="right|top"
-	             />
+
+    <GridLayout
+        android:id="@+id/buy_nwin_loader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
+        android:columnCount="2" >
+
+        <TextView
+            android:id="@+id/buy_nwin_load_tv"
+            android:layout_column="0"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/listbuysell_load" />
+
+        <ProgressBar
+            android:paddingRight="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/buy_nwin_pb"
+            android:layout_column="1"
+            android:layout_gravity="right|top"
+             />
 
     </GridLayout>
     
