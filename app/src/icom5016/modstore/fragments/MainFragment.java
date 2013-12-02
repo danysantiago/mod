@@ -14,7 +14,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainFragment extends Fragment implements View.OnClickListener{
+	
+	private static final long HOT_REFRESH_TIME = 1000*60*60*24; //24 Hours
 	
 	private MainActivity ma;
 	private LinearLayout btnSearch;
@@ -57,7 +61,13 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 		
 		pd.setMessage(getResources().getString(R.string.pd_mactivity));
 		pd.show();
-		this.doHttpWhatHot();
+		
+		try {
+			this.doHttpWhatHot();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return view;
 	}
@@ -79,38 +89,53 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 		}
 	}
 	
-	private void doHttpWhatHot() {
-		Bundle params = new Bundle();
-		params.putString("method", "GET");
-		params.putString("url", Server.Products.GETWHATHOT);	
+	private void doHttpWhatHot() throws JSONException {
 		
-		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+		final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		JSONObject hotJSONPrefs = new JSONObject(prefs.getString("hot", "{\"updated\":0}"));
+		
+		if(System.currentTimeMillis() - hotJSONPrefs.getLong("updated") > HOT_REFRESH_TIME) {
+			Bundle params = new Bundle();
+			params.putString("method", "GET");
+			params.putString("url", Server.Products.GETWHATHOT);	
+			
+			HttpRequest request = new HttpRequest(params, new HttpCallback() {
 
-			@Override
-			public void onSucess(JSONObject json) {
-				try {
-					JSONArray list = json.getJSONArray("results");
-					lvWhatHot.setAdapter(new WhatsHotAdapter(ma, list));
-					lvWhatHot.setOnItemClickListener(new ProductListingListener(ma));
+				@Override
+				public void onSucess(JSONObject json) {
+					try {
+						JSONArray list = json.getJSONArray("results");
+						lvWhatHot.setAdapter(new WhatsHotAdapter(ma, list));
+						lvWhatHot.setOnItemClickListener(new ProductListingListener(ma));
 					
+						json.put("updated", System.currentTimeMillis());
+						prefs.edit().putString("hot", json.toString()).commit();
+						
+					} catch (JSONException e) {
+						Toast.makeText(ma, R.string.errmsg_bad_json , Toast.LENGTH_SHORT).show();
+					}
 					
-				} catch (JSONException e) {
-					Toast.makeText(ma, R.string.errmsg_bad_json , Toast.LENGTH_SHORT).show();
+				}
+
+				@Override
+				public void onFailed() {
+					Toast.makeText(ma, R.string.errmsg_no_connection, Toast.LENGTH_SHORT).show();
 				}
 				
-			}
+				@Override
+				public void onDone() {
+					pd.dismiss();
+				}
+			});
+			request.execute();			
+		} else {
+			lvWhatHot.setAdapter(new WhatsHotAdapter(ma, hotJSONPrefs.getJSONArray("results")));
+			lvWhatHot.setOnItemClickListener(new ProductListingListener(ma));
+			pd.dismiss();
+		}
+		
+		
 
-			@Override
-			public void onFailed() {
-				Toast.makeText(ma, R.string.errmsg_no_connection, Toast.LENGTH_SHORT).show();
-			}
-			
-			@Override
-			public void onDone() {
-				pd.dismiss();
-			}
-		});
-		request.execute();
 	}
 
 }

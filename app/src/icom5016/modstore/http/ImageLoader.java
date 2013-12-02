@@ -124,8 +124,9 @@ public class ImageLoader {
 
 		@Override
 		protected void onPostExecute(Void result) {
-			if(bitmap != null)
+			if(bitmap != null) {
 				imageView.setImageBitmap(bitmap);
+			}
 		}
 
 	}

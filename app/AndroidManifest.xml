@@ -15,7 +15,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Modstoreactionbar" >
+        android:theme="@style/Theme.Modstoreactionbar" android:largeHeap="true">
         <activity
             android:name="icom5016.modstore.activities.MainActivity"
             android:screenOrientation="portrait"
