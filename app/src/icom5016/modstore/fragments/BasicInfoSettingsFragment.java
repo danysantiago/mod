@@ -1,10 +1,10 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.adapter.SettingListAdapter;
 import icom5016.modstore.models.SettingRow;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.DataFetchFactory;
-import icom5016.modstore.uielements.SettingListAdapter;
 
 import java.util.ArrayList;
 

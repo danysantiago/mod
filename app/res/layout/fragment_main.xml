@@ -4,52 +4,96 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/lblProductEndingOn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Most Popular"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/txtProductEndingOn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Recently Viewed"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/mainWelcomeTv"
+       	android:paddingLeft="10dp"
+	    android:paddingTop="4dp"
+	    android:paddingBottom="4dp"
+	    android:textSize="15sp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textStyle="bold|italic"
+        android:text="@string/mainfrag_welcome" />
 
     <LinearLayout
+        android:baselineAligned="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_height="wrap_content" >
 
-        <ListView
-            android:id="@+id/listView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:divider="@null"
-            android:dividerHeight="5dp" >
-        </ListView>
+        <LinearLayout
+            android:id="@+id/mfShopByDept"
+            android:layout_marginLeft="6dp"
+			android:layout_marginRight="6dp"
+			android:layout_marginTop="4dp"
+			android:layout_marginBottom="4dp"
+			android:background="@drawable/bg_card"
+			android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:layout_height="match_parent" >
 
-        <ListView
-            android:id="@+id/listView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:divider="@null"
-            android:dividerHeight="5dp" >
-        </ListView>
+            <TextView
+                android:gravity="left|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mainfrag_sbd" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mfSearch"
+            android:layout_marginLeft="6dp"
+			android:layout_marginRight="6dp"
+			android:layout_marginTop="4dp"
+			android:layout_marginBottom="4dp"
+			android:background="@drawable/bg_card"
+			android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:contentDescription="@string/mainfrag_search"
+                android:layout_height="20dp"
+                android:layout_width="20dp"
+                android:src="@drawable/btn_search" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mainfrag_search" />
+
+        </LinearLayout>
+        
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/whatsHotTv"
+       	android:paddingLeft="10dp"
+	    android:paddingTop="4dp"
+	    android:paddingBottom="4dp"
+	    android:textSize="15sp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textStyle="bold|italic"
+        android:text="@string/mainfrag_whathot" />
+
+    <ListView
+        android:id="@+id/mfWhatHoyLv"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>

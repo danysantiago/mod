@@ -1,14 +1,14 @@
 package icom5016.modstore.fragments;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.adapter.CreditCardAdapter;
+import icom5016.modstore.dialog.CreditCardDialog;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.CreditCard;
 import icom5016.modstore.models.User;
 import icom5016.modstore.resources.DataFetchFactory;
-import icom5016.modstore.uielements.CreditCardAdapter;
-import icom5016.modstore.uielements.CreditCardDialog;
 
 import org.json.JSONObject;
 

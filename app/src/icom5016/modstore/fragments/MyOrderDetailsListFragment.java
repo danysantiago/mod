@@ -1,24 +1,20 @@
 package icom5016.modstore.fragments;
 
-import icom5016.modstore.activities.MainInterfaceActivity;
-import icom5016.modstore.activities.ProductViewerActivity;
+import icom5016.modstore.activities.MainActivity;
 import icom5016.modstore.activities.R;
-import icom5016.modstore.adapters.OrderDetailsListAdapter;
+import icom5016.modstore.adapter.OrderDetailsListAdapter;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.CreditCard;
-import icom5016.modstore.models.OrderDetail;
 import icom5016.modstore.models.Orders;
-import icom5016.modstore.models.Product;
 import icom5016.modstore.resources.ConstantClass;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +45,7 @@ public class MyOrderDetailsListFragment extends Fragment {
 	
 	private ListView lvDetails;
 	
-	private MainInterfaceActivity mainActivity;
+	private MainActivity mainActivity;
 	
 	
 	@Override
@@ -78,7 +74,7 @@ public class MyOrderDetailsListFragment extends Fragment {
 		this.lvDetails = (ListView) view.findViewById(R.id.odListView);
 		
 		
-		this.mainActivity = (MainInterfaceActivity) this.getActivity();
+		this.mainActivity = (MainActivity) this.getActivity();
 		
 		doHttpOrderDetails();
 		
@@ -115,14 +111,14 @@ public class MyOrderDetailsListFragment extends Fragment {
 
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View v, int pos, long id) {
-							OrderDetail orderDetail = (OrderDetail) lvDetails.getAdapter().getItem(pos);
-							Intent productActivity = new Intent(mainActivity, ProductViewerActivity.class);
-							
-							Bundle bundle = new Bundle();
-							bundle.putInt(ConstantClass.PRODUCT_KEY, orderDetail.getProductId());
-							productActivity.putExtras(bundle);
-							startActivity(productActivity);
-							
+//							OrderDetail orderDetail = (OrderDetail) lvDetails.getAdapter().getItem(pos);
+//							//Intent productActivity = new Intent(mainActivity, ProductViewerActivity.class);
+//							
+//							Bundle bundle = new Bundle();
+//							bundle.putInt(ConstantClass.PRODUCT_KEY, orderDetail.getProductId());
+//							productActivity.putExtras(bundle);
+//							startActivity(productActivity);
+//							
 						}
 						
 					});
