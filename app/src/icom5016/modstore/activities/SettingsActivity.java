@@ -11,6 +11,7 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -18,7 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class SettingsActivity extends MainInterfaceActivity implements
+public class SettingsActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
 	/**
@@ -39,13 +40,14 @@ public class SettingsActivity extends MainInterfaceActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_my_orders);
+		setContentView(R.layout.activity_myaccount);
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		// Show the Up button in the action bar.
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle(R.string.title_myacc);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.

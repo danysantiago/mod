@@ -1,203 +1,391 @@
 package icom5016.modstore.activities;
 
+import icom5016.modstore.adapter.MainListAdapter;
+import icom5016.modstore.fragments.AboutFragment;
+import icom5016.modstore.fragments.AdminFragment;
+import icom5016.modstore.fragments.CartFragment;
+import icom5016.modstore.fragments.CategoryListFragment;
+import icom5016.modstore.fragments.LogInFragment;
 import icom5016.modstore.fragments.MainFragment;
-import icom5016.modstore.fragments.MyItemsFragment;
-import icom5016.modstore.fragments.ProductListFragment;
+import icom5016.modstore.fragments.MyStoreFragment;
+import icom5016.modstore.fragments.RegisterFragment;
+import icom5016.modstore.fragments.SearchFragment;
+import icom5016.modstore.fragments.SellProductFragment;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
+import icom5016.modstore.http.Server;
 import icom5016.modstore.models.Category;
+import icom5016.modstore.models.User;
 import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.ConstantClass;
+import icom5016.modstore.resources.DataFetchFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
-import android.content.res.Configuration;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.View;
+import android.widget.Toast;
 
-/*
- *  SuperClass which controls Main Activity Lunch
- */
+public class MainActivity extends FragmentActivity implements
+		ActionBar.OnNavigationListener {
 
-
-public class MainActivity extends MainInterfaceActivity {
-
-	private ActionBarDrawerToggle mainDrawerToggle;
+	/**
+	 * The serialization (saved instance state) Bundle key representing the
+	 * current dropdown position.
+	 */
+	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+	
+	/*User */
+	private User activeUser = null;
+	
+	//Fragment Stack
+	public Stack<Fragment> fragmentStack;
+	
+	//Progress Dialog
+	public ProgressDialog processDialog;
+	
+	//Self Ref
+	private MainActivity thisActivity;
 	
 	
-	
-					/* Set Ups */
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		
-		//Get ActionBar
-		final ActionBar ActionBarVar = this.getActionBar();
-		
-						/* Make Drawer Toggleble from Action Bar */
-		//Enables ActionBar Logo to behave like drawer button
-		ActionBarVar.setDisplayHomeAsUpEnabled(true);
-		ActionBarVar.setHomeButtonEnabled(true);
-		
-		//Make Logo Buttons Drawer Toggle
-		this.mainDrawerToggle = new ActionBarDrawerToggle(
-				this,
-				this.mainDrawerLayout,
-				R.drawable.navigation_drawer,
-				R.string.drawer_open_desc,
-				R.string.drawer_close_desc
-				){
-			public void onDrawerClosed(View view) {
-				ActionBarVar.setTitle(R.string.app_name);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
+		setContentView(R.layout.activity_main);
 
-            public void onDrawerOpened(View drawerView) {
-            	ActionBarVar.setTitle("Hello Guest");
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-		};
-		 
+		// Set up the action bar to show a dropdown list.
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		
-		 this.mainDrawerLayout.setDrawerListener(this.mainDrawerToggle);
-		 
-		 
-		 			/*  Generates Initial Fragment  */
-		 Bundle bundle = this.getIntent().getExtras();
-		 
-		 if(bundle != null){
-			 
-			 //This only Works if Bundle is Loaded
-			 int mainActivityCase = bundle.getInt(ConstantClass.MAINACTIVITY_FRAGMENT_KEY);
-			 
-			 //Load Fragment Base on Bundle
-			 switch(mainActivityCase){
-			 case ConstantClass.MAINACTIVITY_FRAGMENT_MY_ITEMS:
-				//Case: My Items
-				 this.fragmentStack.push(new MyItemsFragment());
-			    AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-				break;
-			 default:
-				 //Case: Default Main View
-				 this.fragmentStack.push(new MainFragment());
-			     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-				 break;
-			 }
-		 }
-		 else{
-			
-//			 this.fragmentStack.push(new MainFragment());
-//		     AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-		 }
-		 
-		 //Load Categories 
-		 this.loadAllCategories();
-		 
-		 
+		this.fragmentStack = new Stack<Fragment>();
+		
+		//Load Main Fragment fragment
+		this.loadFragmentInMainActivityStack(getContainerId(), new MainFragment());
+		processDialog = new ProgressDialog(this);
+		this.thisActivity = this;
+		loadAllCategories();
+		
 	}
 	
-						/* Menu Related Methods */
 
-						/*	Listeners */
+	
+	public User getActiveUser() {
+		return activeUser;
+	}
+
+
+	public void setActiveUser(User activeUser) {
+		this.activeUser = activeUser;
+	}
+
+
 	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+	protected void onResume() {
+		super.onResume();
+		//No Verification needed beacuse user can be NULL
+		final ActionBar actionBar = this.getActionBar();
+		this.reloadActionBarAndUser(actionBar);
 		
-         // The action bar home/up action should open or close the drawer.
-         // ActionBarDrawerToggle will take care of this.
-        if (this.mainDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        
-        switch( item.getItemId() )
-        {
-        //Category Listener
-        case R.string.id_btn_maincategory:
-        	this.loadSpecificCategoryFragment(item);
-        	break;
-        }
-        
-        //Note: Super must be call
-        return super.onOptionsItemSelected(item);
+	}
+	
+	public Category loadCategoryById(int id){
+		List<Category> allCategories = this.loadCategoriesById(ConstantClass.CategoriesFile.ALL_CATEGORIES);
+		
+		for(Category e: allCategories){
+			if(e.getId() == id)
+				return e;
+		}
+		
+		return new Category(-3, -3, "Not Found");
+	}
+	
+	//Load Categories
+	public List<Category> loadCategoriesById(int parentId) { 		
+		SharedPreferences spf = this.getSharedPreferences(ConstantClass.CATEGORIES_FILE, Context.MODE_PRIVATE);
+		
+		List<Category> result = new ArrayList<Category>();
+		
+		if(!spf.getBoolean(ConstantClass.CategoriesFile.LOAD_BOOLEAN_KEY, false)){
+			Toast.makeText(this, R.string.errmsg_cat_notloaded, Toast.LENGTH_SHORT).show();
+			return result;
+		}
+		
+		List<Category> categories = new ArrayList<Category>();
+		String strJson = spf.getString(ConstantClass.CategoriesFile.ALL_CAT_JSON_KEY, "ERRORKey");
+		if(strJson != null && !strJson.equals("ERRORKey")){
+			try {
+				JSONObject jsonCat = new JSONObject(strJson);
+				JSONArray array = jsonCat.getJSONArray("categories");
+				for(int i=0; i<array.length(); i++)
+					categories.add(new Category(array.getJSONObject(i)));
+			} catch (JSONException e) {
+				Toast.makeText(this, R.string.errmsg_bad_json, Toast.LENGTH_SHORT).show();
+			}
+		}
+		
+		
+		if(parentId == ConstantClass.CategoriesFile.ALL_CATEGORIES)
+			return categories;
+		
+		for(Category e: categories){
+			if(e.getParentId() == parentId){
+				result.add(e);
+			}
+		}
+		
+		return result;
+	}
+	
+	
+	
+	
+	public void loadAllCategories(){
+		processDialog.setMessage(this.getResources().getText(R.string.pd_mactivity));
+		processDialog.show();
+		getAllCategoriesFromHTTP();
+	}
+	
+	
+	private void getAllCategoriesFromHTTP() {
+
+		//Perform http request
+		Bundle params = new Bundle();
+		params.putString("method", "GET");
+		params.putString("url", Server.Categories.GETALL); //Get All Category
+		
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+
+			@Override
+			public void onSucess(JSONObject json) {
+				//Also add to editor;
+				Editor catFileEditor = getSharedPreferences(ConstantClass.CATEGORIES_FILE, Context.MODE_PRIVATE).edit();
+			
+				catFileEditor.putString(ConstantClass.CategoriesFile.ALL_CAT_JSON_KEY, json.toString());
+				catFileEditor.putBoolean(ConstantClass.CategoriesFile.LOAD_BOOLEAN_KEY, true);
+				catFileEditor.commit();
+				
+				processDialog.dismiss();
+					
+			}
+
+			@Override
+			public void onFailed() {
+				Toast.makeText(thisActivity, R.string.errmsg_no_connection, Toast.LENGTH_SHORT).show();
+			}
+			
+			@Override
+			public void onDone(){
+				//Regardless Dimsiss Progress Dialog
+				processDialog.dismiss();
+			}
+			
+		});
+		request.execute();
 	}
 
-
-    //Load Specific Category Fragment 
-  	private void loadSpecificCategoryFragment(MenuItem item) {
-  		
-  		//Check if not Working
-  		if(this.mainCategoriesList.size() <= 0)
-  			return;
-  		
-  		//Iterate to Confirm selection
-  		Category selectedCategory = null;
-  		for(Category e: this.mainCategoriesList){
-  			if(e.getName().equals(item.getTitle())){
-  				selectedCategory = e;
-  				break;
-  			}
-  		}
-  		Bundle bundle = new Bundle();
-  		bundle.putInt(ConstantClass.PRODUCT_LIST_CATEGORY_KEY, selectedCategory.getId());
-  		ProductListFragment fragment= new ProductListFragment();
-  		fragment.setArguments(bundle);
-  		this.fragmentStack.push(fragment);
-  		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), MainInterfaceActivity.getContentFragmentId());
-  		
-  	}
+	
+	public void reloadActionBarAndUser(ActionBar actionBar){
+				//Load Current User
+				loadActiveUser();
+				//No Verification needed beacuse user can be NULL
+				actionBar.setTitle(R.string.app_name);
+				MainListAdapter mla = new MainListAdapter(actionBar.getThemedContext(), activeUser);
+				actionBar.setListNavigationCallbacks(mla, this);
+	}
 	
 	
-					/* All Related to Drawer Opening Methods */
-	 @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        this.mainDrawerToggle.syncState();
-    }
+	protected void loadActiveUser(){
+		this.activeUser = DataFetchFactory.getUserFromSPref(this);
+	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
-        this.mainDrawerToggle.onConfigurationChanged(newConfig);
+	
+	//Action Listener
+	@Override 
+	public boolean onNavigationItemSelected(int position, long id) {
+
+		if(this.activeUser == null)
+    	{
+    		return this.guestDrawerListener(position);
+    	}
+    	else{
+    		return this.userDrawerListener(position);
+    	}
+	}
+	
+		/*Listener for Drawers */
+    
+    //Guest Drawer
+    private boolean guestDrawerListener(int position){
+    	switch(position){
+    	case 0:
+    		this.loadFragmentInMainActivityStack(getContainerId(), new MainFragment());
+    		break;
+    	case 1:
+    		//Shop By Category
+    		CategoryListFragment clf = new CategoryListFragment();
+    		Bundle bnd = new Bundle();
+    		bnd.putInt(ConstantClass.CATEGORY_LIST_PARENT_KEY, -1);
+    		clf.setArguments(bnd);
+    		this.loadFragmentInMainActivityStack(getContainerId(), clf);
+    		break;
+    	case 2:
+    		//About Fragment
+    		this.loadFragmentInMainActivityStack(getContainerId(), new AboutFragment());
+    		break;
+    	case 3:
+    		//Login Fragment
+    		this.loadFragmentInMainActivityStack(getContainerId(), new LogInFragment());
+    		break;
+    	case 4:
+    		//Register Fragment
+    		this.loadFragmentInMainActivityStack(getContainerId(), new RegisterFragment());
+    		break;
+    	}
+    	return true;
     }
     
-    protected boolean areMainCategoriesListLoaded(){
-		return this.mainCategoriesList.size() <= 0;
-	}
-    protected void updateSubMenuCategories(Menu menu){
-		SubMenu categoriesMenu = (SubMenu) menu.findItem(R.id.item_categories).getSubMenu();
-		for(Category e : this.mainCategoriesList)
-		{
-			categoriesMenu.add(R.id.item_categories, R.string.id_btn_maincategory , Menu.NONE, e.getName());
+    //User Drawer
+    private boolean userDrawerListener(int position){
+    	Bundle bundle = new Bundle();
+    	switch(position){
+    	case 0:
+    		this.loadFragmentInMainActivityStack(getContainerId(), new MainFragment());
+    		break;
+    	case 1:
+    		//Shop By Category
+    		CategoryListFragment clf = new CategoryListFragment();
+    		Bundle bnd = new Bundle();
+    		bnd.putInt(ConstantClass.CATEGORY_LIST_PARENT_KEY, -1);
+    		clf.setArguments(bnd);
+    		this.loadFragmentInMainActivityStack(getContainerId(), clf);
+    		break;
+    	case 2:
+    		//MyStore
+    		this.loadFragmentInMainActivityStack(getContainerId(), new MyStoreFragment());
+    		break;
+    	case 3:
+    		//SellItem
+    		SellProductFragment spf = new SellProductFragment();
+    		this.loadFragmentInMainActivityStack(getContainerId(), spf);
+    		break;
+    	case 4:
+    		//MyAccount
+    		bundle.putInt(ConstantClass.USER_GUID_KEY, this.activeUser.getGuid());
+    		Intent myacc = new Intent(this, SettingsActivity.class);
+    		myacc.putExtras(bundle);
+    		this.startActivity(myacc);
+    		break;
+    	case 5:
+    		//About Fragment
+    		this.loadFragmentInMainActivityStack(getContainerId(), new AboutFragment());
+    		break;
+    	case 6:
+    		//Log-Out (refresh)
+    		
+    		//Destroy Preferences
+    		SharedPreferences preferences = getSharedPreferences(ConstantClass.USER_FILE, Context.MODE_PRIVATE);
+    		preferences.edit().clear().commit();
+    		//Refresh MainActivity
+    		if(this instanceof MainActivity ){
+    			this.finish();
+        		this.startActivity(this.getIntent());
+    		}
+    		
+    		break;
+    	case 7:
+    		//Admin Menu
+    		this.loadFragmentInMainActivityStack(MainActivity.getContainerId(), new AdminFragment());
+    		break;
+    	}
+    	return true;
+    }
+	
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		// Restore the previously serialized current dropdown position.
+		if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
+			getActionBar().setSelectedNavigationItem(
+					savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
 		}
 	}
 
- 
-    @Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-    	final ActionBar ActionBarVar = this.getActionBar();
-    	boolean drawerOpen = this.mainDrawerLayout.isDrawerOpen(this.mainDrawerList);
-    	if(drawerOpen){
-    		if(this.activeUser == null){
-    			ActionBarVar.setTitle("Hello Guest");
-    		}
-    		else{
-    			ActionBarVar.setTitle("Hello "+this.activeUser.getFirstName());
-    		}
-    	}
-    	
-    	//Removes Options based on Drawer Status
-        menu.findItem(R.id.item_categories).setVisible(!drawerOpen);
-        menu.findItem(R.id.btn_cart).setVisible(!drawerOpen);
-        menu.findItem(R.id.btn_search).setVisible(!drawerOpen);
-        
-        //Make sure it loads
-        if(!this.areMainCategoriesListLoaded())
-			this.updateSubMenuCategories(menu);
-    	
-    	return super.onPrepareOptionsMenu(menu);
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		// Serialize the current dropdown position.
+		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
+				.getSelectedNavigationIndex());
+	}
+	
+	
+		/* Navigation Methods */
+	@Override
+	public void onBackPressed() {
+	
+		//Normal Back if no other Fragment is Use
+		if(this.fragmentStack.size() <= 1){
+		super.onBackPressed();
+		}
+		else{
+		this.fragmentStack.pop();
+		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), R.id.container);
+		}		
+	}
+		
+	public static int getContainerId(){
+		return R.id.container;
+	}
+	
+	public void loadFragmentInMainActivityStack(int id, Fragment fragment){
+		FragmentManager fm = this.getSupportFragmentManager();
+		this.fragmentStack.push(fragment);
+		fm.beginTransaction().replace(MainActivity.getContainerId(), this.fragmentStack.peek()).commit();
+	}
+	
+	/* Listner */
+	public void cartBtnListener(MenuItem item){
+		//Check if log-in
+		if(this.activeUser == null){
+			Toast.makeText(this, R.string.error_cart, Toast.LENGTH_SHORT).show();
+			this.loadFragmentInMainActivityStack(getContainerId(), new LogInFragment());
+			return;
+		}else{
+			this.loadFragmentInMainActivityStack(getContainerId(), new CartFragment());
+		}
+	}
+	
+	public void searchBtnListener(MenuItem item){
+		this.loadFragmentInMainActivityStack(getContainerId(), new SearchFragment());
 		
 	}
+	
+	
 
 }

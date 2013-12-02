@@ -65,7 +65,7 @@ public class CreditCard {
 	// Product, Order, Details, Credit Card
 	public String getExpirationDateFormated(){
 		//TODO: Format
-		return this.expire;
+		return AndroidResourceFactory.dateToString(AndroidResourceFactory.ISODateToDate(this.expire));
 	}
 	
 	public String getCreatedTs() {

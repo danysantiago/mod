@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+   
+     <TextView
+         android:id="@+id/whrow_index"
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="1"
+         android:gravity="center"
+         android:text="@string/whrow_index"
+         android:textSize="15sp"
+         android:textStyle="bold" />
+     
+    <FrameLayout 
+     android:layout_height="fill_parent"
+     android:layout_width="0dp"
+     android:layout_weight="1">
+	        <ImageView
+		        android:id="@+id/whrow_image"
+		        android:contentDescription="@string/listbuysellrow_img_desc"
+		        android:layout_width="25dp"
+		        android:layout_height="25dp"
+		        android:layout_gravity="center"
+		        android:src="@drawable/no_image" />
+	    </FrameLayout>
+    
+     <TextView
+         android:id="@+id/whrow_title"
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="7"
+         android:gravity="left|center_vertical"
+         android:lines="3"
+         android:text="@string/listbuysellrow_title"
+         android:textSize="15sp"
+         android:textStyle="bold" />
+
+      
+</LinearLayout>

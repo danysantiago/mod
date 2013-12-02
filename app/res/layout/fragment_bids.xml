@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+	<!-- Orders -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bids_title" 
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:padding="10dp"/>
+
+    <ListView
+        android:id="@+id/bidsLv"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
+
+    <GridLayout
+        android:id="@+id/bidsLoader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
+        android:columnCount="2" >
+
+        <TextView
+            android:id="@+id/bids_load_tv"
+            android:layout_column="0"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/listbuysell_load" />
+
+        <ProgressBar
+            android:paddingRight="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/bids_pb"
+            android:layout_column="1"
+            android:layout_gravity="right|top"
+             />
+
+    </GridLayout>
+</LinearLayout>

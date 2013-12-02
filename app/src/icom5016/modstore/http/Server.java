@@ -6,6 +6,8 @@ public class Server {
 
 	public static class User {
 		public static final String LOGIN = BASE_URL+"/login";
+		public static final String GETCART = BASE_URL+"/cart";
+		public static final String GETRATING = BASE_URL+"/rating";
 	}
 	public static class Products {
 	  public static final String GET = BASE_URL+"/products/";
@@ -13,6 +15,7 @@ public class Server {
 	  public static final String GETSEARCH = BASE_URL+"/products/search/";
 	  public static final String GETBIDDING = BASE_URL+"/products/bidding/";
 	  public static final String GETSELLING = BASE_URL+"/products/selling/";
+	  public static final String GETWHATHOT = BASE_URL+"/products/whatshot";
 	}
 	
 	public static class Categories {
@@ -37,6 +40,7 @@ public class Server {
 	public static class Orders{
 		public static final String GETORDERS = BASE_URL+"/orders/";
 		public static final String GETORDERDETAILS = BASE_URL+"/orders/details/";
+		public static final String GETBIDS = BASE_URL+"/bids";
 	}
 	
 	public static class Images {

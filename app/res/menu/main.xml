@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+   <!-- Cart Button -->
+    <item android:id="@+id/btn_cart" 
+        android:showAsAction="always" 
+        android:orderInCategory="1000" 
+        android:title="@string/btn_cart_desc"
+        android:onClick="cartBtnListener"
+        android:icon="@drawable/btn_cart">
+    </item>
+    
+    <!-- Search Button -->
+    <item android:id="@+id/btn_search" 
+        android:showAsAction="always" 
+        android:orderInCategory="600" 
+        android:onClick="searchBtnListener"
+        android:title="@string/btn_search_desc"
+        android:icon="@drawable/btn_search">
+    </item>
+
+</menu>

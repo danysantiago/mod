@@ -16,7 +16,7 @@ public class ForgotActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		this.setContentView(R.layout.activity_forgot_layout);
+		this.setContentView(R.layout.activity_forgot);
 		
 		final ActionBar ActionBarVar = this.getActionBar();
 		//Set title
