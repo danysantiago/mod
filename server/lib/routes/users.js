@@ -43,7 +43,7 @@ routes.get("/users", function (req, res, next) {
       return next(err);
     }
     
-    res.send(200, result);
+    res.send(200, {"result": result});
   });
 });
 

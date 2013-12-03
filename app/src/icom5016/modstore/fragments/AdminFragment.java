@@ -49,6 +49,8 @@ public class AdminFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View v, int pos, long id) {
 				switch (pos) {
+				case 0:
+					ma.loadFragmentInMainActivityStack(ma.getContainerId(), new UsersListFragment());
 				case 1:
 					showSalesByTimeDialog();
 					break;

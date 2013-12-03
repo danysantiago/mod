@@ -349,14 +349,13 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onBackPressed() {
 	
-		//Normal Back if no other Fragment is Use
-		if(this.fragmentStack.size() <= 1){
-		super.onBackPressed();
-		}
-		else{
-		this.fragmentStack.pop();
-		AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), R.id.container);
-		}		
+		// Normal Back if no other Fragment is Use
+		if (this.fragmentStack.size() <= 1) {
+			super.onBackPressed();
+		} else {
+			this.fragmentStack.pop();
+			AndroidResourceFactory.setNewFragment(this, this.fragmentStack.peek(), R.id.container);
+		}	
 	}
 		
 	public static int getContainerId(){

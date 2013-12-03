@@ -8,6 +8,7 @@ public class Server {
 		public static final String LOGIN = BASE_URL+"/login";
 		public static final String GETCART = BASE_URL+"/cart";
 		public static final String GETRATING = BASE_URL+"/rating";
+		public static final String GETALL = BASE_URL+"/users";
 	}
 	public static class Products {
 	  public static final String GET = BASE_URL+"/products/";
