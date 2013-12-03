@@ -44,86 +44,90 @@ public class ImageLoader {
 	}
 
 	public void DisplayImage(String url, ImageView imageView, boolean cacheEnabled) {
-		// Try to get bitmap from cache
-		Bitmap bitmap = null;
-		if(cacheEnabled) {
-			bitmap = fileCache.get(url);
-		}
-		if (bitmap != null) {
-			//Load it if found
-			imageView.setImageBitmap(bitmap);
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			//For Gingerbread, sadly serial download only
+			(new ImageGet(url, imageView, cacheEnabled)).execute();
 		} else {
-			//If not, download it
-			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-				//For Gingerbread, sadly serial download only
-				(new ImageGet(url, imageView)).execute();
-			} else {
-				//For HONEYCOMB or up, we have multi-thread downloads =)
-				(new ImageGet(url, imageView)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			}
+			//For HONEYCOMB or up, we have multi-thread downloads =)
+			(new ImageGet(url, imageView, cacheEnabled)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}
 	}
 	
 	//ASyncTask that does the actual downloading and saving of file, if new
-	private class ImageGet extends AsyncTask<Void, Void, Void> {
+	private class ImageGet extends AsyncTask<Void, Void, Bitmap> {
 
 		private String url;
-		private Bitmap bitmap;
 		private ImageView imageView;
+		private boolean cacheEnabled;
 
-		public ImageGet(String url, ImageView imageView) {
+		public ImageGet(String url, ImageView imageView, boolean cacheEnabled) {
 			this.url = url;
 			this.imageView = imageView;
+			this.cacheEnabled = cacheEnabled;
 		}
 
 		@Override
-		protected Void doInBackground(Void... params) {
-
-			try {
-
-				HttpClient client = new DefaultHttpClient();
-				HttpGet get = new HttpGet(url);
-				HttpResponse response = client.execute(get);
-				
-				//Check http status
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode != HttpStatus.SC_OK) {
-					// Error, status code did not return 200
-					return null;
-				}
-
-				//Get bitmap entity
-				HttpEntity entity = response.getEntity();
-				if (entity != null) {
-					InputStream inputStream = null;
-					try {
-						inputStream = entity.getContent();
-						bitmap = BitmapFactory.decodeStream(inputStream);
-						
-						//Save bitmap in cache
-						String fileName = String.valueOf(url.hashCode());
-						FileOutputStream fout = new FileOutputStream(new File(fileCache.getCacheDir(), fileName));
-						bitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
-					} catch (IllegalStateException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
+		protected Bitmap doInBackground(Void... params) {
+			// Try to get bitmap from cache
+			Bitmap bitmap = null;
+			if(cacheEnabled) {
+				bitmap = fileCache.get(url);
+			}
+			
+			if (bitmap != null) {
+				//Load it if found
+				return bitmap;
+			} else {
+				//If not, download it
+				try {
+					
+					HttpClient client = new DefaultHttpClient();
+					HttpGet get = new HttpGet(url);
+					HttpResponse response = client.execute(get);
+					
+					//Check http status
+					int statusCode = response.getStatusLine().getStatusCode();
+					if (statusCode != HttpStatus.SC_OK) {
+						// Error, status code did not return 200
+						return null;
 					}
-				} else {
-					// Another error, no image was given by url get
+					
+					//Get bitmap entity
+					HttpEntity entity = response.getEntity();
+					if (entity != null) {
+						InputStream inputStream = null;
+						try {
+							inputStream = entity.getContent();
+							bitmap = BitmapFactory.decodeStream(inputStream);
+							
+							//Save bitmap in cache
+							String fileName = String.valueOf(url.hashCode());
+							FileOutputStream fout = new FileOutputStream(new File(fileCache.getCacheDir(), fileName));
+							bitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
+							
+							return bitmap;
+						} catch (IllegalStateException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} else {
+						// Another error, no image was given by url get
+						return null;
+					}
+					
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
 
 			return null;
 		}
 
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(Bitmap bitmap) {
 			if(bitmap != null) {
 				imageView.setImageBitmap(bitmap);
 			}
