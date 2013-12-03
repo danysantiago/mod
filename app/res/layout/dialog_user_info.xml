@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/usernameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:ems="10"
+        android:singleLine="true" >
+    </EditText>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:text="Username"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:ems="10"
+         android:singleLine="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:text="Email"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/firstnameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:ems="10"
+         android:singleLine="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:text="First Name"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/lastnameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:ems="10"
+         android:singleLine="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:text="Last Name"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:ems="10"
+        android:singleLine="true"
+        android:visibility="gone">
+
+    </EditText>
+
+    <TextView
+        android:id="@+id/passwordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:text="Password"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/passwordButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="5dp"
+        android:text="Change Password" />
+
+    <CheckBox
+        android:id="@+id/adminCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="5dp"
+        android:text="Is Administrator" />
+
+</LinearLayout>
