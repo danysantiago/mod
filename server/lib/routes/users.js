@@ -4,14 +4,15 @@ var config = require("../config.js"),
 
 var routes = express();
 
-routes.get("/users/:uid", function (req, res) {
+routes.get("/users/:uid", function (req, res, next) {
   query = req.db.format("SELECT * FROM user WHERE user_id = ?;", [req.params.uid]);
 
   console.log("MySQL QUERY: " + query);
 
   req.db.query(query, function(err, result) {
-    if (err)
-      throw err;
+    if (err) {
+      return next(err);
+    }
 
     if (result.length > 0) {
       user =  {
@@ -29,6 +30,20 @@ routes.get("/users/:uid", function (req, res) {
     } else {
       res.send(404);
     }
+  });
+});
+
+routes.get("/users", function (req, res, next) {
+  query = "SELECT * FROM user;";
+
+  console.log("MySQL QUERY: " + query);
+
+  req.db.query(query, function (err, result) {
+    if (err) {
+      return next(err);
+    }
+    
+    res.send(200, result);
   });
 });
 
