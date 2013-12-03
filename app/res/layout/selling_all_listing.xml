@@ -9,15 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/listsell_active" 
-        android:textSize="25sp"
-        android:textStyle="bold|italic"
+        android:textSize="15sp"
+        android:textStyle="bold"
         android:padding="10dp"/>
 
     <ListView
         android:id="@+id/sell_active_lv"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="0dp"
+        android:layout_weight="5" >
     </ListView>
 
     <GridLayout
@@ -56,15 +57,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/listsell_sold" 
-        android:textSize="25sp"
-        android:textStyle="bold|italic"
+        android:textSize="15sp"
+        android:textStyle="bold"
         android:padding="10dp"/>
 
     <ListView
         android:id="@+id/sell_sold_lv"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="0dp"
+        android:layout_weight="5" >
     </ListView>
 
     <GridLayout
@@ -104,15 +106,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/listsell_notsold" 
-        android:textSize="25sp"
-        android:textStyle="bold|italic"
+        android:textSize="15sp"
+        android:textStyle="bold"
         android:padding="10dp"/>
 
     <ListView
         android:id="@+id/sell_notsold_lv"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="0dp"
+        android:layout_weight="5" >
     </ListView>
 
     <GridLayout

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:paddingBottom="@dimen/activity_vertical_margin"
+   		android:paddingLeft="@dimen/activity_horizontal_margin"
+    	android:paddingRight="@dimen/activity_horizontal_margin"
+    	android:paddingTop="@dimen/activity_vertical_margin"
+	    android:orientation="vertical"
+	    android:layout_gravity="center"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@drawable/bg_card"
+	    android:layout_margin="4dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cart_checkout_title"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	    <TextView
+	        android:paddingTop="3dp"
+	        android:paddingBottom="3dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="15sp"
+	        android:textStyle="bold|italic"
+	        android:text="@string/cart_checkout_address"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	    <TextView
+	        android:id="@+id/noShippingError"
+	        android:visibility="gone"
+	        android:layout_width="wrap_content"
+	        android:textSize="25sp"
+	        android:layout_height="wrap_content"
+	        android:focusable="true"
+	        android:text="@string/cart_checkout_no_address"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+	
+	    <ProgressBar
+	        android:layout_gravity="center"
+	        android:id="@+id/shippingCartProgressBar"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+	
+	    <Spinner
+	        android:id="@+id/shippingCartSpinner"
+	        android:visibility="gone"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" />
+	
+	    <TextView
+	        android:paddingTop="3dp"
+	        android:paddingBottom="3dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="15sp"
+	        android:textStyle="bold|italic"
+	        android:text="@string/cart_checkout_payment"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+		<TextView
+	        android:id="@+id/noPaymentError"
+	        android:visibility="gone"
+	        android:layout_width="wrap_content"
+	        android:textSize="25sp"
+	        android:layout_height="wrap_content"
+	        android:text="@string/cart_checkout_no_payment"
+	        android:focusable="true"
+	        android:textAppearance="?android:attr/textAppearanceLarge" />
+	     <ProgressBar
+	        android:layout_gravity="center"
+	        android:id="@+id/paymentCartProgressBar"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+	    <Spinner
+	        android:id="@+id/paymentCartSpinner"
+	        android:visibility="gone"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" />
+
+	    <Button
+			android:layout_marginTop="30dp"
+	        android:id="@+id/cartCheckoutButton"
+			android:layout_gravity="center"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/cart_checkout_finish" />
+
+</LinearLayout>
+	  

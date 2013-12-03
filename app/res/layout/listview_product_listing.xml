@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginLeft="4dp"
+	android:layout_marginRight="4dp"
+	android:background="@drawable/bg_card"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+    <FrameLayout 
+     android:layout_height="fill_parent"
+     android:layout_width="0dp"
+     android:layout_weight="1">
+	        <ImageView
+		        android:id="@+id/prodrow_image"
+		        android:contentDescription="@string/listbuysellrow_img_desc"
+		        android:layout_width="50dp"
+		        android:layout_height="50dp"
+		       
+		        android:layout_gravity="center"
+		        android:src="@drawable/no_image" />
+	    </FrameLayout>
+     <TextView
+         android:id="@+id/prodrow_title"
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="2"
+         android:gravity="left|center_vertical"
+         android:lines="3"
+         android:text="@string/listbuysellrow_title"
+         android:textSize="15sp"
+         android:textStyle="bold" />
+
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_weight="2"
+          android:layout_height="fill_parent"
+          android:layout_gravity="left"
+          android:orientation="vertical"
+          android:padding="5dp" >
+	
+	        <TextView
+	            android:id="@+id/prodrow_price"
+	           	android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:paddingBottom="2dp"
+	            android:text="@string/listbuysellrow_price" />
+	
+	        <TextView
+	            android:id="@+id/prodrow_type"
+	            android:textStyle="bold"
+	            android:layout_width="wrap_content"
+	            android:paddingBottom="2dp"
+	            android:layout_height="wrap_content"
+	            android:text="@string/listbuysellrow_type" />
+	
+	        <TextView
+	            android:id="@+id/prodrow_date_tittle"
+	            android:textStyle="bold"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:paddingBottom="2dp"
+	            android:text="@string/listbuysellrow_date_title" />
+	        <TextView
+	            android:id="@+id/prodrow_date"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:paddingBottom="2dp"
+	            android:text="@string/listbuysellrow_date" />
+	
+	    </LinearLayout>
+
+</LinearLayout>

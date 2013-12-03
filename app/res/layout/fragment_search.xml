@@ -1,23 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/placehoder_search"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:contentDescription="@string/placeholder_search_desc"
-        android:src="@drawable/placeholder_search_black" />
-	<ListView
-            android:id="@+id/listview_search_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp" >
-        </ListView>
-    
-</RelativeLayout>
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </SearchView>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+		<LinearLayout 
+		    android:layout_marginLeft="6dp"
+			android:layout_marginRight="6dp"
+			android:layout_marginTop="4dp"
+			android:layout_marginBottom="4dp"
+			android:background="@drawable/bg_card"
+		    android:id="@+id/LinearLayout1"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:focusable="true"
+		    android:focusableInTouchMode="true"
+		    android:orientation="vertical" >
+		
+		    <!-- Sort -->
+		
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left|top"
+		        android:layout_marginLeft="5dp"
+		        android:text="@string/search_filter_sort"
+		        android:textSize="20sp"
+		        android:textStyle="bold" />
+		
+		    <Space
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="fill" />
+		
+		    <Spinner
+		        android:id="@+id/filterSortSpinner"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left|top"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginRight="10dp" />
+		
+		    <!-- Category -->
+		
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left|top"
+		        android:layout_marginLeft="5dp"
+		        android:layout_marginTop="5dp"
+		        android:text="@string/search_filter_categories"
+		        android:textSize="20sp"
+		        android:textStyle="bold" />
+		
+		    <Space
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="fill" />
+		
+		    <Spinner
+		        android:id="@+id/filterCategorySpinner"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left|top"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginRight="10dp" />
+		
+		    <!-- Rating -->
+		
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left|top"
+		        android:layout_marginLeft="5dp"
+		        android:layout_marginTop="5dp"
+		        android:text="@string/search_filter_rating"
+		        android:textSize="20sp"
+		        android:textStyle="bold" />
+		
+		    <Space
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="fill" />
+		
+		    <Spinner
+		        android:id="@+id/filterRatingSpinner"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left|top"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginRight="10dp" />
+		
+		    <!-- Condition -->
+		
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left|top"
+		        android:layout_marginLeft="5dp"
+		        android:layout_marginTop="5dp"
+		        android:text="@string/search_filter_condition"
+		        android:textSize="20sp"
+		        android:textStyle="bold" />
+		
+		    <Space
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="fill" />
+		
+		    <Spinner
+		        android:id="@+id/filterConditionSpinner"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left|top"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginRight="10dp" />
+		
+		    <!-- Price -->
+		
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left|top"
+		        android:layout_marginLeft="5dp"
+		        android:layout_marginTop="5dp"
+		        android:text="@string/search_filter_price"
+		        android:textSize="20sp"
+		        android:textStyle="bold" />
+		
+		    <Space
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="fill" />
+		
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+		
+		        <EditText
+		            android:id="@+id/filterStartText"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="2dp"
+		            android:layout_weight="1"
+		            android:ems="6"
+		            android:hint="@string/search_filter_start_hint"
+		            android:inputType="numberDecimal" >		
+		        </EditText>
+		
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:text="@string/search_filter_to" />
+		
+		        <EditText
+		            android:id="@+id/filterEndText"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_marginRight="2dp"
+		            android:layout_weight="1"
+		            android:ems="6"
+		            android:hint="@string/search_filter_end_hint"
+		            android:inputType="numberDecimal" />
+		
+		    </LinearLayout>
+		</LinearLayout>
+        
+    </ScrollView>
+
+</LinearLayout>
+
+   
+

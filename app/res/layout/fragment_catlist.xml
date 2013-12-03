@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+	<TextView 
+	    android:id="@+id/catlist_tv"
+	    android:paddingLeft="10dp"
+	    android:paddingTop="4dp"
+	    android:paddingBottom="4dp"
+	    android:textSize="15sp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textStyle="bold|italic"
+	    android:text="@string/catlist_tv"/>
+    <ListView
+        android:id="@+id/catlist_lv"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
+    <LinearLayout
+        android:id="@+id/catlist_empty"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:layout_marginTop="4dp"
+		android:layout_marginBottom="4dp"
+		android:background="@drawable/bg_card"
+        android:columnCount="2" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:paddingLeft="15dp"
+	            android:paddingTop="10dp"
+	            android:paddingBottom="10dp"
+	            android:layout_gravity="left|center_vertical"
+	            android:text="@string/nocat_found" />
+	       
+	    </LinearLayout>
+
+</LinearLayout>

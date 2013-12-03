@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+  	android:paddingLeft="@dimen/activity_horizontal_margin"
+   	android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical" >
+	
+    <LinearLayout
+        android:id="@+id/mystoreOrders"
+        android:background="@drawable/bg_card"
+        android:layout_margin="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:layout_height="0dp"
+        android:orientation="vertical" >
+        <TextView
+            android:layout_width="match_parent" 
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="@string/sec_tittle_orders"
+            />
+    </LinearLayout>
+	<Space
+	    android:layout_width="match_parent" 
+	    android:layout_height="0dp"
+	    android:layout_weight="1" />
+    <LinearLayout
+        android:id="@+id/mystoreBidding"
+        android:background="@drawable/bg_card"
+        android:layout_margin="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:layout_height="0dp"
+        android:orientation="vertical" >
+        <TextView
+            android:layout_width="match_parent" 
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="@string/sec_title_buying"
+            />
+    </LinearLayout>
+	<Space
+	    android:layout_width="match_parent" 
+	    android:layout_height="0dp"
+	    android:layout_weight="1" />
+   <LinearLayout
+        android:id="@+id/mystoreSelling"
+        android:background="@drawable/bg_card"
+        android:layout_margin="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:layout_height="0dp"
+        android:orientation="vertical" >
+        <TextView
+            android:layout_width="match_parent" 
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="@string/sec_title_selling"
+            />
+    </LinearLayout>
+    <Space
+	    android:layout_width="match_parent" 
+	    android:layout_height="0dp"
+	    android:layout_weight="1" />
+   <LinearLayout
+        android:id="@+id/mystoreMyRating"
+        android:background="@drawable/bg_card"
+        android:layout_margin="4dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:layout_height="0dp"
+        android:orientation="vertical" >
+        <TextView
+            android:layout_width="match_parent" 
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="@string/sec_title_rating"
+            />
+    </LinearLayout>
+
+</LinearLayout>
