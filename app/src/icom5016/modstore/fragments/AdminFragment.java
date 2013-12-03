@@ -51,6 +51,7 @@ public class AdminFragment extends Fragment {
 				switch (pos) {
 				case 0:
 					ma.loadFragmentInMainActivityStack(ma.getContainerId(), new UsersListFragment());
+					break;
 				case 1:
 					showSalesByTimeDialog();
 					break;
