@@ -15,9 +15,7 @@ public class Server {
 	}
 	
 	public static class Cart{
-		public static final String GETCART = BASE_URL+"/cart";
-		public static final String UPDATEQUANTITY = BASE_URL+"/updatecart";
-		public static final String REMOVEITEM = BASE_URL+"/removecart";
+		public static final String CART = BASE_URL+"/cart";
 	}
 
 	public static class Products {
