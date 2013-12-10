@@ -11,7 +11,9 @@ public class Server {
 		public static final String GETRATING = BASE_URL+"/rating";
 		public static final String GETALL = BASE_URL+"/users";
 		public static final String REGISTER = BASE_URL+"/users/register";
+		public static final String UPDATE_PASSWORD = BASE_URL+"/users/updatePassword";
 	}
+	
 	public static class Products {
 	  public static final String GET = BASE_URL+"/products/";
 	  public static final String GETCATEGORIES = BASE_URL + "/products/category/";
@@ -34,6 +36,8 @@ public class Server {
 	public static class Addresses {
 		public static final String GET = BASE_URL + "/addresses";
 		public static final String GETALL = BASE_URL + "/addresses";
+		public static final String INSERT = BASE_URL + "/addresses";
+		public static final String UPDATE = BASE_URL + "/addresses";
 	}
 	
 	public static class OrderDetails {

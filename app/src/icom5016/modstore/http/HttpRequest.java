@@ -100,8 +100,11 @@ public class HttpRequest extends AsyncTask<Void, Void, JSONObject> {
 				}
 			} else if (method.equalsIgnoreCase("PUT")) {
 				request = new HttpPut(url.toString());
-				HttpPut put = (HttpPut) request;
-				put.setEntity(new StringEntity(payload.toString()));
+				if(payload != null) {
+					HttpPut put = (HttpPut) request;
+					put.setEntity(new StringEntity(payload.toString()));
+					put.setHeader("Content-Type", "application/json");
+				}
 			} else if (method.equalsIgnoreCase("DELETE")) {
 				request = new HttpDelete(url.toString());
 			} else {

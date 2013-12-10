@@ -1,8 +1,14 @@
 package icom5016.modstore.dialog;
 
 import icom5016.modstore.activities.R;
+import icom5016.modstore.fragments.AddressesFragment;
 import icom5016.modstore.models.Address;
+import icom5016.modstore.models.User;
 import icom5016.modstore.resources.DataFetchFactory;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -29,11 +35,15 @@ public class AddressDialog extends DialogFragment {
 	
 	public Address address;
 
+	private User u;
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		u = DataFetchFactory.getUserFromSPref(getActivity());
+		
 	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	    LayoutInflater inflater = getActivity().getLayoutInflater();
-	    View v = inflater.inflate(R.layout.dialog_address, null);
+	    final View v = inflater.inflate(R.layout.dialog_address, null);
 	    
 	    String positiveButton = (address == null) ? "Add" : "Update";
 	    String title = (address == null) ? "Add an Address" : "View Address";
@@ -43,12 +53,41 @@ public class AddressDialog extends DialogFragment {
 	    	.setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
 			   @Override
 			   public void onClick(DialogInterface dialog, int id) {
-			       // PUT/POST to Server.
+				   String addr1 = ((EditText) v.findViewById(R.id.txtAddrLine1)).getText().toString();
+				   String addr2 = ((EditText) v.findViewById(R.id.txtAddrLine2)).getText().toString();
+				   String city = ((EditText) v.findViewById(R.id.txtAddrCity)).getText().toString();
+				   String state = ((EditText) v.findViewById(R.id.txtAddrState)).getText().toString();
+				   String zipcode = ((EditText) v.findViewById(R.id.txtAddrZipcode)).getText().toString();
+				   String country = ((Spinner) v.findViewById(R.id.cboAddrCountry)).getSelectedItem().toString();
+				   String primary = ((CheckBox) v.findViewById(R.id.chkAddrDefault)).isChecked() ? "1" : "0";
+				   
+				   JSONObject json = new JSONObject();
+				   try {
+					json.put("user_id", u.getGuid());
+					json.put("line1", addr1);
+					json.put("line2", addr2);
+					json.put("city", city);
+					json.put("state", state);
+					json.put("zipcode", zipcode);
+					json.put("country", country);
+					json.put("is_primary", primary);
+					
+					if(address == null) {
+						AddressesFragment.leakFragment.insertAddrHttp(json);
+					} else {
+						json.put("address_id", address.getId());
+						AddressesFragment.leakFragment.updateAddrHttp(json);
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			   }
+
 	    	})
 	    	.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                public void onClick(DialogInterface dialog, int id) {
-            	   AddressDialog.this.getDialog().cancel();
+            	   dialog.cancel();
                }
            });
 

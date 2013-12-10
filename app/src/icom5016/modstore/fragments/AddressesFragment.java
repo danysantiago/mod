@@ -22,10 +22,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class AddressesFragment extends SettingListFragment {
+	
+	public static AddressesFragment leakFragment; //Oink Oink, bien puerkito!
+		
 	public AddressesFragment() { };
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){		
+		leakFragment = this;
+		
 		View v = super.onCreateView(inflater, container, savedInstanceState);
         
         setTitle("Addresses:");
@@ -35,7 +40,7 @@ public class AddressesFragment extends SettingListFragment {
         return v;
     }
 
-	private void requestAddresses() {
+	public void requestAddresses() {
 		User u = DataFetchFactory.getUserFromSPref(getActivity());
 		
 		//Perform http request
@@ -66,6 +71,52 @@ public class AddressesFragment extends SettingListFragment {
 		request.execute();
 	}
 	
+	public void insertAddrHttp(JSONObject json) {
+		Bundle params = new Bundle();
+		params.putString("method", "POST");
+		params.putString("url", Server.Addresses.INSERT);
+		
+		HttpRequest request = new HttpRequest(params, json, new HttpCallback() {
+			
+			@Override
+			public void onSucess(JSONObject json) {
+			}
+			
+			@Override
+			public void onFailed() {				
+			}
+			
+			@Override
+			public void onDone() {
+				requestAddresses();
+			}
+		});
+		request.execute();
+	}
+	
+	public void updateAddrHttp(JSONObject json) {
+		Bundle params = new Bundle();
+		params.putString("method", "PUT");
+		params.putString("url", Server.Addresses.UPDATE);
+		
+		HttpRequest request = new HttpRequest(params, json, new HttpCallback() {
+			
+			@Override
+			public void onSucess(JSONObject json) {
+			}
+			
+			@Override
+			public void onFailed() {				
+			}
+			
+			@Override
+			public void onDone() {
+				requestAddresses();
+			}
+		});
+		request.execute();
+	}
+	
 	public class listOnClick implements OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -80,4 +131,6 @@ public class AddressesFragment extends SettingListFragment {
         DialogFragment dialog = new AddressDialog();
         dialog.show(getActivity().getSupportFragmentManager(), "AddressDialog");
 	}
+	
+	
 }
