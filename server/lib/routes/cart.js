@@ -49,11 +49,10 @@ routes.post("/cart/remove", express.bodyParser(), function (req, res, next) {
         res.send(200, {"status": "error"});
         return;
     }
-    if(result.length <= 0){
+    if(result.affectedRows <= 0){
       res.send(200, {"status": "error"});
       return;
     }
-    console.log(result);
     res.send(200, {"status": "ok"});
   });
 });
