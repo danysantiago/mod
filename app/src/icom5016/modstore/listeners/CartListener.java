@@ -136,7 +136,7 @@ public class CartListener implements OnItemClickListener {
 		//Toast.makeText(ma, "Wait for Phase 3 ^_^", Toast.LENGTH_SHORT).show();
 		
 		Bundle params = new Bundle();
-		params.putString("url", Server.Cart.CART);
+		params.putString("url", Server.Cart.DELETE);
 		params.putString("method", "POST");
 		//Credentials
 		JSONObject credentials = new JSONObject();
