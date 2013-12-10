@@ -86,6 +86,9 @@ routes.post("/cart", express.bodyParser(), function (req, res, next) {
     } else if (product.user_id == userId) {
       res.send(404, {"status": "PRODUCT_FROM_BUYER"});
       return;
+    } else if (product.starting_bid_price != null) {
+      res.send(404, {"status": "PRODUCT_IS_AUCTION"});
+      return;
     }
 
     var query = "INSERT INTO cart SET user_id = " + req.db.escape(userId) + ", product_id = " + req.db.escape(productId) + ", quantity = 1;";
