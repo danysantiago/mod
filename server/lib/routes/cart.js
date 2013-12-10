@@ -36,8 +36,7 @@ routes.get("/cart", function (req, res, next) {
 
 });
 
-
-routes.post("/removecart", express.bodyParser(), function (req, res, next) {
+routes.post("/cart/remove", express.bodyParser(), function (req, res, next) {
   console.log(req.body);
   var query_params = req.body;
 
@@ -46,6 +45,7 @@ routes.post("/removecart", express.bodyParser(), function (req, res, next) {
   console.log("MySQL Query: "+query);
   req.db.query(query, [query_params.productId, query_params.userId], function (err, result) {
     if (err) {
+        console.log(err);
         res.send(200, {"status": "error"});
         return;
     }
