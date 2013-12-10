@@ -67,7 +67,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
 	
 	private void doHttpCart() {
 		//Perform http request
-		Uri.Builder urlB = Uri.parse(Server.User.GETCART).buildUpon(); 
+		Uri.Builder urlB = Uri.parse(Server.Cart.GETCART).buildUpon(); 
 
 		if(ma.getActiveUser() == null){
 			Toast.makeText(ma, "Invalid Access to Intent", Toast.LENGTH_SHORT).show();

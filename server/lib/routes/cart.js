@@ -36,4 +36,26 @@ routes.get("/cart", function (req, res, next) {
 
 });
 
+
+routes.post("/removecart", function (req, res, next) {
+  
+  var query_params = req.body;
+
+  var query = "DELETE FROM `modstore`.`cart` WHERE `product_id` = ? AND `user_id` = ?";
+
+  console.log("MySQL Query: "+query);
+  req.db.query(query, [query_params.productId, query_params.userId], function (err, result) {
+    if (err) {
+        res.send(200, {"status": "error"});
+        return;
+    }
+    if(result.length <= 0){
+      res.send(200, {"status": "error"});
+      return;
+    }
+    console.log(result);
+    res.send(200, {"status": "ok"});
+  });
+});
+
 module.exports = routes;
