@@ -59,7 +59,7 @@ public class CartAdapter extends ArrayAdapter<ProductCart> {
 			type.setText("Buy It Now");
 			price.setText(product.getBuyItNowPriceString());
 			date.setVisibility(View.GONE);
-			quantity.setText("Quantity: "+ product.getQuantity());
+			quantity.setText("Quantity: "+ product.getCartQuantity());
 		}
 		
 		title.setText(product.getName());

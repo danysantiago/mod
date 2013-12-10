@@ -143,7 +143,7 @@ public class CartListener implements OnItemClickListener {
 		credentials.put("productId", productId);
 		credentials.put("userId", userId2);
 		
-		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+		HttpRequest request = new HttpRequest(params, credentials ,new HttpCallback() {
 			
 			@Override
 			public void onSucess(JSONObject json) {
