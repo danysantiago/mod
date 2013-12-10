@@ -37,8 +37,8 @@ routes.get("/cart", function (req, res, next) {
 });
 
 
-routes.post("/removecart", function (req, res, next) {
-  
+routes.post("/removecart", express.bodyParser(), function (req, res, next) {
+  console.log(req.body);
   var query_params = req.body;
 
   var query = "DELETE FROM `modstore`.`cart` WHERE `product_id` = ? AND `user_id` = ?";
