@@ -178,4 +178,18 @@ routes.post("/users/register", express.bodyParser(), function (req, res, next) {
 
 });
 
+routes.post("/users/updatePassword", express.bodyParser(), function (req, res, next) {
+ console.log(req.body);
+
+ var query = "UPDATE `modstore`.`user` SET `user_password`= MD5(?) WHERE `user_id`=?;";
+ req.db.query(query, [req.body.password, req.body.userId], function (err, result) {
+  if (err) {
+    return next(err);
+  }
+
+  res.send(200, {});
+ });
+
+});
+
 module.exports = routes;

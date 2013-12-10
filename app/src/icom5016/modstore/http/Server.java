@@ -2,16 +2,24 @@ package icom5016.modstore.http;
 
 public class Server {
 	
-	public static final String BASE_URL = "http://192.168.1.2:8080";
-	//public static final String BASE_URL = "http://ec2-54-226-36-4.compute-1.amazonaws.com:8080";
+	//public static final String BASE_URL = "http://192.168.1.2:8080";
+	public static final String BASE_URL = "http://ec2-54-226-36-4.compute-1.amazonaws.com:8080";
 
 	public static class User {
 		public static final String LOGIN = BASE_URL+"/login";
-		public static final String GETCART = BASE_URL+"/cart";
+		
 		public static final String GETRATING = BASE_URL+"/rating";
 		public static final String GETALL = BASE_URL+"/users";
 		public static final String REGISTER = BASE_URL+"/users/register";
+		public static final String UPDATE_PASSWORD = BASE_URL+"/users/updatePassword";
 	}
+	
+	public static class Cart{
+		public static final String GETCART = BASE_URL+"/cart";
+		public static final String UPDATEQUANTITY = BASE_URL+"/updatecart";
+		public static final String REMOVEITEM = BASE_URL+"/removecart";
+	}
+
 	public static class Products {
 	  public static final String GET = BASE_URL+"/products/";
 	  public static final String GETCATEGORIES = BASE_URL + "/products/category/";
@@ -34,6 +42,8 @@ public class Server {
 	public static class Addresses {
 		public static final String GET = BASE_URL + "/addresses";
 		public static final String GETALL = BASE_URL + "/addresses";
+		public static final String INSERT = BASE_URL + "/addresses";
+		public static final String UPDATE = BASE_URL + "/addresses";
 	}
 	
 	public static class OrderDetails {
