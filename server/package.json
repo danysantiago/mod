@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "express": "~3.3.5",
-    "mysql": "~2.0.0-alpha8",
+    "mysql": "~2.0.0-rc1",
     "async": "~0.2.9",
     "request": "~2.27.0",
     "underscore": "~1.5.2"
