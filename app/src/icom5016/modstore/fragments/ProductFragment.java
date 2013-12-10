@@ -1,5 +1,6 @@
 package icom5016.modstore.fragments;
 
+import icom5016.modstore.activities.MainActivity;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
@@ -18,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +46,8 @@ import android.widget.Toast;
 public class ProductFragment extends Fragment {
 	
 	private int productId;
+	private MainActivity ma;
+	private ProgressDialog pDialog;
 	
 	private Product product;
 	private User seller;
@@ -97,6 +101,9 @@ public class ProductFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.fragment_product, container,false);
+		
+		ma = (MainActivity) getActivity();
+		pDialog = new ProgressDialog(getActivity());
 		
 		imageLoader = new ImageLoader(getActivity());
 		
@@ -374,6 +381,14 @@ public class ProductFragment extends Fragment {
 	        builder.setMessage("Add " + product.getName() + " to cart?");
 	        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			   public void onClick(DialogInterface dialog, int id) {
+				   try {
+					 pDialog.setMessage(getResources().getString(R.string.cart_insert_pdialog));
+					 pDialog.show();
+					doHttpAddToCart(productId, user.getGuid());
+				} catch (JSONException e) {
+					Toast.makeText(ma, R.string.errmsg_bad_json,
+							Toast.LENGTH_SHORT).show();
+				}
 		       }
 		    });
 			builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -416,6 +431,54 @@ public class ProductFragment extends Fragment {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(2);
 		return "$" + nf.format(num);
+	}
+	
+	public void doHttpAddToCart(int productId, int userId) throws JSONException{
+		Bundle params = new Bundle();
+		params.putString("url", Server.Cart.CART);
+		params.putString("method", "POST");
+		//Credentials
+		JSONObject credentials = new JSONObject();
+		credentials.put("productId", Integer.toString(productId));
+		credentials.put("userId", userId);
+		HttpRequest request = new HttpRequest(params, credentials ,new HttpCallback() {
+		
+			@Override
+			public void onSucess(JSONObject json) {
+				
+				String acknowledgeCode = null;
+				try {
+					acknowledgeCode = json.getString("status");
+				} catch (JSONException e1) {
+					Toast.makeText(ma, R.string.errmsg_bad_json,
+							Toast.LENGTH_SHORT).show();
+				}
+				
+				if(acknowledgeCode != null)
+				{
+					if(acknowledgeCode.equals("OUT_OF_STOCK")){
+						Toast.makeText(ma, "Out of Stock", Toast.LENGTH_SHORT).show();
+					}else if(acknowledgeCode.equals("PRODUCT_FROM_BUYER")){
+						Toast.makeText(ma, "You can't buy your own product", Toast.LENGTH_SHORT).show();
+					}else {
+						Toast.makeText(ma, R.string.cart_insert_success, Toast.LENGTH_SHORT).show();
+						addButton.setText("Add More");
+					}
+				}
+				
+				
+			}
+			
+			@Override
+			public void onFailed() {
+				Toast.makeText(ma, "Unable to add to Cart", Toast.LENGTH_SHORT).show();
+				
+			}
+			public void onDone(){
+				pDialog.dismiss();
+			}
+		});
+		request.execute();
 	}
 
 }

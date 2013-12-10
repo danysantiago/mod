@@ -16,7 +16,7 @@ public class Server {
 	
 	public static class Cart{
 		public static final String CART = BASE_URL+"/cart";
-		public static final String DELETE = BASE_URL+"cart/delete";
+		public static final String DELETE = BASE_URL+"/cart/delete";
 	}
 
 	public static class Products {

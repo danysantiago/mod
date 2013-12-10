@@ -287,7 +287,10 @@
     <string name="change">Change</string>
     <string name="cart_change_quantity_dialog_title">Change Product Quantity</string>
     <string name="cart_change_quantity">Quantity:</string>
-    <string name="cart_remove_item_success">Successfully Removed</string>
+    <string name="cart_remove_item_success">Removed</string>
     <string name="cart_remove_item_error">Unable to Remove</string>
+   	<string name="cart_insert_pdialog">Adding to Cart&#8230;</string>
+   	<string name="cart_insert_success">Added</string>
+   	<string name="cart_update_success">Quantity Updated</string>
     
 </resources>
