@@ -94,7 +94,6 @@ routes.post("/cart", express.bodyParser(), function (req, res, next) {
     req.db.query(query, function (err, result) {
       if (err) {
           console.log(err);
-          console.log(err.code);
           res.send(404, {"status": ((err.code == "ER_NO_REFERENCED_ROW_") ? "FOREIGN_FAIL" : "DB_ERR")});
           return;
       }
