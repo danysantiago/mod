@@ -14,7 +14,7 @@ routes.get("/products/selling", function (req, res, next) {
   async.series({
     "active": function (done) {
       if(req.query.active === "true") {
-        var aQuery = "SELECT *, (P.quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE OD.product_id = P.product_id GROUP BY OD.product_id),0)) AS stock FROM product P LEFT JOIN (SELECT product_id as pipd, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON pipd = P.product_id WHERE user_id = " + req.db.escape(userId);
+        var aQuery = "SELECT *, (P.quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE OD.product_id = P.product_id GROUP BY OD.product_id),0)) AS stock FROM product P LEFT JOIN (SELECT product_id as pipd, min(product_image_id) as product_image_id, image_src FROM product_image GROUP BY product_id) PI ON pipd = P.product_id WHERE user_id = " + req.db.escape(userId) + " AND (auction_end_ts > NOW() OR auction_end_ts IS NULL) HAVING stock > 0";
         console.log("MySQL Query: " + aQuery);
         req.db.query(aQuery, done);
       } else {
