@@ -17,6 +17,7 @@ var addresses = require("./lib/routes/addresses.js");
 var cart = require("./lib/routes/cart.js")
 var orders = require("./lib/routes/orders.js");
 var charts = require("./lib/routes/charts.js");
+var checkout = require("./lib/routes/checkout.js");
 
 app.configure(function() {
 	app.set("name", config.appName);
@@ -48,6 +49,7 @@ app.use(addresses);
 app.use(cart);
 app.use(orders);
 app.use(charts);
+app.use(checkout);
 
 //Error handler middleware
 app.use(function (err, req, res, next) {
@@ -94,10 +96,11 @@ function processEndedBids() {
         }
 
         var i = 0;
-        var product = results[i];
 
         for (i = 0; i < results.length; i++) {
-            console.log("Found Sold Product by Auction: " + results[i].product_id);
+            var product = results[i];
+
+            console.log("Found Sold Product by Auction: " + product.product_id);
 
             // Get default credit card and address (if exists)
             async.series({
@@ -206,19 +209,4 @@ function processEndedBids() {
             });
         }
     });
-
-    /*dbClient.beginTransaction(function(err) {
-        if (err) 
-            throw err;
-
-        var query = "SELECT * FROM product P INNER JOIN (SELECT product_id, user_id as buyer_seller_id, MAX(bid_amount) as bid_amount FROM bid GROUP BY product_id) B ON B.product_id = P.product_id WHERE auction_end_ts < NOW() AND P.product_id IN (SELECT product_id FROM bid) AND P.product_id NOT IN (SELECT product_id FROM order_detail)";
-
-        dbClient.query(query, function (err, results) {
-            if (err) { 
-                connection.rollback(function() {
-                    throw err;
-                });
-            }
-        });
-    );*/
 }
