@@ -57,4 +57,35 @@ routes.post("/cart/delete", express.bodyParser(), function (req, res, next) {
   });
 });
 
+routes.post("/cart", express.bodyParser(), function (req, res, next) {
+  var query_params = req.body;
+
+  var userId = query_params.productId;
+  var productId = query_params.userId;
+
+  if (userId == undefined) {
+    res.send(400, {"status": "NO_USER"});
+    return;
+  } else if (productId == undefined) {
+    res.send(400, {"status": "NO_PRODUCT"});
+    return;
+  }
+
+  var query = "INSERT INTO cart SET user_id = " + req.db.escape(userId) + ", product_id = " + req.db.escape(productId) + ", quantity = 1;";
+  console.log("MySQL Query: " + query);
+
+  req.db.query(query, function (err, result) {
+    if (err) {
+        console.log(err);
+        res.send(400);
+        return;
+    }
+    if(result.affectedRows <= 0){
+      res.send(400, {"status": "NO_INSERTED"});
+      return;
+    }
+    res.send(200, {"status": "ok"});
+  });
+});
+
 module.exports = routes;
