@@ -153,4 +153,29 @@ routes.get("/rating", function (req, res, next) {
 
 });
 
+routes.post("/users/register", express.bodyParser(), function (req, res, next) {
+  var newUser = req.body;
+
+  console.log(req.body);
+
+  var query = "INSERT INTO `modstore`.`user` (`user_name`, `user_password`, `first_name`, `middle_name`, `last_name`, `email`, `is_admin`) VALUES (?, MD5(?), ?, ?, ?, ?, ?);"
+  req.db.query(query, [newUser.user_name, newUser.user_password, newUser.first_name, newUser.middle_name, newUser.last_name, newUser.email, newUser.is_admin], function (err, result) {
+    if (err) {
+
+      if(err.code === "ER_DUP_ENTRY") {
+        res.send(200, {"status": "email taken"});
+        return;
+      }
+
+      return next(err);
+    }
+
+    console.log(result);
+
+    res.send(200, {"status": "ok"});
+  });
+
+
+});
+
 module.exports = routes;
