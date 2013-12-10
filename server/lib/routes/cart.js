@@ -91,20 +91,49 @@ routes.post("/cart", express.bodyParser(), function (req, res, next) {
       return;
     }
 
-    var query = "INSERT INTO cart SET user_id = " + req.db.escape(userId) + ", product_id = " + req.db.escape(productId) + ", quantity = 1;";
+    var query = "SELECT * FROM cart WHERE user_id = " + req.db.escape(userId) + " AND product_id = " + req.db.escape(productId);
     console.log("MySQL Query: " + query);
 
     req.db.query(query, function (err, result) {
       if (err) {
           console.log(err);
-          res.send(404, {"status": ((err.code == "ER_NO_REFERENCED_ROW_") ? "FOREIGN_FAIL" : "DB_ERR")});
+          res.send(404, {"status": "DB_ERR"});
           return;
       }
-      if(result.affectedRows <= 0){
-        res.send(404, {"status": "NO_INSERTED"});
-        return;
+
+      if (result.length >= 1) {
+        var query = "UPDATE cart SET quantity = quantity+1 WHERE user_id = " + req.db.escape(userId) + " AND product_id = " + req.db.escape(productId) ;
+        console.log("MySQL Query: " + query);
+
+        req.db.query(query, function (err, result) {
+          if (err) {
+              console.log(err);
+              res.send(404, {"status": ((err.code == "ER_NO_REFERENCED_ROW_") ? "FOREIGN_FAIL" : "DB_ERR")});
+              return;
+          }
+          if(result.affectedRows <= 0){
+            res.send(404, {"status": "NO_INSERTED"});
+            return;
+          }
+          res.send(200, {"status": "ok"});
+        });
+      } else {
+        var query = "INSERT INTO cart SET user_id = " + req.db.escape(userId) + ", product_id = " + req.db.escape(productId) + ", quantity = 1;";
+        console.log("MySQL Query: " + query);
+
+        req.db.query(query, function (err, result) {
+          if (err) {
+              console.log(err);
+              res.send(404, {"status": ((err.code == "ER_NO_REFERENCED_ROW_") ? "FOREIGN_FAIL" : "DB_ERR")});
+              return;
+          }
+          if(result.affectedRows <= 0){
+            res.send(404, {"status": "NO_INSERTED"});
+            return;
+          }
+          res.send(200, {"status": "ok"});
+        });
       }
-      res.send(200, {"status": "ok"});
     });
   });
 });
