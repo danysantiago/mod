@@ -58,4 +58,34 @@ routes.get("/cc", function (req, res, next) {
   });
 });
 
+routes.post("/cc", express.bodyParser(), function (req, res, next) {
+  var cc = req.body;
+
+  console.log(req.body);
+
+  var query = "INSERT INTO `modstore`.`credit_card` (`user_id`, `address_id`, `name`, `type`, `number`, `security_code`, `expiration_date`, `is_primary`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+  req.db.query(query, [cc.user_id, cc.address_id, cc.name, cc.type, cc.number, cc.security_code, cc.expiration_date, cc.is_primary], function (err, result) {
+    if (err) {
+      return next(err);
+    }
+
+    res.send(200, {});
+  });
+});
+
+routes.put("/cc", express.bodyParser(), function (req, res, next) {
+  var cc = req.body;
+
+  console.log(req.body);
+
+  var query = "UPDATE `modstore`.`credit_card` SET `address_id`=?, `name`=?, `type`=?, `number`=?, `security_code`=?, `expiration_date`=?, `is_primary`=? WHERE `creditcard_id`=?;"
+  req.db.query(query, [cc.address_id, cc.name, cc.type, cc.number, cc.security_code, cc.expiration_date, cc.is_primary, cc.creditcard_id], function (err, result) {
+    if (err) {
+      return next(err);
+    }
+
+    res.send(200, {});
+  });
+});
+
 module.exports = routes;
