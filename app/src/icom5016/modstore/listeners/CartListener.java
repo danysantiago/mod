@@ -137,14 +137,14 @@ public class CartListener implements OnItemClickListener {
 		
 		Bundle params = new Bundle();
 		params.putString("url", Server.Cart.CART);
-		params.putString("method", "DELETE");
+		params.putString("method", "POST");
 		//Credentials
 		JSONObject credentials = new JSONObject();
-		credentials.put("productId", productId);
-		credentials.put("userId", userId2);
+		credentials.put("productId", Integer.toString(productId));
+		credentials.put("userId", Integer.toString(userId2));
 		
 		HttpRequest request = new HttpRequest(params, credentials ,new HttpCallback() {
-			
+		
 			@Override
 			public void onSucess(JSONObject json) {
 				

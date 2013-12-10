@@ -36,7 +36,7 @@ routes.get("/cart", function (req, res, next) {
 
 });
 
-routes.del("/cart", express.bodyParser(), function (req, res, next) {
+routes.post("/cart/delete", express.bodyParser(), function (req, res, next) {
   console.log(req.body);
   var query_params = req.body;
 
