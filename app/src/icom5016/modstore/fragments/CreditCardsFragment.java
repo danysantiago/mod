@@ -22,11 +22,16 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class CreditCardsFragment extends SettingListFragment {
+	
+	public static CreditCardsFragment leakFragment;
+
 	public CreditCardsFragment() { };
 	int pos;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		leakFragment = this;
+		
 		View v = super.onCreateView(inflater, container, savedInstanceState);
         
         setTitle("Credit Cards:");
@@ -64,6 +69,52 @@ public class CreditCardsFragment extends SettingListFragment {
 			}
 		});
 		
+		request.execute();
+	}
+	
+	public void insertCCHttp(JSONObject json) {
+		Bundle params = new Bundle();
+		params.putString("method", "POST");
+		params.putString("url", Server.CreditCards.INSERT);
+		
+		HttpRequest request = new HttpRequest(params, json, new HttpCallback() {
+			
+			@Override
+			public void onSucess(JSONObject json) {
+			}
+			
+			@Override
+			public void onFailed() {				
+			}
+			
+			@Override
+			public void onDone() {
+				requestCreditCards();
+			}
+		});
+		request.execute();
+	}
+	
+	public void updateCCHttp(JSONObject json) {
+		Bundle params = new Bundle();
+		params.putString("method", "PUT");
+		params.putString("url", Server.CreditCards.UPDATE);
+		
+		HttpRequest request = new HttpRequest(params, json, new HttpCallback() {
+			
+			@Override
+			public void onSucess(JSONObject json) {
+			}
+			
+			@Override
+			public void onFailed() {				
+			}
+			
+			@Override
+			public void onDone() {
+				requestCreditCards();
+			}
+		});
 		request.execute();
 	}
 	

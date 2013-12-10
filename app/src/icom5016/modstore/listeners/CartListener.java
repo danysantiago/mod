@@ -136,15 +136,15 @@ public class CartListener implements OnItemClickListener {
 		//Toast.makeText(ma, "Wait for Phase 3 ^_^", Toast.LENGTH_SHORT).show();
 		
 		Bundle params = new Bundle();
-		params.putString("url", Server.Cart.CART);
-		params.putString("method", "DELETE");
+		params.putString("url", Server.Cart.DELETE);
+		params.putString("method", "POST");
 		//Credentials
 		JSONObject credentials = new JSONObject();
-		credentials.put("productId", productId);
-		credentials.put("userId", userId2);
+		credentials.put("productId", Integer.toString(productId));
+		credentials.put("userId", Integer.toString(userId2));
 		
-		HttpRequest request = new HttpRequest(params, new HttpCallback() {
-			
+		HttpRequest request = new HttpRequest(params, credentials ,new HttpCallback() {
+		
 			@Override
 			public void onSucess(JSONObject json) {
 				
