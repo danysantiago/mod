@@ -16,22 +16,22 @@ routes.post("/checkout/now", express.bodyParser(), function (req, res, next) {
         }
 
         if (result.length == 0) {
-	        res.send(200, {"status": "INVALID_PRODUCT"});
+	        res.send(404, {"status": "INVALID_PRODUCT"});
 	        return;
         }
 
         var product = result[0];
 
         if (product.stock == 0) {
-	        res.send(200, {"status": "OUT_OF_STOCK"});
+	        res.send(404, {"status": "OUT_OF_STOCK"});
         	return;
         }
 
         if (newOrder.creditcard_id == undefined) {
-	        res.send(200, {"status": "INVALID_CC"});
+	        res.send(404, {"status": "INVALID_CC"});
     		return;
         } else if (newOrder.address_id == undefined) {
-	        res.send(200, {"status": "INVALID_ADDR"});
+	        res.send(404, {"status": "INVALID_ADDR"});
     		return;
     	}
 
@@ -55,22 +55,22 @@ routes.post("/checkout/now", express.bodyParser(), function (req, res, next) {
             var addr = (resultsTemp.addr[0].length > 0) ? resultsTemp.addr[0][0] : null;
 
             if (product.user_id == newOrder.user_id) {
-		        res.send(200, {"status": "PRODUCT_FROM_BUYER"});
+		        res.send(404, {"status": "PRODUCT_FROM_BUYER"});
         		return;
             } if (cc == null) {
-		        res.send(200, {"status": "INVALID_CC"});
+		        res.send(404, {"status": "INVALID_CC"});
         		return;
             } else if (addr == null) {
-		        res.send(200, {"status": "INVALID_ADDR"});
+		        res.send(404, {"status": "INVALID_ADDR"});
         		return;
         	} else if (cc.valid != 1) {
-		        res.send(200, {"status": "EXPIRED_CC"});
+		        res.send(404, {"status": "EXPIRED_CC"});
         		return;
         	} else if (cc.user_id != newOrder.user_id) {
-		        res.send(200, {"status": "NOT_USER_CC"});
+		        res.send(404, {"status": "NOT_USER_CC"});
         		return;
         	} else if (addr.user_id != newOrder.user_id) {
-		        res.send(200, {"status": "NOT_USER_ADDR"});
+		        res.send(404, {"status": "NOT_USER_ADDR"});
         		return;
             } else {
                 //console.log(cc.creditcard_id + " - " + cc.address_id);
@@ -88,7 +88,7 @@ routes.post("/checkout/now", express.bodyParser(), function (req, res, next) {
                                 throw err;
                             });
 
-            		        res.send(200, {"status": "CHECKOUT_ERR"});
+            		        res.send(404, {"status": "CHECKOUT_ERR"});
     						return;
                         }
 
@@ -104,7 +104,7 @@ routes.post("/checkout/now", express.bodyParser(), function (req, res, next) {
                                 req.db.rollback(function() {
                                     throw err;
                                 });
-                                res.send(200, {"status": "CHECKOUT_ERR"});
+                                res.send(404, {"status": "CHECKOUT_ERR"});
     							return;
                             }
 
@@ -121,7 +121,7 @@ routes.post("/checkout/now", express.bodyParser(), function (req, res, next) {
                                     req.db.rollback(function() {
                                         throw err;
                                     });
-                                    res.send(200, {"status": "CHECKOUT_ERR"});
+                                    res.send(404, {"status": "CHECKOUT_ERR"});
     								return;
                                 }
 
@@ -134,7 +134,7 @@ routes.post("/checkout/now", express.bodyParser(), function (req, res, next) {
                                         req.db.rollback(function() {
                                             throw err;
                                         });
-                                        res.send(200, {"status": "CHECKOUT_ERR"});
+                                        res.send(404, {"status": "CHECKOUT_ERR"});
     									return;
                                     }
 
