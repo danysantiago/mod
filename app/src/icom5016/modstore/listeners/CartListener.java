@@ -57,7 +57,7 @@ public class CartListener implements OnItemClickListener {
 					viewProductListing(product.getId());
 					break;
 				case 1:
-					changeProductQuantity(product.getId(), product.getQuantity());
+					changeProductQuantity(product.getId(), product.getCartQuantity());
 					break;
 				case 2:
 					removeItemFromCart(product.getId());
