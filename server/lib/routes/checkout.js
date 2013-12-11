@@ -22,7 +22,7 @@ routes.post("/checkout/now", express.bodyParser(), function (req, res, next) {
 
         var product = result[0];
 
-        if (product.stock == 0) {
+        if (product.stock <= 0) {
 	        res.send(200, {"status": "OUT_OF_STOCK"});
         	return;
         }
@@ -300,6 +300,11 @@ function addOrderDetail(prod, oId, res, req, nOrder, done) {
 
     if (prod.user_id == nOrder.user_id) {
         res.send(404, {"status": "PRODUCT_FROM_BUYER", "product_id": prod.product_id});
+        return;
+    }
+
+    if (prod.stock < prod.cart_quantity) {
+        res.send(200, {"status": "OUT_OF_STOCK", "product_id": prod.product_id, "stock": prod.stock});
         return;
     }
 
