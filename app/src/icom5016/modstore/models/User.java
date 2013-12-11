@@ -20,26 +20,40 @@ public class User {
 	
 	public User(String username, String firstName, String middleName, String lastName, String email, int guid ,boolean isAdmin) {
 		super();
-		this.username = username;
-		this.firstName = firstName;
-		this.middleName = middleName;
-		this.lastName = lastName;
+		this.username = AndroidResourceFactory.stringEncode(username);
+		this.firstName = AndroidResourceFactory.stringEncode(firstName);
+		this.middleName = AndroidResourceFactory.stringEncode(middleName);
+		this.lastName = AndroidResourceFactory.stringEncode(lastName);
 		this.email = email;
 		this.isAdmin = isAdmin;
 		this.guid = guid;
 	}
 	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public User(JSONObject jsonObject) throws JSONException {
-		
-			this.guid = jsonObject.getInt("user_id");
-			this.username = AndroidResourceFactory.stringEncode(jsonObject.getString("user_name"));
-			this.firstName = AndroidResourceFactory.stringEncode(jsonObject.getString("first_name"));
-			this.middleName = AndroidResourceFactory.stringEncode(jsonObject.getString("middle_name"));
-			this.lastName = AndroidResourceFactory.stringEncode(jsonObject.getString("last_name"));
-			this.email = jsonObject.getString("email");
-			int admin = jsonObject.getInt("is_admin");
-			this.isAdmin = admin == 1;
-		
+		this.guid = jsonObject.getInt("user_id");
+		this.username = AndroidResourceFactory.stringEncode(jsonObject.getString("user_name"));
+		this.firstName = AndroidResourceFactory.stringEncode(jsonObject.getString("first_name"));
+		this.middleName = AndroidResourceFactory.stringEncode(jsonObject.getString("middle_name"));
+		this.lastName = AndroidResourceFactory.stringEncode(jsonObject.getString("last_name"));
+		this.email = jsonObject.getString("email");
+		int admin = jsonObject.getInt("is_admin");
+		this.isAdmin = admin == 1;
 	}
 	
 	public String getUsername() {

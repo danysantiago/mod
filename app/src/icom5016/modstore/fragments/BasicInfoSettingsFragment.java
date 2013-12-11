@@ -40,6 +40,12 @@ public class BasicInfoSettingsFragment extends Fragment {
 		
 		lstSettingList = (ListView) view.findViewById(R.id.lstSettingList);
 		
+		loadSettingList();
+		
+        return view;
+    }
+	
+	private void loadSettingList() {
 		ArrayList<SettingRow> settingList = new ArrayList<SettingRow>();
 		
 		u = DataFetchFactory.getUserFromSPref(getActivity());
@@ -54,9 +60,7 @@ public class BasicInfoSettingsFragment extends Fragment {
 		SettingListAdapter adapter = new SettingListAdapter(getActivity(), R.layout.listview_setting_row, settingList);
 		lstSettingList.setAdapter(adapter);
 		lstSettingList.setOnItemClickListener(new listOnClick());
-		
-        return view;
-    }
+	}
 
 	private class listOnClick implements OnItemClickListener {
 
@@ -97,9 +101,15 @@ public class BasicInfoSettingsFragment extends Fragment {
 				AlertDialog dialog = builder.create();
 				dialog.show();
 			} else {
+				// Username cant be edited.
+				if (pos == 0) {
+					return;
+				}
+				
 				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 				SettingRow settingRow = (SettingRow) lstSettingList.getAdapter().getItem(pos);
-				EditText editText = new EditText(getActivity());
+				final EditText editText = new EditText(getActivity());
+				final int dialogPos = pos;
 				
 				editText.setText(settingRow.title);
 
@@ -113,8 +123,29 @@ public class BasicInfoSettingsFragment extends Fragment {
 				
 				builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
 	               public void onClick(DialogInterface dialog, int id) {
-	            	   //Change... PUT to NodeJS
+	            	   String firstName = null;
+	            	   String middleName = null;
+	            	   String lastName = null;
+	            	   String email = null;
 	            	   
+	            	   //Change... PUT to NodeJS
+	            	   if (dialogPos == 1)
+	            		   firstName = editText.getText().toString();
+	            	   else if (dialogPos == 2)
+	            		   middleName = editText.getText().toString();
+	            	   else if (dialogPos == 3)
+	            		   lastName = editText.getText().toString();
+	            	   else if (dialogPos == 4)
+	            		   email = editText.getText().toString();
+	            	   else
+	            		   return;
+	            	   
+	            	   try {
+	            		   changeUserHttp(firstName, middleName, lastName, email);
+	            	   } catch (JSONException e) {
+							// TODO Auto-generated catch block
+            		   		e.printStackTrace();
+	            	   }
 	               }
 				});
 				
@@ -146,6 +177,50 @@ public class BasicInfoSettingsFragment extends Fragment {
 			@Override
 			public void onFailed() {
 				Toast.makeText(getActivity(), "Failed to update password.", Toast.LENGTH_SHORT).show();
+			}
+		});
+		request.execute();
+	}
+	
+	private void changeUserHttp(String firstName, String middleName, String lastName, String email) throws JSONException {
+		JSONObject json = new JSONObject();
+		
+		json.put("userId", u.getGuid());
+		
+		final User newUser = u;
+		
+		if (firstName != null) {
+			json.put("firstName", firstName);
+			newUser.setFirstName(firstName);
+		} if (middleName != null) {
+			json.put("middleName", middleName);
+			newUser.setMiddleName(middleName);
+		} if (lastName != null) {
+			json.put("lastName", lastName);
+			newUser.setLastName(lastName);
+		} if (email != null) {
+			json.put("email", email);
+			newUser.setEmail(email);
+		}
+		
+		Bundle params = new Bundle();
+		params.putString("method", "PUT");
+		params.putString("url", Server.User.UPDATE);
+		
+		HttpRequest request = new HttpRequest(params, json, new HttpCallback() {
+			@Override
+			public void onSucess(JSONObject json) {
+				// Update User on Shared Preferences.
+				DataFetchFactory.setUserInSharedPreferences(newUser, getActivity());
+				// Reload User Data
+				loadSettingList();
+				
+				Toast.makeText(getActivity(), "User account updated!", Toast.LENGTH_SHORT).show();
+			}
+			
+			@Override
+			public void onFailed() {
+				Toast.makeText(getActivity(), "Problem updating the user account.", Toast.LENGTH_SHORT).show();
 			}
 		});
 		request.execute();

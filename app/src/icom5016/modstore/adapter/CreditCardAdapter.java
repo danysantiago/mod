@@ -2,7 +2,10 @@ package icom5016.modstore.adapter;
 
 import icom5016.modstore.activities.R;
 import icom5016.modstore.models.CreditCard;
+import icom5016.modstore.resources.AndroidResourceFactory;
 import icom5016.modstore.resources.DataFetchFactory;
+
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,11 +70,11 @@ public class CreditCardAdapter extends ArrayAdapter<CreditCard> {
         } else {
             holder = (CreditCardHolder)row.getTag();
         }
-       
         CreditCard creditCard = this.getItem(position);
+        Date d = AndroidResourceFactory.ISODateToDate(creditCard.getExpire());
         holder.txtName.setText(creditCard.getName());
         holder.txtNumber.setText(creditCard.getNumber());
-        holder.txtExpire.setText(creditCard.getExpire());
+        holder.txtExpire.setText(AndroidResourceFactory.dateToStringNoDay(d));
         holder.imgDefault.setVisibility((creditCard.isDefault()) ? View.VISIBLE : View.GONE);
 
         if (creditCard.getType() < creditCardImages.length) {
