@@ -64,13 +64,29 @@ routes.post("/cc", express.bodyParser(), function (req, res, next) {
   console.log(req.body);
 
   var query = "INSERT INTO `modstore`.`credit_card` (`user_id`, `address_id`, `name`, `type`, `number`, `security_code`, `expiration_date`, `is_primary`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
-  req.db.query(query, [cc.user_id, cc.address_id, cc.name, cc.type, cc.number, cc.security_code, cc.expiration_date, cc.is_primary], function (err, result) {
+
+  var q = req.db.query(query, [cc.user_id, cc.address_id, cc.name, cc.type, cc.number, cc.security_code, cc.expiration_date, cc.is_primary], function (err, result) {
     if (err) {
       return next(err);
     }
 
-    res.send(200, {});
+    if (cc.is_primary == 1) {
+      var query = "UPDATE credit_card SET is_primary = 0 WHERE creditcard_id != " + result.insertId + " AND user_id = " + req.db.escape(cc.user_id);
+      console.log("MySQL Query: " + query);
+
+      req.db.query(query, function (err, result) {
+        if (err) {
+          return next(err);
+        }
+
+        res.send(200, {});
+      });
+    } else {
+      res.send(200, {});
+    }
   });
+
+  console.log("MySQL Query: " + q.sql);
 });
 
 routes.put("/cc", express.bodyParser(), function (req, res, next) {
@@ -79,13 +95,28 @@ routes.put("/cc", express.bodyParser(), function (req, res, next) {
   console.log(req.body);
 
   var query = "UPDATE `modstore`.`credit_card` SET `address_id`=?, `name`=?, `type`=?, `number`=?, `security_code`=?, `expiration_date`=?, `is_primary`=? WHERE `creditcard_id`=?;"
-  req.db.query(query, [cc.address_id, cc.name, cc.type, cc.number, cc.security_code, cc.expiration_date, cc.is_primary, cc.creditcard_id], function (err, result) {
+  var q = req.db.query(query, [cc.address_id, cc.name, cc.type, cc.number, cc.security_code, cc.expiration_date, cc.is_primary, cc.creditcard_id], function (err, result) {
     if (err) {
       return next(err);
     }
 
-    res.send(200, {});
+    if (cc.is_primary == 1) {
+      var query = "UPDATE credit_card SET is_primary = 0 WHERE creditcard_id != " + req.db.escape(cc.creditcard_id) + " AND user_id = " + req.db.escape(cc.user_id);
+      console.log("MySQL Query: " + query);
+
+      req.db.query(query, function (err, result) {
+        if (err) {
+          return next(err);
+        }
+
+        res.send(200, {});
+      });
+    } else {
+      res.send(200, {});
+    }
   });
+
+  console.log("MySQL Query: " + q.sql);
 });
 
 module.exports = routes;

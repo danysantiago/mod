@@ -192,4 +192,47 @@ routes.post("/users/updatePassword", express.bodyParser(), function (req, res, n
 
 });
 
+routes.put("/users", express.bodyParser(), function (req, res, next) {
+ console.log(req.body);
+
+ var userId = req.body.userId;
+ var firstName = req.body.firstName;
+ var middleName = req.body.middleName;
+ var lastName = req.body.lastName;
+ var email = req.body.email;
+
+ var sets = [];
+
+ if (userId == undefined) {
+  res.send(404, {"status" : "NO_USER"});
+  return;
+ }
+
+ if (firstName != undefined)
+  sets.push("first_name = " + req.db.escape(firstName));
+ if (middleName != undefined)
+  sets.push("middle_name = " + req.db.escape(middleName));
+ if (lastName != undefined)
+  sets.push("last_name = " + req.db.escape(lastName));
+ if (email != undefined)
+  sets.push("email = " + req.db.escape(email));
+
+  if (sets.length == 0) {
+    res.send(404, {"status" : "NOTHING_TO_UPDATE"});
+    return;
+  }
+
+ var query = "UPDATE user SET " + sets.join(", ") + " WHERE user_id = " + req.body.userId;
+ console.log("MySQL Query: " + query);
+ 
+ req.db.query(query, [req.body.password, req.body.userId], function (err, result) {
+  if (err) {
+    return next(err);
+  }
+
+  res.send(200, {});
+ });
+
+});
+
 module.exports = routes;

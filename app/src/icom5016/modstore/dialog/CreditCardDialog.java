@@ -65,7 +65,7 @@ public class CreditCardDialog extends DialogFragment {
 				   String ccv = ((EditText) v.findViewById(R.id.txtCCSecurityCode)).getText().toString();
 				   String month = ((EditText) v.findViewById(R.id.txtCCExpireMonth)).getText().toString();
 				   String year = ((Spinner) v.findViewById(R.id.cboCCExpireYear)).getSelectedItem().toString();
-				   String type = "" + ((Spinner) v.findViewById(R.id.cboCCExpireYear)).getSelectedItemPosition();
+				   String type = "" + ((Spinner) v.findViewById(R.id.cboType)).getSelectedItemPosition();
 				   String address = "" + ((Address) ((Spinner) v.findViewById(R.id.cboCCAddress)).getSelectedItem()).getId();
 				   String primary = ((CheckBox) v.findViewById(R.id.chkCCDefault)).isChecked() ? "1" : "0";
 

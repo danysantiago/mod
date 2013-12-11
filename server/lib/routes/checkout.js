@@ -239,15 +239,14 @@ routes.post("/checkout/cart", express.bodyParser(), function (req, res, next) {
 
                         var i = 0;
 
-                        var async_call = [];
-
-                        // Add order detail for each product in cart.
-                        for (i = 0; i < products.length; i++) {
-                            var product = products[i];
-                            async_call.push(addOrderDetail(product, orderId, res, req, newOrder));
+                        var pids = [];
+                        for(i = 0; i < products.length; i++) {
+                            pids.push(i);
                         }
 
-                        async.series(async_call, function(err, results){
+                        async.eachSeries(pids, function (pId, done) {
+                                addOrderDetail(products[pId], orderId, res, req, newOrder, done)
+                            }, function(err, results) {
                             if (err) {
                                 req.db.rollback(function() {
                                     throw err;

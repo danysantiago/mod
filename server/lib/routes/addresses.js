@@ -60,13 +60,28 @@ routes.post("/addresses", express.bodyParser(), function (req, res, next) {
   var addr = req.body;
 
   var query = "INSERT INTO `modstore`.`address` (`user_id`, `line1`, `line2`, `city`, `state`, `country`, `zipcode`, `is_primary`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
-  req.db.query(query, [addr.user_id, addr.line1, addr.line2, addr.city, addr.state, addr.country, addr.zipcode, addr.is_primary], function (err, result) {
+  var q = req.db.query(query, [addr.user_id, addr.line1, addr.line2, addr.city, addr.state, addr.country, addr.zipcode, addr.is_primary], function (err, result) {
     if (err) {
       return next(err);
     }
 
-    res.send(200, {});
+    if (addr.is_primary == 1) {
+      var query = "UPDATE address SET is_primary = 0 WHERE address_id != " + result.insertId + " AND user_id = " + req.db.escape(addr.user_id);
+      console.log("MySQL Query: " + query);
+
+      req.db.query(query, function (err, result) {
+        if (err) {
+          return next(err);
+        }
+
+        res.send(200, {});
+      });
+    } else {
+      res.send(200, {});
+    }
   });
+
+  console.log("MySQL Query: " + q.sql);
 });
 
 routes.put("/addresses", express.bodyParser(), function (req, res, next) {
@@ -75,13 +90,28 @@ routes.put("/addresses", express.bodyParser(), function (req, res, next) {
   var addr = req.body;
 
   var query = "UPDATE `modstore`.`address` SET `user_id` = ?, `line1` = ?, `line2` = ?, `city` = ?, `state` = ?, `country` = ?, `zipcode` = ?, `is_primary` = ? WHERE `address_id`=?;"
-  req.db.query(query, [addr.user_id, addr.line1, addr.line2, addr.city, addr.state, addr.country, addr.zipcode, addr.is_primary, addr.address_id], function (err, result) {
+  var q = req.db.query(query, [addr.user_id, addr.line1, addr.line2, addr.city, addr.state, addr.country, addr.zipcode, addr.is_primary, addr.address_id], function (err, result) {
     if (err) {
       return next(err);
     }
 
-    res.send(200, {});
+    if (addr.is_primary == 1) {
+      var query = "UPDATE address SET is_primary = 0 WHERE address_id != " + addr.address_id + " AND user_id = " + req.db.escape(addr.user_id);
+      console.log("MySQL Query: " + query);
+
+      req.db.query(query, function (err, result) {
+        if (err) {
+          return next(err);
+        }
+
+        res.send(200, {});
+      });
+    } else {
+      res.send(200, {});
+    }
   });
+
+  console.log("MySQL Query: " + q.sql);
 });
 
 module.exports = routes;
