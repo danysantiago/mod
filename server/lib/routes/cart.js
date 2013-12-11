@@ -169,10 +169,10 @@ routes.put("/cart", express.bodyParser(), function (req, res, next) {
     var product = result[0];
 
     if ((product.stock - quantity) <= 0) {
-      res.send(202, {"status": "OUT_OF_STOCK"});
+      res.send(200, {"status": "OUT_OF_STOCK"});
       return;
     } else if (product.user_id == userId) {
-      res.send(202, {"status": "PRODUCT_FROM_BUYER"});
+      res.send(200, {"status": "PRODUCT_FROM_BUYER"});
       return;
     }
 
@@ -186,7 +186,7 @@ routes.put("/cart", express.bodyParser(), function (req, res, next) {
           return;
       }
       if(result.affectedRows <= 0){
-        res.send(202, {"status": "NO_UPDATED"});
+        res.send(200, {"status": "NO_UPDATED"});
         return;
       }
       res.send(200, {"status": "ok"});

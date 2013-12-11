@@ -8,6 +8,7 @@ import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.listeners.CartListener;
+import icom5016.modstore.resources.ConstantClass;
 
 import java.text.NumberFormat;
 
@@ -135,7 +136,11 @@ public class CartFragment extends Fragment implements View.OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.cart_checkout:
-			//ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), new CheckoutFragment());
+			CheckoutFragment cf = new CheckoutFragment();
+			Bundle bnd = new Bundle();
+			bnd.putInt(ConstantClass.CHECKOUT_TYPE_KEY, ConstantClass.CHECKOUT_TYPE_CART);
+			cf.setArguments(bnd);
+			ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), cf);
 			break;
 		}
 	}

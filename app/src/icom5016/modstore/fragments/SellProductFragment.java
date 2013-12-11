@@ -398,6 +398,7 @@ public class SellProductFragment extends Fragment {
 		json.put("model", model);
 		json.put("dimensions", dimensions);
 		json.put("category_id", category);
+		json.put("product_id", product.getId());
 
 		Bundle params = new Bundle();
 		params.putString("method", "PUT");

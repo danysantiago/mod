@@ -364,9 +364,9 @@ public class ProductFragment extends Fragment {
 				   Bundle bnd = new Bundle();
 				   bnd.putInt(ConstantClass.CHECKOUT_TYPE_KEY, ConstantClass.CHECKOUT_TYPE_BUY);
 				   bnd.putInt(ConstantClass.PRODUCT_KEY, productId);
-				   //CheckoutFragment cf = new CheckoutFragment();
-				   //cf.setArguments(bnd);
-				   //ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), cf);
+				   CheckoutFragment cf = new CheckoutFragment();
+				   cf.setArguments(bnd);
+				   ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), cf);
 				   
 		       }
 		    });
