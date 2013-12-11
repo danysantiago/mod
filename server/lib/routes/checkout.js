@@ -23,7 +23,7 @@ routes.post("/checkout/now", express.bodyParser(), function (req, res, next) {
         var product = result[0];
 
         if (product.stock == 0) {
-	        res.send(404, {"status": "OUT_OF_STOCK"});
+	        res.send(200, {"status": "OUT_OF_STOCK"});
         	return;
         }
 
@@ -55,7 +55,7 @@ routes.post("/checkout/now", express.bodyParser(), function (req, res, next) {
             var addr = (resultsTemp.addr[0].length > 0) ? resultsTemp.addr[0][0] : null;
 
             if (product.user_id == newOrder.user_id) {
-		        res.send(404, {"status": "PRODUCT_FROM_BUYER"});
+		        res.send(200, {"status": "PRODUCT_FROM_BUYER"});
         		return;
             } if (cc == null) {
 		        res.send(404, {"status": "INVALID_CC"});
@@ -64,7 +64,7 @@ routes.post("/checkout/now", express.bodyParser(), function (req, res, next) {
 		        res.send(404, {"status": "INVALID_ADDR"});
         		return;
         	} else if (cc.valid != 1) {
-		        res.send(404, {"status": "EXPIRED_CC"});
+		        res.send(200, {"status": "EXPIRED_CC"});
         		return;
         	} else if (cc.user_id != newOrder.user_id) {
 		        res.send(404, {"status": "NOT_USER_CC"});
@@ -169,7 +169,7 @@ routes.post("/checkout/cart", express.bodyParser(), function (req, res, next) {
         var products = results;
 
         if (results.length == 0) {
-            res.send(404, {"status": "NOTHING_ON_CART"});
+            res.send(200, {"status": "NOTHING_ON_CART"});
             return;
         }
 
@@ -207,7 +207,7 @@ routes.post("/checkout/cart", express.bodyParser(), function (req, res, next) {
                 res.send(404, {"status": "INVALID_ADDR"});
                 return;
             } else if (cc.valid != 1) {
-                res.send(404, {"status": "EXPIRED_CC"});
+                res.send(200, {"status": "EXPIRED_CC"});
                 return;
             } else if (cc.user_id != newOrder.user_id) {
                 res.send(404, {"status": "NOT_USER_CC"});

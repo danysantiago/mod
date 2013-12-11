@@ -135,7 +135,7 @@ public class CartFragment extends Fragment implements View.OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.cart_checkout:
-			ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), new CartCheckoutFragment());
+			ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), new CheckoutFragment());
 			break;
 		}
 	}

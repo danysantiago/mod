@@ -110,5 +110,10 @@ public class ConstantClass {
 	public static final String SELLER_KEY = "sellerId";
 	public static final String[] CART_DIALOG_OPTIONS = new String[]{"View", "Change Quantity", "Remove"};
 	
+	//Checkout Vars
+	public static final String CHECKOUT_TYPE_KEY = "checkoutTypeKey";
+	public static final int CHECKOUT_TYPE_BUY = 1;
+	public static final int CHECKOUT_TYPE_CART = 2;
+	
 	
 }
