@@ -1,4 +1,8 @@
-var config = require("../config.js"), express = require("express"), async = require("async");
+var config = require("../config.js"),
+    express = require("express"),
+    async = require("async"),
+    path = require("path"),
+    fs = require("fs");
 
 var routes = express();
 
@@ -441,6 +445,44 @@ routes.get("/products/whatshot", function (req, res, next) {
     res.send(200, ret);
   });
 
+});
+
+routes.post("/products", express.bodyParser(
+  {"uploadDir": path.join(__dirname, "../../public/images")}), function (req, res, next) {
+
+  console.log(req.body);
+  console.log(req.files);
+
+  var query = "INSERT INTO `modstore`.`product` (`user_id`, `category_id`, `description`, `name`, `brand`, `model`, `dimensions`, `buy_price`, `quantity`, `starting_bid_price`, `auction_end_ts`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+  var values = [
+    req.body.user_id,
+    req.body.category_id,
+    req.body.description,
+    req.body.name,
+    req.body.brand,
+    req.body.model,
+    req.body.dimensions,
+    req.body.buy_price || null,
+    req.body.quantity,
+    req.body.starting_bid_price || null,
+    req.body.auction_end_ts || null
+  ];
+  req.db.query(query, values, function (err, result) {
+    if (err) {
+      return next(err);
+    }
+
+    if(req.files.image) {
+      req.db.query("INSERT INTO `modstore`.`product_image` (`product_id`, `image_src`) VALUES (?, ?);",
+        [result.insertId, path.basename(req.files.image.path)],
+        function (err, result) {
+          //Do nothing
+        }
+      );
+    }
+
+    res.send(200);
+  });
 });
 
 module.exports = routes;
