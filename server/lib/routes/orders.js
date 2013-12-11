@@ -164,4 +164,104 @@ routes.get("/bids", function (req, res, next) {
 
 });
 
+routes.post("/bids", express.bodyParser(), function (req, res, next) {
+  var newBid = req.body;
+
+  if (newBid.userId == undefined) {
+    res.send("404", {"status" : "NO_USER"});
+    return;
+  }
+
+  if (newBid.productId == undefined) {
+    res.send("404", {"status" : "NO_PRODUCT"});
+    return;
+  }
+
+  if (newBid.bidAmount == undefined) {
+    res.send("404", {"status" : "NO_BIDAMOUNT"});
+    return;
+  }
+
+  async.series({
+      "user": function (done) {
+          var query = "SELECT * FROM user WHERE user_id = " + req.db.escape(newBid.userId);
+          console.log("MySQL Query: " + query);
+          req.db.query(query, done);
+      },
+      "cc": function (done) {
+          var query = "SELECT *, (expiration_date > NOW()) as valid FROM credit_card WHERE is_primary = 1 AND user_id = " + req.db.escape(newBid.userId);
+          console.log("MySQL Query: " + query);
+          req.db.query(query, done);
+      },
+      "addr": function (done) {
+          var query = "SELECT * FROM address WHERE is_primary = 1 AND user_id = " + req.db.escape(newBid.userId);
+          console.log("MySQL Query: " + query);
+          req.db.query(query, done);
+      },
+      "product": function (done) {
+          var query = "SELECT (auction_end_ts < NOW()) as ended, P.user_id, P.product_id, (P.quantity - IFNULL((SELECT SUM(quantity) FROM order_detail OD WHERE OD.product_id = P.product_id GROUP BY OD.product_id),0)) AS stock, IFNULL((SELECT MAX(bid_amount) FROM bid B WHERE B.product_id = P.product_id), starting_bid_price) as last_bid FROM product P WHERE auction_end_ts IS NOT NULL AND product_id = " + req.db.escape(newBid.productId); 
+          console.log("MySQL Query: " + query);
+          req.db.query(query, done);
+      }
+    }, 
+    function (err, resultsTemp) {
+      if (err)
+          throw err;
+
+      var user = (resultsTemp.user[0].length > 0) ? resultsTemp.user[0][0] : null;
+      var cc = (resultsTemp.cc[0].length > 0) ? resultsTemp.cc[0][0] : null;
+      var addr = (resultsTemp.addr[0].length > 0) ? resultsTemp.addr[0][0] : null;
+      var prod = (resultsTemp.product[0].length > 0) ? resultsTemp.product[0][0] : null;
+
+      if (user == null) {
+        res.send("200", {"status" : "INVALID_USER"});
+        return;
+      }
+
+      if (cc == null) {
+        res.send("200", {"status" : "NO_DEFAULT_CC"});
+        return;
+      }
+
+      if (addr == null) {
+        res.send("200", {"status" : "NO_DEFAULT_ADDR"});
+        return;
+      }
+
+      if (prod == null) {
+        res.send("200", {"status" : "INVALID_PRODUCT"});
+        return;
+      }
+
+      if (prod.user_id == newBid.userId) {
+        res.send("200", {"status" : "PRODUCT_FROM_BUYER"});
+        return;
+      }
+
+      if (prod.ended == 1) {
+        res.send("200", {"status" : "AUCTION_ENDED"});
+        return;
+      }
+
+      console.log("max: " + prod.last_bid  + " actual: " + newBid.bidAmount);
+
+      if (prod.last_bid >= newBid.bidAmount) {
+        res.send("200", {"status" : "OUTBIDDED"});
+        return;
+      }
+
+      var query = "INSERT INTO bid SET bid_amount = " + req.db.escape(newBid.bidAmount) + ", user_id = " + user.user_id + ", product_id = " + prod.product_id;
+      console.log("MySQL Query: " + query);
+
+      req.db.query(query, function(err, result) {
+        if (err) {
+          res.send("404", {"status" : "BIDDING_DB_ERR"});
+          throw err;
+        }
+
+        res.send("200", {"status" : "OK"});
+      });
+    });
+});
+
 module.exports = routes;

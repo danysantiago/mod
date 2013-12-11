@@ -1,152 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView1"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="15dp"
-    android:layout_marginLeft="6dp"
-	android:layout_marginRight="6dp"
-	android:layout_marginTop="4dp"
-	android:layout_marginBottom="4dp"
-	android:background="@drawable/bg_card"
-    android:stretchColumns="*" >
+    android:layout_height="fill_parent" >
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-         <EditText
-            android:layout_span="3"
-	        android:id="@+id/txtProductName"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:ems="10"
-	        android:hint="@string/hint_productname" >
-	
-	        <requestFocus android:layout_width="wrap_content" />
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_card"
+        android:padding="15dp"
+        android:stretchColumns="*" >
 
-    </EditText>
-    </TableRow>
-    
-	<TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-         <EditText
-            android:layout_span="3"
-        	android:id="@+id/txtProductDescription"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:ems="10"
-	        android:hint="@string/hint_productdescription"
-	        android:inputType="textMultiLine" 
-	        android:minLines="3"
-	        android:maxLines="3" />
-    </TableRow>
-    
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-         <EditText
-	        android:id="@+id/txtProductBrand"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:ems="8"
-	        android:hint="@string/hint_productbrand" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-         <Space android:layout_width="wrap_content" />
+            <EditText
+                android:id="@+id/txtProductName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:ems="10"
+                android:hint="@string/hint_productname" >
 
-	    <EditText
-	        android:id="@+id/txtProductModel"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:ems="8"
-	        android:hint="@string/hint_productmodel" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-	    <EditText
-	        android:id="@+id/txtProductDimensions"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:ems="8"
-	        android:hint="@string/hint_productdimensions" />
-		<Space />
-	    <EditText
-	        android:id="@+id/txtProductQuantity"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:ems="8"
-	        android:hint="@string/hint_productquantity"
-	        android:inputType="numberSigned" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-	    <EditText
-	        android:id="@+id/txtProductBuyoutPrice"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:ems="8"
-	        android:hint="@string/hint_productbuyoutprice"
-	        android:inputType="numberDecimal" />
-	    <Space />
-	    <Space />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-	     <CheckBox
-	        android:id="@+id/chkAuctionEnabled"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/will_have_auction" />
-	     <Space />
-	    <EditText
-	        android:id="@+id/txtProductBidPrice"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:ems="8"
-	        android:hint="@string/hint_productbidprice"
-	        android:inputType="numberDecimal" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-	      <Spinner
-	        android:id="@+id/cboProductCategory"
-	        android:layout_span="3"
-	         />
-    </TableRow>
-     <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-	       <EditText
-	        android:id="@+id/txtProductEndAuction"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_span="3"
-	        android:hint="@string/hint_productendauction" />
-    </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-	       <Button
-            android:id="@+id/btnProductSelectPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:textSize="20sp"
-            android:text="@string/product_selectphoto"
-            android:textColor="@android:color/white" />
-	       <Space />
-          <Button
-	        android:id="@+id/btnProductAdd"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/product_sellit"
-	        android:textSize="20sp"
-	        android:textColor="@android:color/white" />
-    </TableRow>
-   
+                <requestFocus android:layout_width="wrap_content" />
+            </EditText>
+        </TableRow>
 
-</TableLayout>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/txtProductDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:ems="10"
+                android:hint="@string/hint_productdescription"
+                android:inputType="textMultiLine"
+                android:maxLines="3"
+                android:minLines="3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/txtProductBrand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="8"
+                android:hint="@string/hint_productbrand" />
+
+            <Space android:layout_width="wrap_content" />
+
+            <EditText
+                android:id="@+id/txtProductModel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="8"
+                android:hint="@string/hint_productmodel" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/txtProductDimensions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="8"
+                android:hint="@string/hint_productdimensions" />
+
+            <Space />
+
+            <EditText
+                android:id="@+id/txtProductQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="8"
+                android:hint="@string/hint_productquantity"
+                android:inputType="numberSigned" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/txtProductBuyoutPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="8"
+                android:hint="@string/hint_productbuyoutprice"
+                android:inputType="numberDecimal" />
+
+            <Space />
+
+            <Space />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <CheckBox
+                android:id="@+id/chkAuctionEnabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/will_have_auction" />
+
+            <Space />
+
+            <EditText
+                android:id="@+id/txtProductBidPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="8"
+                android:hint="@string/hint_productbidprice"
+                android:inputType="numberDecimal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Spinner
+                android:id="@+id/cboProductCategory"
+                android:layout_span="3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/txtProductEndAuction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:hint="@string/hint_productendauction" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
+                android:src="@drawable/no_image" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/btnProductSelectPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:text="@string/product_selectphoto"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+            <Space />
+
+            <Button
+                android:id="@+id/btnProductAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/product_sellit"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>
