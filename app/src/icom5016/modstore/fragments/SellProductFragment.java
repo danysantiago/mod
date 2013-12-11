@@ -364,6 +364,7 @@ public class SellProductFragment extends Fragment {
 			txtQuantity.setEnabled(false);
 			txtBidPrice.setEnabled(false);
 			chkAuctionEnabled.setEnabled(false);
+			btnSelectPhoto.setVisibility(View.GONE);
 			
 			isEditing  = true;
 		}

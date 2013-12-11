@@ -2,7 +2,8 @@ package icom5016.modstore.http;
 
 public class Server {
 	
-	public static final String BASE_URL = "http://ec2-54-226-36-4.compute-1.amazonaws.com:8080";
+	public static final String BASE_URL = "http://192.168.1.9:8080";
+	//public static final String BASE_URL = "http://ec2-54-226-36-4.compute-1.amazonaws.com:8080";
 
 	public static class User {
 		public static final String LOGIN = BASE_URL+"/login";
@@ -12,6 +13,7 @@ public class Server {
 		public static final String REGISTER = BASE_URL+"/users/register";
 		public static final String UPDATE_PASSWORD = BASE_URL+"/users/updatePassword";
 		public static final String UPDATE = BASE_URL+"/users";
+		public static final String DELETE = BASE_URL+"/users";
 	}
 	
 	public static class Cart{
