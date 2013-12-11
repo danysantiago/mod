@@ -485,4 +485,30 @@ routes.post("/products", express.bodyParser(
   });
 });
 
+routes.put("/products", express.bodyParser(
+  {"uploadDir": path.join(__dirname, "../../public/images")}), function (req, res, next) {
+
+  console.log(req.body);
+  console.log(req.files);
+
+  var query = "UPDATE `modstore`.`product` SET `category_id`=?, `description`=?, `name`=?, `brand`=?, `model`=?, `dimensions`=? WHERE `product_id`=?;"
+
+  var values = [
+    req.body.category_id,
+    req.body.description,
+    req.body.name,
+    req.body.brand,
+    req.body.model,
+    req.body.dimensions,
+    req.body.product_id
+  ];
+  req.db.query(query, values, function (err, result) {
+    if (err) {
+      return next(err);
+    }
+
+    res.send(200);
+  });
+});
+
 module.exports = routes;

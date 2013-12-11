@@ -3,6 +3,8 @@ package icom5016.modstore.fragments;
 import icom5016.modstore.activities.MainActivity;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.dialog.DateTimePickerDialog;
+import icom5016.modstore.http.HttpRequest;
+import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.MyMultipartEntity;
 import icom5016.modstore.http.MyMultipartEntity.ProgressListener;
 import icom5016.modstore.http.Server;
@@ -36,6 +38,8 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -98,8 +102,6 @@ public class SellProductFragment extends Fragment {
 	private DialogInterface.OnClickListener onDialogSet, onDialogCancel;
 
 	private String selectedPhoto;
-	@SuppressWarnings("unused")
-	private byte selectedPhotoBytes[];
 
 	private Product product;
 
@@ -107,6 +109,7 @@ public class SellProductFragment extends Fragment {
 	private List<Category> listingCat;
 	
 	private User u;
+	private boolean isEditing = false;
 
 	private static final int SELECT_PICTURE = 1;
 
@@ -242,8 +245,18 @@ public class SellProductFragment extends Fragment {
 		btnAdd.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				uploadProduct();
+				if(!isEditing) {
+					uploadProduct();
+				} else {
+					try {
+						editProductHttp();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
+
 		});
 
 		txtEndAuction.setEnabled(false);
@@ -351,6 +364,8 @@ public class SellProductFragment extends Fragment {
 			txtQuantity.setEnabled(false);
 			txtBidPrice.setEnabled(false);
 			chkAuctionEnabled.setEnabled(false);
+			
+			isEditing  = true;
 		}
 
 	}
@@ -366,6 +381,44 @@ public class SellProductFragment extends Fragment {
 	private void uploadProduct() {
 		HttpUpload request = new HttpUpload(getActivity());
 		request.execute();
+	}
+	
+	private void editProductHttp() throws JSONException {
+		String name = txtName.getText().toString();
+		String description = txtDescription.getText().toString();
+		String brand = txtBrand.getText().toString();
+		String model = txtModel.getText().toString();
+		String dimensions = txtDimensions.getText().toString();
+		String category = "" + (cboCategory.getSelectedItemPosition()+1);
+		
+		JSONObject json = new JSONObject();
+		json.put("name", name);
+		json.put("description", description);
+		json.put("brand", brand);
+		json.put("model", model);
+		json.put("dimensions", dimensions);
+		json.put("category_id", category);
+
+		Bundle params = new Bundle();
+		params.putString("method", "PUT");
+		params.putString("url", Server.Products.UPDATE);
+		
+		HttpRequest request = new HttpRequest(params, json, new HttpCallback() {
+			
+			@Override
+			public void onSucess(JSONObject json) {
+				Toast.makeText(getActivity(), "Product Updated Sucessfuly", Toast.LENGTH_SHORT).show();
+				MainActivity ma = (MainActivity) getActivity();
+				ma.onBackPressed();
+			}
+			
+			@Override
+			public void onFailed() {
+				Toast.makeText(getActivity(), "Product Update Failed", Toast.LENGTH_SHORT).show();
+			}
+		});
+		request.execute();
+		
 	}
 
 	public class HttpUpload extends AsyncTask<Void, Integer, Void> {

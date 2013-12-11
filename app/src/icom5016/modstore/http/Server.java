@@ -28,6 +28,7 @@ public class Server {
 	  public static final String GETSELLING = BASE_URL+"/products/selling/";
 	  public static final String GETWHATHOT = BASE_URL+"/products/whatshot";
 	  public static final String ADD = BASE_URL+"/products";
+	  public static final String UPDATE = BASE_URL+"/products";
 	}
 	
 	public static class Categories {
