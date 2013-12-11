@@ -15,6 +15,7 @@ import icom5016.modstore.resources.DataFetchFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,9 +45,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -372,6 +376,8 @@ public class SellProductFragment extends Fragment {
 
 		private ProgressDialog pd;
 		private long totalSize;
+		
+		private boolean sucess = false;
 
 		private static final String url = Server.Products.ADD;
 
@@ -441,8 +447,56 @@ public class SellProductFragment extends Fragment {
 
 				// Add the file to the content's body
 				if(selectedPhoto != null) {
-					File file = new File(selectedPhoto);
-					ContentBody cbFile = new FileBody(file, "image/jpeg");
+					
+					File tempFile = null;
+	                File photoFile = new File(selectedPhoto);
+	                
+	                if(photoFile.length() > 1048576){
+
+	                    int scaleFactor = 4;
+	
+	                    // Get the dimensions of the bitmap
+	                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+	                    bmOptions.inJustDecodeBounds = true;
+	                    BitmapFactory.decodeFile(selectedPhoto, bmOptions);
+	                    int photoW = bmOptions.outWidth;
+	                    int photoH = bmOptions.outHeight;
+	
+//	                    int targetW = (int) (photoW * (1.0-((float) compressRatio)/100.0));
+//	                    int targetH = (int) (photoH * (1.0-((float) compressRatio)/100.0));
+
+	                    // Determine how much to scale down the image
+//	                    int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+	                    Log.d("DEBUG", "Scale factor: " + scaleFactor);
+	
+	                    // Decode the image file into a Bitmap sized to fill the View
+	                    bmOptions.inJustDecodeBounds = false;
+	                    bmOptions.inSampleSize = scaleFactor;
+	                    bmOptions.inPurgeable = true;
+	
+	                    Bitmap bitmap = BitmapFactory.decodeFile(selectedPhoto, bmOptions);
+	
+	                    File dirFile = new File(Environment.getExternalStorageDirectory() + "/.mod");
+	                    if(!dirFile.exists()) {
+                            dirFile.mkdir();
+	                    }
+	
+	                    tempFile = new File(Environment.getExternalStorageDirectory() + "/.mod/temp");
+	
+	                    try {
+                            int imgQlty = scaleFactor == 3 ? 96 : 100;
+                            bitmap.compress(CompressFormat.JPEG, imgQlty, new FileOutputStream(tempFile));
+	                    } catch (FileNotFoundException e) {
+                            Log.e("DbUploadPic", "Error compressing photo.", e);
+	                    }
+	                    
+	                    Log.d("DEBUG", "Compressed from " + photoFile.length() +" to " + tempFile.length());
+
+	                } else {
+                        tempFile = photoFile;
+	                }
+	                
+					ContentBody cbFile = new FileBody(tempFile, "image/jpeg");
 					entity.addPart("image", cbFile);
 				}
 
@@ -481,6 +535,8 @@ public class SellProductFragment extends Fragment {
 					// If everything goes ok, we can get the response
 					String fullRes = EntityUtils.toString(response.getEntity());
 					Log.d("DEBUG", fullRes);
+					
+					sucess = true;
 
 				} else {
 					Log.d("DEBUG", "HTTP Fail, Response Code: " + statusCode);
@@ -507,6 +563,14 @@ public class SellProductFragment extends Fragment {
 		protected void onPostExecute(Void result) {
 			// Dismiss progress dialog
 			pd.dismiss();
+			
+			if(sucess) {
+				Toast.makeText(getActivity(), "Product Sucessfully Created", Toast.LENGTH_SHORT).show();
+				MainActivity ma = (MainActivity) getActivity();
+				ma.onBackPressed();
+			} else {
+				Toast.makeText(getActivity(), "Create Product Failed", Toast.LENGTH_SHORT).show();
+			}
 		}
 
 	}
