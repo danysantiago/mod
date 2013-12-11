@@ -79,10 +79,12 @@ public class MainActivity extends FragmentActivity implements
 		this.fragmentStack = new Stack<Fragment>();
 		
 		//Load Main Fragment fragment
-		this.loadFragmentInMainActivityStack(getContainerId(), new MainFragment());
+		//this.loadFragmentInMainActivityStack(getContainerId(), new MainFragment());
 		processDialog = new ProgressDialog(this);
 		this.thisActivity = this;
 		loadAllCategories();
+		
+		reloadActionBarAndUser(getActionBar());
 		
 	}
 	
@@ -101,9 +103,9 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		//No Verification needed beacuse user can be NULL
-		final ActionBar actionBar = this.getActionBar();
-		this.reloadActionBarAndUser(actionBar);
+		//No Verification needed because user can be NULL
+		//final ActionBar actionBar = this.getActionBar();
+		//this.reloadActionBarAndUser(actionBar);
 		
 	}
 	
@@ -205,12 +207,12 @@ public class MainActivity extends FragmentActivity implements
 
 	
 	public void reloadActionBarAndUser(ActionBar actionBar){
-				//Load Current User
-				loadActiveUser();
-				//No Verification needed beacuse user can be NULL
-				actionBar.setTitle(R.string.app_name);
-				MainListAdapter mla = new MainListAdapter(actionBar.getThemedContext(), activeUser);
-				actionBar.setListNavigationCallbacks(mla, this);
+		// Load Current User
+		loadActiveUser();
+		// No Verification needed beacuse user can be NULL
+		actionBar.setTitle(R.string.app_name);
+		MainListAdapter mla = new MainListAdapter(actionBar.getThemedContext(),activeUser);
+		actionBar.setListNavigationCallbacks(mla, this);
 	}
 	
 	
@@ -231,11 +233,9 @@ public class MainActivity extends FragmentActivity implements
 	@Override 
 	public boolean onNavigationItemSelected(int position, long id) {
 
-		if(this.activeUser == null)
-    	{
+		if(this.activeUser == null) {
     		return this.guestDrawerListener(position);
-    	}
-    	else{
+    	} else{
     		return this.userDrawerListener(position);
     	}
 	}
@@ -268,6 +268,8 @@ public class MainActivity extends FragmentActivity implements
     		//Register Fragment
     		this.loadFragmentInMainActivityStack(getContainerId(), new RegisterFragment());
     		break;
+		default:
+			return false;
     	}
     	return true;
     }
@@ -324,12 +326,17 @@ public class MainActivity extends FragmentActivity implements
     		//Admin Menu
     		this.loadFragmentInMainActivityStack(MainActivity.getContainerId(), new AdminFragment());
     		break;
+    	default:
+    		return false;
     	}
+    	
     	return true;
     }
 	
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
 		// Restore the previously serialized current dropdown position.
 		if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
 			getActionBar().setSelectedNavigationItem(
@@ -339,6 +346,8 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
 		// Serialize the current dropdown position.
 		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
 				.getSelectedNavigationIndex());
