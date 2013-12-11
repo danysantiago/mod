@@ -361,6 +361,13 @@ public class ProductFragment extends Fragment {
 	        builder.setMessage("Buy " + product.getName() + " now?");
 	        builder.setPositiveButton("Procced to Checkout", new DialogInterface.OnClickListener() {
 			   public void onClick(DialogInterface dialog, int id) {
+				   Bundle bnd = new Bundle();
+				   bnd.putInt(ConstantClass.CHECKOUT_TYPE_KEY, ConstantClass.CHECKOUT_TYPE_BUY);
+				   bnd.putInt(ConstantClass.PRODUCT_KEY, productId);
+				   CheckoutFragment cf = new CheckoutFragment();
+				   cf.setArguments(bnd);
+				   ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), cf);
+				   
 		       }
 		    });
 			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

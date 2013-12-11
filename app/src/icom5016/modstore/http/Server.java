@@ -69,4 +69,9 @@ public class Server {
 		public static final String PRODUCTS_BY_WEEK = BASE_URL+"/charts/sales/products/weeks";
 		public static final String PRODUCTS_BY_DAY = BASE_URL+"/charts/sales/products/days";
 	}
+	
+	public static class Checkout {
+		public static final String CART = BASE_URL+"/checkout/cart";
+		public static final String BUY_IT_NOW = BASE_URL+"/checkout/now";
+	}
 }
