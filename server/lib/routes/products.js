@@ -507,7 +507,7 @@ routes.put("/products", express.bodyParser(
       return next(err);
     }
 
-    res.send(200);
+    res.send(200, {});
   });
 });
 
