@@ -2,8 +2,8 @@ package icom5016.modstore.http;
 
 public class Server {
 	
-	public static final String BASE_URL = "http://192.168.1.104:8080";
-	//public static final String BASE_URL = "http://ec2-54-226-36-4.compute-1.amazonaws.com:8080";
+	//public static final String BASE_URL = "http://192.168.1.104:8080";
+	public static final String BASE_URL = "http://ec2-54-226-36-4.compute-1.amazonaws.com:8080";
 
 	public static class User {
 		public static final String LOGIN = BASE_URL+"/login";
