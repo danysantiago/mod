@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -474,6 +475,7 @@ public class SellProductFragment extends Fragment {
 			
 			if(chkAuctionEnabled.isChecked()) {
 				startingPrice = txtBidPrice.getText().toString();
+				myCalendar.setTimeZone(TimeZone.getTimeZone("UTC"));
 				ends = "" + myCalendar.get(Calendar.YEAR) + "-" + (myCalendar.get(Calendar.MONTH)+1) + "-" +
 						myCalendar.get(Calendar.DAY_OF_MONTH) + " " + myCalendar.get(Calendar.HOUR_OF_DAY) + ":" +
 						myCalendar.get(Calendar.MINUTE) + ":00";
