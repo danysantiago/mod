@@ -6,6 +6,7 @@ import icom5016.modstore.http.HttpRequest;
 import icom5016.modstore.http.HttpRequest.HttpCallback;
 import icom5016.modstore.http.Server;
 import icom5016.modstore.models.User;
+import icom5016.modstore.resources.DataFetchFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -144,6 +145,50 @@ public class UsersListFragment extends Fragment {
 		
 	}
 	
+	private void changeUserHttp(String userId, String firstName, String middleName, String lastName, String email, boolean admin) throws JSONException {
+		JSONObject json = new JSONObject();
+		
+		json.put("userId", userId);
+		
+		if (firstName != null) {
+			json.put("firstName", firstName);
+		} 
+		
+		if (middleName != null) {
+			json.put("middleName", middleName);
+		} 
+		
+		if (lastName != null) {
+			json.put("lastName", lastName);
+		} 
+		
+		if (email != null) {
+			json.put("email", email);
+		}
+		
+		json.put("is_admin", admin ? "1" : "0");
+		
+		Bundle params = new Bundle();
+		params.putString("method", "PUT");
+		params.putString("url", Server.User.UPDATE);
+		
+		HttpRequest request = new HttpRequest(params, json, new HttpCallback() {
+			@Override
+			public void onSucess(JSONObject json) {
+				// Reload User Data
+				getHTTPUsers();
+				
+				Toast.makeText(getActivity(), "User account updated!", Toast.LENGTH_SHORT).show();
+			}
+			
+			@Override
+			public void onFailed() {
+				Toast.makeText(getActivity(), "Problem updating the user account.", Toast.LENGTH_SHORT).show();
+			}
+		});
+		request.execute();
+	}
+	
 	private void httpDeleteUser(int guid) {
 		Bundle params = new Bundle();
 		params.putString("method", "DELETE");
@@ -186,15 +231,15 @@ public class UsersListFragment extends Fragment {
 		
 	}
 	
-	private void showEditDialog(User user) {
+	private void showEditDialog(final User user) {
 		LinearLayout ll = new LinearLayout(getActivity());
 		getActivity().getLayoutInflater().inflate(R.layout.dialog_user_info, ll);
 		
 		EditText username = (EditText) ll.findViewById(R.id.usernameEditText);
-		EditText email = (EditText) ll.findViewById(R.id.emailEditText);
-		EditText firstname = (EditText) ll.findViewById(R.id.firstnameEditText);
-		EditText lastname = (EditText) ll.findViewById(R.id.lastnameEditText);
-		CheckBox isAdmin = (CheckBox) ll.findViewById(R.id.adminCheckBox);
+		final EditText email = (EditText) ll.findViewById(R.id.emailEditText);
+		final EditText firstname = (EditText) ll.findViewById(R.id.firstnameEditText);
+		final EditText lastname = (EditText) ll.findViewById(R.id.lastnameEditText);
+		final CheckBox isAdmin = (CheckBox) ll.findViewById(R.id.adminCheckBox);
 		
 		username.setText(user.getUsername());
 		email.setText(user.getEmail());
@@ -207,7 +252,18 @@ public class UsersListFragment extends Fragment {
 		builder.setView(ll);
 		builder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				
+				try {
+					changeUserHttp(
+							""+user.getGuid(),
+							firstname.getText().toString(),
+							null,
+							lastname.getText().toString(),
+							email.getText().toString(),
+							isAdmin.isChecked());
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 		});
