@@ -141,7 +141,7 @@ public class OrderDetailsFragment extends Fragment implements OnClickListener{
 		params.putString("url", Server.Orders.CHANGE_TNUM);
 		
 		JSONObject credentials = new JSONObject();
-		credentials.put("orderDetailsId", this.product.getOrderDeteailtId());
+		credentials.put("orderDetailsId", ""+this.product.getOrderDeteailtId());
 		credentials.put("trackingNumber", etTrackingNum.getText().toString());
 		
 		HttpRequest request = new HttpRequest(params , credentials,new HttpCallback() {
@@ -150,7 +150,7 @@ public class OrderDetailsFragment extends Fragment implements OnClickListener{
 			public void onSucess(JSONObject json) {
 				try {
 					String status = json.getString("status");
-					if(status.equals("OK")){
+					if(status.equals("ok")){
 						Toast.makeText(ma, "Succecfully Updated" , Toast.LENGTH_SHORT).show();
 					}
 					else{

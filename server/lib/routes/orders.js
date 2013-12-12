@@ -284,7 +284,7 @@ routes.post("/tracking_number", express.bodyParser() ,function (req, res, next) 
     }
 
     if (result.affectedRows <= 0) {
-      res.send(400, {"status": "error"});
+      res.send(200, {"status": "error"});
       return;
     } else {
       res.send(200, {"status": "ok"});
