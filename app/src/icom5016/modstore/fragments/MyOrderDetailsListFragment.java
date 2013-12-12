@@ -197,7 +197,7 @@ public class MyOrderDetailsListFragment extends Fragment {
 		credentials.put("sellerId", od.getProduct().getUserId());
 		credentials.put("ratingValue", Float.toString(ratingBar.getRating()));
 		
-		HttpRequest request = new HttpRequest(params ,new HttpCallback() {
+		HttpRequest request = new HttpRequest(params ,credentials,new HttpCallback() {
 
 			@Override
 			public void onSucess(JSONObject json) {
@@ -237,7 +237,7 @@ public class MyOrderDetailsListFragment extends Fragment {
 		credentials.put("orderDetailsId", od.getId() );
 		credentials.put("sellerId", od.getProduct().getUserId());
 		
-		HttpRequest request = new HttpRequest(params ,new HttpCallback() {
+		HttpRequest request = new HttpRequest(params , credentials,new HttpCallback() {
 
 			@Override
 			public void onSucess(JSONObject json) {

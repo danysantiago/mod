@@ -154,7 +154,7 @@ routes.get("/rating", function (req, res, next) {
 
 });
 
-routes.post("/rating", function (req, res, next) {
+routes.post("/rating", express.bodyParser(), function (req, res, next) {
   var userId = req.body.userId;
   var sellerId = req.body.sellerId;
   var orderDetailsId = req.body.orderDetailsId;

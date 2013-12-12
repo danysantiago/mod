@@ -13,7 +13,7 @@ public class Server {
 		public static final String REGISTER = BASE_URL+"/users/register";
 		public static final String UPDATE_PASSWORD = BASE_URL+"/users/updatePassword";
 		public static final String UPDATE = BASE_URL+"/users";
-		public static final String RATING_CHECK = "/rating/check";
+		public static final String RATING_CHECK = BASE_URL+"/rating/check";
 		public static final String DELETE = BASE_URL+"/users";
 	}
 	
