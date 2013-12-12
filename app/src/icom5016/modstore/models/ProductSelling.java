@@ -12,9 +12,11 @@ public class ProductSelling extends Product {
 	 */
 	private static final long serialVersionUID = 1L;
 	private int stock;
-	private String trackingNumber;
+	private String trackingNumber = null;
 	private int qunatityBought;
 	private double totalPrice;
+	private int orderId;
+	private int orderDeteailtId;
 
 	public ProductSelling(JSONObject json) throws JSONException {
 		super(json);
@@ -26,6 +28,28 @@ public class ProductSelling extends Product {
 			this.qunatityBought = json.getInt("order_quantity");
 		if(json.has("total_price"))
 			this.totalPrice = json.getDouble("total_price");
+		if(json.has("order_id"))
+			this.orderId = json.getInt("order_id");
+		if(json.has("order_detail_id"))
+			this.orderId = json.getInt("order_detail_id");
+		
+		
+	}
+
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
+	public int getOrderDeteailtId() {
+		return orderDeteailtId;
+	}
+
+	public void setOrderDeteailtId(int orderDeteailtId) {
+		this.orderDeteailtId = orderDeteailtId;
 	}
 
 	public int getStock() {

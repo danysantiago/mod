@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/odPlaceHolderImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/placeholder_product_list"
+        android:contentDescription="@string/product_list_placeholder_desc" />
+    <ProgressBar
+            android:id="@+id/odProgressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+       		android:layout_centerVertical="true"
+            android:layout_centerInParent="true" />
+
+        
+       
+	<LinearLayout
+	    		 android:id="@+id/llContainer"
+	    		 android:visibility="gone"
+	             android:layout_width="match_parent"
+	             android:layout_height="match_parent"
+	             android:layout_marginBottom="4dp"
+	             android:layout_marginLeft="6dp"
+	             android:layout_marginRight="6dp"
+	             android:layout_marginTop="4dp"
+	             android:background="@drawable/bg_card"
+	             android:orientation="vertical" >
+	
+	             <TextView
+	                 android:id="@+id/tvOrderDetailsDate"
+	                 android:layout_width="wrap_content"
+	                  android:textStyle="bold"
+	                 android:layout_height="wrap_content"
+	                 android:text="@string/texbox_orderdate" />
+	             <TextView
+	                 android:id="@+id/tvOrderTotal"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:text="@string/textbox_ordertotal" />
+	             <TextView
+	                 android:id="@+id/tvOrderShipTo:"
+	                 android:textStyle="bold"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:text="@string/textbox_ordershipto" />
+	             <TextView
+	                 android:id="@+id/tvOrderAddress"
+	                 android:layout_marginLeft="5dp"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:text="@string/textbox_orderaddress" />
+	           
+	              <TextView
+	                 android:id="@+id/tvOrderTracking"
+	                  android:textStyle="bold"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:text="@string/textbox_ordertrackingtitle" />
+	              <EditText
+	                 android:inputType="text"
+	                 android:id="@+id/tvOrderTrackingNUm"
+	                 android:layout_marginLeft="5dp"
+	                 android:layout_width="match_parent"
+	                 android:layout_height="wrap_content"  />
+
+	              <Button
+	                  android:id="@+id/tvOrderButton"
+	                  android:layout_width="match_parent"
+	                  android:layout_height="wrap_content"
+	                  android:text="Update" />
+	
+	 </LinearLayout>
+
+
+</RelativeLayout>

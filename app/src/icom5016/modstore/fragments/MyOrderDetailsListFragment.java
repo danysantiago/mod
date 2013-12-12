@@ -281,7 +281,7 @@ public class MyOrderDetailsListFragment extends Fragment {
 
 			@Override
 			public void onFailed() {
-				Toast.makeText(ma, "No Connection Check", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ma, "No Connection", Toast.LENGTH_SHORT).show();
 				
 			}
 

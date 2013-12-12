@@ -3,9 +3,11 @@ package icom5016.modstore.listeners;
 import icom5016.modstore.activities.MainActivity;
 import icom5016.modstore.activities.R;
 import icom5016.modstore.fragments.BidsFragment;
+import icom5016.modstore.fragments.OrderDetailsFragment;
 import icom5016.modstore.fragments.ProductFragment;
 import icom5016.modstore.fragments.SellProductFragment;
 import icom5016.modstore.models.Product;
+import icom5016.modstore.models.ProductSelling;
 import icom5016.modstore.resources.ConstantClass;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class SellingListListener implements OnItemClickListener {
 	
 	@Override
 	public void onItemClick(AdapterView<?> listViewAdapter, View view, int pos, long arg3) {
-		final Product product = (Product) listViewAdapter.getAdapter().getItem(pos);
+		final ProductSelling product = (ProductSelling) listViewAdapter.getAdapter().getItem(pos);
 		LayoutInflater inflater = this.mainActivity.getLayoutInflater();
         View sfView = inflater.inflate(R.layout.dialog_selling_list, null, false);
         AlertDialog.Builder builder = new AlertDialog.Builder(this.mainActivity);
@@ -82,7 +84,7 @@ public class SellingListListener implements OnItemClickListener {
 				        	loadEditFragment(product, type);
 				        }
 				        else if(type.equals(ConstantClass.SELLING_SOLD)){
-				        	loadOrderDetails(product.getId());
+				        	loadOrderDetails(product);
 				        }
 					break;
 				case 2:
@@ -98,7 +100,12 @@ public class SellingListListener implements OnItemClickListener {
 		
 	}
 	
-	protected void loadOrderDetails(int id) {
+	protected void loadOrderDetails(ProductSelling product) {
+		Bundle bnd = new Bundle();
+		bnd.putSerializable(ConstantClass.PRODUCT_KEY, product);
+		OrderDetailsFragment odf = new OrderDetailsFragment();
+		odf.setArguments(bnd);
+		mainActivity.loadFragmentInMainActivityStack(MainActivity.getContainerId(), odf);
 	}
 
 	protected void loadEditFragment(Product product, String type) {

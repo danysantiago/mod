@@ -60,6 +60,7 @@ public class Server {
 		public static final String GETORDERS = BASE_URL+"/orders/";
 		public static final String GETORDERDETAILS = BASE_URL+"/orders/details/";
 		public static final String BIDS = BASE_URL+"/bids";
+		public static final String CHANGE_TNUM = BASE_URL+"/tracking_number";
 	}
 	
 	public static class Images {
