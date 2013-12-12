@@ -413,8 +413,8 @@ public class ProductFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			View bidDialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_bid_layout, null);
-			EditText amountBox = (EditText) bidDialogView.findViewById(R.id.amountEditText);
-			amountBox.setHint(""+(currentBid + 1));
+			final EditText amountBox = (EditText) bidDialogView.findViewById(R.id.amountEditText);
+			amountBox.setText(""+(currentBid + 1));
 			
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -422,6 +422,11 @@ public class ProductFragment extends Fragment {
 	        builder.setView(bidDialogView);
 	        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
 			   public void onClick(DialogInterface dialog, int id) {
+				   try {
+					doHttpBid(user.getGuid(),Double.parseDouble(amountBox.getText().toString().trim()));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 		       }
 		    });
 			builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -432,6 +437,86 @@ public class ProductFragment extends Fragment {
 			
 		}
 		
+	}
+	
+	private void doHttpBid(int userId,double bidAmount) throws JSONException{
+		Bundle params = new Bundle();
+		params.putString("url", Server.Orders.BIDS);
+		params.putString("method", "POST");
+		//Credentials
+		JSONObject credentials = new JSONObject();
+		credentials.put("productId", Integer.toString(productId));
+		credentials.put("userId", userId);
+		credentials.put("bidAmount", Double.toString(bidAmount));
+		
+		HttpRequest request = new HttpRequest(params, credentials ,new HttpCallback() {
+		
+			@Override
+			public void onSucess(JSONObject json) {
+				
+				String acknowledgeCode = null;
+				try {
+					acknowledgeCode = json.getString("status");
+				} catch (JSONException e1) {
+					Toast.makeText(ma, R.string.errmsg_bad_json,
+							Toast.LENGTH_SHORT).show();
+				}
+				
+				if(acknowledgeCode != null)
+				{
+					if(acknowledgeCode.equals("OK")){
+						Toast.makeText(ma, "Congratulation Your the Highest Bidder", Toast.LENGTH_SHORT).show();
+						ma.fragmentStack.pop();
+						ProductFragment pf = new ProductFragment();
+						Bundle bnd = new Bundle();
+						bnd.putInt(ConstantClass.PRODUCT_KEY, productId);
+						pf.setArguments(bnd);
+						ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), pf);
+					}else if(acknowledgeCode.equals("INVALID_USER")){
+						Toast.makeText(ma, "Failed: Invalid User", Toast.LENGTH_SHORT).show();
+					}else if(acknowledgeCode.equals("NO_DEFAULT_CC")){
+						Toast.makeText(ma, "No Default Credit Card Found", Toast.LENGTH_SHORT).show();
+					}else if(acknowledgeCode.equals("NO_DEFAULT_ADDR")){
+						Toast.makeText(ma, "No Default Address Found", Toast.LENGTH_SHORT).show();
+					}else if(acknowledgeCode.equals("INVALID_PRODUCT")){
+						Toast.makeText(ma, "Failed: Invalid Product", Toast.LENGTH_SHORT).show();
+					}else if(acknowledgeCode.equals("PRODUCT_FROM_BUYER")){
+						Toast.makeText(ma, "Failed: Bidding in Your Own Product", Toast.LENGTH_SHORT).show();
+					}else if(acknowledgeCode.equals("AUCTION_ENDED")){
+						Toast.makeText(ma, "Actuion Ended", Toast.LENGTH_SHORT).show();
+						ma.fragmentStack.pop();
+						ProductFragment pf = new ProductFragment();
+						Bundle bnd = new Bundle();
+						bnd.putInt(ConstantClass.PRODUCT_KEY, productId);
+						pf.setArguments(bnd);
+						ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), pf);
+					}else if(acknowledgeCode.equals("OUTBIDDED")){
+						Toast.makeText(ma, "Outbid", Toast.LENGTH_SHORT).show();
+						ma.fragmentStack.pop();
+						ProductFragment pf = new ProductFragment();
+						Bundle bnd = new Bundle();
+						bnd.putInt(ConstantClass.PRODUCT_KEY, productId);
+						pf.setArguments(bnd);
+						ma.loadFragmentInMainActivityStack(MainActivity.getContainerId(), pf);
+					}
+					else {
+						Toast.makeText(ma, "Unable to Complete Bid", Toast.LENGTH_SHORT).show();
+					}
+				}
+				
+				
+			}
+			
+			@Override
+			public void onFailed() {
+				Toast.makeText(ma, "Unable to Complete Bid", Toast.LENGTH_SHORT).show();
+				
+			}
+			public void onDone(){
+				pDialog.dismiss();
+			}
+		});
+		request.execute();
 	}
 	
 	private String num_format(float num) {

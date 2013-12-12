@@ -103,7 +103,7 @@ public class MyStoreFragment extends Fragment implements View.OnClickListener {
 	private void doHttpRating() {
 		User user = DataFetchFactory.getUserFromSPref(getActivity());
 		
-		Uri.Builder url = Uri.parse(Server.User.GETRATING).buildUpon();
+		Uri.Builder url = Uri.parse(Server.User.RATING).buildUpon();
 		url.appendQueryParameter("userId", ""+user.getGuid());
 		
 		Bundle params = new Bundle();

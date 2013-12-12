@@ -8,11 +8,12 @@ public class Server {
 	public static class User {
 		public static final String LOGIN = BASE_URL+"/login";
 		
-		public static final String GETRATING = BASE_URL+"/rating";
+		public static final String RATING = BASE_URL+"/rating";
 		public static final String GETALL = BASE_URL+"/users";
 		public static final String REGISTER = BASE_URL+"/users/register";
 		public static final String UPDATE_PASSWORD = BASE_URL+"/users/updatePassword";
 		public static final String UPDATE = BASE_URL+"/users";
+		public static final String RATING_CHECK = BASE_URL+"/rating/check";
 		public static final String DELETE = BASE_URL+"/users";
 	}
 	
@@ -58,7 +59,7 @@ public class Server {
 	public static class Orders{
 		public static final String GETORDERS = BASE_URL+"/orders/";
 		public static final String GETORDERDETAILS = BASE_URL+"/orders/details/";
-		public static final String GETBIDS = BASE_URL+"/bids";
+		public static final String BIDS = BASE_URL+"/bids";
 	}
 	
 	public static class Images {
