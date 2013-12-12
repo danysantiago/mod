@@ -153,6 +153,81 @@ routes.get("/rating", function (req, res, next) {
 
 });
 
+routes.post("/rating", function (req, res, next) {
+  var userId = req.body.userId;
+  var sellerId = req.body.sellerId;
+  var orderDetailsId = req.body.orderDetailsId;
+  var ratingValue = req.body.ratingValue;
+
+  if (userId == undefined) {
+    res.send(404, {"status": "NO_USER"});
+    return;
+  } else if (sellerId == undefined) {
+    res.send(404, {"status": "NO_SELLER"});
+    return;
+  } else if (orderDetailsId == undefined) {
+    res.send(404, {"status": "NO_ORDER_DETAILS"});
+    return;
+  }
+  else if (ratingValue == undefined) {
+    res.send(404, {"status": "NO_VALUE"});
+    return;
+  }
+
+  var query = "INSERT INTO `modstore`.`seller_review` (`reviewer_user_id`, `reviewee_user_id`, `rate`, `order_details_id`) VALUES (?, ?, ?, ?);"
+  req.query(query, [userId, sellerId, ratingValue ,orderDetailsId], function (err, result){
+     if (err) {
+
+      if(err.code === "ER_DUP_ENTRY") {
+        res.send(200, {"status": "reviewed"});
+        return;
+      }
+
+      return next(err);
+    }
+
+    console.log(result);
+
+    res.send(200, {"status": "ok"});
+  });
+});
+
+
+routes.post("/rating/check", express.bodyParser() ,function (req, res, next) {
+  var userId = req.body.userId;
+  var sellerId = req.body.sellerId;
+  var orderDetailsId = req.body.orderDetailsId;
+
+  if (userId == undefined) {
+    res.send(404, {"status": "NO_USER"});
+    return;
+  } else if (sellerId == undefined) {
+    res.send(404, {"status": "NO_SELLER"});
+    return;
+  } else if (orderDetailsId == undefined) {
+    res.send(404, {"status": "NO_ORDER_DETAILS"});
+    return;
+  }
+
+  var query = "SELECT * FROM `modstore `.`seller_review WHERE `reviewee_user_id = ? and `reviewer_user_id` = ? and `order_details_id` =  ?";
+  req.query(query, [userId, sellerId, orderDetailsId], function (err, result){
+    if (err) {
+      res.send(400, {"status": "error"});
+      return;
+    }
+
+    console.log(result);
+    if(result.length > 0){
+      res.send(200, {"status": "rated", "your_rating" : result[0].rate});
+      return;
+    }
+    else{
+      res.send(400, {"status": "ok"});
+      return;
+    }
+  });
+});
+
 routes.post("/users/register", express.bodyParser(), function (req, res, next) {
   var newUser = req.body;
 

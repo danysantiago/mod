@@ -56,7 +56,7 @@ public class BidsFragment extends Fragment {
 
 	private void doHttpBids() {
 		
-		Uri.Builder url = Uri.parse(Server.Orders.GETBIDS).buildUpon();
+		Uri.Builder url = Uri.parse(Server.Orders.BIDS).buildUpon();
 		url.appendQueryParameter("sellerId", Integer.toString(sellerId));
 		url.appendQueryParameter("productId", Integer.toString(productId));
 		
