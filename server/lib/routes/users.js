@@ -176,7 +176,7 @@ routes.post("/rating", express.bodyParser(), function (req, res, next) {
   }
 
   var query = "INSERT INTO `modstore`.`seller_review` (`reviewer_user_id`, `reviewee_user_id`, `rate`, `order_details_id`) VALUES (?, ?, ?, ?);"
-  req.query(query, [userId, sellerId, ratingValue ,orderDetailsId], function (err, result){
+  req.db.query(query, [userId, sellerId, ratingValue ,orderDetailsId], function (err, result){
      if (err) {
 
       if(err.code === "ER_DUP_ENTRY") {
@@ -211,7 +211,7 @@ routes.post("/rating/check", express.bodyParser() ,function (req, res, next) {
   }
 
   var query = "SELECT * FROM `modstore `.`seller_review WHERE `reviewee_user_id = ? and `reviewer_user_id` = ? and `order_details_id` =  ?";
-  req.query(query, [userId, sellerId, orderDetailsId], function (err, result){
+  req.db.query(query, [userId, sellerId, orderDetailsId], function (err, result){
     if (err) {
       res.send(400, {"status": "error"});
       return;
