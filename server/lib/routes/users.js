@@ -224,7 +224,7 @@ routes.post("/rating/check", express.bodyParser() ,function (req, res, next) {
       return;
     }
     else{
-      res.send(400, {"status": "ok"});
+      res.send(200, {"status": "ok"});
       return;
     }
   });
