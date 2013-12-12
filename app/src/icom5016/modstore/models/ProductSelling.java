@@ -31,7 +31,7 @@ public class ProductSelling extends Product {
 		if(json.has("order_id"))
 			this.orderId = json.getInt("order_id");
 		if(json.has("order_detail_id"))
-			this.orderId = json.getInt("order_detail_id");
+			this.orderDeteailtId = json.getInt("order_detail_id");
 		
 		
 	}
