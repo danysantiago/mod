@@ -176,7 +176,7 @@ routes.post("/rating", express.bodyParser(), function (req, res, next) {
   }
 
   var query = "INSERT INTO `modstore`.`seller_review` (`reviewer_user_id`, `reviewee_user_id`, `rate`, `order_details_id`) VALUES (?, ?, ?, ?);"
-  req.db.query(query, [userId, sellerId, ratingValue ,orderDetailsId], function (err, result){
+  var q = req.db.query(query, [userId, sellerId, ratingValue ,orderDetailsId], function (err, result){
      if (err) {
 
       if(err.code === "ER_DUP_ENTRY") {
@@ -191,6 +191,7 @@ routes.post("/rating", express.bodyParser(), function (req, res, next) {
 
     res.send(200, {"status": "ok"});
   });
+  console.log(q.sql);
 });
 
 
@@ -211,7 +212,7 @@ routes.post("/rating/check", express.bodyParser() ,function (req, res, next) {
   }
 
   var query = "SELECT * FROM `modstore `.`seller_review WHERE `reviewee_user_id = ? and `reviewer_user_id` = ? and `order_details_id` =  ?";
-  req.db.query(query, [userId, sellerId, orderDetailsId], function (err, result){
+  var q = req.db.query(query, [userId, sellerId, orderDetailsId], function (err, result){
     if (err) {
       res.send(400, {"status": "error"});
       return;
@@ -227,6 +228,7 @@ routes.post("/rating/check", express.bodyParser() ,function (req, res, next) {
       return;
     }
   });
+  console.log(q.sql);
 });
 
 routes.post("/users/register", express.bodyParser(), function (req, res, next) {
@@ -235,7 +237,7 @@ routes.post("/users/register", express.bodyParser(), function (req, res, next) {
   console.log(req.body);
 
   var query = "INSERT INTO `modstore`.`user` (`user_name`, `user_password`, `first_name`, `middle_name`, `last_name`, `email`, `is_admin`) VALUES (?, MD5(?), ?, ?, ?, ?, ?);"
-  req.db.query(query, [newUser.user_name, newUser.user_password, newUser.first_name, newUser.middle_name, newUser.last_name, newUser.email, newUser.is_admin], function (err, result) {
+  var q = req.db.query(query, [newUser.user_name, newUser.user_password, newUser.first_name, newUser.middle_name, newUser.last_name, newUser.email, newUser.is_admin], function (err, result) {
     if (err) {
 
       if(err.code === "ER_DUP_ENTRY") {
@@ -250,6 +252,7 @@ routes.post("/users/register", express.bodyParser(), function (req, res, next) {
 
     res.send(200, {"status": "ok"});
   });
+  console.log(q.sql);
 
 
 });
