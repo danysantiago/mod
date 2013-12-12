@@ -130,6 +130,7 @@ public class ProductFragment extends Fragment {
 		bidButton = (Button) view.findViewById(R.id.bidButton);
 		bidButton.setOnClickListener(new BidButtonListener());
 		
+		
 		pd = (ProgressBar) view.findViewById(R.id.progressBar);
 		
 		soldItemView = (LinearLayout) view.findViewById(R.id.soldItemView);
@@ -156,6 +157,7 @@ public class ProductFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		
 		user = DataFetchFactory.getUserFromSPref(getActivity());
+		
 		
 		Uri.Builder url = Uri.parse(Server.Products.GET).buildUpon();
 		if(user != null) {
@@ -356,6 +358,12 @@ public class ProductFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
+			
+			if(user == null){
+				Toast.makeText(ma, "Must be Log In", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	        builder.setTitle("Buy Now");
 	        builder.setMessage("Buy " + product.getName() + " now?");
@@ -383,6 +391,12 @@ public class ProductFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
+			
+			if(user == null){
+				Toast.makeText(ma, "Must be Log In", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	        builder.setTitle("Add to Cart");
 	        builder.setMessage("Add " + product.getName() + " to cart?");
@@ -412,6 +426,13 @@ public class ProductFragment extends Fragment {
 
 		@Override
 		public void onClick(View v) {
+			
+			if(user == null){
+				Toast.makeText(ma, "Must be Log In", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			
+			
 			View bidDialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_bid_layout, null);
 			final EditText amountBox = (EditText) bidDialogView.findViewById(R.id.amountEditText);
 			amountBox.setText(""+(currentBid + 1));
