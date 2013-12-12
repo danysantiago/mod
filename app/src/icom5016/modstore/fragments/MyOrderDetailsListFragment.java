@@ -248,7 +248,9 @@ public class MyOrderDetailsListFragment extends Fragment {
 						ratingPb.setVisibility(View.GONE);
 						ratingBar.setRating(avgSellerRating);
 						ratingBar.setVisibility(View.VISIBLE);
-						ratingDialog.setTitle("Your Rating");
+						ratingBuilder.setTitle("Your Rating");
+						ratingDialog = ratingBuilder.create();
+						ratingDialog.show();
 					}
 					else if(status.equals("ok")){
 						ratingPb.setVisibility(View.GONE);
