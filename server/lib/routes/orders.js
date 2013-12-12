@@ -264,4 +264,35 @@ routes.post("/bids", express.bodyParser(), function (req, res, next) {
     });
 });
 
+routes.post("/tracking_number", express.bodyParser() ,function (req, res, next) {
+  var trackingNumber = req.body.trackingNumber;
+  var orderDetailsId = req.body.orderDetailsId;
+
+  if (trackingNumber == undefined) {
+    res.send(404, {"status": "NO_TRACKING_NUM"});
+    return;
+  } else if (orderDetailsId == undefined) {
+    res.send(404, {"status": "NO_ORDER_DETAILS"});
+    return;
+  }
+
+  var query = "UPDATE order_detail SET tracking_number = ? WHERE order_detail_id = ?";
+  var q = req.db.query(query, [trackingNumber, orderDetailsId], function (err, result){
+    if (err) {
+      res.send(400, {"status": "error"});
+      return;
+    }
+
+    if (result.affectedRows <= 0) {
+      res.send(400, {"status": "error"});
+      return;
+    } else {
+      res.send(200, {"status": "ok"});
+      return;
+    }
+  });
+
+  console.log("MySQL Query: " + q.sql);
+});
+
 module.exports = routes;
