@@ -279,6 +279,7 @@ routes.put("/users", express.bodyParser(), function (req, res, next) {
  var middleName = req.body.middleName;
  var lastName = req.body.lastName;
  var email = req.body.email;
+ var is_admin = req.body.is_admin;
 
  var sets = [];
 
@@ -295,6 +296,8 @@ routes.put("/users", express.bodyParser(), function (req, res, next) {
   sets.push("last_name = " + req.db.escape(lastName));
  if (email != undefined)
   sets.push("email = " + req.db.escape(email));
+ if (is_admin != undefined)
+  sets.push("is_admin = " + req.db.escape(is_admin));
 
   if (sets.length == 0) {
     res.send(404, {"status" : "NOTHING_TO_UPDATE"});
