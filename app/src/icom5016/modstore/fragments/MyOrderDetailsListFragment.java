@@ -255,6 +255,7 @@ public class MyOrderDetailsListFragment extends Fragment {
 						ratingBar.setVisibility(View.VISIBLE);
 						ratingBar.setFocusable(true);
 						ratingBar.setClickable(true);
+						ratingBar.setIsIndicator(false);
 						ratingBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener(){
 							@Override
 							public void onClick(DialogInterface dialog, int which) {

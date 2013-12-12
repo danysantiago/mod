@@ -212,7 +212,7 @@ routes.post("/rating/check", express.bodyParser() ,function (req, res, next) {
   }
 
   var query = "SELECT * FROM `modstore`.`seller_review` WHERE `reviewee_user_id` = ? AND `reviewer_user_id` = ? AND `order_details_id` =  ?;";
-  var q = req.db.query(query, [userId, sellerId, orderDetailsId], function (err, result){
+  var q = req.db.query(query, [sellerId, userId, orderDetailsId], function (err, result){
     if (err) {
       res.send(400, {"status": "error"});
       return;
