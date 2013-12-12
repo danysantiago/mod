@@ -16,6 +16,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -68,27 +69,27 @@ public class UsersListFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View v, int pos, long id) {
 				final User user = (User) usersListView.getAdapter().getItem(pos);
-				
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			    builder.setTitle("User Options");
-			    builder.setItems(userOptions, new OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which) {
-						case 0:
-							showEditDialog(user);
-							break;
-						case 1:
-							showDeleteDialog(user);
-							break;
-						}
+				if(!user.isDelete()) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				    builder.setTitle("User Options");
+				    builder.setItems(userOptions, new OnClickListener() {
 						
-					}
-
-				});
-				builder.show();
-				
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which) {
+							case 0:
+								showEditDialog(user);
+								break;
+							case 1:
+								showDeleteDialog(user);
+								break;
+							}
+							
+						}
+	
+					});
+					builder.show();
+				}
 			}
 		}); 
 		
@@ -143,13 +144,40 @@ public class UsersListFragment extends Fragment {
 		
 	}
 	
-	private void showDeleteDialog(User user) {
+	private void httpDeleteUser(int guid) {
+		Bundle params = new Bundle();
+		params.putString("method", "DELETE");
+		params.putString("url", Server.User.DELETE + "?userId=" + Integer.toString(guid)); //Get All Users
+		
+		
+		HttpRequest request = new HttpRequest(params, new HttpCallback() {
+
+			@Override
+			public void onSucess(JSONObject json) {
+				Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onFailed() {
+				Toast.makeText(getActivity(), "Request Failed", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onDone() {
+				getHTTPUsers();
+			}
+			
+		});
+		request.execute();
+	}
+	
+	private void showDeleteDialog(final User user) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Delete User");
 		builder.setMessage("Are you sure you wish to delete user?\n\n" + user.getUsername() + "\n" + user.getEmail() + "\n\n This process cannot be undone.");
 		builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				
+				httpDeleteUser(user.getGuid());
 			}
 			
 		});
@@ -255,6 +283,10 @@ public class UsersListFragment extends Fragment {
 			
 			if(user.isAdmin()) {
 				username.setTextColor(getResources().getColor(R.color.dark_green));
+			}
+			
+			if (user.isDelete()) {
+				username.setPaintFlags(username.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 			}
 
 			return row;

@@ -16,6 +16,7 @@ public class User {
 	private int guid;
 	private boolean isAdmin;
 	//private String token;
+	private boolean isDelete;
 	
 	
 	public User(String username, String firstName, String middleName, String lastName, String email, int guid ,boolean isAdmin) {
@@ -54,6 +55,13 @@ public class User {
 		this.email = jsonObject.getString("email");
 		int admin = jsonObject.getInt("is_admin");
 		this.isAdmin = admin == 1;
+		
+		if(jsonObject.has("deleted")) {
+			int deleted = jsonObject.getInt("deleted");
+			this.isDelete = deleted == 1;
+		} else {
+			isDelete = false;
+		}
 	}
 	
 	public String getUsername() {
@@ -85,6 +93,10 @@ public class User {
 	}
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public boolean isDelete() {
+		return isDelete;
 	}
 
 }

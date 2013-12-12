@@ -123,6 +123,7 @@ routes.get("/myuser", function (req, res) {
                 "lastName": result[0].last_name,
                 "email": result[0].email,
                 "isAdmin": (result[0].is_admin == 1),
+                "deleted": (result[0].deleted == 1),
                 "created_ts": result[0].created_ts
               };
 
@@ -308,6 +309,19 @@ routes.put("/users", express.bodyParser(), function (req, res, next) {
   res.send(200, {});
  });
 
+});
+
+routes.del("/users", function (req, res, next) {
+  console.log(req.query);
+
+  var query = "UPDATE user SET deleted = '1' WHERE user_id = " + req.db.escape(req.query.userId) + ";";
+  req.db.query(query, function (err, result) {
+    if (err) {
+      return next(err);
+    }
+
+    res.send(200, {});
+  })
 });
 
 module.exports = routes;

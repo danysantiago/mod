@@ -10,7 +10,7 @@ routes.post("/login", express.bodyParser(), function (req, res) {
   if(req.body) {
     console.log(JSON.stringify(req.body));
 
-    query = req.db.format("SELECT * FROM user WHERE user_name = ? AND user_password = MD5(?);", [req.body.user, req.body.pass]);
+    query = req.db.format("SELECT * FROM user WHERE user_name = ? AND user_password = MD5(?) AND deleted = '0';", [req.body.user, req.body.pass]);
     console.log("MySQL QUERY: " + query);
 
     req.db.query(query, function (err, result) {
