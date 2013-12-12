@@ -168,7 +168,7 @@ routes.put("/cart", express.bodyParser(), function (req, res, next) {
 
     var product = result[0];
 
-    if ((product.stock - quantity) <= 0) {
+    if ((product.stock - quantity) < 0) {
       res.send(200, {"status": "OUT_OF_STOCK"});
       return;
     } else if (product.user_id == userId) {
